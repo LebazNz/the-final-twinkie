@@ -39,7 +39,7 @@ void CObjectFactory::UnRegisterClass(int nld)
 }
 CEntity* CObjectFactory::CreateObject(int nld)
 {
-	CEntity *fred = new CEntity();
+	CEntity fred = new CEntity();
 
 	return fred;
 }
