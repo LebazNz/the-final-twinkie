@@ -6,6 +6,7 @@ class CTurret:public CEntity
 public:
 	virtual void Update(float);
 	virtual void Render(void);
+	virtual int GetType(void) { return m_nType; }
 	CTurret(void);
 	~CTurret(void);
 

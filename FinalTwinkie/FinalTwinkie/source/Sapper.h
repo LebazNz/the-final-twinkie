@@ -9,6 +9,7 @@ public:
 	virtual void Render(void);
 	virtual bool CheckCollision(IEntity*);
 	virtual RECT GetRect(void);
+	virtual int GetType(void) { return m_nType; }
 	CSapper(void);
 	~CSapper(void);
 

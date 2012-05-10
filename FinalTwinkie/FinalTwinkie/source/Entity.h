@@ -13,7 +13,7 @@ public:
 	virtual void Render(void);
 	virtual bool CheckCollision(IEntity* pObject);
 	virtual RECT GetRect(void);
-	virtual int GetType(void);	
+	virtual int GetType(void) { return m_nType; }
 
 	virtual void AddRef(void);
 	virtual void Release(void);

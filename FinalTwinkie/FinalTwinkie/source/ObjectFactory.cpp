@@ -1,14 +1,8 @@
 #include "ObjectFactory.h"
 
-CObjectFactory* CObjectFactory::m_pInstance = nullptr;
 
-CObjectFactory* CObjectFactory::GetInstance(void)
-{
-	if(m_pInstance == nullptr)
-		m_pInstance = new CObjectFactory();
-	return m_pInstance;
-}
-void CObjectFactory::DeleteInstance(void)
+template <typename ClassTypeID, typename BaseClassType>
+void CObjectFactory<ClassTypeID, BaseClassType>::DeleteInstance(void)
 {
 	if(m_pInstance != nullptr)
 	{
@@ -17,29 +11,49 @@ void CObjectFactory::DeleteInstance(void)
 	}
 }
 
-
-CObjectFactory::CObjectFactory(void)
+template <typename ClassTypeID, typename BaseClassType>
+CObjectFactory<ClassTypeID, BaseClassType>::CObjectFactory(void)
 {
 }
 
-
-CObjectFactory::~CObjectFactory(void)
+template <typename ClassTypeID, typename BaseClassType>
+CObjectFactory<ClassTypeID, BaseClassType>::~CObjectFactory(void)
 {
 }
 
-
-
-int CObjectFactory::RegisterClass(void* pClass)
+template <typename ClassTypeID, typename BaseClassType>
+bool CObjectFactory<ClassTypeID, BaseClassType>::RegisterClass(ClassTypeID id)
 {
-	return 0;
+	std::pair<ClassTypeID, ObjectCreator> objectTypeDef;
+
+	objectTypeDef.first = id;
+	objectTypeDef.second = ConstructObject<NewClassType>;
+
+	m_ObjectCreatorMap.insert(objectTypeDef);
+
+	return true;
 }
-void CObjectFactory::UnRegisterClass(int nld)
-{
 
+template <typename ClassTypeID, typename BaseClassType>
+bool CObjectFactory<ClassTypeID, BaseClassType>::UnRegisterClass(ClassTypeID id)
+{
+	map<ClassTypeID, ObjectCreator>::iterator iter = m_ObjectCreatorMap.find(id);
+
+	if(iter == m_ObjectCreatorMap.end())
+		return false;
+
+	m_ObjectCreatorMap.erase(iter);
+
+	return true;
 }
-CEntity* CObjectFactory::CreateObject(int nld)
-{
-	CEntity fred = new CEntity();
 
-	return fred;
+template <typename ClassTypeID, typename BaseClassType>
+BaseClassType* CObjectFactory<ClassTypeID, BaseClassType>::CreateObject(ClassTypeID id)
+{
+	map<ClassTypeID, ObjectCreator>::iterator iter = m_ObjectCreatorMap.find(id);
+
+	if(iter == m_ObjectCreatorMap.end())
+		return NULL; 
+
+	return (*iter).second();
 }
