@@ -8,6 +8,7 @@ public:
 	virtual void Render(void);
 	virtual bool CheckCollision(IEntity*);
 	virtual RECT GetRect(void);
+	virtual int GetType(void) { return m_nType; }
 	CBullet(void);
 	~CBullet(void);
 };

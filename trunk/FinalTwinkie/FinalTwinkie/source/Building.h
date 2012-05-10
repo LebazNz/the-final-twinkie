@@ -9,6 +9,7 @@ public:
 	virtual void Update(float);
 	virtual void Render(void);
 	virtual RECT GetRect(void);
+	virtual int GetType(void) { return m_nType; }
 	virtual bool CheckCollision(IEntity*);
 	CBuilding(void);
 	~CBuilding(void);

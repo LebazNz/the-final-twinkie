@@ -7,6 +7,7 @@ class CFlyText:public CEntity
 public:
 	virtual void Update(float);
 	virtual void Render(void);
+	virtual int GetType(void) { return m_nType; }
 	CFlyText(void);
 	~CFlyText(void);
 
