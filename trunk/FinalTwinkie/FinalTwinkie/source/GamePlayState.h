@@ -30,6 +30,7 @@ private:
 	CGamePlayState& operator=(const CGamePlayState&);
 	virtual ~CGamePlayState(void);
 
+	CSGD_Direct3D*			m_pD3D;
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
@@ -41,7 +42,7 @@ private:
 	CAnimationManager*		m_AM;
 	
 	
-	static CGamePlayState*			m_pSelf;
+	static CGamePlayState*	m_pSelf;
 
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
