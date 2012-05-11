@@ -22,12 +22,14 @@ private:
 	CCreditsState& operator=(const CCreditsState&);
 	virtual ~CCreditsState(void);
 
+	CSGD_Direct3D*			m_pD3D;
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 
-	static CCreditsState*			m_pSelf;
-	
+	static CCreditsState*	m_pSelf;
+
+	int								m_nBGImageID;	
 };
 
 

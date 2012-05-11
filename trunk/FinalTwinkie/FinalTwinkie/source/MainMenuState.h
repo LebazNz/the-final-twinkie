@@ -31,7 +31,8 @@ private:
 	int								m_nSelected;
 
 	int								m_nBGImageID;
-
+	int								m_nPosition;
+	int								m_nPointerID;
 	
 };
 

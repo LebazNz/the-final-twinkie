@@ -2,6 +2,8 @@
 
 #include "MainMenuState.h"
 #include "GamePlayState.h"
+#include "CreditsState.h"
+#include "OptionsState.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -81,6 +83,9 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 void CGame::Shutdown(void)
 {
 	CMainMenuState::GetInstance()->DeleteInstance();
+	CGamePlayState::GetInstance()->DeleteInstance();
+	COptionsState::GetInstance()->DeleteInstance();
+	CCreditsState::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)
