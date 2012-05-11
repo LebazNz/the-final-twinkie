@@ -7,7 +7,7 @@ class CMainMenuState : public IGameState
 {
 public:
 	static CMainMenuState* GetInstance(void);
-	static void DeleteInstance(void);
+	virtual void DeleteInstance(void);
 	virtual void Enter(void);
 	virtual void Exit(void);
 	virtual bool Input(void);
@@ -21,13 +21,16 @@ private:
 	CMainMenuState& operator=(const CMainMenuState&);
 	virtual ~CMainMenuState(void);
 
-	CSGD_DirectInput*		m_pDI;
-	CSGD_TextureManager*	m_pTM;
-	CBitmapFont*			m_pFont;
+	CSGD_Direct3D*					m_pD3D;
+	CSGD_DirectInput*				m_pDI;
+	CSGD_TextureManager*			m_pTM;
+	CBitmapFont*					m_pFont;
 
 	static CMainMenuState*			m_pSelf;
 
-	int m_nSelected;
+	int								m_nSelected;
+
+	int								m_nBGImageID;
 
 	
 };
