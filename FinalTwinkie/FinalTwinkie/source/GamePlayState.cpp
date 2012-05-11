@@ -5,7 +5,7 @@ CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 CGamePlayState* CGamePlayState::GetInstance(void)
 {
 	if(m_pSelf == nullptr)
-		m_pSelf = new CGamePlayState();
+		m_pSelf = new CGamePlayState;
 	return m_pSelf;
 }
 void CGamePlayState::DeleteInstance(void)

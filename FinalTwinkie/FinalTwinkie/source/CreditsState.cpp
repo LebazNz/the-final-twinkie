@@ -5,7 +5,7 @@ CCreditsState* CCreditsState::m_pSelf = nullptr;
 CCreditsState* CCreditsState::GetInstance(void)
 {
 	if(m_pSelf == nullptr)
-		m_pSelf = new CCreditsState();
+		m_pSelf = new CCreditsState;
 	return m_pSelf;
 }
 void CCreditsState::DeleteInstance(void)

@@ -6,7 +6,7 @@ CShopState* CShopState::m_pSelf = nullptr;
 CShopState* CShopState::GetInstance(void)
 {
 	if(m_pSelf == nullptr)
-		m_pSelf = new CShopState();
+		m_pSelf = new CShopState;
 	return m_pSelf;
 }
 void CShopState::DeleteInstance(void)

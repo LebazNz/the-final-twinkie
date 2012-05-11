@@ -5,7 +5,7 @@ COptionsState* COptionsState::m_pSelf = nullptr;
 COptionsState* COptionsState::GetInstance(void)
 {
 	if(m_pSelf == nullptr)
-		m_pSelf = new COptionsState();
+		m_pSelf = new COptionsState;
 	return m_pSelf;
 }
 void COptionsState::DeleteInstance(void)

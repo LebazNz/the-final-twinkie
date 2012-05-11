@@ -1,6 +1,7 @@
 #ifndef IGAMESTATE_H_
 #define IGAMESTATE_H_
 
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "BitmapFont.h"
@@ -16,7 +17,6 @@ public:
 	virtual bool Input(void) = 0;
 	virtual void Update(float fDt) = 0;
 	virtual void Render(void) = 0;
-
 
 };
 
