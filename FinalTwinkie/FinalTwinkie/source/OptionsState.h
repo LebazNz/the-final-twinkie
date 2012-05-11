@@ -2,6 +2,7 @@
 #define COPTIONSSTATE_H_
 
 #include "IGameState.h"
+
 class COptionsState : public IGameState
 {
 public:
@@ -11,8 +12,7 @@ public:
 	virtual void Exit(void);
 	virtual bool Input(void);
 	virtual void Update(float fDt);
-	virtual void Render(void);
-	
+	virtual void Render(void);	
 
 private:
 	COptionsState(void);
@@ -20,13 +20,18 @@ private:
 	COptionsState& operator=(const COptionsState&);
 	virtual ~COptionsState(void);
 
+	CSGD_Direct3D*			m_pD3D;
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 
-	static COptionsState*			m_pSelf;
+	static COptionsState*	m_pSelf;
 
-	int m_nSelected;
+	int						m_nSelected;
+
+	int						m_nBGImageID;
+	int						m_nPosition;
+	int						m_nPointerID;
 };
 
 #endif
