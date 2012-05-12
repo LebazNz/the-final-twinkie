@@ -8,13 +8,15 @@ class CParticle
 public:
 	void Update(float fDt);
 	void Render(void);
-private:
+	void CreateParticle(float fLife, float fVelocityX, float fVelocityY, float fScale, int nPosX, int nPosY, DWORD dwColor);
+
+//private:
 	float m_fCurLife;
 	float m_fCurVelocityX;
 	float m_fCurVelocityY;
 	float m_fScale;
-	int m_nCurPosX;
-	int m_nCurPosY;
+	float m_nCurPosX;
+	float m_nCurPosY;
 	DWORD m_dwColor;
 
 };

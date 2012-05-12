@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "Turret.h"
 #include "Emitter.h"
-
+#include <vector>
 class CSpecial;
 class CWeapon;
 

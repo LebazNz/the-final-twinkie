@@ -59,14 +59,19 @@ void CGamePlayState::Enter(void)
 	//m_pFont = CBitmapFont::GetInstance();
 	//m_pOM	= CObjectManager::GetInstance();;
 	//m_pOF	= CObjectFactory::GetInstance();
-	//m_PM	= CParticleManager::GetInstance();
+	m_PM	= CParticleManager::GetInstance();
 	//m_pMS	= CMessageSystem::GetInstance();
 	//m_pTile = CTileManager::GetInstance();
 	//m_AM	= CAnimationManager::GetInstance();
+
+
 }
 
 void CGamePlayState::Exit(void)
 {
+	m_PM->RemoveAllEmitters();
+	m_PM->DeleteInstance();
+
 	m_pD3D	= nullptr;
 	m_pDI	= nullptr;
 	m_pTM	= nullptr;
@@ -86,15 +91,21 @@ bool CGamePlayState::Input(void)
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
 	}
+	if(m_pDI->KeyPressed(DIK_RETURN))
+	{
+		m_PM->AddEmitter("");
+	}
 
 	return true;
 }
 
 void CGamePlayState::Update(float fDt)
 {
+	m_PM->UpdateEverything(fDt);
 }
 
 void CGamePlayState::Render(void)
 {
 	m_pD3D->Clear( 0, 0, 255 );
+	m_PM->RenderEverything();
 }
