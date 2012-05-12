@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 
+
 class IEntity
 {
 public:

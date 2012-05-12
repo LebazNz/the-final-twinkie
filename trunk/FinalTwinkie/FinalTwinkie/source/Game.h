@@ -1,13 +1,17 @@
 #ifndef CGAME_H_
 #define CGAME_H_
 
+#include <Windows.h>
+
+#include <fmod.h>
+#include <fmod.hpp>
+#pragma comment(lib, "fmodex_vc.lib")
+
+#include "IGameState.h"
+
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
-#include <Windows.h>
-
-
-#include "IGameState.h"
 
 class CGame
 {
@@ -51,6 +55,13 @@ private:
 
 	// self
 	static CGame*			 m_pSelf;
+
+	// sound stuff
+	FMOD::System* system;
+	FMOD_RESULT result;
+	FMOD::Sound* sound;
+	FMOD::Channel* channel;
+	bool mute, isPlaying;
 };
 
 #endif
