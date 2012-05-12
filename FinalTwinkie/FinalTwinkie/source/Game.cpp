@@ -78,6 +78,15 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 
 	// Set game time
 	m_dwTime = GetTickCount();
+
+	// Set up sound
+	mute = isPlaying = FALSE;
+	result = FMOD::System_Create(&system);
+	system->setOutput(FMOD_OUTPUTTYPE_DSOUND);
+	system->init(200,FMOD_INIT_NORMAL,0);
+	result = system->createSound("Glow.mp3",FMOD_LOOP_NORMAL,NULL,&sound);
+	result = system->playSound(FMOD_CHANNEL_FREE,sound,false,&channel);
+	
 }
 
 void CGame::Shutdown(void)

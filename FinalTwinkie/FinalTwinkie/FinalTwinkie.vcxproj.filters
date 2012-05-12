@@ -147,9 +147,6 @@
     <ClCompile Include="source\GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\ObjectFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -335,5 +332,8 @@
     <ClInclude Include="source\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fmodex.dll" />
   </ItemGroup>
 </Project>

@@ -11,10 +11,12 @@ public:
 	static CObjectManager* GetInstance(void);
 	static void DeleteInstance(void);
 	void UpdateAllObjects(float fDt);
-	void AddObjects(IEntity* pObjects);
+	void AddObject(IEntity* pObject);
 	void RemoveObject(IEntity* pObject);
 	void RemoveAllObjects(void);
 	void CheckCollisions(void);
+	void RenderAllObjects(void);
+
 private:
 	CObjectManager(void);
 	CObjectManager(const CObjectManager&);

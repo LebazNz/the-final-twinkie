@@ -2,15 +2,20 @@
 #define CGAMEPLAYSTATE_H_
 
 #include "IGameState.h"
+#include "ObjectFactory.h"
+
+#include <string>
 
 class CParticleManager;
 class CObjectManager;
-class CObjectFactory;
+//class CObjectFactory;
 class CEntity;
 class CEmitter;
 class CTileManager;
 class CAnimationManager;
 class CMessageSystem;
+
+typedef CObjectFactory< std::string , CEntity> CFactory;
 
 class CGamePlayState : public IGameState
 {
@@ -35,7 +40,7 @@ private:
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 	CObjectManager*			m_pOM;
-	CObjectFactory*			m_pOF;
+	CFactory*				m_pOF;
 	CParticleManager*		m_PM;
 	CMessageSystem*			m_pMS;
 	CTileManager*			m_pTile;
@@ -46,6 +51,7 @@ private:
 
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
+	CEntity*				m_pEnemys[16];
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];
 };
