@@ -93,12 +93,15 @@ void CGamePlayState::Enter(void)
 		m_pEnemys[i]->SetHeight(40);
 
 		m_pOM->AddObject(m_pEnemys[i]);
-	}}
+	}
+}
 
 void CGamePlayState::Exit(void)
 {
 	m_PM->RemoveAllEmitters();
-	m_PM->DeleteInstance();if(m_pPlayer != nullptr)
+	m_PM->DeleteInstance();
+	
+	if(m_pPlayer != nullptr)
 	{
 		m_pPlayer->Release();
 		m_pPlayer = nullptr;
@@ -165,7 +168,8 @@ bool CGamePlayState::Input(void)
 void CGamePlayState::Update(float fDt)
 {
 	m_PM->UpdateEverything(fDt);
-	m_pOM->UpdateAllObjects(fDt)}
+	m_pOM->UpdateAllObjects(fDt);
+}
 
 void CGamePlayState::Render(void)
 {
