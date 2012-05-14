@@ -11,7 +11,7 @@ class CEmitter
 {
 public:
 	CEmitter(void) {}
-	~CEmitter(void) {}
+	~CEmitter(void);
 	void InitEmmitter(string szFile);
 	void UpdateParticles(float fDt);
 	void RenderParticles(void);
@@ -37,6 +37,7 @@ private:
 	int m_nParticleImage;
 	float m_fSpawnTimer;
 	float m_fTimer;
+	bool m_bExplosion;
 
 	std::vector<CParticle*> m_vParticles;
 };

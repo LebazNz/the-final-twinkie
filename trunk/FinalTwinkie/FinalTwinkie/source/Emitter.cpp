@@ -5,19 +5,36 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 void CEmitter::CreateParticle(float fDt=0)
 {
-	for(int i=0; i<m_nMaxParticles; i=m_nNumberParticles)
+	if(m_nNumberParticles<=m_nMaxParticles)
 	{
-		if(m_fTimer>m_fSpawnTimer)
+		if(m_bExplosion)
 		{
-			CParticle* newPart=new CParticle();
-			newPart->CreateParticle(m_fMaxLife,(((rand()%361)/180.0)-1.0)/2,(((rand()%361)/180.0)-1.0)/2,m_fMaxScale,m_nStartPosX, m_nStartPosY, m_dwStartColor);
-			m_vParticles.push_back(newPart);
-			m_nNumberParticles++;
-			m_fTimer=0;
+			for(;;)
+			{
+				CParticle* newPart=new CParticle();
+				newPart->CreateParticle(m_fMaxLife,(float)(((rand()%361)/180.0)-1.0)/2,(float)(((rand()%361)/180.0)-1.0)/2,m_fMaxScale,(float)m_nStartPosX,(float) m_nStartPosY, m_dwStartColor);
+				m_vParticles.push_back(newPart);
+				m_nNumberParticles++;
+				if(m_nNumberParticles>=m_nMaxParticles)
+				{
+					break;
+				}
+			}
 		}
 		else
 		{
-			m_fTimer+=fDt;
+			if(m_fTimer>m_fSpawnTimer)
+			{
+				CParticle* newPart=new CParticle();
+				newPart->CreateParticle(m_fMaxLife,(float)(((rand()%361)/180.0)-1.0)/2,(float)(((rand()%361)/180.0)-1.0)/2,m_fMaxScale,(float)m_nStartPosX, (float)m_nStartPosY, m_dwStartColor);
+				m_vParticles.push_back(newPart);
+				m_nNumberParticles++;
+				m_fTimer=0;
+			}
+			else
+			{
+				m_fTimer+=fDt;
+			}
 		}
 	}
 }
@@ -25,9 +42,10 @@ void CEmitter::CreateParticle(float fDt=0)
 void CEmitter::InitEmmitter(string szFile)
 {
 	m_bLooping=true;
+	m_bExplosion=false;
 	m_fMaxLife=2.0;
-	m_fMaxVelocityX=(rand()%2)-1;
-	m_fMaxVelocityY=(rand()%2)-1;
+	m_fMaxVelocityX=(float)(rand()%2)-1;
+	m_fMaxVelocityY=(float)(rand()%2)-1;
 	m_fMinVelocityX=1.0;
 	m_fMinVelocityY=1.0;
 	m_fMaxScale=0.5;
@@ -39,7 +57,7 @@ void CEmitter::InitEmmitter(string szFile)
 	m_nMaxParticles=90;
 	m_nNumberParticles=0;
 	m_nParticleImage=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/Cloud.png"));
-	m_fSpawnTimer=.001;
+	m_fSpawnTimer=.01f;
 	m_fTimer=0;
 }
 
@@ -56,6 +74,8 @@ void CEmitter::UpdateParticles(float fDt)
 			delete m_vParticles[i];
 			m_vParticles.erase(m_vParticles.begin()+i);
 			i--;
+			if(m_bLooping)
+				m_nNumberParticles--;
 			continue;
 		}
 		if(m_vParticles[i]->m_fScale>m_fMinScale)
@@ -64,16 +84,13 @@ void CEmitter::UpdateParticles(float fDt)
 		}
 		if(m_vParticles[i]->m_dwColor>m_dwEndColor)
 		{
-			int x =(180/m_fMaxLife)*fDt;//*fDt;
+			int x =(int)((180/m_fMaxLife)*fDt);
 			m_vParticles[i]->m_dwColor-=D3DCOLOR_ARGB(x,0,0,0);
 		}
-		m_vParticles[i]->m_nCurPosX+=m_vParticles[i]->m_fCurVelocityX;
-		m_vParticles[i]->m_nCurPosY+=m_vParticles[i]->m_fCurVelocityY;
+		m_vParticles[i]->m_fCurPosX+=m_vParticles[i]->m_fCurVelocityX;
+		m_vParticles[i]->m_fCurPosY+=m_vParticles[i]->m_fCurVelocityY;
 	}
-	if(m_bLooping)
-	{
-		CreateParticle(fDt);
-	}
+	CreateParticle(fDt);
 }
 
 void CEmitter::RenderParticles(void)
@@ -82,7 +99,17 @@ void CEmitter::RenderParticles(void)
 	for(unsigned int i=0; i<m_vParticles.size(); i++)
 	{	
 		
-		Tm->Draw(m_nParticleImage, m_vParticles[i]->m_nCurPosX, m_vParticles[i]->m_nCurPosY,
+		Tm->Draw(m_nParticleImage, (int)m_vParticles[i]->m_fCurPosX, (int)m_vParticles[i]->m_fCurPosY,
 			m_vParticles[i]->m_fScale, m_vParticles[i]->m_fScale, NULL, 16,16,0,m_vParticles[i]->m_dwColor);
+	}
+}
+
+CEmitter::~CEmitter(void)
+{
+	for(unsigned int i=0; i<m_vParticles.size(); i++)
+	{
+		delete m_vParticles[i];
+		m_vParticles.erase(m_vParticles.begin()+i);
+		i--;
 	}
 }
