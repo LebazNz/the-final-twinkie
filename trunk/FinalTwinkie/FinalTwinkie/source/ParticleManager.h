@@ -15,9 +15,12 @@ public:
 	void UpdateEverything(float fDt);
 	void RenderEverything(void);
 	int AddEmitter(string szFile);
-	void RemoveEmitter(int EmitterID);
+	void RemoveBaseEmitter(int nEmitterID);
 
-	void RemoveAllEmitters(void);
+	void RemoveAllBaseEmitters(void);
+
+	CEmitter* GetEmitter(int nEmitterID);
+	void RemoveAttachedEmitter(CEmitter* pEmitter);
 	
 
 private:
@@ -26,7 +29,9 @@ private:
 	CParticleManager& operator=(const CParticleManager&);
 	~CParticleManager(void);
 
-	vector<CEmitter*> m_vEmitters;
+	vector<CEmitter*> m_vBaseEmitters;
+	vector<CEmitter*> m_vAttachedEmitters;
+	vector<CEmitter*> m_vForDestroy;
 	static CParticleManager* m_pInstance;
 	int m_nCurrentIDIndex;
 

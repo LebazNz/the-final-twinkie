@@ -1,5 +1,5 @@
 #include "Particle.h"
-
+#include "../SGD Wrappers/CSGD_TextureManager.h"
 
 void CParticle::Update(float fDt)
 {
@@ -7,9 +7,12 @@ void CParticle::Update(float fDt)
 
 void CParticle::Render(void)
 {
+	CSGD_TextureManager* Tm= CSGD_TextureManager::GetInstance();
+
+	Tm->Draw(m_nParticleID, (int)m_fCurPosX-16, (int)m_fCurPosY-16, m_fScale, m_fScale, NULL, 16,16,0, m_dwColor);
 }
 
-void CParticle::CreateParticle(float fLife, float fVelocityX, float fVelocityY, float fScale, float nPosX, float nPosY, DWORD dwColor)
+void CParticle::CreateParticle(float fLife, float fVelocityX, float fVelocityY, float fScale, float nPosX, float nPosY, DWORD dwColor, int nImage)
 {
 	m_fCurLife=fLife;
 	m_fCurVelocityX=fVelocityX;
@@ -18,4 +21,5 @@ void CParticle::CreateParticle(float fLife, float fVelocityX, float fVelocityY, 
 	m_fCurPosX=nPosX;
 	m_fCurPosY=nPosY;
 	m_dwColor=dwColor;
+	m_nParticleID=nImage;
 }

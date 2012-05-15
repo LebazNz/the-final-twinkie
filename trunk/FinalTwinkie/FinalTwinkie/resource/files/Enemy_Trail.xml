@@ -1,0 +1,39 @@
+<Root>
+	<Effect>
+		<Picture>Cloud.png</Picture>
+		<Number Number="90"></Number>
+		<Looping Looping="1"></Looping>
+		<Explosion Explosion="0"></Explosion>
+		<Life Life="2.0"></Life>
+		<SpawnTime SpawnTime=".01"></SpawnTime>
+		<EmitterType Type="0"></EmitterType>
+		<Radius R="0"></Radius>
+		<Angle A="0"></Angle>
+		<SpeedX>
+			<MinX M="1.0"></MinX>
+			<MaxX M="4.0"></MaxX>
+		</SpeedX>
+		<SpeedY>
+			<MinY M="1.0"></MinY>
+			<MaxY M="4.0"></MaxY>
+		</SpeedY>
+		<Scale>
+			<Min M=".01"></Min>
+			<Max M="1.0"></Max>
+		</Scale>
+		<Color>
+			<Start>
+				<Alpha A="180"></Alpha>
+				<Red R="0"></Red>
+				<Green G="255"></Green>
+				<Blue B="0"></Blue>
+			</Start>
+			<End>
+				<Alpha A="180"></Alpha>
+				<Red R="0"></Red>
+				<Green G="0"></Green>
+				<Blue B="255"></Blue>
+			</End>
+		</Color>
+	</Effect>
+</Root>

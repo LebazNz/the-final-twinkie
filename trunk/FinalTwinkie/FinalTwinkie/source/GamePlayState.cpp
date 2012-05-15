@@ -83,7 +83,7 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 	}
 
-	
+	FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 	m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
 	m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 	0 );
@@ -105,6 +105,8 @@ void CGamePlayState::Enter(void)
 		m_pEnemys[i]->SetImageID(m_anEnemyIDs[i]);
 		m_pEnemys[i]->SetWidth(40);
 		m_pEnemys[i]->SetHeight(40);
+		CEnemy* enemy=dynamic_cast<CEnemy*>(m_pEnemys[i]);
+		enemy->SetTail(m_PM->GetEmitter(FXEnemy_Tails));
 
 		m_pOM->AddObject(m_pEnemys[i]);
 	}*/
@@ -112,7 +114,7 @@ void CGamePlayState::Enter(void)
 
 void CGamePlayState::Exit(void)
 {
-	m_PM->RemoveAllEmitters();
+	m_PM->RemoveAllBaseEmitters();
 	m_PM->DeleteInstance();
 	
 	if(m_pPlayer != nullptr)
@@ -179,7 +181,11 @@ bool CGamePlayState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_RETURN))
 	{
-		m_PM->AddEmitter("");
+		for(int i = 0; i < 16; ++i)
+		{
+			//CEnemy* enemy=dynamic_cast<CEnemy*>(m_pEnemys[i]);
+			//enemy->GetTail()->ActivateEmitter();
+		}
 	}
 	if(m_pDI->KeyPressed(DIK_N))
 	{
@@ -293,6 +299,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[i]);
 					pSelf->m_pEnemy->SetWidth(40);
 					pSelf->m_pEnemy->SetHeight(40);
+					CEnemy* enemy=dynamic_cast<CEnemy*>(pSelf->m_pEnemy);
+					enemy->SetTail(pSelf->m_PM->GetEmitter(pSelf->FXEnemy_Tails));
+					enemy->GetTail()->ActivateEmitter();
 
 					pSelf->m_pOM->AddObject(pSelf->m_pEnemy);
 
@@ -314,6 +323,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYENEMY:
 		{
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
+			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 			pSelf->m_pOM->RemoveObject(pEnemy);
 		}
 		break;
