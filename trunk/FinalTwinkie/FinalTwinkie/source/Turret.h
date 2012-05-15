@@ -3,8 +3,7 @@
 #include "Entity.h"
 #include "../SGD Wrappers/SGD_Math.h"
 
-
-#define SHOTCOOLDOWN 0.25
+#define SHOT_DELAY 1.0
 
 class CTurret:public CEntity
 {
