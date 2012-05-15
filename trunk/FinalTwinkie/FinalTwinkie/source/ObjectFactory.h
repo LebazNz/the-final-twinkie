@@ -38,7 +38,7 @@ public:
 	}*/
 
 	template<typename NewClassType>
-	bool RegisterClass(ClassTypeID id)
+	bool RegisterClassType(ClassTypeID id)
 	{
 		std::pair<ClassTypeID, ObjectCreator> objectTypeDef;
 
@@ -50,7 +50,7 @@ public:
 		return true;
 	}
 
-	bool UnRegisterClass(ClassTypeID id)
+	bool UnRegisterClassType(ClassTypeID id)
 	{
 		map<ClassTypeID, ObjectCreator>::iterator iter = m_ObjectCreatorMap.find(id);
 

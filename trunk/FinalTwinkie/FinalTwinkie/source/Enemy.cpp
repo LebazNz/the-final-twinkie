@@ -1,5 +1,8 @@
 #include "Enemy.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
+#include "MessageSystem.h"
+#include "DestroyEnemyMessage.h"
+#include "CreateBulletMessage.h"
 
 CEnemy::CEnemy(void)
 {
@@ -9,7 +12,8 @@ CEnemy::CEnemy(void)
 	m_nMainBulletType = BUL_SHELL;
 	m_nMachineGunBulletType = BUL_MACHINEGUN;
 	m_fFireRate = 0;
-	m_nRefCount = 0;
+
+	SetHealth(3000);
 }
 
 CEnemy::~CEnemy(void)
@@ -21,6 +25,17 @@ void CEnemy::Update(float fDt)
 	int nY = GetPosY();
 	nY++;
 	SetPosY(nY);
+	float hp = GetHealth();
+	if(hp > 0)
+	{
+		SetHealth(hp-5);
+	}
+	else
+	{
+		CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+	}
 }
 
 void CEnemy::Render(void)
@@ -36,23 +51,31 @@ void CEnemy::Render(void)
 
 bool CEnemy::CheckCollision(IEntity* pBase)
 {
-	return false;
+	if(CEntity::CheckCollision(pBase) == true)
+	{
+		switch(pBase->GetType())
+		{
+		case OBJ_BASE:
+			break;
+		case OBJ_PLAYER:
+			{
+			}
+			break;
+		case OBJ_BULLET:
+			{				
+					CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+			}
+			break;
+		case OBJ_ENEMY:
+			{
+			}
+			break;
+		};
+		return true;
+	}
+	else
+		return false;
 }
 
-RECT CEnemy::GetRect(void) const
-{
-	return CEntity::GetRect();
-}
-
-void CEnemy::AddRef(void)
-{
-	m_nRefCount++;
-}
-
-void CEnemy::Release(void)
-{
-	m_nRefCount--;
-
-	if(m_nRefCount == 0)
-		delete this;
-}

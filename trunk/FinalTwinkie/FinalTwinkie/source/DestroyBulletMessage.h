@@ -11,6 +11,8 @@ public:
 	CDestroyBulletMessage(CBullet* pBullet);
 	virtual ~CDestroyBulletMessage(void);
 
+	CBullet* GetBullet(void) {return m_pBullet; }
+
 
 private:
 	CBullet* m_pBullet;

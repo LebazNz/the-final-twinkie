@@ -3,6 +3,7 @@
 
 #include "IGameState.h"
 #include "ObjectFactory.h"
+#include "Message.h"
 
 #include <string>
 
@@ -28,6 +29,7 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 	
+	static void MessageProc(CMessage* pMsg);
 
 private:
 	CGamePlayState(void);
@@ -51,7 +53,7 @@ private:
 
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
-	CEntity*				m_pEnemys[16];
+	CEntity*				m_pEnemy;
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];
 };

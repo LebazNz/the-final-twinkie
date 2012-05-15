@@ -4,6 +4,7 @@
 #include "GamePlayState.h"
 #include "CreditsState.h"
 #include "OptionsState.h"
+#include "MessageSystem.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -95,6 +96,7 @@ void CGame::Shutdown(void)
 	CGamePlayState::GetInstance()->DeleteInstance();
 	COptionsState::GetInstance()->DeleteInstance();
 	CCreditsState::GetInstance()->DeleteInstance();
+	CMessageSystem::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)

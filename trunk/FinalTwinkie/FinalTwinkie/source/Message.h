@@ -8,6 +8,9 @@ class CMessage
 public:
 	explicit CMessage(MessageType msgID);
 	virtual ~CMessage(void);
+
+	MessageType GetMessageID(void) const { return m_nMessageType; }
+
 private:
 	MessageType m_nMessageType;
 };
