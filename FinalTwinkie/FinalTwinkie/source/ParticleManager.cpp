@@ -29,42 +29,85 @@ CParticleManager::~CParticleManager(void)
 
 void CParticleManager::UpdateEverything(float fDt)
 {
-	for(unsigned int i=0; i<m_vEmitters.size(); i++)
+	for(unsigned int i=0; i<m_vAttachedEmitters.size(); i++)
 	{
-		m_vEmitters[i]->UpdateParticles(fDt);
+		m_vAttachedEmitters[i]->UpdateParticles(fDt);
+	}
+	for(unsigned int i=0; i<m_vForDestroy.size(); i++)
+	{
+		m_vForDestroy[i]->UpdateParticles(fDt);
+		if(m_vForDestroy[i]->NumActiveParticles()==0)
+		{
+			delete(m_vForDestroy[i]);
+			m_vForDestroy.erase(m_vForDestroy.begin()+i);
+			i--;
+		}
 	}
 }
 
 void CParticleManager::RenderEverything(void)
 {
-	for(unsigned int i=0; i<m_vEmitters.size(); i++)
+	for(unsigned int i=0; i<m_vAttachedEmitters.size(); i++)
 	{
-		m_vEmitters[i]->RenderParticles();
+		m_vAttachedEmitters[i]->RenderParticles();
+	}
+	for(unsigned int i=0; i<m_vForDestroy.size(); i++)
+	{
+		m_vForDestroy[i]->RenderParticles();
 	}
 }
 
 int CParticleManager::AddEmitter(string szFile)
 {
 	CEmitter* testing=new CEmitter();
-	testing->InitEmmitter("");
-	m_vEmitters.push_back(testing);
+	testing->InitEmmitter(szFile);
+	m_vBaseEmitters.push_back(testing);
 	return m_nCurrentIDIndex++;
 }
 
-void CParticleManager::RemoveEmitter(int nEmitterID)
+void CParticleManager::RemoveBaseEmitter(int nEmitterID)
 {
-	delete(m_vEmitters[nEmitterID]);
-	m_vEmitters.erase(m_vEmitters.begin()+nEmitterID);
+	delete(m_vBaseEmitters[nEmitterID]);
+	m_vBaseEmitters.erase(m_vBaseEmitters.begin()+nEmitterID);
 	m_nCurrentIDIndex--;
 }
 
-void CParticleManager::RemoveAllEmitters(void)
+void CParticleManager::RemoveAllBaseEmitters(void)
 {
-	for(unsigned int i=0; i<m_vEmitters.size(); i++)
+	for(unsigned int i=0; i<m_vBaseEmitters.size(); i++)
 	{
-		delete(m_vEmitters[i]);
-		m_vEmitters.erase(m_vEmitters.begin()+i);
+		delete(m_vBaseEmitters[i]);
+		m_vBaseEmitters.erase(m_vBaseEmitters.begin()+i);
 		i--;
 		m_nCurrentIDIndex--;
+	}
+
+	for(unsigned int i=0; i<m_vAttachedEmitters.size(); i++)
+	{
+		delete(m_vAttachedEmitters[i]);
+		m_vAttachedEmitters.erase(m_vAttachedEmitters.begin()+i);
+		i--;
+	}
+}
+
+CEmitter* CParticleManager::GetEmitter(int EmitterID)
+{
+	CEmitter* newEmitter=new CEmitter();
+	*newEmitter=*m_vBaseEmitters[EmitterID];
+	m_vAttachedEmitters.push_back(newEmitter);
+	return newEmitter;
+}
+
+void CParticleManager::RemoveAttachedEmitter(CEmitter* pEmitter)
+{
+	for(unsigned int i=0; i<m_vAttachedEmitters.size(); i++)
+	{
+		if(m_vAttachedEmitters[i]==pEmitter)
+		{
+			m_vAttachedEmitters[i]->DeactivateEmitter();
+			m_vForDestroy.push_back(m_vAttachedEmitters[i]);
+			m_vAttachedEmitters.erase(m_vAttachedEmitters.begin()+i);
+			break;
+		}
 	}
 }

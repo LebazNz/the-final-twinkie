@@ -25,7 +25,7 @@ void CEnemy::Update(float fDt)
 	int nY = GetPosY();
 	nY++;
 	SetPosY(nY);
-	float hp = GetHealth();
+	m_pTail->UpdateEmitterPos(GetPosX(), GetPosY());	float hp = GetHealth();
 	if(hp > 0)
 	{
 		SetHealth(hp-5);
@@ -78,4 +78,3 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 	else
 		return false;
 }
-

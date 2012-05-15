@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include "Entity.h"
+#include "Emitter.h"
 
 enum ENEMYTYPE { SAPPER, TANK, TURRET };
 
@@ -28,6 +29,9 @@ public:
 	virtual void SetMainBulletType(int fMainBulletType) { m_nMainBulletType = fMainBulletType; }
 	virtual void SetMachineGunBulletType(int nMachineGunBulletType) { m_nMachineGunBulletType = nMachineGunBulletType; }
 
+	void SetTail(CEmitter* Tail){m_pTail=Tail;}
+	CEmitter* GetTail(void){return m_pTail;}
+
 private:
 	float	m_fMaxDist;
 	float	m_fMinDist;
@@ -35,5 +39,7 @@ private:
 	int		m_nMainBulletType;
 	int		m_nMachineGunBulletType;
 	
+
+	CEmitter* m_pTail;
 };
 #endif
