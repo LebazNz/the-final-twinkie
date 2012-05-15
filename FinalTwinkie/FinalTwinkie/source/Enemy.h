@@ -3,16 +3,16 @@
 
 #include "Entity.h"
 
+enum ENEMYTYPE { SAPPER, TANK, TURRET };
+
 class CEnemy:public CEntity
 {
 public:
 	virtual void Update(float);
 	virtual void Render(void);
 	virtual bool CheckCollision(IEntity* pObject);
-	virtual RECT GetRect(void)const;
 	virtual int GetType(void)const { return m_nType; }
-	virtual void AddRef(void);
-	virtual void Release(void);
+	
 	CEnemy(void);
 	virtual ~CEnemy(void);
 
@@ -34,6 +34,6 @@ private:
 	float	m_fFireRate;
 	int		m_nMainBulletType;
 	int		m_nMachineGunBulletType;
-	int		m_nRefCount;
+	
 };
 #endif

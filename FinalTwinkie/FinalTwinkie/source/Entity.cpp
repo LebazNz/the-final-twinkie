@@ -46,9 +46,9 @@ bool CEntity::CheckCollision(IEntity* pObject)
 {
 	RECT rOverLap = {}, rSelf = GetRect(), rOther = pObject->GetRect();
 
-	bool bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
+	BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
 
-	if(bIsColliding == true)
+	if(bIsColliding == TRUE)
 		return true;
 	else
 		return false;

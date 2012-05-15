@@ -11,6 +11,8 @@ public:
 	CDestroyEnemyMessage(CEnemy* pEnemy);
 	virtual ~CDestroyEnemyMessage(void);
 
+	CEnemy* GetEnemy(void) { return m_pEnemy; }
+
 
 private:
 	CEnemy* m_pEnemy;

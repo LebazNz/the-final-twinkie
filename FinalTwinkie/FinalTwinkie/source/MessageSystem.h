@@ -12,8 +12,9 @@ class CMessageSystem
 {
 public:
 	static CMessageSystem* GetInstance(void);
+	static void DeleteInstance(void);
 	void InitMessageSystem(MESSAGEPROC pfnProcess);
-	void SendMessage(CMessage* pMsg);
+	void SndMessage(CMessage* pMsg);
 	void ProcessMessages(void);
 	void ClearMessages(void);
 	void ShutDownMessageSystem(void);
@@ -21,6 +22,8 @@ public:
 private:
 	queue<CMessage*> m_qMessages;
 	MESSAGEPROC m_pfnProcess;
+
+	static CMessageSystem* m_pSelf;
 
 	CMessageSystem(void) { m_pfnProcess = NULL; }
 	CMessageSystem(const CMessageSystem&);

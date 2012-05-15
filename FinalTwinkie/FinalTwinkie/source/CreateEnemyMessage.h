@@ -10,6 +10,7 @@ public:
 	CCreateEnemyMessage(MessageType msgType, int nEnemyType);
 	virtual ~CCreateEnemyMessage(void);
 
+	int GetEnemyType(void) const { return m_nEnemyType; }
 
 private:
 	int m_nEnemyType;
