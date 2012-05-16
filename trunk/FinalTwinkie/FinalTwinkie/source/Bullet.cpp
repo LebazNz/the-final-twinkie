@@ -59,8 +59,6 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_ENEMY:
 			{
-				CEventSystem::GetInstance()->SendEvent("play_explode",this);
-
 				if(GetWhoFired() == false)
 				{
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);

@@ -1,7 +1,7 @@
 #include "CreateBulletMessage.h"
-#include "Entity.h"
+#include "Turret.h"
 
-CCreateBulletMessage::CCreateBulletMessage(MessageType msgType, int nBulletType, CEntity* pFiringEntity)
+CCreateBulletMessage::CCreateBulletMessage(MessageType msgType, int nBulletType, CTurret* pFiringEntity)
 	: CMessage(msgType),
 	m_nBulletType(nBulletType), 
 	m_pFiringEntity(pFiringEntity)

@@ -17,6 +17,7 @@
 #include "DestroyEnemyMessage.h"
 #include "Tile.h"
 #include "Enemy.h"
+#include "Turret.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -59,6 +60,8 @@ CGamePlayState::CGamePlayState(void)
 	for(int i = 0; i < 4; ++i)
 		m_anBulletImageIDs[i] = -1;
 
+	m_nPlayerImageID = -1;
+
 	m_pPlayer = nullptr;
 	m_pEnemy = nullptr;
 }
@@ -86,10 +89,12 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 	}
 
+	m_nPlayerImageID = m_pTM->LoadTexture( _T( "resource/graphics/AC_testturret.png"), 	0 );
+
 	FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 	m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
-	m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 	0 );
+	m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
 	m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 
 	m_pMS->InitMessageSystem(&MessageProc);
@@ -97,6 +102,24 @@ void CGamePlayState::Enter(void)
 	m_pOF->RegisterClassType<CEntity>("CEntity");
 	m_pOF->RegisterClassType<CEnemy>("CEnemy");
 	m_pOF->RegisterClassType<CBullet>("CBullet");
+	m_pOF->RegisterClassType<CTurret>("CTurret");
+
+	m_pPlayer = m_pOF->CreateObject("CTurret");
+
+	m_pPlayer->SetPosX(CGame::GetInstance()->GetWidth()/2);
+	m_pPlayer->SetPosY(CGame::GetInstance()->GetHeight()/2);
+	m_pPlayer->SetImageID(m_nPlayerImageID);
+	m_pPlayer->SetWidth(32);
+	m_pPlayer->SetHeight(32);
+	
+	CTurret* turret = dynamic_cast<CTurret*>(m_pPlayer);
+
+	turret->SetBullet(BUL_SHELL);
+	//turret->SetOwner(m_pPlayer);
+	//turret->SetTarget(m_pEnemy);
+	//turret->SetRotationRate(5.0f);
+
+	m_pOM->AddObject(turret);
 
 	/*for(int i = 0; i < 10; ++i)
 	{
@@ -130,6 +153,12 @@ void CGamePlayState::Exit(void)
 	{
 		m_pEnemy->Release();
 		m_pEnemy = nullptr;
+	}
+
+	if(m_nPlayerImageID != -1)
+	{
+		m_pTM->UnloadTexture(m_nPlayerImageID);
+		m_nPlayerImageID = -1;
 	}
 
 	for(int i = 0; i < 16; ++i)
@@ -205,12 +234,12 @@ bool CGamePlayState::Input(void)
 		pMsg = nullptr;
 	}
 
-	if(m_pDI->KeyPressed(DIK_SPACE))
+	/*if(m_pDI->KeyPressed(DIK_SPACE))
 	{
 		CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,m_pEnemy);
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
-	}
+	}*/
 
 	return true;
 }
@@ -228,13 +257,12 @@ void CGamePlayState::Update(float fDt)
 void CGamePlayState::Render(void)
 {
 	m_pD3D->Clear( 0, 0, 0 );
-	m_pD3D->GetSprite()->Flush();
+	
 	// Render game entities
 	m_pOM->RenderAllObjects();
-
 	
 	// Flush the sprites
-	//m_pD3D->GetSprite()->Flush();
+	m_pD3D->GetSprite()->Flush();
 	m_PM->RenderEverything();
 }
 
@@ -253,23 +281,23 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{
+					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetWhoFired(false);
-					/*if(pMessage->GetFiringEntity() != nullptr)
+					if(pMessage->GetFiringEntity() != nullptr)
 					{
 						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX());
 						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY());
-					}*/
+						Bullet->SetVelX(pMessage->GetFiringEntity()->GetLook().fX*600);
+						Bullet->SetVelY(pMessage->GetFiringEntity()->GetLook().fY*600);
+					}
+					//Bullet->SetPosX(CGame::GetInstance()->GetWidth()/2);
+					//Bullet->SetPosY(CGame::GetInstance()->GetHeight()/2);
 
-					Bullet->SetPosX(CGame::GetInstance()->GetWidth()/2);
-					Bullet->SetPosY(CGame::GetInstance()->GetHeight()/2);
-
-					float randX = float(rand()%(600-(-600)+1)+-600);
-					float randY = float(rand()%(600-(-600)+1)+-600);
-
-					Bullet->SetVelX(randX);
-					Bullet->SetVelY(randY);
+					//float randX = float(rand()%(600-(-600)+1)+-600);
+					//float randY = float(rand()%(600-(-600)+1)+-600);					
 
 					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 
