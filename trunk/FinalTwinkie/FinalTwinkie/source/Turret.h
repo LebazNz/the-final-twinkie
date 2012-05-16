@@ -24,6 +24,8 @@ public:
 	tVector2D GetLook(void) { return m_vLookVec; }
 	CEntity* GetOwner(void) { return m_pOwner;}
 	float GetRotationRate(void) { return m_fRotationRate;}
+
+	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
 	
 
 	CTurret(void);

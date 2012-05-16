@@ -36,8 +36,8 @@ private:
 	float m_fMinSpeedY;
 	float m_fMaxScale;
 	float m_fMinScale;
-	int m_nStartPosX;
-	int m_nStartPosY;
+	float m_fStartPosX;
+	float m_fStartPosY;
 	D3DXCOLOR m_dwStartColor;
 	D3DXCOLOR m_dwEndColor;
 	int m_nNumberParticles;
@@ -50,6 +50,9 @@ private:
 	float m_fRadius;
 	float m_fAngle;
 	bool m_bActive;
+
+	D3DBLEND m_nSource;
+	D3DBLEND m_nDest;
 
 	std::vector<CParticle*> m_vParticles;
 };

@@ -58,7 +58,9 @@ private:
 	CEntity*				m_pEnemy;
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];
-	int m_nPlayerImageID;
+	int m_nPlayerID;
+	int m_nPlayerTurretID;
+
 	int FXEnemy_Tails;
 };
 

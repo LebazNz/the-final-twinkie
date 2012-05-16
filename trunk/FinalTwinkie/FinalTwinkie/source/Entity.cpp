@@ -4,8 +4,8 @@
 CEntity::CEntity(void)
 {
 	// Position
-	m_nPosX = 0;
-	m_nPosY = 0;
+	m_fPosX = 0;
+	m_fPosY = 0;
 	// Velocity
 	m_fVelX = 0;
 	m_fVelY = 0;
@@ -30,15 +30,15 @@ CEntity::~CEntity(void)
 
 void CEntity::Update(float fDt)
 {
-	m_nPosX += int(m_fVelX * fDt);
-	m_nPosY += int(m_fVelY * fDt);
+	m_fPosX += int(m_fVelX * fDt);
+	m_fPosY += int(m_fVelY * fDt);
 }
 
 void CEntity::Render(void)
 {
 	if(m_nImageID != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(m_nImageID, m_nPosX, m_nPosY, 1.0f, 1.0f, nullptr, 0.0f, 0.0f, 0.0f, DWORD(m_nColor)); 
+		CSGD_TextureManager::GetInstance()->Draw(m_nImageID, (int)m_fPosX, (int)m_fPosY, 1.0f, 1.0f, nullptr, 0.0f, 0.0f, 0.0f, DWORD(m_nColor)); 
 	}
 }
 
@@ -57,7 +57,7 @@ bool CEntity::CheckCollision(IEntity* pObject)
 RECT CEntity::GetRect(void)const
 {
 	RECT rSelf = { };
-	SetRect(&rSelf, m_nPosX, m_nPosY, m_nPosX+m_nWidth, m_nPosY+m_nHeight);
+	SetRect(&rSelf, (int)m_fPosX, (int)m_fPosY, (int)m_fPosX+m_nWidth, (int)m_fPosY+m_nHeight);
 	return rSelf;
 }
 
