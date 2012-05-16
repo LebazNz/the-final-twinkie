@@ -31,9 +31,10 @@ void CPlayer::Update(float fDt)
 		m_fRotation-=m_fRotationRate*fDt;
 	}
 
-	if(m_pDI->MouseButtonDown(0))
+	if(m_pDI->MouseButtonPressed(0))
 	{
 		CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
+		CMessageSystem::GetInstance()->SndMessage(msg);
 	}
 
 	m_pTurret->SetPosX(GetPosX());
