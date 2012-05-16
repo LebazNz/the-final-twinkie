@@ -2,11 +2,12 @@
 #define ENEMY_H
 
 #include "Entity.h"
+#include "IListener.h"
 #include "Emitter.h"
 
 enum ENEMYTYPE { SAPPER, TANK, TURRET };
 
-class CEnemy:public CEntity
+class CEnemy:public CEntity, public IListener
 {
 public:
 	virtual void Update(float);
@@ -31,6 +32,8 @@ public:
 
 	void SetTail(CEmitter* Tail){m_pTail=Tail;}
 	CEmitter* GetTail(void){return m_pTail;}
+
+	virtual void HandleEvent(CEvent* pEvent);
 
 private:
 	float	m_fMaxDist;

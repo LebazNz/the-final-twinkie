@@ -15,6 +15,7 @@ class CEmitter;
 class CTileManager;
 class CAnimationManager;
 class CMessageSystem;
+class CEventSystem;
 
 typedef CObjectFactory< std::string , CEntity> CFactory;
 
@@ -47,6 +48,7 @@ private:
 	CMessageSystem*			m_pMS;
 	CTileManager*			m_pTile;
 	CAnimationManager*		m_AM;
+	CEventSystem*			m_pES;
 	
 	
 	static CGamePlayState*	m_pSelf;

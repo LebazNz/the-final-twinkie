@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "MessageSystem.h"
+#include "EventSystem.h"
 #include "DestroyBulletMessage.h"
 #include "DestroyEnemyMessage.h"
 
@@ -12,10 +13,12 @@ CBullet::CBullet(void)
 	// true		= player fired
 	// flase	= enemy fired
 	m_bWhoFired = false;
+	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
 }
 
 CBullet::~CBullet(void)
 {
+	CEventSystem::GetInstance()->UnregisterClient("play_explode",this);
 }
 
 void CBullet::Update(float fDT)
@@ -56,6 +59,8 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_ENEMY:
 			{
+				CEventSystem::GetInstance()->SendEvent("play_explode",this);
+
 				if(GetWhoFired() == false)
 				{
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
@@ -71,4 +76,15 @@ bool CBullet::CheckCollision(IEntity* pBase)
 	}
 	else
 		return false;
+}
+
+void CBullet::HandleEvent(CEvent* pEvent)
+{
+	if(pEvent->GetParam() != this)
+		return;
+
+	if(pEvent->GetEventID() == "play_explode")
+	{
+		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
+	}
 }

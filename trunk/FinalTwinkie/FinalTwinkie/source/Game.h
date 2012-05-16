@@ -56,6 +56,7 @@ private:
 	// self
 	static CGame*			 m_pSelf;
 
+public:
 	// sound stuff
 	FMOD::System* system;
 	FMOD_RESULT result;
