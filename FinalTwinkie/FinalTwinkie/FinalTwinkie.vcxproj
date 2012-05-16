@@ -102,6 +102,7 @@
     <ClCompile Include="source\EMP.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\Entity.cpp" />
+    <ClCompile Include="source\EventSystem.cpp" />
     <ClCompile Include="source\FlyText.cpp" />
     <ClCompile Include="source\Frame.cpp" />
     <ClCompile Include="source\Game.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="source\Building.h" />
     <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\Camera.h" />
+    <ClInclude Include="source\CEvent.h" />
     <ClInclude Include="source\CreateBulletMessage.h" />
     <ClInclude Include="source\CreateEnemyMessage.h" />
     <ClInclude Include="source\CreatePickupMessage.h" />
@@ -157,6 +159,7 @@
     <ClInclude Include="source\EMP.h" />
     <ClInclude Include="source\Enemy.h" />
     <ClInclude Include="source\Entity.h" />
+    <ClInclude Include="source\EventSystem.h" />
     <ClInclude Include="source\FlyText.h" />
     <ClInclude Include="source\Frame.h" />
     <ClInclude Include="source\Game.h" />
@@ -164,6 +167,7 @@
     <ClInclude Include="source\GUI.h" />
     <ClInclude Include="source\IEntity.h" />
     <ClInclude Include="source\IGameState.h" />
+    <ClInclude Include="source\IListener.h" />
     <ClInclude Include="source\Layer.h" />
     <ClInclude Include="source\MainMenuState.h" />
     <ClInclude Include="source\Message.h" />

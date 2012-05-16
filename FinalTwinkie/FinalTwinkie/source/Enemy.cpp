@@ -1,8 +1,10 @@
 #include "Enemy.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "MessageSystem.h"
+#include "EventSystem.h"
 #include "DestroyEnemyMessage.h"
 #include "CreateBulletMessage.h"
+#include "Game.h"
 
 CEnemy::CEnemy(void)
 {
@@ -12,12 +14,13 @@ CEnemy::CEnemy(void)
 	m_nMainBulletType = BUL_SHELL;
 	m_nMachineGunBulletType = BUL_MACHINEGUN;
 	m_fFireRate = 0;
-
+	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
 	SetHealth(3000);
 }
 
 CEnemy::~CEnemy(void)
 {
+	CEventSystem::GetInstance()->UnregisterClient("play_explode",this);
 }
 
 void CEnemy::Update(float fDt)
@@ -77,4 +80,15 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 	}
 	else
 		return false;
+}
+
+void CEnemy::HandleEvent(CEvent* pEvent)
+{
+	if(pEvent->GetParam() != this)
+		return;
+
+	if(pEvent->GetEventID() == "play_explode")
+	{
+		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
+	}
 }

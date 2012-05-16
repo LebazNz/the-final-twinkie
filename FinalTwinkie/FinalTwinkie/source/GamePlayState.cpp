@@ -7,6 +7,7 @@
 #include "BitmapFont.h"
 #include "Bullet.h"
 #include "MessageSystem.h"
+#include "EventSystem.h"
 #include "ObjectManager.h"
 #include "ParticleManager.h"
 #include "AnimationManager.h"
@@ -47,6 +48,7 @@ CGamePlayState::CGamePlayState(void)
 	m_pMS	= nullptr;
 	m_pTile = nullptr;
 	m_AM	= nullptr;
+	m_pES = nullptr;
 
 
 	for(int i = 0; i < 16; ++i)
@@ -77,6 +79,7 @@ void CGamePlayState::Enter(void)
 	m_pMS	= CMessageSystem::GetInstance();
 	//m_pTile = CTileManager::GetInstance();
 	//m_AM	= CAnimationManager::GetInstance();
+	m_pES = CEventSystem::GetInstance();
 
 	for(int i = 0; i < 16; ++i)
 	{
@@ -163,6 +166,14 @@ void CGamePlayState::Exit(void)
 		m_pOF->ShutdownObjectFactory();
 		m_pOF	= nullptr;
 	}
+
+	if(m_pES != nullptr)
+	{
+		m_pES->ClearEvents();
+		m_pES->ShutdownEventSystem();
+		m_pES = nullptr;
+	}
+
 	m_pD3D	= nullptr;
 	m_pDI	= nullptr;
 	m_pTM	= nullptr;
@@ -209,6 +220,8 @@ void CGamePlayState::Update(float fDt)
 	m_PM->UpdateEverything(fDt);
 	m_pOM->UpdateAllObjects(fDt);
 	m_pOM->CheckCollisions();
+
+	m_pES->ProcessEvents();
 	m_pMS->ProcessMessages();
 }
 
@@ -245,8 +258,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetWhoFired(false);
 					/*if(pMessage->GetFiringEntity() != nullptr)
 					{
-						Bullet->SetPosX(CGame::GetInstance()->GetWidth()/2);
-						Bullet->SetPosY(CGame::GetInstance()->GetHeight()/2);
+						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX());
+						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY());
 					}*/
 
 					Bullet->SetPosX(CGame::GetInstance()->GetWidth()/2);

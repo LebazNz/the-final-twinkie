@@ -5,6 +5,7 @@
 #include "CreditsState.h"
 #include "OptionsState.h"
 #include "MessageSystem.h"
+#include "EventSystem.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -85,8 +86,8 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	result = FMOD::System_Create(&system);
 	system->setOutput(FMOD_OUTPUTTYPE_DSOUND);
 	system->init(200,FMOD_INIT_NORMAL,0);
-	result = system->createSound("Glow.mp3",FMOD_LOOP_NORMAL,NULL,&sound);
-	result = system->playSound(FMOD_CHANNEL_FREE,sound,false,&channel);
+	result = system->createSound("resource/sound/explode.wav",FMOD_LOOP_OFF,NULL,&sound);
+	//result = system->playSound(FMOD_CHANNEL_FREE,sound,false,&channel);
 	
 }
 
@@ -97,6 +98,7 @@ void CGame::Shutdown(void)
 	COptionsState::GetInstance()->DeleteInstance();
 	CCreditsState::GetInstance()->DeleteInstance();
 	CMessageSystem::GetInstance()->DeleteInstance();
+	CEventSystem::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)
