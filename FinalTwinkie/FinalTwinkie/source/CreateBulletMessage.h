@@ -4,20 +4,20 @@
 
 #include "message.h" 
 
-class CEntity;
+class CTurret;
 
 class CCreateBulletMessage : public CMessage
 {
 public:
-	CCreateBulletMessage(MessageType msgType, int nBulletType, CEntity* pFiringEntity);
+	CCreateBulletMessage(MessageType msgType, int nBulletType, CTurret* pFiringEntity);
 	virtual ~CCreateBulletMessage(void);
 
 	int GetBulletType(void) const {return m_nBulletType; }
-	CEntity* GetFiringEntity(void)const {return m_pFiringEntity;}
+	CTurret* GetFiringEntity(void)const {return m_pFiringEntity;}
 
 private:
 	int m_nBulletType;
-	CEntity* m_pFiringEntity;
+	CTurret* m_pFiringEntity;
 };
 
 #endif CREATEBULLETMESSAGE_H_
