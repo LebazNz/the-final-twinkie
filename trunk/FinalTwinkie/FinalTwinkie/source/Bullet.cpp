@@ -45,14 +45,14 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_PLAYER:
 			{
-				if(GetWhoFired() == false)
+				/*if(GetWhoFired() == false)
 				{
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
-				}
-				else
-					break;
+				}*/
+				//else
+				//	break;
 			}
 			break;
 		case OBJ_BULLET:
