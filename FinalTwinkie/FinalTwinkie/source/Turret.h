@@ -16,7 +16,7 @@ public:
 	void SetTarget(CEntity* player) { m_pTarget = player;}
 	void SetOwner(CEntity* owner) { m_pOwner = owner;}
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
-
+	void SetUpVec(float x, float y);
 
 	// Getters
 	int GetBullet(void) { return m_nBulletType;}
@@ -38,5 +38,6 @@ private:
 	CEntity* m_pTarget;
 	int m_nBulletType;
 	tVector2D m_vLookVec;
+	tVector2D m_vUpVec;
 };
 #endif
