@@ -28,8 +28,8 @@ public:
 
 	void TakeDamage(int nDamage);
 
-	virtual int GetPosX(void) {return m_nPosX; }
-	virtual int GetPosY(void) {return m_nPosY; }
+	virtual float GetPosX(void) {return m_fPosX; }
+	virtual float GetPosY(void) {return m_fPosY; }
 	virtual float GetVelX(void) {return m_fVelX; }
 	virtual float GetVelY(void) {return m_fVelY; }
 	virtual int GetWidth(void) { return m_nWidth; }
@@ -37,8 +37,8 @@ public:
 	virtual int GetColor(void) { return m_nColor; }
 	virtual float GetHealth(void) { return m_fHealth; }
 
-	virtual void SetPosX(int nPosX) {m_nPosX = nPosX; }
-	virtual void SetPosY(int nPosY) {m_nPosY = nPosY; }
+	virtual void SetPosX(float fPosX) {m_fPosX = fPosX; }
+	virtual void SetPosY(float fPosY) {m_fPosY = fPosY; }
 	virtual void SetVelX(float fVelX) {m_fVelX = fVelX; }
 	virtual void SetVelY(float fVelY) {m_fVelY = fVelY; }
 	virtual void SetWidth(int nWidth) {m_nWidth = nWidth; }
@@ -50,8 +50,8 @@ public:
 
 private:
 	// Position
-	int m_nPosX;
-	int m_nPosY;
+	float m_fPosX;
+	float m_fPosY;
 	// Velocity
 	float m_fVelX;
 	float m_fVelY;

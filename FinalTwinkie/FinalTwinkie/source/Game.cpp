@@ -164,5 +164,7 @@ void CGame::Render(void)
 	m_pD3D->SpriteEnd();
 	m_pD3D->DeviceEnd();
 
+
+
 	m_pD3D->Present();
 }

@@ -17,6 +17,7 @@
 #include "DestroyEnemyMessage.h"
 #include "Tile.h"
 #include "Enemy.h"
+#include "Player.h"
 #include "Turret.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
@@ -60,7 +61,7 @@ CGamePlayState::CGamePlayState(void)
 	for(int i = 0; i < 4; ++i)
 		m_anBulletImageIDs[i] = -1;
 
-	m_nPlayerImageID = -1;
+	m_nPlayerID = -1;
 
 	m_pPlayer = nullptr;
 	m_pEnemy = nullptr;
@@ -89,37 +90,47 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 	}
 
-	m_nPlayerImageID = m_pTM->LoadTexture( _T( "resource/graphics/AC_testturret.png"), 	0 );
 
 	FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 	m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
 	m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
 	m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
+	m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
+	m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
 
 	m_pMS->InitMessageSystem(&MessageProc);
 
 	m_pOF->RegisterClassType<CEntity>("CEntity");
 	m_pOF->RegisterClassType<CEnemy>("CEnemy");
 	m_pOF->RegisterClassType<CBullet>("CBullet");
+	m_pOF->RegisterClassType<CPlayer>("CPlayer");
 	m_pOF->RegisterClassType<CTurret>("CTurret");
-
-	m_pPlayer = m_pOF->CreateObject("CTurret");
-
-	m_pPlayer->SetPosX(CGame::GetInstance()->GetWidth()/2);
-	m_pPlayer->SetPosY(CGame::GetInstance()->GetHeight()/2);
-	m_pPlayer->SetImageID(m_nPlayerImageID);
-	m_pPlayer->SetWidth(32);
-	m_pPlayer->SetHeight(32);
 	
-	CTurret* turret = dynamic_cast<CTurret*>(m_pPlayer);
+	m_pPlayer=m_pOF->CreateObject("CPlayer");
+	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+	player->SetImageID(m_nPlayerID);
+	player->SetPosX(200);
+	player->SetPosY(200);
+	player->SetRotation(0);
+	player->SetWidth(64);
+	player->SetHeight(128);
+	player->SetVelX(90);
+	player->SetVelY(90);
+	m_pOM->AddObject(player);
 
-	turret->SetBullet(BUL_SHELL);
-	//turret->SetOwner(m_pPlayer);
-	//turret->SetTarget(m_pEnemy);
-	//turret->SetRotationRate(5.0f);
-
-	m_pOM->AddObject(turret);
+	CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+	PlayerTurret->SetImageID(m_nPlayerTurretID);
+	player->SetTurret(PlayerTurret);
+	PlayerTurret->SetPosX(player->GetPosX());
+	PlayerTurret->SetPosY(player->GetPosY());
+	PlayerTurret->SetOwner(player);
+	PlayerTurret->SetBullet(BUL_SHELL);
+	PlayerTurret->SetWidth(64);
+	PlayerTurret->SetHeight(128);
+	PlayerTurret->SetRotationPositon(32,98);
+	PlayerTurret->SetUpVec(0,-1);
+	m_pOM->AddObject(PlayerTurret);
 
 	/*for(int i = 0; i < 10; ++i)
 	{
@@ -155,10 +166,10 @@ void CGamePlayState::Exit(void)
 		m_pEnemy = nullptr;
 	}
 
-	if(m_nPlayerImageID != -1)
+	if(m_nPlayerID != -1)
 	{
-		m_pTM->UnloadTexture(m_nPlayerImageID);
-		m_nPlayerImageID = -1;
+		m_pTM->UnloadTexture(m_nPlayerID);
+		m_nPlayerID = -1;
 	}
 
 	for(int i = 0; i < 16; ++i)
@@ -219,14 +230,6 @@ bool CGamePlayState::Input(void)
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
 	}
-	if(m_pDI->KeyPressed(DIK_RETURN))
-	{
-		for(int i = 0; i < 16; ++i)
-		{
-			//CEnemy* enemy=dynamic_cast<CEnemy*>(m_pEnemys[i]);
-			//enemy->GetTail()->ActivateEmitter();
-		}
-	}
 	if(m_pDI->KeyPressed(DIK_N))
 	{
 		CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,SAPPER);
@@ -260,7 +263,7 @@ void CGamePlayState::Render(void)
 	
 	// Render game entities
 	m_pOM->RenderAllObjects();
-	
+	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1, 0.1);
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();
 	m_PM->RenderEverything();
@@ -335,7 +338,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					int i = rand()%10;
 					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CEnemy");
 
-					pSelf->m_pEnemy->SetPosX(50*(i+1));
+					pSelf->m_pEnemy->SetPosX((float)(50*(i+1)));
 					pSelf->m_pEnemy->SetPosY(50);
 					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[i]);
 					pSelf->m_pEnemy->SetWidth(40);

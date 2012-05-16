@@ -9,6 +9,8 @@
 		<EmitterType Type="0"></EmitterType>
 		<Radius R="0"></Radius>
 		<Angle A="0"></Angle>
+		<Source S="4"></Source>
+		<Dest D="2"></Dest>
 		<SpeedX>
 			<MinX M="1.0"></MinX>
 			<MaxX M="4.0"></MaxX>
@@ -23,13 +25,13 @@
 		</Scale>
 		<Color>
 			<Start>
-				<Alpha A="180"></Alpha>
+				<Alpha A="128"></Alpha>
 				<Red R="0"></Red>
 				<Green G="255"></Green>
 				<Blue B="0"></Blue>
 			</Start>
 			<End>
-				<Alpha A="180"></Alpha>
+				<Alpha A="128"></Alpha>
 				<Red R="0"></Red>
 				<Green G="0"></Green>
 				<Blue B="255"></Blue>
