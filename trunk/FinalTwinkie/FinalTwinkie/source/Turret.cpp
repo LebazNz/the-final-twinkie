@@ -91,10 +91,11 @@ void CTurret::Update(float fDt)
 			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 		
 
-			m_fRotation = AngleBetweenVectors(m_vLookVec,Vec);
+			m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
 
+			m_vLookVec = Vector2DRotate(m_vLookVec,m_fRotation);
 
-			if(Steering(m_vLookVec,Vec) < 0.0f)
+			if(Steering(m_vUpVec,Vec) <= 0.0f)
 				m_fRotation = -m_fRotation;
 
 			 if(m_fFireRate >= SHOT_DELAY)
@@ -123,7 +124,7 @@ void CTurret::Render(void)
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),GetPosX(),GetPosY(),1.0f,1.0f,0, float(GetWidth()/2), float(GetHeight()/2),m_fRotation);
 
 		// This code will render a line in the look vectors direction from the object's position
-		tVector2D target = {CSGD_DirectInput::GetInstance()->MouseGetPosX(),CSGD_DirectInput::GetInstance()->MouseGetPosY()};
+		tVector2D target = {float(CSGD_DirectInput::GetInstance()->MouseGetPosX()),float(CSGD_DirectInput::GetInstance()->MouseGetPosY())};
 	 
 		tVector2D Vec = {target.fX - m_vLookVec.fX,target.fY - m_vLookVec.fY};
 		
@@ -138,8 +139,8 @@ CTurret::CTurret(void)
 	CEntity::m_nType = OBJ_TURRET;
 	m_pOwner = nullptr;
 	m_pTarget = nullptr;
-	m_vLookVec.fX = -1;
-	m_vLookVec.fY = 0;
+	m_vLookVec.fX = 0.0f;
+	m_vLookVec.fY = -1.0f;
 	SetPosX(0);
 	SetPosY(0);
 	m_fRotPosX, m_fRotPosY = 0.0f;
@@ -147,7 +148,15 @@ CTurret::CTurret(void)
 	m_fRotationRate = 0.0f;
 	m_fFireRate = 0.0f;
 	m_fMaxDistance = 300.0f;
+	m_vUpVec.fX = 0.0;
+	m_vUpVec.fY = -1.0f;
 }
 CTurret::~CTurret(void)
 {
+}
+
+void CTurret::SetUpVec(float x, float y)
+{
+	m_vUpVec.fX = x;
+	m_vUpVec.fY = y;
 }
