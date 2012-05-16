@@ -17,6 +17,7 @@ public:
 	void SetOwner(CEntity* owner) { m_pOwner = owner;}
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
 	void SetUpVec(float x, float y);
+	void SetRotatePos(float x, float y) { m_fRotPosX = x; m_fRotPosY = y;}
 
 	// Getters
 	int GetBullet(void) { return m_nBulletType;}
