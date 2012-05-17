@@ -14,6 +14,7 @@ CBullet::CBullet(void)
 	// flase	= enemy fired
 	m_bWhoFired = false;
 	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
+	m_fRotation = 0.0f;
 }
 
 CBullet::~CBullet(void)
@@ -50,9 +51,12 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
-				}*/
+				}
 				//else
 				//	break;
+				}
+				else
+					break;*/
 			}
 			break;
 		case OBJ_BULLET:
@@ -84,5 +88,13 @@ void CBullet::HandleEvent(CEvent* pEvent)
 	if(pEvent->GetEventID() == "play_explode")
 	{
 		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
+	}
+}
+
+void CBullet::Render(void)
+{
+	if(GetImageID() != -1)
+	{
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()+(GetWidth()/2)), int(GetPosY()+(GetHeight()/2)), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
 	}
 }

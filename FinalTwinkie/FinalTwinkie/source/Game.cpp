@@ -4,6 +4,7 @@
 #include "GamePlayState.h"
 #include "CreditsState.h"
 #include "OptionsState.h"
+#include "ObjectFactory.h"
 #include "MessageSystem.h"
 #include "EventSystem.h"
 

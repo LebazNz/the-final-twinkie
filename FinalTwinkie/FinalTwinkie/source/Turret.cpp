@@ -15,8 +15,8 @@ void CTurret::Update(float fDt)
 	{
 		
 
-		int xPos = GetPosX() - m_pTarget->GetPosX();
-		int yPos = GetPosY() - m_pTarget->GetPosY();
+		float xPos = GetPosX() - m_pTarget->GetPosX();
+		float yPos = GetPosY() - m_pTarget->GetPosY();
 		xPos *= xPos;
 		yPos *= yPos;
 
@@ -49,8 +49,8 @@ void CTurret::Update(float fDt)
 	{
 
 			
-		int xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
-		int yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
+		float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
+		float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
 		xPos *= xPos;
 		yPos *= yPos;
 
@@ -77,8 +77,8 @@ void CTurret::Update(float fDt)
 	else if(m_pOwner == nullptr && m_pTarget == nullptr)
 	{
 
-		int xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
-		int yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
+		float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
+		float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
 		xPos *= xPos;
 		yPos *= yPos;
 
