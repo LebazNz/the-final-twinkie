@@ -25,7 +25,7 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Update(float fDt)
 {
-	int nY = GetPosY();
+	float nY = GetPosY();
 	nY++;
 	SetPosY(nY);
 	m_pTail->UpdateEmitterPos(GetPosX(), GetPosY());	float hp = GetHealth();

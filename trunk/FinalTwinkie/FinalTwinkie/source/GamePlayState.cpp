@@ -119,6 +119,7 @@ void CGamePlayState::Enter(void)
 	player->SetVelY(90);
 	m_pOM->AddObject(player);
 
+	
 	CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 	PlayerTurret->SetImageID(m_nPlayerTurretID);
 	player->SetTurret(PlayerTurret);
@@ -132,21 +133,9 @@ void CGamePlayState::Enter(void)
 	PlayerTurret->SetUpVec(0,-1);
 	m_pOM->AddObject(PlayerTurret);
 
-	/*for(int i = 0; i < 10; ++i)
-	{
-				
-		m_pEnemys[i] = m_pOF->CreateObject("CEnemy");
+	PlayerTurret->Release();
+	PlayerTurret = nullptr;
 
-		m_pEnemys[i]->SetPosX(50*(i+1));
-		m_pEnemys[i]->SetPosY(50);
-		m_pEnemys[i]->SetImageID(m_anEnemyIDs[i]);
-		m_pEnemys[i]->SetWidth(40);
-		m_pEnemys[i]->SetHeight(40);
-		CEnemy* enemy=dynamic_cast<CEnemy*>(m_pEnemys[i]);
-		enemy->SetTail(m_PM->GetEmitter(FXEnemy_Tails));
-
-		m_pOM->AddObject(m_pEnemys[i]);
-	}*/
 }
 
 void CGamePlayState::Exit(void)
@@ -237,13 +226,6 @@ bool CGamePlayState::Input(void)
 		pMsg = nullptr;
 	}
 
-	/*if(m_pDI->KeyPressed(DIK_SPACE))
-	{
-		CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,m_pEnemy);
-		CMessageSystem::GetInstance()->SndMessage(pMsg);
-		pMsg = nullptr;
-	}*/
-
 	return true;
 }
 
@@ -263,7 +245,7 @@ void CGamePlayState::Render(void)
 	
 	// Render game entities
 	m_pOM->RenderAllObjects();
-	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1, 0.1);
+	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1f, 0.1f);
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();
 	m_PM->RenderEverything();
@@ -288,19 +270,21 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					Bullet->SetWhoFired(false);
+					if(pMessage->GetFiringEntity()->GetType() == OBJ_PLAYER)
+						Bullet->SetWhoFired(false);
+					else
+						Bullet->SetWhoFired(true);
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
-						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX());
-						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY());
-						Bullet->SetVelX(pMessage->GetFiringEntity()->GetLook().fX*600);
-						Bullet->SetVelY(pMessage->GetFiringEntity()->GetLook().fY*600);
+						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+						norVec = Vector2DNormalize(norVec);
+						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+norVec.fX-30);
+						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+						Bullet->SetVelX(norVec.fX*400);
+						Bullet->SetVelY(norVec.fY*400);
 					}
-					//Bullet->SetPosX(CGame::GetInstance()->GetWidth()/2);
-					//Bullet->SetPosY(CGame::GetInstance()->GetHeight()/2);
-
-					//float randX = float(rand()%(600-(-600)+1)+-600);
-					//float randY = float(rand()%(600-(-600)+1)+-600);					
+						
 
 					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 

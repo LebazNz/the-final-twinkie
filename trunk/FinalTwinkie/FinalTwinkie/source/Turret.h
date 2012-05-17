@@ -17,15 +17,17 @@ public:
 	void SetOwner(CEntity* owner) { m_pOwner = owner;}
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
 	void SetUpVec(float x, float y);
-	void SetRotatePos(float x, float y) { m_fRotPosX = x; m_fRotPosY = y;}
+	//void SetRotatePos(float x, float y) { m_fRotPosX = x; m_fRotPosY = y;}
+	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
 
 	// Getters
 	int GetBullet(void) { return m_nBulletType;}
 	tVector2D GetLook(void) { return m_vLookVec; }
 	CEntity* GetOwner(void) { return m_pOwner;}
 	float GetRotationRate(void) { return m_fRotationRate;}
-
-	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
+	float GetRotation(void) { return m_fRotation; }
+	float GetRotationX(void) { return m_fRotPosX; }
+	float GetRotationY(void) { return m_fRotPosY; }
 	
 
 	CTurret(void);
