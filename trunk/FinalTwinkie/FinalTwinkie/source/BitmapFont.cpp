@@ -38,7 +38,7 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 		
 		if(ch == ' ')
 		{
-			nPosX += int(m_nCharWidth*fScale)-m_fOffset;
+			nPosX += int(m_nCharWidth*fScale)-(int)m_fOffset;
 			continue;
 		}
 		else if(ch == '\n')
