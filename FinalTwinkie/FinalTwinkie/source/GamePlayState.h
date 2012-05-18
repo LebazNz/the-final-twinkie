@@ -29,6 +29,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	bool GetPaused(void)const {return m_bPaused;}
 	
 	static void MessageProc(CMessage* pMsg);
 
@@ -62,6 +63,9 @@ private:
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
 	int m_nBackGround;
+	int m_nPosition;
+	bool m_bPaused;
+
 	int FXEnemy_Tails;
 	int FXSapper_Explosion;
 };

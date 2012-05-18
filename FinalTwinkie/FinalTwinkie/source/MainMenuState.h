@@ -13,6 +13,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	bool LoadOptions(const char* szFileName);
 	
 
 private:
@@ -33,6 +34,10 @@ private:
 	int								m_nBGImageID;
 	int								m_nPosition;
 	int								m_nPointerID;
+	int								m_nSFXVolume;
+	int								m_nCurVolume;
+	int								m_nLang;
+	bool							m_bWindowed;
 	
 };
 
