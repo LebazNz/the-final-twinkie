@@ -3,6 +3,8 @@
 
 #include "IEntity.h"
 
+class CTileManager;
+
 #include <vector>
 enum OBJECT_TYPE { OBJ_BASE, OBJ_PLAYER, OBJ_BULLET, OBJ_ENEMY, OBJ_TURRET };
 enum BULLETYPE { BUL_SHELL, BUL_ROCKET, BUL_ARTILLERY, BUL_MACHINEGUN, BUL_LASER };
@@ -69,6 +71,9 @@ private:
 
 	// vector of Emmiters
 	std::vector<int> m_vEmitters;
+
+	// pointer to tile manager
+	CTileManager *m_pTM;
 
 protected:
 	// Object Type
