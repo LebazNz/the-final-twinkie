@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<graphic_layer>
+	<file_name>dt_tiles.png</file_name>
+	<map_info mapwidth="3" mapheight="6" tilewidth="32" tileheight="32" setwidth="13" setheight="13"></map_info>
+	<tile_row>
+		<tile_info index="117" posy="0" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+		<tile_info index="119" posy="0" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+		<tile_info index="120" posy="0" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+	</tile_row>    
+	<tile_row>     
+		<tile_info index="130" posy="32" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="39" posy="32" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="133" posy="32" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+	</tile_row>     
+	<tile_row>      
+		<tile_info index="156" posy="64" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="157" posy="64" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="159" posy="64" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+	</tile_row>
+  <tile_row>
+    <tile_info index="117" posy="96" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="119" posy="96" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="120" posy="96" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+  </tile_row>
+  <tile_row>
+    <tile_info index="130" posy="128" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="39" posy="128" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="133" posy="128" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+  </tile_row>
+  <tile_row>
+    <tile_info index="156" posy="160" posx="0" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="157" posy="160" posx="32" collision="0" spawn="0" trigger="0"></tile_info>
+    <tile_info index="159" posy="160" posx="64" collision="0" spawn="0" trigger="0"></tile_info>
+  </tile_row>
+  <enemy_row>
+    <enemy_spawn posx="25" posy="25" type="0"></enemy_spawn>
+    <enemy_spawn posx="25" posy="25" type="0"></enemy_spawn>
+    <enemy_spawn posx="25" posy="25" type="0"></enemy_spawn>
+    <enemy_spawn posx="25" posy="25" type="0"></enemy_spawn>
+    <enemy_spawn posx="25" posy="25" type="0"></enemy_spawn>
+  </enemy_row>
+</graphic_layer>

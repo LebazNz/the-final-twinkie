@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
+#include "TileManager.h"
 
 CEntity::CEntity(void)
 {
@@ -22,6 +23,8 @@ CEntity::CEntity(void)
 	m_nRefCount = 1;	
 	// Object Type
 	m_nType = OBJ_BASE;
+
+	m_pTM = CTileManager::GetInstance();
 }
 
 CEntity::~CEntity(void)
@@ -45,6 +48,8 @@ void CEntity::Render(void)
 bool CEntity::CheckCollision(IEntity* pObject)
 {
 	RECT rOverLap = {}, rSelf = GetRect(), rOther = pObject->GetRect();
+
+	m_pTM->CheckCollision(pObject);
 
 	BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
 
