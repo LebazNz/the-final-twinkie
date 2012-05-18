@@ -6,7 +6,6 @@
 #include <vector>
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 class CSpecial;
-//class CWeapon;
 
 class CPlayer:public CEntity
 {
@@ -16,7 +15,6 @@ public:
 	virtual RECT GetRect(void);
 	virtual int GetType(void) { return m_nType; }
 	virtual bool CheckCollision(IEntity*);
-	void Input(void);
 	CPlayer(void);
 	~CPlayer(void);
 
@@ -36,11 +34,11 @@ public:
 	void	SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
 	void	SetRotation(float fRotate) {m_fRotation=fRotate;}
 	float	GetRotation() const { return m_fRotation;}
+
 private:
 	int m_nMoney;
 	std::string m_szName;
 	CSpecial* m_apSpec;
-	//std::vector<CWeapon*> m_vWeapon;
 	int m_anWeaponAmmo[3];
 	int m_anSpecialammo[2];
 	CEmitter* m_pTracks;
@@ -48,6 +46,8 @@ private:
 	float m_fRotation;
 	float m_fRotationRate;
 
+	float m_fRotationHeight;
+	float m_fRotationWidth;
 
 	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
 	bool m_bIsMoving;
