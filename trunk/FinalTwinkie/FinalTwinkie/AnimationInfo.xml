@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Frame_List>
+    <Frame_Info FrameRectLeft="0" FrameRectTop="0" FrameRectRight="150" FrameRectBottom="180" FrameAnchorY="76" FrameAnchorX="79" FrameTime="0.000000" />
+    <Frame_Info FrameRectLeft="150" FrameRectTop="0" FrameRectRight="300" FrameRectBottom="180" FrameAnchorY="76" FrameAnchorX="227" FrameTime="0.000000" />
+    <Frame_Info FrameRectLeft="300" FrameRectTop="0" FrameRectRight="450" FrameRectBottom="180" FrameAnchorY="76" FrameAnchorX="388" FrameTime="0.000000" />
+</Frame_List>

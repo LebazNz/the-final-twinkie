@@ -171,9 +171,21 @@
     <ClCompile Include="source\ObjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< .mine
+    <ClCompile Include="source\AnimatingObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AnimationVault.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AnimInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+=======
     <ClCompile Include="source\EventSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+>>>>>>> .r24
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h">
@@ -335,6 +347,17 @@
     <ClInclude Include="source\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< .mine
+    <ClInclude Include="source\AnimatingObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AnimationVault.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AnimInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+=======
     <ClInclude Include="source\CEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -344,6 +367,7 @@
     <ClInclude Include="source\EventSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+>>>>>>> .r24
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

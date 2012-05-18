@@ -3,32 +3,64 @@
 #include "../SGD Wrappers/SGD_Math.h"
 #include "MessageSystem.h"
 #include "CreateBulletMessage.h"
-
+#include "Camera.h"
 void CPlayer::Update(float fDt)
 {
 	tVector2D Up={0,-1};
-	if(m_pDI->KeyDown(DIK_W))
+
+	if(m_pDI->KeyDown(DIK_W) || m_pDI->KeyDown(DIK_S))
 	{
-		Up=Vector2DRotate(Up, m_fRotation);
-		float DX=(Up.fX*GetVelX()*fDt);
-		SetPosX(GetPosX()+DX);
-		SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
+		m_bIsMoving = true;
 	}
-	else if(m_pDI->KeyDown(DIK_S))
+	else m_bIsMoving = false;
+
+	if(!m_pDI->KeyDown(DIK_W) && !m_pDI->KeyDown(DIK_S))
 	{
-		Up=Vector2DRotate(Up, m_fRotation);
-		float DX=(Up.fX*GetVelX()*fDt);
-		SetPosX(GetPosX()-DX);
-		SetPosY(GetPosY()-(Up.fY*GetVelY()*fDt));
+		SetMoveUp(false);
+		SetMoveDown(false);
 	}
 
+	if(Camera::GetInstance()->GetPlayerCannotMove() == false)
+	{
+		if(m_pDI->KeyDown(DIK_W))
+		{
+			Up=Vector2DRotate(Up, m_fRotation);
+			float DX=(Up.fX*GetVelX()*fDt);
+			SetPosX(GetPosX()+DX);
+			SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
+
+			SetMoveUp(true);
+			SetMoveDown(false);
+		}
+		else if(m_pDI->KeyDown(DIK_S))
+		{
+			Up=Vector2DRotate(Up, m_fRotation);
+			float DX=(Up.fX*GetVelX()*fDt);
+			SetPosX(GetPosX()-DX);
+			SetPosY(GetPosY()-(Up.fY*GetVelY()*fDt));
+
+			SetMoveUp(false);
+			SetMoveDown(true);
+		}
+		else
+		{
+			SetMoveUp(false);
+			SetMoveDown(false);
+		}
+	}
 	if(m_pDI->KeyDown(DIK_D))
 	{
 		m_fRotation+=m_fRotationRate*fDt;
+
+		SetMoveRight(true);
+		SetMoveLeft(false);
 	}
 	else if(m_pDI->KeyDown(DIK_A))
 	{
 		m_fRotation-=m_fRotationRate*fDt;
+
+		SetMoveRight(false);
+		SetMoveLeft(true);
 	}
 
 	if(m_pDI->MouseButtonPressed(0) || m_pDI->KeyDown(DIK_SPACE))
@@ -63,6 +95,12 @@ CPlayer::CPlayer(void)
 	m_pDI=CSGD_DirectInput::GetInstance();
 	m_fRotationRate=1.5f;
 	m_nType=OBJ_PLAYER;
+
+	m_bIsMoving		= false;
+	m_bMoveRight	= false;
+	m_bMoveLeft		= false;
+	m_bMoveUp		= false;
+	m_bMoveDown		= false;
 }
 CPlayer::~CPlayer(void)
 {
