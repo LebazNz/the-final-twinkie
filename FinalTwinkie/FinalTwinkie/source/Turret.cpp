@@ -6,18 +6,20 @@
 #include "CreateBulletMessage.h"
 #include <math.h>
 #include "../SGD Wrappers/CSGD_Direct3D.h"
+#include "Camera.h"
 using std::sqrt;
 
 
 
 void CTurret::Update(float fDt)
 {
+	Camera* C=Camera::GetInstance();
 	if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr) // change target check to !=
 	{
 		
 
-		float xPos = GetPosX() - m_pTarget->GetPosX();
-		float yPos = GetPosY() - m_pTarget->GetPosY();
+		float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+		float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
 		xPos *= xPos;
 		yPos *= yPos;
 
@@ -25,7 +27,7 @@ void CTurret::Update(float fDt)
 
 		if(distance <= m_fMaxDistance)
 		{
-			 tVector2D target = {float(m_pTarget->GetPosX()),float(m_pTarget->GetPosY())};
+			 tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
 	 
 			 tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 			
@@ -131,7 +133,12 @@ void CTurret::Update(float fDt)
 }
 void CTurret::Render(void)
 {
-	CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+	Camera* C=Camera::GetInstance();
+	if(m_pOwner->GetType()!=OBJ_PLAYER)
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+	else
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+
 }
 
 CTurret::CTurret(void)

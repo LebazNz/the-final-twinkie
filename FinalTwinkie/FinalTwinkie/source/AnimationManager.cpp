@@ -17,6 +17,10 @@ CAnimationManager::CAnimationManager(void)
 	
 CAnimationManager::~CAnimationManager(void)
 {
+	for(unsigned int i=0; i<m_vpFrame.size(); i++)
+	{
+		delete(m_vpFrame[i]);
+	}
 	delete m_pAV;
 }
 	
@@ -165,8 +169,8 @@ void CAnimationManager::Render()
 
 	int x = m_vpFrame[animframe]->GetAnchorX();
 	CSGD_TextureManager::GetInstance()->Draw(m_pAV->m_vAnimationList[0]->GetImageID(),
-		100 - xOffSet + Camera::GetInstance()->GetPosX(),190 - yOffSet+ Camera::GetInstance()->GetPosY(),1,1,&m_vpFrame[animframe]->GetFrame(),
-		0,0,0,4294967295);
+		(int)(100 - xOffSet + Camera::GetInstance()->GetPosX()),(int)(190 - yOffSet+ Camera::GetInstance()->GetPosY()),1.0f,1.0f,&m_vpFrame[animframe]->GetFrame(),
+		0.0f,0.0f,0.0f);
 	
 	
 }
