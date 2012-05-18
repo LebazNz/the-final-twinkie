@@ -435,7 +435,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					if(pMessage->GetFiringEntity()->GetType() == OBJ_PLAYER)
+					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 						Bullet->SetWhoFired(false);
 					else
 						Bullet->SetWhoFired(true);
