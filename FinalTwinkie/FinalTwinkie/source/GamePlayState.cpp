@@ -354,6 +354,7 @@ bool CGamePlayState::Input(void)
 
 void CGamePlayState::Update(float fDt)
 {
+	Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
 	if(!m_bPaused)
 	{
 		m_PM->UpdateEverything(fDt);
