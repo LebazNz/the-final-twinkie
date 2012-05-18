@@ -60,7 +60,7 @@ private:
 	int m_anEnemyIDs[16];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
-
+	int m_nBackGround;
 	int FXEnemy_Tails;
 };
 

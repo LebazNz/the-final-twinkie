@@ -5,18 +5,32 @@
 class Camera
 {
 public:
-	Camera(void);
-	~Camera(void);
+	
 
+	void	Update(CPlayer* pPlayer, int nWorldWidth, int nWorldHeight,float fDt );
+
+	float	GetPosX() const { return m_fPosX; }
+	void	SetPosX(float val) { m_fPosX = val; }
+
+	float	GetPosY() const { return m_fPosY; }
+	void	SetPosY(float val) { m_fPosY = val; }
+
+	bool	GetPlayerCannotMove() const { return m_bPlayerCannotMove; }
+	void	SetPlayerCannotMove(bool val) { m_bPlayerCannotMove = val; }
+
+	static Camera* GetInstance();
 
 private:
 
-	int m_nPosX;
-	int m_nPosY;
-	int m_nWidth;
-	int m_nHeight;
-
-	CPlayer* m_pPlayer;
+	float m_fPosX;
+	float m_fPosY;
+	
+	bool m_bPlayerCannotMove;
+	
+	Camera(void);
+	~Camera(void);
+	Camera(const Camera&);
+	Camera& operator=(const Camera&);
 };
 
 #endif

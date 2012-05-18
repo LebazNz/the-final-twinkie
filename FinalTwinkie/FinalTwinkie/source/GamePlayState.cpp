@@ -19,7 +19,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Turret.h"
-
+#include "Camera.h"
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -50,7 +50,7 @@ CGamePlayState::CGamePlayState(void)
 	m_pMS	= nullptr;
 	m_pTile = nullptr;
 	m_AM	= nullptr;
-	m_pES = nullptr;
+	m_pES	= nullptr;
 
 
 	for(int i = 0; i < 16; ++i)
@@ -82,7 +82,7 @@ void CGamePlayState::Enter(void)
 	m_PM	= CParticleManager::GetInstance();
 	m_pMS	= CMessageSystem::GetInstance();
 	//m_pTile = CTileManager::GetInstance();
-	//m_AM	= CAnimationManager::GetInstance();
+	m_AM	= CAnimationManager::GetInstance();
 	m_pES = CEventSystem::GetInstance();
 
 	for(int i = 0; i < 16; ++i)
@@ -91,6 +91,11 @@ void CGamePlayState::Enter(void)
 	}
 
 
+	m_AM->Load("AnimationInfo.xml");
+	//m_AM->Save("AnimationInfo.xml");
+	m_pOF->RegisterClassType<CEntity>("CEntity");
+	m_pOF->RegisterClassType<CEnemy>("CEnemy");
+
 	FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 	m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -98,6 +103,8 @@ void CGamePlayState::Enter(void)
 	m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 	m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
+
+	m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/backgroundwall.png"),0);
 
 	m_pMS->InitMessageSystem(&MessageProc);
 
@@ -110,8 +117,8 @@ void CGamePlayState::Enter(void)
 	m_pPlayer=m_pOF->CreateObject("CPlayer");
 	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
 	player->SetImageID(m_nPlayerID);
-	player->SetPosX(200);
-	player->SetPosY(200);
+	player->SetPosX(CGame::GetInstance()->GetWidth()/2);
+	player->SetPosY(CGame::GetInstance()->GetHeight()/2);
 	player->SetRotation(0);
 	player->SetWidth(64);
 	player->SetHeight(128);
@@ -132,6 +139,7 @@ void CGamePlayState::Enter(void)
 	PlayerTurret->SetRotationPositon(32,98);
 	PlayerTurret->SetUpVec(0,-1);
 	m_pOM->AddObject(PlayerTurret);
+	PlayerTurret->Release();
 
 	PlayerTurret->Release();
 	PlayerTurret = nullptr;
@@ -231,6 +239,7 @@ bool CGamePlayState::Input(void)
 
 void CGamePlayState::Update(float fDt)
 {
+	Camera::GetInstance()->Update(dynamic_cast< CPlayer* >( m_pPlayer),0,0,fDt);
 	m_PM->UpdateEverything(fDt);
 	m_pOM->UpdateAllObjects(fDt);
 	m_pOM->CheckCollisions();
@@ -242,10 +251,12 @@ void CGamePlayState::Update(float fDt)
 void CGamePlayState::Render(void)
 {
 	m_pD3D->Clear( 0, 0, 0 );
-	
+	m_pTM->Draw(m_nBackGround,Camera::GetInstance()->GetPosX(),
+		Camera::GetInstance()->GetPosY(),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 	// Render game entities
 	m_pOM->RenderAllObjects();
 	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1f, 0.1f);
+	m_AM->Render();
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();
 	m_PM->RenderEverything();

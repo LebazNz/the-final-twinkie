@@ -85,8 +85,11 @@
     <ClCompile Include="SGD Wrappers\CSGD_TextureManager.cpp" />
     <ClCompile Include="SGD Wrappers\SGD_Math.cpp" />
     <ClCompile Include="source\AirStrike.cpp" />
+    <ClCompile Include="source\AnimatingObject.cpp" />
     <ClCompile Include="source\Animation.cpp" />
     <ClCompile Include="source\AnimationManager.cpp" />
+    <ClCompile Include="source\AnimationVault.cpp" />
+    <ClCompile Include="source\AnimInfo.cpp" />
     <ClCompile Include="source\BitmapFont.cpp" />
     <ClCompile Include="source\Building.cpp" />
     <ClCompile Include="source\Bullet.cpp" />
@@ -141,8 +144,11 @@
     <ClInclude Include="SGD Wrappers\SGD_Math.h" />
     <ClInclude Include="SGD Wrappers\SGD_Util.h" />
     <ClInclude Include="source\AirStrike.h" />
+    <ClInclude Include="source\AnimatingObject.h" />
     <ClInclude Include="source\Animation.h" />
     <ClInclude Include="source\AnimationManager.h" />
+    <ClInclude Include="source\AnimationVault.h" />
+    <ClInclude Include="source\AnimInfo.h" />
     <ClInclude Include="source\BitmapFont.h" />
     <ClInclude Include="source\Building.h" />
     <ClInclude Include="source\Bullet.h" />

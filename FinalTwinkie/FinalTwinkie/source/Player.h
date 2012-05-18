@@ -20,8 +20,22 @@ public:
 	CPlayer(void);
 	~CPlayer(void);
 
-	void SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
-	void SetRotation(float fRotate) {m_fRotation=fRotate;}
+
+	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
+	bool	GetMoveRight() const { return m_bMoveRight; }
+	void	SetMoveRight(bool val) { m_bMoveRight = val; }
+	bool	GetMoveLeft() const { return m_bMoveLeft; }
+	void	SetMoveLeft(bool val) { m_bMoveLeft = val; }
+	bool	GetMoveUp() const { return m_bMoveUp; }
+	void	SetMoveUp(bool val) { m_bMoveUp = val; }
+	bool	GetMoveDown() const { return m_bMoveDown; }
+	void	SetMoveDown(bool val) { m_bMoveDown = val; }
+	bool	GetIsMoving() const { return m_bIsMoving; }
+	void	SetIsMoving(bool val) { m_bIsMoving = val; }
+
+	void	SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
+	void	SetRotation(float fRotate) {m_fRotation=fRotate;}
+	float	GetRotation() const { return m_fRotation;}
 private:
 	int m_nMoney;
 	std::string m_szName;
@@ -33,6 +47,18 @@ private:
 	CTurret* m_pTurret;
 	float m_fRotation;
 	float m_fRotationRate;
+
+
+	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
+	bool m_bIsMoving;
+	bool m_bMoveRight;
+	bool m_bMoveLeft;
+	bool m_bMoveUp;
+	bool m_bMoveDown;
+
+
+
+
 
 	CSGD_DirectInput* m_pDI;
 };
