@@ -1,9 +1,10 @@
 #include "Player.h"
-#include "../SGD Wrappers/CSGD_TextureManager.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/SGD_Math.h"
 #include "MessageSystem.h"
 #include "CreateBulletMessage.h"
 #include "Camera.h"
+#include "Game.h"
 void CPlayer::Update(float fDt)
 {
 	tVector2D Up={0,-1};
@@ -70,7 +71,39 @@ void CPlayer::Update(float fDt)
 	}
 
 	m_pTurret->SetPosX(GetPosX());
-	m_pTurret->SetPosY(GetPosY()-32);
+	m_pTurret->SetPosY(GetPosY());
+	if(GetPosX()-GetHeight()/2<0)
+	{
+		SetPosX((float)(GetHeight()/2));
+	}
+	if(GetPosY()-GetHeight()/2<0)
+	{
+		SetPosY((float)(GetHeight()/2));
+	}
+	CGame* game=CGame::GetInstance();
+	if(GetPosX()+GetHeight()/2>game->GetWidth())
+	{
+		SetPosX(float(game->GetWidth()-GetHeight()/2));
+	}
+	if(GetPosY()+GetHeight()/2>game->GetHeight())
+	{
+		SetPosY(float(game->GetHeight()-GetHeight()/2));
+	}
+	if(abs(m_fRotation)>=2.335)
+	{
+		m_fRotationHeight=128;
+		m_fRotationWidth=64;
+	}
+	else if(abs(m_fRotation)>0.785)
+	{
+		m_fRotationHeight=64;
+		m_fRotationWidth=128;
+	}
+	else if(abs(m_fRotation)<=0.785)
+	{
+		m_fRotationHeight=128;
+		m_fRotationWidth=64;
+	}
 
 }
 void CPlayer::Render(void)
@@ -79,16 +112,16 @@ void CPlayer::Render(void)
 }
 RECT CPlayer::GetRect(void)
 {
-	RECT* fred = new RECT;
-	return *fred;
+	RECT rect;
+	rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
+	rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
+	rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
+	rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
+	return rect;
 }
 bool CPlayer::CheckCollision(IEntity* pBase)
 {
 	return false;
-}
-void CPlayer::Input(void)
-{
-	
 }
 CPlayer::CPlayer(void)
 {

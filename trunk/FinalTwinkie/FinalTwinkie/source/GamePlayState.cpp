@@ -20,6 +20,10 @@
 #include "Player.h"
 #include "Turret.h"
 #include "Camera.h"
+#include "Sapper.h"
+#include "Tank.h"
+#include "Emitter.h"
+
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -97,12 +101,14 @@ void CGamePlayState::Enter(void)
 	m_pOF->RegisterClassType<CEnemy>("CEnemy");
 
 	FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
+	FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
 	m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
 	m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
 	m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 	m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 	m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
+	m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
 
 	m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/backgroundwall.png"),0);
 
@@ -113,6 +119,8 @@ void CGamePlayState::Enter(void)
 	m_pOF->RegisterClassType<CBullet>("CBullet");
 	m_pOF->RegisterClassType<CPlayer>("CPlayer");
 	m_pOF->RegisterClassType<CTurret>("CTurret");
+	m_pOF->RegisterClassType<CTank>("CTank");
+	m_pOF->RegisterClassType<CSapper>("CSapper");
 	
 	m_pPlayer=m_pOF->CreateObject("CPlayer");
 	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -122,8 +130,8 @@ void CGamePlayState::Enter(void)
 	player->SetRotation(0);
 	player->SetWidth(64);
 	player->SetHeight(128);
-	player->SetVelX(90);
-	player->SetVelY(90);
+	player->SetVelX(180);
+	player->SetVelY(180);
 	m_pOM->AddObject(player);
 
 	
@@ -138,8 +146,50 @@ void CGamePlayState::Enter(void)
 	PlayerTurret->SetHeight(128);
 	PlayerTurret->SetRotationPositon(32,98);
 	PlayerTurret->SetUpVec(0,-1);
+	PlayerTurret->SetDistance(800);
 	m_pOM->AddObject(PlayerTurret);
-	PlayerTurret->Release();
+
+	CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
+	sapper->SetImageID(m_anEnemyIDs[1]);
+	sapper->SetPosX(500);
+	sapper->SetPosY(500);
+	sapper->SetHeight(32);
+	sapper->SetWidth(32);
+	sapper->SetPlayer(player);
+	sapper->SetSight(400);
+	sapper->SetVelX(45);
+	sapper->SetVelY(45);
+	sapper->SetExplosion(m_PM->GetEmitter(FXSapper_Explosion));
+	m_pOM->AddObject(sapper);
+
+	CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
+	pTank->SetImageID(m_nPlayerID);
+	pTank->SetPosX(500);
+	pTank->SetPosY(200);
+	pTank->SetRotation(0);
+	pTank->SetWidth(64);
+	pTank->SetHeight(128);
+	pTank->SetPlayer(player);
+	pTank->SetRotationRate(0.75f);
+	pTank->SetSight(400);
+	pTank->SetVelX(30);
+	pTank->SetVelY(30);
+	m_pOM->AddObject(pTank);
+
+	CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+	pTurret->SetImageID(m_nPlayerTurretID);
+	pTank->SetTurret(pTurret);
+	pTurret->SetPosX(pTank->GetPosX());
+	pTurret->SetPosY(pTank->GetPosY());
+	pTurret->SetOwner(pTank);
+	pTurret->SetBullet(BUL_SHELL);
+	pTurret->SetWidth(64);
+	pTurret->SetHeight(128);
+	pTurret->SetRotationPositon(32,98);
+	pTurret->SetUpVec(0,-1);
+	pTurret->SetDistance(300);
+	pTurret->SetTarget(player);
+	m_pOM->AddObject(pTurret);
 
 	PlayerTurret->Release();
 	PlayerTurret = nullptr;
@@ -233,7 +283,13 @@ bool CGamePlayState::Input(void)
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
 	}
-
+	if(m_pDI->KeyPressed(DIK_RETURN))
+	{
+		int emitter=m_PM->AddEmitter("resource/files/Box.xml");
+		CEmitter* pEmi=m_PM->GetEmitter(emitter);
+		pEmi->UpdateEmitterPos(400,300);
+		pEmi->ActivateEmitter();
+	}
 	return true;
 }
 
@@ -288,10 +344,12 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
 						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+						tVector2D Up={0,-1};
+						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 						norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+norVec.fX-30);
-						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+98*Up.fX);//+norVec.fX-30);
+						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+32+98*Up.fY);//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
 					}
@@ -335,7 +393,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					pSelf->m_pEnemy->SetPosX((float)(50*(i+1)));
 					pSelf->m_pEnemy->SetPosY(50);
-					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[i]);
+					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[0]);
 					pSelf->m_pEnemy->SetWidth(40);
 					pSelf->m_pEnemy->SetHeight(40);
 					CEnemy* enemy=dynamic_cast<CEnemy*>(pSelf->m_pEnemy);

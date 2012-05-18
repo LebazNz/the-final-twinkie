@@ -56,12 +56,14 @@ private:
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
 	CEntity*				m_pEnemy;
+
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
 	int m_nBackGround;
 	int FXEnemy_Tails;
+	int FXSapper_Explosion;
 };
 
 #endif

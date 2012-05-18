@@ -9,6 +9,8 @@
 		<EmitterType Type="2"></EmitterType>
 		<Radius R="90"></Radius>
 		<Angle A="0"></Angle>
+		<Source S="4"></Source>
+		<Dest D="2"></Dest>
 		<SpeedX>
 			<MinX M="1.0"></MinX>
 			<MaxX M="4.0"></MaxX>

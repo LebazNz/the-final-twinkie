@@ -17,8 +17,10 @@ public:
 	void SetOwner(CEntity* owner) { m_pOwner = owner;}
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
 	void SetUpVec(float x, float y);
-	//void SetRotatePos(float x, float y) { m_fRotPosX = x; m_fRotPosY = y;}
 	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
+
+	void SetDistance(float fDistance) {m_fMaxDistance=fDistance;}
+
 
 	// Getters
 	int GetBullet(void) { return m_nBulletType;}
@@ -28,6 +30,8 @@ public:
 	float GetRotation(void) { return m_fRotation; }
 	float GetRotationX(void) { return m_fRotPosX; }
 	float GetRotationY(void) { return m_fRotPosY; }
+
+	virtual RECT GetRect(void);
 	
 
 	CTurret(void);
@@ -44,5 +48,8 @@ private:
 	int m_nBulletType;
 	tVector2D m_vLookVec;
 	tVector2D m_vUpVec;
+
+	float m_fRotationHeight;
+	float m_fRotationWidth;
 };
 #endif

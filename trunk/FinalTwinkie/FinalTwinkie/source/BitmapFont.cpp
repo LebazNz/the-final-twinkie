@@ -49,7 +49,7 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 
 		CSGD_TextureManager::GetInstance()->Draw(m_nFontID,nPosX,nPosY,fScale,fScale, &rTile,0,0,0,dwColor);
 	
-		nPosX += m_nCharWidth*fScale;
+		nPosX += (int)(m_nCharWidth*fScale);
 	}
 }
 

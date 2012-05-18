@@ -57,7 +57,7 @@ bool CEntity::CheckCollision(IEntity* pObject)
 RECT CEntity::GetRect(void)const
 {
 	RECT rSelf = { };
-	SetRect(&rSelf, (int)m_fPosX, (int)m_fPosY, (int)m_fPosX+m_nWidth, (int)m_fPosY+m_nHeight);
+	SetRect(&rSelf, (int)m_fPosX-m_nWidth/2, (int)m_fPosY-m_nHeight/2, (int)m_fPosX+m_nWidth/2, (int)m_fPosY+m_nHeight/2);
 	return rSelf;
 }
 
