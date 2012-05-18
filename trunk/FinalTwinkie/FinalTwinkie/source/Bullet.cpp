@@ -5,7 +5,7 @@
 #include "DestroyBulletMessage.h"
 #include "DestroyEnemyMessage.h"
 #include "OptionsState.h"
-
+#include "Camera.h"
 
 CBullet::CBullet(void)
 {
@@ -26,10 +26,10 @@ CBullet::~CBullet(void)
 void CBullet::Update(float fDT)
 {
 	CEntity::Update(fDT);
-
+	Camera* C=Camera::GetInstance();
 	RECT rSelf = GetRect();
 	CGame* pGame = CGame::GetInstance();
-	if(rSelf.bottom < 0 || rSelf.top > pGame->GetHeight() || rSelf.right < 0 || rSelf.left > pGame->GetWidth())
+	if(rSelf.bottom < -C->GetPosY()|| rSelf.top > pGame->GetHeight()-C->GetPosY() || rSelf.right < -C->GetPosX() || rSelf.left > pGame->GetWidth()-C->GetPosX() )
 	{
 		CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -47,31 +47,24 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_PLAYER:
 			{
-				/*if(GetWhoFired() == false)
-				{
-					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
-				}
-				//else
-				//	break;
-				}
-				else
-					break;*/
-			}
-			break;
-		case OBJ_BULLET:
-			break;
-		case OBJ_ENEMY:
-			{
 				if(GetWhoFired() == false)
 				{
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
-				else
-					break;
+			}
+			break;
+		case OBJ_BULLET:
+			break;
+		case OBJ_ENEMY:
+			{
+				if(GetWhoFired() == true)
+				{
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
 			}
 			break;
 		};
@@ -96,8 +89,9 @@ void CBullet::HandleEvent(CEvent* pEvent)
 
 void CBullet::Render(void)
 {
+	Camera* C=Camera::GetInstance();
 	if(GetImageID() != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()+(GetWidth()/2)), int(GetPosY()+(GetHeight()/2)), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()+(GetWidth()/2)+C->GetPosX()), int(GetPosY()+(GetHeight()/2)+C->GetPosY()), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
 	}
 }

@@ -3,22 +3,25 @@
 #include "../SGD Wrappers/SGD_Math.h"
 #include "DestroyEnemyMessage.h"
 #include "MessageSystem.h"
+#include "Camera.h"
 CSapper::CSapper(void)
 {
+	m_nType=OBJ_ENEMY;
 }
 CSapper::~CSapper(void)
 {
 }
 void CSapper::Update(float fDt)
 {
+	Camera* C=Camera::GetInstance();
 	tVector2D Up={0,-1};
 	tVector2D toTarget;
-	toTarget.fX=(m_pPlayer->GetPosX()-GetPosX());
-	toTarget.fY=(m_pPlayer->GetPosY()-GetPosY());
+	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-GetPosX());
+	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-GetPosY());
 	float length=Vector2DLength(toTarget);
 	if(length<=m_fSight)
 	{
-		if(m_pPlayer->GetPosX()>=GetPosX())
+		if(m_pPlayer->GetPosX()-C->GetPosX()>=GetPosX())
 			m_fRotation=AngleBetweenVectors(toTarget, Up);
 		else
 			m_fRotation=-AngleBetweenVectors(toTarget, Up);
@@ -29,7 +32,7 @@ void CSapper::Update(float fDt)
 	}
 	if(m_pExplosion!=nullptr)
 	{
-		m_pExplosion->UpdateEmitterPos(GetPosX(), GetPosY());
+		m_pExplosion->UpdateEmitterPos(GetPosX()+C->GetPosX(), GetPosY()+C->GetPosY());
 	}
 	if(length<=100)
 	{
@@ -40,7 +43,8 @@ void CSapper::Update(float fDt)
 }
 void CSapper::Render(void)
 {
-	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)GetPosX()-GetWidth()/2, (int)GetPosY()-GetHeight()/2, 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	Camera* C=Camera::GetInstance();
+	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
 }
 bool CSapper::CheckCollision(IEntity* pBase)
 {

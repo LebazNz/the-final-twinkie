@@ -1,373 +1,123 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp" />
+    <ClCompile Include="SGD Wrappers\CSGD_DirectInput.cpp" />
+    <ClCompile Include="SGD Wrappers\CSGD_TextureManager.cpp" />
+    <ClCompile Include="SGD Wrappers\SGD_Math.cpp" />
+    <ClCompile Include="source\AirStrike.cpp" />
+    <ClCompile Include="source\AnimatingObject.cpp" />
+    <ClCompile Include="source\Animation.cpp" />
+    <ClCompile Include="source\AnimationManager.cpp" />
+    <ClCompile Include="source\AnimationVault.cpp" />
+    <ClCompile Include="source\AnimInfo.cpp" />
+    <ClCompile Include="source\BitmapFont.cpp" />
+    <ClCompile Include="source\Building.cpp" />
+    <ClCompile Include="source\Bullet.cpp" />
+    <ClCompile Include="source\Camera.cpp" />
+    <ClCompile Include="source\CreateBulletMessage.cpp" />
+    <ClCompile Include="source\CreateEnemyMessage.cpp" />
+    <ClCompile Include="source\CreatePickupMessage.cpp" />
+    <ClCompile Include="source\CreditsState.cpp" />
+    <ClCompile Include="source\DestroyBulletMessage.cpp" />
+    <ClCompile Include="source\DestroyEnemyMessage.cpp" />
+    <ClCompile Include="source\DestroyPickupMessage.cpp" />
+    <ClCompile Include="source\Emitter.cpp" />
+    <ClCompile Include="source\EMP.cpp" />
+    <ClCompile Include="source\Enemy.cpp" />
+    <ClCompile Include="source\Entity.cpp" />
+    <ClCompile Include="source\EventSystem.cpp" />
+    <ClCompile Include="source\FlyText.cpp" />
+    <ClCompile Include="source\Frame.cpp" />
+    <ClCompile Include="source\Game.cpp" />
+    <ClCompile Include="source\GamePlayState.cpp" />
+    <ClCompile Include="source\GUI.cpp" />
+    <ClCompile Include="source\Layer.cpp" />
+    <ClCompile Include="source\MainMenuState.cpp" />
+    <ClCompile Include="source\Message.cpp" />
+    <ClCompile Include="source\MessageSystem.cpp" />
+    <ClCompile Include="source\Nuke.cpp" />
+    <ClCompile Include="source\ObjectManager.cpp" />
+    <ClCompile Include="source\OptionsState.cpp" />
+    <ClCompile Include="source\Particle.cpp" />
+    <ClCompile Include="source\ParticleManager.cpp" />
+    <ClCompile Include="source\Pickup.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Reinforcements.cpp" />
+    <ClCompile Include="source\Sapper.cpp" />
+    <ClCompile Include="source\ShopState.cpp" />
+    <ClCompile Include="source\Smoke.cpp" />
+    <ClCompile Include="source\Special.cpp" />
+    <ClCompile Include="source\Tank.cpp" />
+    <ClCompile Include="source\Tile.cpp" />
+    <ClCompile Include="source\TileManager.cpp" />
+    <ClCompile Include="source\Turret.cpp" />
+    <ClCompile Include="source\WinMain.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\WinMain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SGD Wrappers\CSGD_DirectInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SGD Wrappers\CSGD_TextureManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SGD Wrappers\SGD_Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinystr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinyxml.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CreditsState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\BitmapFont.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MainMenuState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ShopState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\OptionsState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\GamePlayState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Building.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CreateBulletMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CreateEnemyMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CreatePickupMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DestroyBulletMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DestroyEnemyMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DestroyPickupMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FlyText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MessageSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Pickup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Sapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Tank.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Turret.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Special.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AirStrike.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Emitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ParticleManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EMP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Nuke.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Reinforcements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Smoke.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\GUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AnimationManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Tile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TileManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ObjectManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< .mine
-    <ClCompile Include="source\AnimatingObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AnimationVault.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AnimInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-=======
-    <ClCompile Include="source\EventSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
->>>>>>> .r24
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SGD Wrappers\CSGD_DirectInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SGD Wrappers\CSGD_TextureManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SGD Wrappers\SGD_Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml\tinystr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml\tinyxml.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SGD Wrappers\SGD_Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\IGameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CreditsState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\BitmapFont.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\MainMenuState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ShopState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\OptionsState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\GamePlayState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Building.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CreateBulletMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CreateEnemyMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CreatePickupMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\DestroyBulletMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\DestroyEnemyMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\DestroyPickupMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\FlyText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\IEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\MessageSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Pickup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Sapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Tank.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Turret.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Special.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AirStrike.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Emitter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ParticleManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EMP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Nuke.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Reinforcements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Smoke.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\GUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ObjectFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AnimationManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Frame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Tile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TileManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ObjectManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< .mine
-    <ClInclude Include="source\AnimatingObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AnimationVault.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AnimInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-=======
-    <ClInclude Include="source\CEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\IListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EventSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
->>>>>>> .r24
+    <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
+    <ClInclude Include="SGD Wrappers\CSGD_DirectInput.h" />
+    <ClInclude Include="SGD Wrappers\CSGD_TextureManager.h" />
+    <ClInclude Include="SGD Wrappers\SGD_Math.h" />
+    <ClInclude Include="SGD Wrappers\SGD_Util.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="source\AirStrike.h" />
+    <ClInclude Include="source\Turret.h" />
+    <ClInclude Include="source\AnimatingObject.h" />
+    <ClInclude Include="source\Animation.h" />
+    <ClInclude Include="source\AnimationManager.h" />
+    <ClInclude Include="source\AnimationVault.h" />
+    <ClInclude Include="source\AnimInfo.h" />
+    <ClInclude Include="source\BitmapFont.h" />
+    <ClInclude Include="source\Building.h" />
+    <ClInclude Include="source\Bullet.h" />
+    <ClInclude Include="source\Camera.h" />
+    <ClInclude Include="source\CEvent.h" />
+    <ClInclude Include="source\CreateBulletMessage.h" />
+    <ClInclude Include="source\CreateEnemyMessage.h" />
+    <ClInclude Include="source\CreatePickupMessage.h" />
+    <ClInclude Include="source\CreditsState.h" />
+    <ClInclude Include="source\DestroyBulletMessage.h" />
+    <ClInclude Include="source\DestroyEnemyMessage.h" />
+    <ClInclude Include="source\DestroyPickupMessage.h" />
+    <ClInclude Include="source\Emitter.h" />
+    <ClInclude Include="source\EMP.h" />
+    <ClInclude Include="source\Enemy.h" />
+    <ClInclude Include="source\Entity.h" />
+    <ClInclude Include="source\EventSystem.h" />
+    <ClInclude Include="source\FlyText.h" />
+    <ClInclude Include="source\Frame.h" />
+    <ClInclude Include="source\Game.h" />
+    <ClInclude Include="source\GamePlayState.h" />
+    <ClInclude Include="source\GUI.h" />
+    <ClInclude Include="source\IEntity.h" />
+    <ClInclude Include="source\IGameState.h" />
+    <ClInclude Include="source\IListener.h" />
+    <ClInclude Include="source\Layer.h" />
+    <ClInclude Include="source\MainMenuState.h" />
+    <ClInclude Include="source\Message.h" />
+    <ClInclude Include="source\MessageSystem.h" />
+    <ClInclude Include="source\Nuke.h" />
+    <ClInclude Include="source\ObjectFactory.h" />
+    <ClInclude Include="source\ObjectManager.h" />
+    <ClInclude Include="source\OptionsState.h" />
+    <ClInclude Include="source\Particle.h" />
+    <ClInclude Include="source\ParticleManager.h" />
+    <ClInclude Include="source\Pickup.h" />
+    <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\Reinforcements.h" />
+    <ClInclude Include="source\Sapper.h" />
+    <ClInclude Include="source\ShopState.h" />
+    <ClInclude Include="source\Smoke.h" />
+    <ClInclude Include="source\Special.h" />
+    <ClInclude Include="source\Tank.h" />
+    <ClInclude Include="source\Tile.h" />
+    <ClInclude Include="source\TileManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

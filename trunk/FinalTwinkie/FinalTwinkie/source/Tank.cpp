@@ -2,6 +2,7 @@
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../SGD Wrappers/SGD_Math.h"
 #include "Game.h"
+#include "Camera.h"
 CTank::CTank(void)
 {
 }
@@ -10,11 +11,13 @@ CTank::~CTank(void)
 }
 void CTank::Update(float fDt)
 {
+	Camera* C=Camera::GetInstance();
 	tVector2D Up={0,-1};
 	tVector2D Look=Vector2DRotate(Up,m_fRotation);
 	tVector2D toTarget;
-	toTarget.fX=(m_pPlayer->GetPosX()-GetPosX());
-	toTarget.fY=(m_pPlayer->GetPosY()-GetPosY());
+	this;
+	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
 	float length=Vector2DLength(toTarget);
 	if(length<=m_fSight)
 	{
@@ -55,7 +58,8 @@ void CTank::Update(float fDt)
 }
 void CTank::Render(void)
 {
-	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)GetPosX()-GetWidth()/2, (int)GetPosY()-GetHeight()/2, 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	Camera* C=Camera::GetInstance();
+	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
 }
 bool CTank::CheckCollision(IEntity* pBase)
 {
