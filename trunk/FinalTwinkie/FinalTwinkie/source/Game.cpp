@@ -7,6 +7,7 @@
 #include "ObjectFactory.h"
 #include "MessageSystem.h"
 #include "EventSystem.h"
+#include "BitmapFont.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -85,21 +86,30 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	// Set up sound
 	mute = isPlaying = FALSE;
 	result = FMOD::System_Create(&system);
-	system->setOutput(FMOD_OUTPUTTYPE_DSOUND);
-	system->init(200,FMOD_INIT_NORMAL,0);
+	system->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
+	system->init(2000,FMOD_INIT_NORMAL,NULL);
+	result = system->createSound("resource/sound/Battletoads.mp3",FMOD_LOOP_NORMAL,NULL,&my_sound);
 	result = system->createSound("resource/sound/explode.wav",FMOD_LOOP_OFF,NULL,&sound);
-	//result = system->playSound(FMOD_CHANNEL_FREE,sound,false,&channel);
+	channel->setVolume(1.0f);
+	my_channel->setVolume(1.0f);
+	channel = 0;
+	my_channel = 0;
+	result = system->playSound(FMOD_CHANNEL_FREE,my_sound,false,&my_channel);
+
 	
 }
 
 void CGame::Shutdown(void)
 {
+	CGame::GetInstance()->channel->stop();
+	CGame::GetInstance()->my_channel->stop();
 	CMainMenuState::GetInstance()->DeleteInstance();
 	CGamePlayState::GetInstance()->DeleteInstance();
 	COptionsState::GetInstance()->DeleteInstance();
 	CCreditsState::GetInstance()->DeleteInstance();
 	CMessageSystem::GetInstance()->DeleteInstance();
 	CEventSystem::GetInstance()->DeleteInstance();
+	CBitmapFont::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)
@@ -146,6 +156,8 @@ void CGame::Update(void)
 	if(fElapsedTime > 0.125f)
 		fElapsedTime = 0.125f;
 
+	system->update();
+
 	// let current state handle the update
 	m_pCurState->Update(fElapsedTime);
 }
@@ -153,7 +165,7 @@ void CGame::Update(void)
 void CGame::Render(void)
 {
 	// Clear the background
-	m_pD3D->Clear( 0, 0, 255 );
+	m_pD3D->Clear( 255, 255, 255 );
 
 	// Start D3D rendering
 	m_pD3D->DeviceBegin();

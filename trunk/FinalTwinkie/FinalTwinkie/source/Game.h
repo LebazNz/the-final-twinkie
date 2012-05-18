@@ -26,6 +26,7 @@ public:
 	int GetWidth(void) const { return m_nScreenWidth; }
 	int GetHeight(void) const { return m_nScreenHeight; }
 	bool IsWindowed(void) const { return m_bWindowed; }
+	void SetIsWindowded(bool isWindowed) { m_bWindowed = isWindowed; }
 
 private:
 	CGame(void);
@@ -61,7 +62,9 @@ public:
 	FMOD::System* system;
 	FMOD_RESULT result;
 	FMOD::Sound* sound;
+	FMOD::Sound* my_sound;
 	FMOD::Channel* channel;
+	FMOD::Channel* my_channel;
 	bool mute, isPlaying;
 };
 

@@ -4,6 +4,7 @@
 #include "EventSystem.h"
 #include "DestroyBulletMessage.h"
 #include "DestroyEnemyMessage.h"
+#include "OptionsState.h"
 
 
 CBullet::CBullet(void)
@@ -87,7 +88,9 @@ void CBullet::HandleEvent(CEvent* pEvent)
 
 	if(pEvent->GetEventID() == "play_explode")
 	{
+		
 		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
+		CGame::GetInstance()->channel->setVolume(COptionsState::GetInstance()->GetSFXVolume());
 	}
 }
 

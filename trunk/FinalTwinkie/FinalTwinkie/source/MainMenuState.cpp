@@ -3,6 +3,9 @@
 #include "CreditsState.h"
 #include "OptionsState.h"
 #include "Game.h"
+#include "BitmapFont.h"
+#include <fstream>
+using namespace std;
 
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
 
@@ -34,6 +37,10 @@ CMainMenuState::CMainMenuState(void)
 	m_nBGImageID = -1;
 	m_nPosition = 0;
 	m_nPointerID = -1;
+	m_nSFXVolume = -1;
+	m_nCurVolume = -1;
+	m_nLang = -1;
+	m_bWindowed = false;
 }
 
 CMainMenuState::~CMainMenuState(void)
@@ -49,6 +56,12 @@ void CMainMenuState::Enter(void)
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/Menu_Screen.png"),D3DCOLOR_XRGB(255,0,255));
 	m_nPointerID = m_pTM->LoadTexture(_T("resource/graphics/SGD_MenuCursor.png"),D3DCOLOR_XRGB(255,0,255));
 	
+	LoadOptions("options.txt");
+
+	COptionsState::GetInstance()->SetMusicVolume(m_nCurVolume);
+	COptionsState::GetInstance()->SetSFXVolume(m_nSFXVolume);
+	COptionsState::GetInstance()->SetWindowed(m_bWindowed);
+	COptionsState::GetInstance()->SetLang(m_nLang);
 }
 
 void CMainMenuState::Exit(void)
@@ -137,28 +150,81 @@ void CMainMenuState::Update(float fDt)
 
 void CMainMenuState::Render(void)
 {
-	int nY = 0;
+	CBitmapFont* font = CBitmapFont::GetInstance();
+	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
+
+
+	float fScale1, fScale2, fScale3, fScale4;
 	switch(m_nPosition)
 	{
 	case 0:
-		nY = CGame::GetInstance()->GetHeight()/2;
+		fScale1 = 1.0f;
+		fScale2 = 0.75f;
+		fScale3 = 0.75f;
+		fScale4 = 0.75f;
 		break;
 	case 1:
-		nY = (CGame::GetInstance()->GetHeight()/2)+20;
+		fScale1 = 0.75f;
+		fScale2 = 1.0f;
+		fScale3 = 0.75f;
+		fScale4 = 0.75f;
 		break;
 	case 2:
-		nY = (CGame::GetInstance()->GetHeight()/2)+40;
+		fScale1 = 0.75f;
+		fScale2 = 0.75f;
+		fScale3 = 1.0f;
+		fScale4 = 0.75f;
 		break;
 	case 3:
-		nY = (CGame::GetInstance()->GetHeight()/2)+60;
+		fScale1 = 0.75f;
+		fScale2 = 0.75f;
+		fScale3 = 0.75f;
+		fScale4 = 1.0f;
 		break;
 	}
 
 	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nPointerID,(CGame::GetInstance()->GetWidth()/2)-50,nY,1.0f,1.0f,nullptr,0,0,0);
+	//m_pTM->Draw(m_nPointerID,(CGame::GetInstance()->GetWidth()/2)-80,nY,1.0f,1.0f,nullptr,0,0,0);
 	m_pD3D->GetSprite()->Flush();
-	m_pD3D->DrawText(_T("Play"),(CGame::GetInstance()->GetWidth()/2)-35,CGame::GetInstance()->GetHeight()/2,255,255,255);
-	m_pD3D->DrawText(_T("Options"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+20,255,255,255);
-	m_pD3D->DrawText(_T("Credits"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+40,255,255,255);
-	m_pD3D->DrawText(_T("Exit"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+60,255,255,255);
+	//m_pD3D->DrawText(_T("Play"),(CGame::GetInstance()->GetWidth()/2)-35,CGame::GetInstance()->GetHeight()/2,255,255,255);
+	//m_pD3D->DrawText(_T("Options"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+20,255,255,255);
+	//m_pD3D->DrawText(_T("Credits"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+40,255,255,255);
+	//m_pD3D->DrawText(_T("Exit"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+60,255,255,255);
+
+	font->Print("Play",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(0,255,0));
+	font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+50,fScale2,D3DCOLOR_XRGB(0,255,0));
+	font->Print("Credits",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(0,255,0));
+	font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+150,fScale4,D3DCOLOR_XRGB(0,255,0));
+
+	/*font->Print("EFGHIJLKMNOPQRSTUVWXYZa",0,CGame::GetInstance()->GetHeight()/2,1.15f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("abcdefghijklmnopqrstuvwxyza",35,CGame::GetInstance()->GetHeight()/2+50,1.25f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("a0123456789A",35,CGame::GetInstance()->GetHeight()/2+150,1.25f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("a!\"#$%&'()*+,-./:;<=>?@[]^_'{|}!A",35,CGame::GetInstance()->GetHeight()/2+200,1.25f,D3DCOLOR_XRGB(255,255,255));*/
+
+}
+
+bool CMainMenuState::LoadOptions(const char* szFileName)
+{
+	int nMVolume, nSFXVolume, nLang;
+	bool bWindowed;
+	ifstream fileIn;
+	fileIn.open(szFileName,ios::in);
+	if(fileIn.is_open())
+	{
+		fileIn >> nMVolume;
+		fileIn.ignore(INT_MAX, '\n');
+		fileIn >> nSFXVolume;
+		fileIn.ignore(INT_MAX, '\n');
+		fileIn >> bWindowed;
+		fileIn.ignore(INT_MAX, '\n');
+		fileIn >> nLang;
+		fileIn.close();	
+		m_nSFXVolume = nSFXVolume;
+		m_nCurVolume = nMVolume;
+		m_nLang = nLang;
+		m_bWindowed = bWindowed;
+		return true;
+	}
+	else
+		return false;	
 }
