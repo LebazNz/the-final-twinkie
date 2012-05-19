@@ -1,4 +1,4 @@
-#include "BitmapFont.h"
+#include "../Headers/BitmapFont.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 
 CBitmapFont* CBitmapFont::m_pSelf = nullptr;

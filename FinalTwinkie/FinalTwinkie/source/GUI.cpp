@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "../Headers/GUI.h"
 
 CGUI* CGUI::m_pSelf = nullptr;
 
