@@ -125,17 +125,17 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CTank>("CTank");
 		m_pOF->RegisterClassType<CSapper>("CSapper");
 	
-	m_pPlayer=m_pOF->CreateObject("CPlayer");
-	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
-	player->SetImageID(m_nPlayerID);
-	player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
-	player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
-	player->SetRotation(0);
-	player->SetWidth(64);
-	player->SetHeight(128);
-	player->SetVelX(180);
-	player->SetVelY(180);
-	m_pOM->AddObject(player);
+		m_pPlayer=m_pOF->CreateObject("CPlayer");
+		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+		player->SetImageID(m_nPlayerID);
+		player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
+		player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
+		player->SetRotation(0);
+		player->SetWidth(64);
+		player->SetHeight(128);
+		player->SetVelX(180);
+		player->SetVelY(180);
+		m_pOM->AddObject(player);
 
 	
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
@@ -363,14 +363,15 @@ void CGamePlayState::Update(float fDt)
 
 		m_pES->ProcessEvents();
 		m_pMS->ProcessMessages();
+
 	}
 }
 
 void CGamePlayState::Render(void)
 {
 	m_pD3D->Clear( 0, 255, 255 );
-	m_pTM->Draw(m_nBackGround,(int)(Camera::GetInstance()->GetPosX()),
-		(int)(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
+	m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
+		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 	// Render game entities
 	m_pOM->RenderAllObjects();
 	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1f, 0.1f);
@@ -410,7 +411,7 @@ void CGamePlayState::Render(void)
 
 		m_pD3D->GetSprite()->Flush();
 		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,1.5f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("Play",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(255,255,255));
+		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(255,255,255));
 		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+50,fScale2,D3DCOLOR_XRGB(255,255,255));
 		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(255,255,255));
 	
@@ -437,9 +438,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-						Bullet->SetWhoFired(false);
-					else
 						Bullet->SetWhoFired(true);
+					else
+						Bullet->SetWhoFired(false);
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
 						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
@@ -470,8 +471,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case BUL_LASER:
 				break;
 			};
-			/*pBullet->Release();
-			pBullet = nullptr;*/
+			
 		}
 		break;
 	case MSG_DESTROYBULLET:
