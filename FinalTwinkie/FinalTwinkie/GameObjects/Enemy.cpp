@@ -5,6 +5,7 @@
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Headers/Game.h"
+#include "../Headers/Camera.h"
 
 CEnemy::CEnemy(void)
 {
@@ -91,4 +92,15 @@ void CEnemy::HandleEvent(CEvent* pEvent)
 	{
 		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
 	}
+}
+
+RECT CEnemy::GetRect(void)
+{
+	Camera* C=Camera::GetInstance();
+	RECT rect;
+	rect.bottom=(GetPosY()+C->GetPosY())-GetHeight();
+	rect.top=(GetPosY()+C->GetPosY())+GetHeight();
+	rect.left=(GetPosX()+C->GetPosX())-GetWidth();
+	rect.right=(GetPosX()+C->GetPosX())+GetWidth();
+	return rect;
 }

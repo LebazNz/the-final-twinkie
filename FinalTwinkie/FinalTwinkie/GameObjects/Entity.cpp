@@ -60,7 +60,7 @@ bool CEntity::CheckCollision(IEntity* pObject)
 		return false;
 }
 
-RECT CEntity::GetRect(void)const
+RECT CEntity::GetRect(void)
 {
 	Camera* C=Camera::GetInstance();
 	RECT rSelf = { };

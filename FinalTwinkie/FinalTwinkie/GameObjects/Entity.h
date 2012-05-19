@@ -16,7 +16,7 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 	virtual bool CheckCollision(IEntity* pObject);
-	virtual RECT GetRect(void)const;
+	virtual RECT GetRect(void);
 	virtual int GetType(void)const { return m_nType; }
 	virtual int GetImageID(void) { return m_nImageID; }
 
