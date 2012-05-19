@@ -447,8 +447,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 						norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+32+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
 					}

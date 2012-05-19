@@ -3,6 +3,7 @@
 #include "../SGD Wrappers/SGD_Math.h"
 #include "Game.h"
 #include "Camera.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 CTank::CTank(void)
 {
 }
@@ -60,6 +61,7 @@ void CTank::Render(void)
 {
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 0,255,0);
 }
 bool CTank::CheckCollision(IEntity* pBase)
 {
@@ -67,10 +69,11 @@ bool CTank::CheckCollision(IEntity* pBase)
 }
 RECT CTank:: GetRect(void)
 {
+	Camera* C=Camera::GetInstance();
 	RECT rect;
-	rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
-	rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
-	rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
-	rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
+	rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2);
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2);
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2);
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
 	return rect;
 }
