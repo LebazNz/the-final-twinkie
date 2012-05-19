@@ -23,6 +23,7 @@ public:
 	virtual float GetFireRate(void) { return m_fFireRate; }
 	virtual int GetMainBulletType(void) { return m_nMainBulletType; }
 	virtual int GetMachineGunBulletType(void) { return m_nMachineGunBulletType; }
+	virtual RECT GetRect(void);
 	
 	virtual void SetMaxDistance(float fMaxDist) { m_fMaxDist = fMaxDist; }
 	virtual void SetMinDistance(float fMinDist) { m_fMinDist = fMinDist; }

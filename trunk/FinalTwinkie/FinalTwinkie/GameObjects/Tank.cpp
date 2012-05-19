@@ -67,8 +67,9 @@ bool CTank::CheckCollision(IEntity* pBase)
 {
 	return false;
 }
-RECT CTank:: GetRect(void)
+RECT CTank::GetRect(void)
 {
+	this->GetPosX();
 	Camera* C=Camera::GetInstance();
 	RECT rect;
 	rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2);
