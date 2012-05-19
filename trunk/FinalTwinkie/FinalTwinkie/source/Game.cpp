@@ -1,13 +1,13 @@
-#include "Game.h"
+#include "../Headers/Game.h"
 
-#include "MainMenuState.h"
-#include "GamePlayState.h"
-#include "CreditsState.h"
-#include "OptionsState.h"
-#include "ObjectFactory.h"
-#include "MessageSystem.h"
-#include "EventSystem.h"
-#include "BitmapFont.h"
+#include "../GameStates/MainMenuState.h"
+#include "../GameStates/GamePlayState.h"
+#include "../GameStates/CreditsState.h"
+#include "../GameStates/OptionsState.h"
+#include "../ObjectManager and Factory/ObjectFactory.h"
+#include "../Event and Messages/MessageSystem.h"
+#include "../Event and Messages/EventSystem.h"
+#include "../Headers/BitmapFont.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -84,18 +84,22 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_dwTime = GetTickCount();
 
 	// Set up sound
+	CMainMenuState::GetInstance()->LoadOptions("options.txt");
 	mute = isPlaying = FALSE;
 	result = FMOD::System_Create(&system);
 	system->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
 	system->init(2000,FMOD_INIT_NORMAL,NULL);
 	result = system->createSound("resource/sound/Battletoads.mp3",FMOD_LOOP_NORMAL,NULL,&my_sound);
 	result = system->createSound("resource/sound/explode.wav",FMOD_LOOP_OFF,NULL,&sound);
-	channel->setVolume(1.0f);
-	my_channel->setVolume(1.0f);
+	channel->setVolume(0.0f);
+	
 	channel = 0;
 	my_channel = 0;
-	result = system->playSound(FMOD_CHANNEL_FREE,my_sound,false,&my_channel);
 
+	result = system->playSound(FMOD_CHANNEL_FREE,my_sound,false,&my_channel);
+	my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
+
+	
 	
 }
 
@@ -169,15 +173,13 @@ void CGame::Render(void)
 
 	// Start D3D rendering
 	m_pD3D->DeviceBegin();
-	m_pD3D->SpriteBegin();
-	
+	m_pD3D->SpriteBegin();	
+
 	// Let the current state render
 	m_pCurState->Render();
 	
 	m_pD3D->SpriteEnd();
-	m_pD3D->DeviceEnd();
-
-
+	m_pD3D->DeviceEnd();	
 
 	m_pD3D->Present();
 }

@@ -1,6 +1,6 @@
-#include "Camera.h"
-#include "Player.h"
-#include "Game.h"
+#include "../Headers/Camera.h"
+#include "../GameObjects/Player.h"
+#include "../Headers/Game.h"
 #include "../SGD Wrappers/SGD_Math.h"
 Camera::Camera(void)
 {

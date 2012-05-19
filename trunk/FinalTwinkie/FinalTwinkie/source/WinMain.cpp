@@ -17,7 +17,7 @@
 
 #include <dbghelp.h>	//	Used for Dump File
 #pragma comment(lib, "dbghelp.lib")
-#include "Game.h"
+#include "../Headers/Game.h"
 
 const TCHAR* g_szWINDOW_CLASS_NAME	= _T("SGP Project");			//	Window Class Name.
 
