@@ -138,7 +138,7 @@ void CTurret::Render(void)
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
 	else
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
-
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 
 CTurret::CTurret(void)
@@ -170,35 +170,35 @@ void CTurret::SetUpVec(float x, float y)
 
 RECT CTurret::GetRect(void)
 {
-	RECT rect;
+	RECT rect={};
 	if(m_pOwner->GetType()==OBJ_PLAYER)
 	{
 		if(abs(m_fRotation)>=2.335)
 		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2+64);
+			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2+32);
 			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2+64);
+			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2+32);
 			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
 		}
 		else if(m_fRotation>0.785)
 		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2+32);
+			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
 			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2+32);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2+32);
+			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
 			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2+32);
 		}
 		else if(m_fRotation<-0.785)
 		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2+32);
+			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
 			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2-32);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2+32);
+			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
 			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2-32);
 		}
 		else if(abs(m_fRotation)<=0.785)
 		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
+			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2-32);
 			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
+			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2-32);
 			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
 		}
 	}

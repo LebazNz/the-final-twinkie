@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "TileManager.h"
+#include "Camera.h"
 
 CEntity::CEntity(void)
 {
@@ -61,8 +62,9 @@ bool CEntity::CheckCollision(IEntity* pObject)
 
 RECT CEntity::GetRect(void)const
 {
+	Camera* C=Camera::GetInstance();
 	RECT rSelf = { };
-	SetRect(&rSelf, (int)m_fPosX-m_nWidth/2, (int)m_fPosY-m_nHeight/2, (int)m_fPosX+m_nWidth/2, (int)m_fPosY+m_nHeight/2);
+	SetRect(&rSelf, (int)(m_fPosX+C->GetPosX())-m_nWidth/2, (int)(m_fPosY+C->GetPosY())-m_nHeight/2, (int)(m_fPosX+C->GetPosX())+m_nWidth/2, (int)(m_fPosY+C->GetPosY())+m_nHeight/2);
 	return rSelf;
 }
 

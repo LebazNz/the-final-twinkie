@@ -7,6 +7,8 @@
 #include "OptionsState.h"
 #include "Camera.h"
 
+#include "../SGD Wrappers/CSGD_DirectInput.h"
+
 CBullet::CBullet(void)
 {
 	m_nType = OBJ_BULLET;
@@ -29,7 +31,7 @@ void CBullet::Update(float fDT)
 	Camera* C=Camera::GetInstance();
 	RECT rSelf = GetRect();
 	CGame* pGame = CGame::GetInstance();
-	if(rSelf.bottom < -C->GetPosY()|| rSelf.top > pGame->GetHeight()-C->GetPosY() || rSelf.right < -C->GetPosX() || rSelf.left > pGame->GetWidth()-C->GetPosX() )
+	if(rSelf.bottom-C->GetPosY() < -C->GetPosY()|| rSelf.top-C->GetPosY() > pGame->GetHeight()-C->GetPosY() || rSelf.right-C->GetPosX() < -C->GetPosX() || rSelf.left-C->GetPosX() > pGame->GetWidth()-C->GetPosX() )
 	{
 		CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -92,6 +94,7 @@ void CBullet::Render(void)
 	Camera* C=Camera::GetInstance();
 	if(GetImageID() != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()+(GetWidth()/2)+C->GetPosX()), int(GetPosY()+(GetHeight()/2)+C->GetPosY()), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 	}
 }
