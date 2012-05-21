@@ -36,7 +36,7 @@ public:
 	int GetSpawn(void) { return m_bHasSpawn; }
 	int GetTrigger(void) { return m_bHasTrigger; }
 
-	virtual void HandleEvent(CEvent *pEvent);
+	virtual void HandleEvent(CEvent* pEvent);
 	
 
 };

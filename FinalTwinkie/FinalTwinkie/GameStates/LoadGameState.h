@@ -40,5 +40,10 @@ private:
 	int						m_nCount;
 
 	Data vSavedData[3];
+
+	int m_nMouseX;
+	int m_nMouseY;
+
+	int m_nCursor;
 };
 

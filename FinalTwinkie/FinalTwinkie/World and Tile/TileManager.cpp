@@ -248,6 +248,13 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_PLAYER:
 					{
+						if(m_vTiles[i][j].GetTrigger() == 1)
+						{
+							CTile* pTile = dynamic_cast<CTile*>(&m_vTiles[i][j]);
+							CEventSystem::GetInstance()->SendUniqueEvent("arena",pTile);
+							break;
+						}
+
 						Camera *cam = Camera::GetInstance();
 						CPlayer* pPlayer =dynamic_cast<CPlayer*>(pBase);
 

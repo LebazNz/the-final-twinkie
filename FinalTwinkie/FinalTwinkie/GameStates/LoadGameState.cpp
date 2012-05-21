@@ -37,7 +37,9 @@ CLoadGameState::CLoadGameState(void)
 	m_nBGImageID = -1;
 	m_nPosition = 0;
 	m_nCount = 0;
-	
+	m_nMouseX = 0;
+	m_nMouseY = 0;
+	m_nCursor = -1;
 }
 
 CLoadGameState::~CLoadGameState(void)
@@ -52,8 +54,9 @@ void CLoadGameState::Enter(void)
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
 
-	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/credits_screen.png"),D3DCOLOR_XRGB(255,0,255));
-
+	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/load_screen.png"),D3DCOLOR_XRGB(255,0,255));
+	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+	
 	for(int i = 0; i < 3; ++i)
 		vSavedData[i] = data;
 
@@ -63,7 +66,9 @@ void CLoadGameState::Enter(void)
 		m_nCount++;
 	if(LoadSavedGame("savedGame3.xml",2) == true)
 		m_nCount++;
-	
+
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
 }
 
 void CLoadGameState::Exit(void)
@@ -72,6 +77,13 @@ void CLoadGameState::Exit(void)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);
 		m_nBGImageID = -1;
+	}
+
+	
+	if(m_nCursor != -1)
+	{
+		m_pTM->UnloadTexture(m_nCursor);
+		m_nCursor = -1;
 	}
 
 	m_pD3D = nullptr;
@@ -282,13 +294,155 @@ bool CLoadGameState::Input(void)
 			m_nPosition-=3;			
 		}
 	}
+	else if(m_pDI->MouseButtonPressed(0))
+	{
+		if(m_nPosition == 0)
+		{	
+			if(vSavedData[m_nPosition].nLevel != 0)
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			else
+			{
+				Data data = {"Jack",1,40,0,0,4500,0,0,0,1,0,0,1,0,0,0,1,0,0,1,"savedGame1.xml"};
+				vSavedData[m_nPosition] = data;
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			}
+			m_pDI->ReadDevices();
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 1)
+		{
+			if(vSavedData[m_nPosition].nLevel != 0)
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			else
+			{
+				Data data = {"Bob",1,40,0,0,500,0,0,1,0,0,0,1,0,0,0,1,0,0,1,"savedGame2.xml"};
+				vSavedData[m_nPosition] = data;
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			}
+			m_pDI->ReadDevices();
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 2)
+		{		
+			if(vSavedData[m_nPosition].nLevel != 0)
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			else
+			{
+				Data data = {"Fred",1,40,0,0,1500,0,0,0,0,0,1,0,0,0,0,1,0,0,1,"savedGame3.xml"};
+				vSavedData[m_nPosition] = data;
+				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
+			}
+			m_pDI->ReadDevices();
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 3)
+		{	
+			if(vSavedData[m_nPosition-3].nLevel != 0)
+			{
+				remove("savedGame1.xml");
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+				vSavedData[m_nPosition-3] = data;
+				m_nCount--;
+				m_nPosition-=3;
+			}
+			else if(vSavedData[m_nPosition-2].nLevel != 0)
+			{
+				remove("savedGame2.xml");
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+				vSavedData[m_nPosition-2] = data;
+				m_nCount--;
+				m_nPosition-=2;
+			}
+			else if(vSavedData[m_nPosition-1].nLevel != 0)
+			{
+				remove("savedGame3.xml");
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+				vSavedData[m_nPosition-1] = data;
+				m_nCount--;
+				m_nPosition-=1;
+			}
+		}
+		else if(m_nPosition == 4)
+		{	
+			if(vSavedData[m_nPosition-3].nLevel != 0)
+			{
+				remove("savedGame2.xml");
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+				vSavedData[m_nPosition-3] = data;
+				m_nCount--;
+				m_nPosition-=3;
+			}
+			else if(vSavedData[m_nPosition-2].nLevel != 0)
+			{
+				remove("savedGame3.xml");
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+				vSavedData[m_nPosition-2] = data;
+				m_nCount--;
+				m_nPosition-=2;
+			}
+		}
+		else if(m_nPosition == 5)
+		{	
+			remove("savedGame3.xml");
+			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah"};
+			vSavedData[m_nPosition-3] = data;
+			m_nCount--;
+			m_nPosition-=3;			
+		}
+	}
+
+
 
 	return true;
 }
 
 void CLoadGameState::Update(float fDt)
 {
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
 
+	if(m_nMouseX >= 25 && m_nMouseX <= 225
+		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	{
+		m_nPosition = 0;
+	}
+	if(m_nMouseX >= 290 && m_nMouseX <= 490
+		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	{
+		m_nPosition = 1;
+	}
+	if(m_nMouseX >= 540 && m_nMouseX <= 740
+		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	{
+		m_nPosition = 2;
+	}
+	if(m_nMouseX >= 25 && m_nMouseX <= 225
+		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	{
+		if(vSavedData[0].nLevel != 0)
+			m_nPosition = 3;
+	}
+	if(m_nMouseX >= 290 && m_nMouseX <= 490
+		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	{
+		if(vSavedData[0].nLevel == 0)
+			m_nPosition = 3;
+		else
+			m_nPosition = 4;
+	}
+	if(m_nMouseX >= 540 && m_nMouseX <= 740
+		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	{
+		if(vSavedData[0].nLevel == 0 && vSavedData[1].nLevel == 0 )
+			m_nPosition = 3;
+		else if((vSavedData[0].nLevel == 0 && vSavedData[1].nLevel != 0) || (vSavedData[0].nLevel != 0 && vSavedData[1].nLevel == 0) )
+			m_nPosition = 4;
+		else
+			m_nPosition = 5;
+	}
 }
 
 void CLoadGameState::Render(void)
@@ -297,6 +451,8 @@ void CLoadGameState::Render(void)
 	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
 
 	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	
 	m_pD3D->GetSprite()->Flush();
 
 	char pos[10];
@@ -363,6 +519,12 @@ void CLoadGameState::Render(void)
 	{
 		font->Print("Save 1",50,500,fScale1,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Delete",50,550,fScale4,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[0].szName,50,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		char buffer[10];
+		_itoa_s(vSavedData[0].nLevel,buffer,10);
+		font->Print(buffer,50,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		_itoa_s(vSavedData[0].nMoney,buffer,10);
+		font->Print(buffer,50,300,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	if(vSavedData[1].nLevel == 0)
@@ -376,6 +538,12 @@ void CLoadGameState::Render(void)
 			fScale = fScale5;
 		font->Print("Save 2",300,500,fScale2,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Delete",300,550,fScale,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[1].szName,300,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		char buffer[10];
+		_itoa_s(vSavedData[1].nLevel,buffer,10);
+		font->Print(buffer,300,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		_itoa_s(vSavedData[1].nMoney,buffer,10);
+		font->Print(buffer,300,300,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	if(vSavedData[2].nLevel == 0)
@@ -391,7 +559,23 @@ void CLoadGameState::Render(void)
 			fScale = fScale6;
 		font->Print("Save 3",600,500,fScale3,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Delete",600,550,fScale,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[2].szName,600,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		char buffer[10];
+		_itoa_s(vSavedData[2].nLevel,buffer,10);
+		font->Print(buffer,600,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		_itoa_s(vSavedData[2].nMoney,buffer,10);
+		font->Print(buffer,600,300,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
+
+	char buffer[10];
+	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 }
 

@@ -95,7 +95,7 @@ void CBullet::Render(void)
 	Camera* C=Camera::GetInstance();
 	if(GetImageID() != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 0.35f, 0.35f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 1.0f, 1.0f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
 		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 	}
 }

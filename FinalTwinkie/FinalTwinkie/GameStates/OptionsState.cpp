@@ -41,6 +41,10 @@ COptionsState::COptionsState(void)
 	CGame::GetInstance()->my_channel->getVolume(&m_fMusicVolume);
 
 	m_bWindowed = CGame::GetInstance()->IsWindowed();
+
+	m_nMouseX = 0;
+	m_nMouseY = 0;
+	m_nCursor = -1;
 }
 
 COptionsState::~COptionsState(void)
@@ -54,7 +58,10 @@ void COptionsState::Enter(void)
 	m_pTM = CSGD_TextureManager::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/options_screen.png"),D3DCOLOR_XRGB(255,0,255));
-	m_nPointerID = m_pTM->LoadTexture(_T("resource/graphics/SGD_MenuCursor.png"),D3DCOLOR_XRGB(255,0,255));
+	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+	
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
 }
 
 void COptionsState::Exit(void)
@@ -71,6 +78,13 @@ void COptionsState::Exit(void)
 	{
 		m_pTM->UnloadTexture(m_nPointerID);
 		m_nPointerID = -1;
+	}
+
+	
+	if(m_nCursor != -1)
+	{
+		m_pTM->UnloadTexture(m_nCursor);
+		m_nCursor = -1;
 	}
 
 	m_pD3D = nullptr;
@@ -184,6 +198,100 @@ bool COptionsState::Input(void)
 				m_nLang = 0;		
 		}
 	}
+	else if(m_pDI->MouseButtonPressed(0))
+	{
+		if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 240 && m_nMouseY <= 280))
+		{	
+			m_fSFXVolume -= 0.05f;
+			if(m_fSFXVolume <= 0.0f)
+				m_fSFXVolume = 0.0f;
+						
+			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+		}
+		else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 290 && m_nMouseY <= 330))
+		{
+			m_fMusicVolume -= 0.05f;
+			if(m_fMusicVolume <= 0.0f)
+				m_fMusicVolume = 0.0f;
+							
+			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+		}
+		else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 340 && m_nMouseY <= 375))
+		{
+			m_bWindowed = !m_bWindowed;
+			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+			if(m_bWindowed == false)
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+			else
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+		}
+		else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 390 && m_nMouseY <= 425))
+		{
+			m_nLang -= 1;
+			if(m_nLang < 0)
+				m_nLang = 2;
+		}
+		else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 240 && m_nMouseY <= 280))
+		{	
+			m_fSFXVolume += 0.05f;
+			if(m_fSFXVolume >= 1.0f)
+				m_fSFXVolume = 1.0f;
+			
+			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+		}
+		else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 290 && m_nMouseY <= 330))
+		{
+			m_fMusicVolume += 0.05f;
+			if(m_fMusicVolume >= 1.0f)
+				m_fMusicVolume = 1.0f;
+			
+			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+		}
+		else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 340 && m_nMouseY <= 375))
+		{
+			m_bWindowed = !m_bWindowed;
+			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+			if(m_bWindowed == false)
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+			else
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+		}
+		else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
+		&& m_nMouseY >= 390 && m_nMouseY <= 425))
+		{
+			m_nLang += 1;
+			if(m_nLang > 2)
+				m_nLang = 0;		
+		}
+		else if(m_nPosition == 4)
+		{
+			if(CGamePlayState::GetInstance()->GetPaused() == false)
+			{
+				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+				return true;
+			}
+			else
+			{
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+				return true;
+			}
+		}
+	}
 		// Make selection
 	else if(m_pDI->KeyPressed(DIK_RETURN))
 	{
@@ -221,6 +329,42 @@ bool COptionsState::Input(void)
 
 void COptionsState::Update(float fDt)
 {
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
+
+	if((m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 240 && m_nMouseY <= 280)||
+		(m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 240 && m_nMouseY <= 280))
+	{
+		m_nPosition = 0;
+	}
+	if((m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 290 && m_nMouseY <= 330)||
+		(m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 290 && m_nMouseY <= 330))
+	{
+		m_nPosition = 1;
+	}
+	if((m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 340 && m_nMouseY <= 375)||
+		(m_nMouseX >= 615 && m_nMouseX <= 650
+		&& m_nMouseY >= 340 && m_nMouseY <= 375))
+	{
+		m_nPosition = 2;
+	}
+	if((m_nMouseX >= 490 && m_nMouseX <= 525
+		&& m_nMouseY >= 390 && m_nMouseY <= 425)||
+		(m_nMouseX >= 670 && m_nMouseX <= 700
+		&& m_nMouseY >= 390 && m_nMouseY <= 425))
+	{
+		m_nPosition = 3;
+	}
+	if((m_nMouseX >= 95 && m_nMouseX <= 165
+		&& m_nMouseY >= 445 && m_nMouseY <= 480))
+	{
+		m_nPosition = 4;
+	}
 }
 
 void COptionsState::Render(void)
@@ -269,13 +413,14 @@ void COptionsState::Render(void)
 		break;
 	}
 	
-	char nVolume[10];
-	sprintf_s(nVolume,10,"%0.0f",m_fMusicVolume*100);
-	char nSFXVolume[10];
-	sprintf_s(nSFXVolume,10,"%0.0f",m_fSFXVolume*100);
+	char nVolume[100];
+	sprintf_s(nVolume,100,"%0.0f",m_fMusicVolume*100);
+	char nSFXVolume[100];
+	sprintf_s(nSFXVolume,100,"%0.0f",m_fSFXVolume*100);
 
 	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
-
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	
 	m_pD3D->GetSprite()->Flush();
 	font->Print("SFX Volume:",(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2-50,fScale1,	D3DCOLOR_XRGB(255,0,0));
 	font->Print(nSFXVolume,(CGame::GetInstance()->GetWidth()/2)+150,CGame::GetInstance()->GetHeight()/2-50,fScale1,		D3DCOLOR_XRGB(255,0,0));
@@ -301,6 +446,27 @@ void COptionsState::Render(void)
 	}																																	  	
 	font->Print("Back",(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2+150,fScale5,		D3DCOLOR_XRGB(255,0,0));
 
+	font->Print("<",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2-50,fScale1,	D3DCOLOR_XRGB(255,0,0));
+	font->Print(">",(CGame::GetInstance()->GetWidth()/2)+225,CGame::GetInstance()->GetHeight()/2-50,fScale1,	D3DCOLOR_XRGB(255,0,0));
+
+	font->Print("<",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2,fScale2,	D3DCOLOR_XRGB(255,0,0));
+	font->Print(">",(CGame::GetInstance()->GetWidth()/2)+225,CGame::GetInstance()->GetHeight()/2,fScale2,	D3DCOLOR_XRGB(255,0,0));
+
+	font->Print("<",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+50,fScale3,	D3DCOLOR_XRGB(255,0,0));
+	font->Print(">",(CGame::GetInstance()->GetWidth()/2)+225,CGame::GetInstance()->GetHeight()/2+50,fScale3,	D3DCOLOR_XRGB(255,0,0));
+
+	font->Print("<",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+100,fScale4,	D3DCOLOR_XRGB(255,0,0));
+	font->Print(">",(CGame::GetInstance()->GetWidth()/2)+275,CGame::GetInstance()->GetHeight()/2+100,fScale4,	D3DCOLOR_XRGB(255,0,0));
+
+	char buffer[10];
+	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
 void COptionsState::SaveOptions(const char* szFileName)

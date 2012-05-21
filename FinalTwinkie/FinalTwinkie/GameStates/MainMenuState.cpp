@@ -44,6 +44,10 @@ CMainMenuState::CMainMenuState(void)
 	m_bWindowed = false;
 
 	LoadOptions("options.txt");
+
+	m_nMouseX = 0;
+	m_nMouseY = 0;
+	m_nCursor = -1;
 }
 
 CMainMenuState::~CMainMenuState(void)
@@ -58,6 +62,7 @@ void CMainMenuState::Enter(void)
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/Menu_Screen.png"),D3DCOLOR_XRGB(255,0,255));
 	m_nPointerID = m_pTM->LoadTexture(_T("resource/graphics/SGD_MenuCursor.png"),D3DCOLOR_XRGB(255,0,255));
+	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	
 	LoadOptions("options.txt");
 
@@ -65,6 +70,9 @@ void CMainMenuState::Enter(void)
 	COptionsState::GetInstance()->SetSFXVolume(m_nSFXVolume);
 	COptionsState::GetInstance()->SetWindowed(m_bWindowed);
 	COptionsState::GetInstance()->SetLang(m_nLang);
+
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
 }
 
 void CMainMenuState::Exit(void)
@@ -79,6 +87,12 @@ void CMainMenuState::Exit(void)
 	{
 		m_pTM->UnloadTexture(m_nPointerID);
 		m_nPointerID = -1;
+	}
+
+	if(m_nCursor != -1)
+	{
+		m_pTM->UnloadTexture(m_nCursor);
+		m_nCursor = -1;
 	}
 
 	m_pD3D = nullptr;
@@ -138,6 +152,28 @@ bool CMainMenuState::Input(void)
 			return false;
 		}
 	}
+	else if(m_pDI->MouseButtonPressed(0))
+	{
+		if(m_nPosition == 0)
+		{
+			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 1)
+		{
+			CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 2)
+		{
+			CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
+			return true;
+		}
+		else if(m_nPosition == 3)
+		{
+			return false;
+		}
+	}
 	// Exit the game when the user presses esc
 	else if(m_pDI->KeyPressed(DIK_ESCAPE))
 	{
@@ -149,6 +185,29 @@ bool CMainMenuState::Input(void)
 
 void CMainMenuState::Update(float fDt)
 {
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
+
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 295 && m_nMouseY <= 340)
+	{
+		m_nPosition = 0;
+	}
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 340 && m_nMouseY <= 390)
+	{
+		m_nPosition = 1;
+	}
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 390 && m_nMouseY <= 435)
+	{
+		m_nPosition = 2;
+	}
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 435 && m_nMouseY <= 480)
+	{
+		m_nPosition = 3;
+	}
 }
 
 void CMainMenuState::Render(void)
@@ -187,23 +246,24 @@ void CMainMenuState::Render(void)
 	}
 
 	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
-	//m_pTM->Draw(m_nPointerID,(CGame::GetInstance()->GetWidth()/2)-80,nY,1.0f,1.0f,nullptr,0,0,0);
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	
 	m_pD3D->GetSprite()->Flush();
-	//m_pD3D->DrawText(_T("Play"),(CGame::GetInstance()->GetWidth()/2)-35,CGame::GetInstance()->GetHeight()/2,255,255,255);
-	//m_pD3D->DrawText(_T("Options"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+20,255,255,255);
-	//m_pD3D->DrawText(_T("Credits"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+40,255,255,255);
-	//m_pD3D->DrawText(_T("Exit"),(CGame::GetInstance()->GetWidth()/2)-35,(CGame::GetInstance()->GetHeight()/2)+60,255,255,255);
 
 	font->Print("Play",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(0,255,0));
 	font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+50,fScale2,D3DCOLOR_XRGB(0,255,0));
 	font->Print("Credits",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(0,255,0));
 	font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+150,fScale4,D3DCOLOR_XRGB(0,255,0));
 
-	/*font->Print("EFGHIJLKMNOPQRSTUVWXYZa",0,CGame::GetInstance()->GetHeight()/2,1.15f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("abcdefghijklmnopqrstuvwxyza",35,CGame::GetInstance()->GetHeight()/2+50,1.25f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("a0123456789A",35,CGame::GetInstance()->GetHeight()/2+150,1.25f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("a!\"#$%&'()*+,-./:;<=>?@[]^_'{|}!A",35,CGame::GetInstance()->GetHeight()/2+200,1.25f,D3DCOLOR_XRGB(255,255,255));*/
-
+	char buffer[10];
+	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
 bool CMainMenuState::LoadOptions(const char* szFileName)

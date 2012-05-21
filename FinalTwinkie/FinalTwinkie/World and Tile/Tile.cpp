@@ -18,7 +18,7 @@ CTile::CTile(void)
 
 CTile::~CTile(void)
 {
-	CEventSystem::GetInstance()->UnregisterClient("arena",this);
+	//CEventSystem::GetInstance()->UnregisterClient("arena",this);
 }
 
 void CTile::CreateTile( int index,int nPosY,int nPosX, int width, int height, bool bHasCollision, int bHasSpawn, int bHasTrigger )
@@ -50,7 +50,7 @@ RECT CTile::GetRect(void)
 	return m_rCollRect;
 }
 
-void CTile::HandleEvent(CEvent *pEvent)
+void CTile::HandleEvent(CEvent* pEvent)
 {
 	if(GetTrigger() == 1)
 		return;
