@@ -25,6 +25,8 @@
 #include "../GameObjects/Tank.h"
 #include "../Particle/Emitter.h"
 
+#include "../tinyxml/tinyxml.h"
+
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -81,6 +83,10 @@ CGamePlayState::~CGamePlayState(void)
 
 void CGamePlayState::Enter(void)
 {
+	/*Data dGameData = {"Herp Derp",1,0,0,1,500,1,0,1,0,1,0,1,0,1,1,0,1,0,1,"savedGame3.xml"};
+
+	m_dGameData = dGameData;*/
+
 	if(m_bPaused == false)
 	{
 		m_pD3D	= CSGD_Direct3D::GetInstance();
@@ -209,6 +215,8 @@ void CGamePlayState::Enter(void)
 
 void CGamePlayState::Exit(void)
 {
+	SaveGame(m_dGameData.szFileName);
+
 	if(m_bPaused == false)
 	{
 		m_PM->RemoveAllBaseEmitters();
@@ -535,4 +543,50 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		}
 		break;
 	};
+}
+
+void CGamePlayState::SetSavedGame(Data gameData)
+{
+	m_dGameData = gameData;
+}
+
+void CGamePlayState::SaveGame(const char* szFileName)
+{
+	TiXmlDocument doc;
+
+	TiXmlDeclaration* pDec = new TiXmlDeclaration("1.0", "utf-8", "");
+
+	TiXmlElement* pRoot = new TiXmlElement("Save_game_data");
+
+	doc.LinkEndChild(pRoot);
+
+	TiXmlElement* data = new TiXmlElement("game_data");
+
+	data->SetAttribute("level",			m_dGameData.nLevel);
+	data->SetAttribute("money",			m_dGameData.nMoney);
+	data->SetAttribute("hp",			m_dGameData.nHp);
+	data->SetAttribute("armor",			m_dGameData.nArmor);
+	data->SetAttribute("ammo",			m_dGameData.nAmmo);
+	data->SetAttribute("speed",			m_dGameData.nSpeed);
+	data->SetAttribute("shellammo",		m_dGameData.nShellAmmo);
+	data->SetAttribute("missileammo",	m_dGameData.nMissileAmmo);
+	data->SetAttribute("artilleryammo", m_dGameData.nArtilleryAmmo);
+	data->SetAttribute("shell",			m_dGameData.bShell);
+	data->SetAttribute("missile",		m_dGameData.bMissile);
+	data->SetAttribute("artillery",		m_dGameData.bArtillery);
+	data->SetAttribute("airstrike",		m_dGameData.bAirStrike);
+	data->SetAttribute("emp",			m_dGameData.bEMP);
+	data->SetAttribute("nuke",			m_dGameData.bNuke);
+	data->SetAttribute("reinforce",		m_dGameData.bReinforce);
+	data->SetAttribute("smoke",			m_dGameData.bSmoke);
+	data->SetAttribute("laser",			m_dGameData.nLaser);
+	data->SetAttribute("machinegun",	m_dGameData.nMachineGun);
+	data->SetAttribute("filename",		m_dGameData.szFileName);
+
+	TiXmlText* pText = new TiXmlText(m_dGameData.szName);
+	data->LinkEndChild(pText);
+
+	pRoot->LinkEndChild(data);
+
+	doc.SaveFile(szFileName);
 }

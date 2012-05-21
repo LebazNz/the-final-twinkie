@@ -6,6 +6,31 @@
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../Headers/BitmapFont.h"
 
+struct Data
+{
+	char szName[32];
+	int nLevel;
+	int nShellAmmo;
+	int nMissileAmmo;
+	int nArtilleryAmmo;
+	int nMoney;
+	int nHp;
+	int nArmor;
+	int nAmmo;
+	int nSpeed;
+	int bShell;
+	int bMissile;
+	int bArtillery;
+	int bAirStrike;
+	int bEMP;
+	int bNuke;
+	int bReinforce;
+	int bSmoke;
+	int nLaser;
+	int nMachineGun;
+	char szFileName[32];
+};
+
 class IGameState
 {
 public:

@@ -31,6 +31,9 @@ CGame::CGame(void)
 	m_pD3D = nullptr;
 	m_pDI = nullptr;
 	m_pTM = nullptr;
+
+	CMainMenuState::GetInstance()->LoadOptions("options.txt");
+	m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
 }
 
 CGame::~CGame(void)
@@ -68,14 +71,14 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pTM = CSGD_TextureManager::GetInstance();
 
 	// Init the wrappers
-	m_pD3D->InitDirect3D( hWnd, nScreenWidth, nScreenHeight, bWindowed, true );
+	m_pD3D->InitDirect3D( hWnd, nScreenWidth, nScreenHeight, m_bWindowed, true );
 	m_pDI->InitDirectInput( hWnd, hInstance, DI_KEYBOARD | DI_MOUSE | DI_JOYSTICKS, DI_MOUSE);
 	m_pTM->InitTextureManager( m_pD3D->GetDirect3DDevice(), m_pD3D->GetSprite() );
 	
 	// Set screen info
 	m_nScreenWidth	= nScreenWidth;
 	m_nScreenHeight	= nScreenHeight;
-	m_bWindowed		= bWindowed;
+	//m_bWindowed		= bWindowed;
 
 	// Start the game in Main menu
 	ChangeState(CMainMenuState::GetInstance());
