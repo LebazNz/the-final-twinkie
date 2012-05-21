@@ -2,6 +2,7 @@
 #include "GamePlayState.h"
 #include "CreditsState.h"
 #include "OptionsState.h"
+#include "LoadGameState.h"
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 #include <fstream>
@@ -119,7 +120,7 @@ bool CMainMenuState::Input(void)
 	{
 		if(m_nPosition == 0)
 		{
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
 			return true;
 		}
 		else if(m_nPosition == 1)

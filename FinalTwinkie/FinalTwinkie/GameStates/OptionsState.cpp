@@ -126,6 +126,19 @@ bool COptionsState::Input(void)
 							
 			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
 		}
+		else if(m_nPosition == 2)
+		{
+			m_bWindowed = !m_bWindowed;
+			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+			if(m_bWindowed == false)
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+			else
+			{
+				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+			}
+		}
 		else if(m_nPosition == 3)
 		{
 			m_nLang -= 1;
@@ -151,17 +164,7 @@ bool COptionsState::Input(void)
 			
 			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
 		}
-		else if(m_nPosition == 3)
-		{
-			m_nLang += 1;
-			if(m_nLang > 2)
-				m_nLang = 0;		
-		}
-	}
-		// Make selection
-	else if(m_pDI->KeyPressed(DIK_RETURN))
-	{
-		if(m_nPosition == 2)
+		else if(m_nPosition == 2)
 		{
 			m_bWindowed = !m_bWindowed;
 			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
@@ -174,7 +177,17 @@ bool COptionsState::Input(void)
 				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
 			}
 		}
-		else if(m_nPosition == 4)
+		else if(m_nPosition == 3)
+		{
+			m_nLang += 1;
+			if(m_nLang > 2)
+				m_nLang = 0;		
+		}
+	}
+		// Make selection
+	else if(m_pDI->KeyPressed(DIK_RETURN))
+	{
+		if(m_nPosition == 4)
 		{
 			if(CGamePlayState::GetInstance()->GetPaused() == false)
 			{

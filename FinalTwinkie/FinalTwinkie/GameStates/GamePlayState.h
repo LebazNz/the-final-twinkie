@@ -17,6 +17,7 @@ class CAnimationManager;
 class CMessageSystem;
 class CEventSystem;
 
+
 typedef CObjectFactory< std::string , CEntity> CFactory;
 
 class CGamePlayState : public IGameState
@@ -33,11 +34,15 @@ public:
 	
 	static void MessageProc(CMessage* pMsg);
 
+	void SetSavedGame(Data gameData);
+
 private:
 	CGamePlayState(void);
 	CGamePlayState(const CGamePlayState&);
 	CGamePlayState& operator=(const CGamePlayState&);
 	virtual ~CGamePlayState(void);
+
+	void SaveGame(const char* szFileName);
 
 	CSGD_Direct3D*			m_pD3D;
 	CSGD_DirectInput*		m_pDI;
@@ -70,6 +75,8 @@ private:
 	int FXSapper_Explosion;
 
 	int m_nCursor;
+
+	Data m_dGameData;
 };
 
 #endif

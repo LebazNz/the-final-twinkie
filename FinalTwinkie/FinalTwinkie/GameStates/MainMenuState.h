@@ -15,6 +15,7 @@ public:
 	virtual void Render(void);
 	bool LoadOptions(const char* szFileName);
 	int GetMusicVolume(void)const{return m_nCurVolume;}
+	bool GetWindowed(void)const { return m_bWindowed;}
 
 private:
 	CMainMenuState(void);

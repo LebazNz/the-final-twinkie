@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameStates\LoadGameState.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_DirectInput.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_TextureManager.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameStates\LoadGameState.h" />
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
     <ClInclude Include="SGD Wrappers\CSGD_DirectInput.h" />
     <ClInclude Include="SGD Wrappers\CSGD_TextureManager.h" />
