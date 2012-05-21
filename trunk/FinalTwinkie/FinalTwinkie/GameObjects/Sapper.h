@@ -21,6 +21,8 @@ public:
 	void SetRadius(float fRad){m_fRadius=fRad;}
 	void SetDamage(float fDam){m_fDamage=fDam;}
 
+	tVector2D GetOldPos(void) { return m_v2OldPos;}
+
 private:
 	float m_fRadius;
 	float m_fDamage;
@@ -31,5 +33,7 @@ private:
 
 	CEmitter* m_pExplosion;
 	CPlayer* m_pPlayer;
+
+	tVector2D m_v2OldPos;
 };
 #endif

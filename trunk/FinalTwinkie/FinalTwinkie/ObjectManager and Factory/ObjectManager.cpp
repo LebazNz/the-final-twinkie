@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 #include "../GameObjects/Entity.h"
+#include "../World and Tile/TileManager.h"
 
 CObjectManager* CObjectManager::m_pInstance = nullptr;
 
@@ -21,6 +22,7 @@ void CObjectManager::DeleteInstance(void)
 
 CObjectManager::CObjectManager(void)
 {
+	m_pTile = CTileManager::GetInstance();
 }
 
 CObjectManager::~CObjectManager(void)
@@ -95,6 +97,7 @@ void CObjectManager::CheckCollisions(void)
 				break;
 			}
 		}
+		m_pTile->CheckCollision(*iCollider);
 	}
 }
 

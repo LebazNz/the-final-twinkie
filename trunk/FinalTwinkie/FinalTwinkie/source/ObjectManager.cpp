@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 #include "Entity.h"
+#include "TileManager.h"
 
 CObjectManager* CObjectManager::m_pInstance = nullptr;
 
@@ -63,6 +64,7 @@ void CObjectManager::RemoveObject(IEntity* pObject)
 			iter = m_vObjectList.erase(iter);
 			break;
 		}
+		
 	}
 
 }
@@ -94,7 +96,9 @@ void CObjectManager::CheckCollisions(void)
 			{
 				break;
 			}
+
 		}
+		CTileManager::GetInstance()->CheckCollision((*iCollider));
 	}
 }
 

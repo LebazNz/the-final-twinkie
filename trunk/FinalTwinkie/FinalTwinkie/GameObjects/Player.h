@@ -15,6 +15,7 @@ public:
 	virtual RECT GetRect(void);
 	virtual int GetType(void) { return m_nType; }
 	virtual bool CheckCollision(IEntity*);
+	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 	CPlayer(void);
 	~CPlayer(void);
 
@@ -48,6 +49,8 @@ private:
 
 	float m_fRotationHeight;
 	float m_fRotationWidth;
+
+	tVector2D m_v2OldPos;
 
 	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
 	bool m_bIsMoving;

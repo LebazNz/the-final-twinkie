@@ -4,6 +4,7 @@
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Headers/Camera.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 CSapper::CSapper(void)
 {
 	m_nType=OBJ_ENEMY;
@@ -27,6 +28,8 @@ void CSapper::Update(float fDt)
 			m_fRotation=-AngleBetweenVectors(toTarget, Up);
 		
 		Up=Vector2DRotate(Up, m_fRotation);
+		m_v2OldPos.fX = GetPosX();
+		m_v2OldPos.fY = GetPosY();
 		SetPosX(GetPosX()+(Up.fX*GetVelX()*fDt));
 		SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
 	}
@@ -45,6 +48,7 @@ void CSapper::Render(void)
 {
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 bool CSapper::CheckCollision(IEntity* pBase)
 {
@@ -52,10 +56,12 @@ bool CSapper::CheckCollision(IEntity* pBase)
 }
 RECT CSapper::GetRect(void)
 {
+	Camera* C=Camera::GetInstance();
+
 	RECT rect;
-	rect.top=(LONG)(GetPosY()+GetHeight()/2);
-	rect.bottom=(LONG)(GetPosY()-GetHeight()/2);
-	rect.left=(LONG)(GetPosX()-GetWidth()/2);
-	rect.right=(LONG)(GetPosX()+GetWidth()/2);
+	rect.top=(LONG)((GetPosY()+C->GetPosY())-GetHeight()/2);
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+GetHeight()/2);
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-GetWidth()/2);
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+GetWidth()/2);
 	return rect;
 }

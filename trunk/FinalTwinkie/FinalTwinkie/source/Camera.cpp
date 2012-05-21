@@ -33,6 +33,8 @@ void Camera::Update( CPlayer* pPlayer, int nWorldWidth, int nWorldHeight,float f
 	{
 		Up=Vector2DRotate(Up, pPlayer->GetRotation());
 		float DX=(Up.fX*pPlayer->GetVelX()*fDt);
+		m_vOldPos.fX = GetPosX();
+		m_vOldPos.fY = GetPosY();
 		SetPosX(GetPosX()+DX);
 		SetPosY(GetPosY()+(Up.fY*pPlayer->GetVelY()*fDt));
 		m_bPlayerCannotMove = true;
@@ -41,6 +43,8 @@ void Camera::Update( CPlayer* pPlayer, int nWorldWidth, int nWorldHeight,float f
 	{
 		Up=Vector2DRotate(Up, pPlayer->GetRotation());
 		float DX=(Up.fX*pPlayer->GetVelX()*fDt);
+		m_vOldPos.fX = GetPosX();
+		m_vOldPos.fY = GetPosY();
 		SetPosX(GetPosX()-DX);
 		SetPosY(GetPosY()-(Up.fY*pPlayer->GetVelY()*fDt));
 		m_bPlayerCannotMove = true;

@@ -24,6 +24,7 @@
 #include "Sapper.h"
 #include "Tank.h"
 #include "Emitter.h"
+#include "TileManager.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -89,7 +90,7 @@ void CGamePlayState::Enter(void)
 		m_pOF	= CFactory::GetInstance();
 		m_PM	= CParticleManager::GetInstance();
 		m_pMS	= CMessageSystem::GetInstance();
-		//m_pTile = CTileManager::GetInstance();
+		m_pTile = CTileManager::GetInstance();
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
 
@@ -200,6 +201,8 @@ void CGamePlayState::Enter(void)
 	pTank->Release();
 	m_nPosition = 0;
 	m_bPaused = false;
+		m_pTile->Load("resource/files/graphic_layer.xml");
+
 	}
 }
 
@@ -209,6 +212,7 @@ void CGamePlayState::Exit(void)
 	{
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
+		m_pTile->DeleteInstance();
 	
 		if(m_pPlayer != nullptr)
 		{
@@ -372,6 +376,7 @@ void CGamePlayState::Render(void)
 	m_pD3D->Clear( 0, 255, 255 );
 	m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
 		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
+	m_pTile->Render();
 	// Render game entities
 	m_pOM->RenderAllObjects();
 	m_pTM->Draw(m_nPlayerID, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 0.1f, 0.1f);

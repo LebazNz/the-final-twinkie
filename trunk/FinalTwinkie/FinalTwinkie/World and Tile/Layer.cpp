@@ -1,5 +1,6 @@
 #include "Layer.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
+#include "../Headers/Camera.h"
 
 CLayer::CLayer(void)
 {
@@ -27,17 +28,27 @@ void CLayer::CreateLayer(int nType, int tHeight, int tWidth, int mapWidth, int m
 void CLayer::RenderLayer(int imageID)
 {
 	CSGD_TextureManager *m_pTM = CSGD_TextureManager::GetInstance();
+	Camera* cam = Camera::GetInstance();
 
 	for(int i = 0; i < m_nMapHeight; i++)
 	{
+		
 		for(int j = 0; j < m_nMapWidth; j++)
 		{
+			
 			int x = m_vTiles[i][j].GetPosX();
 			int y = m_vTiles[i][j].GetPosY();
 			int index = m_vTiles[i][j].GetIndex();
 			RECT src = {};
 			src = CellAlgorithm(index);
-			m_pTM->Draw(imageID,x,y,1.0f,1.0f,&src);
+			
+			m_pTM->Draw(imageID,x+cam->GetPosX(),y+cam->GetPosY(),1.0f,1.0f,&src);
+
+			if(m_vTiles[i][j].GetCollision() == true)
+			{
+			CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+			CSGD_Direct3D::GetInstance()->DrawRect(m_vTiles[i][j].GetRect(),255,0,0);
+			}
 		}
 	}
 
