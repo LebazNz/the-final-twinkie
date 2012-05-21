@@ -4,6 +4,7 @@
 #include "../GameStates/GamePlayState.h"
 #include "../GameStates/CreditsState.h"
 #include "../GameStates/OptionsState.h"
+#include "../GameStates/LoadGameState.h"
 #include "../ObjectManager and Factory/ObjectFactory.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/EventSystem.h"
@@ -32,8 +33,10 @@ CGame::CGame(void)
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 
-	CMainMenuState::GetInstance()->LoadOptions("options.txt");
-	m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
+	if(CMainMenuState::GetInstance()->LoadOptions("options.txt"))
+		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
+	else
+		m_bWindowed = false;
 }
 
 CGame::~CGame(void)
@@ -117,6 +120,7 @@ void CGame::Shutdown(void)
 	CMessageSystem::GetInstance()->DeleteInstance();
 	CEventSystem::GetInstance()->DeleteInstance();
 	CBitmapFont::GetInstance()->DeleteInstance();
+	CLoadGameState::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)

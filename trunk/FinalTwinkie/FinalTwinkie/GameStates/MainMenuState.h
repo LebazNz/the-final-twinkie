@@ -39,6 +39,11 @@ private:
 	int								m_nCurVolume;
 	int								m_nLang;
 	bool							m_bWindowed;
+
+	int m_nMouseX;
+	int m_nMouseY;
+
+	int m_nCursor;
 	
 };
 

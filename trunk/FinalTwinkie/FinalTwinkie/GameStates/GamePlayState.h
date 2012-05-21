@@ -77,6 +77,10 @@ private:
 	int m_nCursor;
 
 	Data m_dGameData;
+
+	int m_nMouseX;
+	int m_nMouseY;
+
 };
 
 #endif

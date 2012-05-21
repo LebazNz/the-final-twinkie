@@ -76,6 +76,8 @@ CGamePlayState::CGamePlayState(void)
 	m_bPaused = false;
 
 	m_nCursor = -1;
+	m_nMouseX = 0;
+	m_nMouseY = 0;
 }
 
 CGamePlayState::~CGamePlayState(void)
@@ -173,6 +175,7 @@ void CGamePlayState::Enter(void)
 		sapper->SetSight(400);
 		sapper->SetVelX(45);
 		sapper->SetVelY(45);
+		sapper->SetHealth(35);
 		sapper->SetExplosion(m_PM->GetEmitter(FXSapper_Explosion));
 		m_pOM->AddObject(sapper);
 		sapper->Release();
@@ -189,6 +192,7 @@ void CGamePlayState::Enter(void)
 		pTank->SetSight(400);
 		pTank->SetVelX(30);
 		pTank->SetVelY(30);
+		pTank->SetHealth(300);
 		m_pOM->AddObject(pTank);
 
 		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
@@ -214,6 +218,8 @@ void CGamePlayState::Enter(void)
 
 		m_pTile->Load("resource/files/graphic_layer.xml");
 	}
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
 }
 
 void CGamePlayState::Exit(void)
@@ -353,6 +359,23 @@ bool CGamePlayState::Input(void)
 				m_nPosition += 1;
 			}
 		}
+		else if(m_pDI->MouseButtonPressed(0))
+		{
+			if(m_nPosition == 0)
+			{
+				m_bPaused = !m_bPaused;
+			}
+			else if(m_nPosition == 1)
+			{
+				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+			}
+			else if(m_nPosition == 2)
+			{
+				m_bPaused = false;
+				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+				return true;		
+			}
+		}
 	}
 	else
 	{
@@ -390,6 +413,25 @@ void CGamePlayState::Update(float fDt)
 		m_pMS->ProcessMessages();
 
 	}
+
+	m_nMouseX = m_pDI->MouseGetPosX()-16;
+	m_nMouseY = m_pDI->MouseGetPosY()-16;
+
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 295 && m_nMouseY <= 340)
+	{
+		m_nPosition = 0;
+	}
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 340 && m_nMouseY <= 390)
+	{
+		m_nPosition = 1;
+	}
+	if(m_nMouseX >= 315 && m_nMouseX <= 435
+		&& m_nMouseY >= 390 && m_nMouseY <= 435)
+	{
+		m_nPosition = 2;
+	}
 }
 
 void CGamePlayState::Render(void)
@@ -400,11 +442,12 @@ void CGamePlayState::Render(void)
 	// Render game entities
 	m_pTile->Render();
 	m_pOM->RenderAllObjects();
-	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 1.0f, 1.0f);
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 	m_AM->Render();
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();	
 	m_PM->RenderEverything();
+
 
 	if(m_bPaused)
 	{
@@ -442,6 +485,32 @@ void CGamePlayState::Render(void)
 		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(255,255,255));
 	
 	}
+
+	
+	CBitmapFont* font = CBitmapFont::GetInstance();
+	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
+
+	font->Print(m_dGameData.szName,25,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+	char buffer[10];
+	_itoa_s(m_dGameData.nLevel,buffer,10);
+	font->Print("Level",150,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,150,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_dGameData.nShellAmmo,buffer,10);
+	font->Print("Ammo",275,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,275,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_dGameData.nMoney,buffer,10);
+	font->Print("Money",400,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,400,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,650,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
 void CGamePlayState::MessageProc(CMessage* pMsg)
@@ -459,33 +528,38 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
-
-					Bullet->SetWidth(32);
-					Bullet->SetHeight(32);
-					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-						Bullet->SetWhoFired(true);
-					else
-						Bullet->SetWhoFired(false);
-					if(pMessage->GetFiringEntity() != nullptr)
+					if(pSelf->m_dGameData.nShellAmmo > 0)
 					{
-						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
-						tVector2D Up={0,-1};
-						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
-						norVec = Vector2DNormalize(norVec);
-						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-						Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-						Bullet->SetVelX(norVec.fX*400);
-						Bullet->SetVelY(norVec.fY*400);
-					}
+						CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+
+						Bullet->SetWidth(32);
+						Bullet->SetHeight(32);
+						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+							Bullet->SetWhoFired(true);
+						else
+							Bullet->SetWhoFired(false);
+						if(pMessage->GetFiringEntity() != nullptr)
+						{
+							tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+							tVector2D Up={0,-1};
+							Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
+							norVec = Vector2DNormalize(norVec);
+							Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							Bullet->SetVelX(norVec.fX*400);
+							Bullet->SetVelY(norVec.fY*400);
+						}
 						
 
-					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
+						Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 
-					pSelf->m_pOM->AddObject(Bullet);
-					Bullet->Release();
-					Bullet = nullptr;
+						pSelf->m_pOM->AddObject(Bullet);
+						Bullet->Release();
+						Bullet = nullptr;
+
+						pSelf->m_dGameData.nShellAmmo--;
+					}
 				}
 				break;
 			case BUL_ROCKET:

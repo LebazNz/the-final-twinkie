@@ -43,6 +43,11 @@ private:
 	float					m_fSFXVolume;
 	float					m_fMusicVolume;
 	bool					m_bWindowed;
+
+	int m_nMouseX;
+	int m_nMouseY;
+
+	int m_nCursor;
 };
 
 #endif
