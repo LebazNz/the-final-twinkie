@@ -18,13 +18,15 @@ public:
 	bool	GetPlayerCannotMove() const { return m_bPlayerCannotMove; }
 	void	SetPlayerCannotMove(bool val) { m_bPlayerCannotMove = val; }
 
+	tVector2D GetOldPos(void) {return m_vOldPos;}
+
 	static Camera* GetInstance();
 
 private:
 
 	float m_fPosX;
 	float m_fPosY;
-	
+	tVector2D m_vOldPos;
 	bool m_bPlayerCannotMove;
 	
 	Camera(void);

@@ -25,7 +25,7 @@ CEntity::CEntity(void)
 	// Object Type
 	m_nType = OBJ_BASE;
 
-	m_pTM = CTileManager::GetInstance();
+
 }
 
 CEntity::~CEntity(void)
@@ -34,6 +34,9 @@ CEntity::~CEntity(void)
 
 void CEntity::Update(float fDt)
 {
+	m_vOldPos.fX = m_fPosX;
+	m_vOldPos.fY = m_fPosY;
+
 	m_fPosX += int(m_fVelX * fDt);
 	m_fPosY += int(m_fVelY * fDt);
 }
@@ -50,7 +53,6 @@ bool CEntity::CheckCollision(IEntity* pObject)
 {
 	RECT rOverLap = {}, rSelf = GetRect(), rOther = pObject->GetRect();
 
-	m_pTM->CheckCollision(pObject);
 
 	BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
 

@@ -27,6 +27,8 @@ void CPlayer::Update(float fDt)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
+			m_v2OldPos.fX = GetPosX();
+			m_v2OldPos.fY = GetPosY();
 			SetPosX(GetPosX()+DX);
 			SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
 
@@ -37,6 +39,8 @@ void CPlayer::Update(float fDt)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
+			m_v2OldPos.fX = GetPosX();
+			m_v2OldPos.fY = GetPosY();
 			SetPosX(GetPosX()-DX);
 			SetPosY(GetPosY()-(Up.fY*GetVelY()*fDt));
 
@@ -74,19 +78,23 @@ void CPlayer::Update(float fDt)
 	m_pTurret->SetPosY(GetPosY());
 	if(GetPosX()-GetHeight()/2<0)
 	{
+		m_v2OldPos.fX = GetPosX();
 		SetPosX((float)(GetHeight()/2));
 	}
 	if(GetPosY()-GetHeight()/2<0)
 	{
+		m_v2OldPos.fY = GetPosY();
 		SetPosY((float)(GetHeight()/2));
 	}
 	CGame* game=CGame::GetInstance();
 	if(GetPosX()+GetHeight()/2>game->GetWidth())
 	{
+		m_v2OldPos.fX = GetPosX();
 		SetPosX(float(game->GetWidth()-GetHeight()/2));
 	}
 	if(GetPosY()+GetHeight()/2>game->GetHeight())
 	{
+		m_v2OldPos.fY = GetPosY();
 		SetPosY(float(game->GetHeight()-GetHeight()/2));
 	}
 	if(abs(m_fRotation)>=2.335)
@@ -109,6 +117,8 @@ void CPlayer::Update(float fDt)
 void CPlayer::Render(void)
 {
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2), (int)(GetPosY()-GetHeight()/2),1.0f,1.0f,0,GetWidth()/2.0f,GetHeight()/2.0f,m_fRotation);
+	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 RECT CPlayer::GetRect(void)
 {

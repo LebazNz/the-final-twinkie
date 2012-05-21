@@ -17,6 +17,7 @@
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../World and Tile/Tile.h"
+#include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Turret.h"
@@ -97,7 +98,7 @@ void CGamePlayState::Enter(void)
 		m_pOF	= CFactory::GetInstance();
 		m_PM	= CParticleManager::GetInstance();
 		m_pMS	= CMessageSystem::GetInstance();
-		//m_pTile = CTileManager::GetInstance();
+		m_pTile = CTileManager::GetInstance();
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
 
@@ -141,8 +142,8 @@ void CGamePlayState::Enter(void)
 		player->SetRotation(0);
 		player->SetWidth(64);
 		player->SetHeight(128);
-		player->SetVelX(180);
-		player->SetVelY(180);
+		player->SetVelX(90);
+		player->SetVelY(90);
 		m_pOM->AddObject(player);
 
 	
@@ -176,7 +177,7 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(sapper);
 		sapper->Release();
 
-		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
+	/*	CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
 		pTank->SetImageID(m_nPlayerID);
 		pTank->SetPosX(500);
 		pTank->SetPosY(200);
@@ -208,8 +209,10 @@ void CGamePlayState::Enter(void)
 		pTank->Release();
 		m_nPosition = 0;
 		m_bPaused = false;
-
+*/
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+
+		m_pTile->Load("resource/files/graphic_layer.xml");
 	}
 }
 
@@ -292,7 +295,11 @@ void CGamePlayState::Exit(void)
 		m_pTM	= nullptr;
 		m_pFont = nullptr;	
 		m_PM	= nullptr;	
-		m_pTile = nullptr;
+		if(m_pTile != nullptr)
+		{
+			m_pTile->DeleteInstance();
+			m_pTile = nullptr;
+		}
 		m_AM	= nullptr;
 	}
 }
@@ -391,6 +398,7 @@ void CGamePlayState::Render(void)
 	m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
 		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 	// Render game entities
+	m_pTile->Render();
 	m_pOM->RenderAllObjects();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX(), m_pDI->MouseGetPosY(), 1.0f, 1.0f);
 	m_AM->Render();

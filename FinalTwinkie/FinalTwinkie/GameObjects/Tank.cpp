@@ -35,6 +35,8 @@ void CTank::Update(float fDt)
 		Look=Vector2DRotate(Up, m_fRotation);
 		float DY=(Look.fY*GetVelY()*fDt);
 		float DX=(Look.fX*GetVelX()*fDt);
+		m_v2OldPos.fX = GetPosX();
+		m_v2OldPos.fY = GetPosY();
 		SetPosX(GetPosX()+DX);
 		SetPosY(GetPosY()+DY);
 	}

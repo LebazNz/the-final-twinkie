@@ -16,6 +16,7 @@ public:
 	void SetPlayer(CPlayer* pPlayer) {m_pPlayer=pPlayer;}
 	void SetSight(float fSight) {m_fSight=fSight;}
 	void SetRotationRate(float fRotRate) {m_fRotationRate=fRotRate;}
+	tVector2D GetOldPos(void) { return m_v2OldPos;}
 	CTank(void);
 	~CTank(void);
 
@@ -29,5 +30,7 @@ private:
 
 	float m_fSight;
 	CPlayer* m_pPlayer;
+
+	tVector2D m_v2OldPos;
 };
 #endif

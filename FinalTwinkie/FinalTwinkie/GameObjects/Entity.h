@@ -2,7 +2,7 @@
 #define CENTITY_H
 
 #include "IEntity.h"
-
+#include "../SGD Wrappers/SGD_Math.h"
 class CTileManager;
 
 #include <vector>
@@ -48,6 +48,7 @@ public:
 	virtual void SetColor(int nColor) {m_nColor = nColor; }
 	virtual void SetHealth(float fHealth) { m_fHealth = fHealth; }
 
+	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 	virtual void AddEmitter(int nEmitter){ m_vEmitters.push_back(nEmitter);  }
 
 private:
@@ -68,6 +69,8 @@ private:
 	float m_fMaxHealth;	
 	// Reference Counter
 	int m_nRefCount;
+
+	tVector2D m_v2OldPos;
 
 	// vector of Emmiters
 	std::vector<int> m_vEmitters;

@@ -16,6 +16,7 @@ class CTileManager;
 class CAnimationManager;
 class CMessageSystem;
 class CEventSystem;
+class CTileManager;
 
 typedef CObjectFactory< std::string , CEntity> CFactory;
 

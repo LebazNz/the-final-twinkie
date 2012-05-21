@@ -2,7 +2,10 @@
 #define TILE_H
 #include <Windows.h>
 
-class CTile
+#include "../Event and Messages/EventSystem.h"
+#include "../Event and Messages/IListener.h"
+
+class CTile : public IListener
 {
 	int m_nPosX;
 	int m_nPosY;
@@ -12,13 +15,13 @@ class CTile
 	RECT m_rCollRect;
 	bool m_bHasCollision;
 	int m_bHasSpawn;
-    bool m_bHasTrigger;
+    int m_bHasTrigger;
 public:
 	CTile(void);
 	~CTile(void);
 
 	void CreateTile(int index, int nPosY, int nPosX, int width, int height, bool bHasCollision = false, 
-	int bHasSpawn = 0, bool bHasTrigger = false);
+	int bHasSpawn = 0, int nHasTrigger = 0);
 	
 	//Getters
 	int GetPosX(void) { return m_nPosX; }
@@ -26,11 +29,14 @@ public:
 	int GetWidth(void) { return m_nWidth;}
 	int GetHeight(void) { return m_nHeight;}
 	int GetIndex(void) { return m_nIndex;}
-	RECT GetRect(void) { return m_rCollRect;}
+	RECT GetRect(void);
 
+	void SetCollision(bool c) { m_bHasCollision = c;}
 	bool GetCollision(void) { return m_bHasCollision; }
 	int GetSpawn(void) { return m_bHasSpawn; }
-	bool GetTrigger(void) { return m_bHasTrigger; }
+	int GetTrigger(void) { return m_bHasTrigger; }
+
+	virtual void HandleEvent(CEvent *pEvent);
 	
 
 };

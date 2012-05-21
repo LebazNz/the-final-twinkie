@@ -2,9 +2,7 @@
 #define CENTITY_H
 
 #include "IEntity.h"
-
-class CTileManager;
-
+#include "../SGD Wrappers/SGD_Math.h"
 #include <vector>
 enum OBJECT_TYPE { OBJ_BASE, OBJ_PLAYER, OBJ_BULLET, OBJ_ENEMY, OBJ_TURRET };
 enum BULLETYPE { BUL_SHELL, BUL_ROCKET, BUL_ARTILLERY, BUL_MACHINEGUN, BUL_LASER };
@@ -30,6 +28,8 @@ public:
 
 	void TakeDamage(int nDamage);
 
+	virtual tVector2D GetOldPos(void) { return m_vOldPos;}
+	virtual void SetOldPos(tVector2D newPos) { m_vOldPos = newPos;}
 	virtual float GetPosX(void) {return m_fPosX; }
 	virtual float GetPosY(void) {return m_fPosY; }
 	virtual float GetVelX(void) {return m_fVelX; }
@@ -47,10 +47,10 @@ public:
 	virtual void SetHeight(int nHeight) {m_nHeight = nHeight; }
 	virtual void SetColor(int nColor) {m_nColor = nColor; }
 	virtual void SetHealth(float fHealth) { m_fHealth = fHealth; }
-
 	virtual void AddEmitter(int nEmitter){ m_vEmitters.push_back(nEmitter);  }
 
 private:
+	tVector2D m_vOldPos;
 	// Position
 	float m_fPosX;
 	float m_fPosY;
@@ -72,8 +72,6 @@ private:
 	// vector of Emmiters
 	std::vector<int> m_vEmitters;
 
-	// pointer to tile manager
-	CTileManager *m_pTM;
 
 protected:
 	// Object Type

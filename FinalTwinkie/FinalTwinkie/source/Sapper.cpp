@@ -27,6 +27,10 @@ void CSapper::Update(float fDt)
 			m_fRotation=-AngleBetweenVectors(toTarget, Up);
 		
 		Up=Vector2DRotate(Up, m_fRotation);
+
+		tVector2D old = {GetPosX(),GetPosY()};
+		SetOldPos(old);
+
 		SetPosX(GetPosX()+(Up.fX*GetVelX()*fDt));
 		SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
 	}
@@ -45,6 +49,8 @@ void CSapper::Render(void)
 {
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 bool CSapper::CheckCollision(IEntity* pBase)
 {

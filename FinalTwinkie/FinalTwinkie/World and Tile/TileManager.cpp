@@ -9,7 +9,9 @@ using namespace std;
 #include "../GameStates/GamePlayState.h"
 #include "../GameObjects/Entity.h"
 #include "../GameObjects/Bullet.h"
-
+#include "../GameObjects/Enemy.h"
+#include "../GameObjects/Player.h"
+#include "../Headers/Camera.h"
 
 CTileManager* CTileManager::m_pSelf = nullptr;
 
@@ -101,8 +103,8 @@ bool CTileManager::Load(string fileName)
 
 		struct tempTile
 		{
-			int posY, posX, bSpawn,index;
-			bool bCollision, bTrigger;
+			int posY, posX, bSpawn,index,bTrigger;
+			bool bCollision;
 		};
 
 		int i = 0, j = 0;
@@ -137,12 +139,9 @@ bool CTileManager::Load(string fileName)
 					tile.bSpawn = 0;
 				
 
-				if( pBaby->Attribute( "trigger", &b ) == nullptr )
-					b = 1;
-				if(b == 1)
-					tile.bTrigger = true;
-				else
-					tile.bTrigger = false;
+				if( pBaby->Attribute( "trigger", &tile.bTrigger ) == nullptr )
+					tile.bTrigger = 0;
+				
 
 				vTiles[i][j].CreateTile(tile.index,tile.posY, tile.posX,tileWidth,tileHeight, tile.bCollision, tile.bSpawn, tile.bTrigger);
 				j++;
@@ -155,6 +154,7 @@ bool CTileManager::Load(string fileName)
 			
 		}
 
+		m_vTiles = vTiles;
 		pChild = pRoot->FirstChildElement("file_name")->NextSiblingElement("enemy_row");
 
 		
@@ -181,6 +181,8 @@ bool CTileManager::Load(string fileName)
 
 		}
 	
+		
+
 		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, vTiles);
 	}
 	else
@@ -206,9 +208,15 @@ void CTileManager::Render()
 }
 void CTileManager::CheckCollision(IEntity* pBase)
 {
+	Camera* cam = Camera::GetInstance();
+
+	if(m_vTiles.size() == 0 || pBase == nullptr)
+		return;
 	
 	int height = m_pGraphics.GetMapHeight();
 	int width = m_pGraphics.GetMapWidth();
+
+	
 
 	for(int i = 0; i < height; i++)
 	{
@@ -216,103 +224,64 @@ void CTileManager::CheckCollision(IEntity* pBase)
 		{
 			if(m_vTiles[i][j].GetCollision() == false)
 				continue;
+			CEntity* pTarget =dynamic_cast<CEntity*>(pBase);
+	
+			RECT rOverLap = {}, rSelf = m_vTiles[i][j].GetRect(), rOther = pTarget->GetRect();
 
-			RECT rOverLap = {}, rSelf = m_vTiles[i][j].GetRect(), rOther = pBase->GetRect();
+			/*float xPos = ((m_vTiles[i][j].GetPosX()+cam->GetPosX())+m_vTiles[i][j].GetWidth()/2) - pTarget->GetPosX();
+			float yPos = ((m_vTiles[i][j].GetPosY()+cam->GetPosY())+m_vTiles[i][j].GetHeight()/2) - pTarget->GetPosY();
+			xPos *= xPos;
+			yPos *= yPos;
 
-			CEntity* m_pTarget =dynamic_cast<CEntity*>(pBase);
+			float distance = sqrt(float(xPos+yPos));
 
+			if(distance > 100)
+				continue;*/
 
-		int xPos = m_vTiles[i][j].GetPosX() - m_pTarget->GetPosX();
-		int yPos = m_vTiles[i][j].GetPosY() - m_pTarget->GetPosY();
-		xPos *= xPos;
-		yPos *= yPos;
+			BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, &rOther);
 
-		float distance = sqrt(float(xPos+yPos));
-
-		if(distance > (m_vTiles[i][j].GetWidth() + 5) || distance > (m_vTiles[i][j].GetHeight() + 5))
-			continue;
-
-			BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
-
-		if(bIsColliding == TRUE)
-		{
-			//TRUE
-			switch(pBase->GetType())
+			if(bIsColliding == TRUE)
 			{
-			case OBJ_BASE:
-				break;
-			case OBJ_PLAYER:
+				switch(pBase->GetType())
 				{
-				
-					CEntity* pPlayer =dynamic_cast<CEntity*>(pBase);
-					int rightSide = pPlayer->GetPosX() - pPlayer->GetHeight()/2;
-					int leftSide = pPlayer->GetPosX() + pPlayer->GetHeight()/2;
-					int topSide = pPlayer->GetPosY() - pPlayer->GetHeight()/2;
-					int botSide = pPlayer->GetPosY() + pPlayer->GetHeight()/2;
-					int halfHeight = pPlayer->GetHeight()/2;
+				case OBJ_BASE:
+					break;
+				case OBJ_PLAYER:
+					{
+						Camera *cam = Camera::GetInstance();
+						CPlayer* pPlayer =dynamic_cast<CPlayer*>(pBase);
 
+						pPlayer->SetPosX(pPlayer->GetOldPos().fX);
+						pPlayer->SetPosY(pPlayer->GetOldPos().fY);
+						cam->SetPosX(cam->GetOldPos().fX);
+						cam->SetPosY(cam->GetOldPos().fY);
+					
+					}
+					break;
+				case OBJ_BULLET:
+					{
+						CBullet* pBullet =dynamic_cast<CBullet*>(pBase);
 
-					if(leftSide > rSelf.left)
-					{
-						pPlayer->SetPosX(rSelf.left - halfHeight);
+						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(pBullet);
+						CMessageSystem::GetInstance()->SndMessage(pMsg);
+						pMsg = nullptr;
 					}
-					else if(rightSide < rSelf.right)
+					break;
+				case OBJ_ENEMY:
 					{
-						pPlayer->SetPosX(rSelf.right + halfHeight);
+						CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+
+						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
 					}
-					else if(topSide < rSelf.top)
-					{
-						pPlayer->SetPosY(rSelf.top - halfHeight);
-					}
-					else if(botSide > rSelf.bottom)
-					{
-						pPlayer->SetPosY(rSelf.bottom + halfHeight);
-					}
+					break;
 				}
-				break;
-			case OBJ_BULLET:
-				{
-					CBullet* pBullet = dynamic_cast<CBullet*>(pBase);
-					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(pBullet);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
-				}
-				break;
-			case OBJ_ENEMY:
-				{
-					CEntity* pEnemy =dynamic_cast<CEntity*>(pBase);
-					int rightSide = pEnemy->GetPosX() - pEnemy->GetHeight()/2;
-					int leftSide = pEnemy->GetPosX() + pEnemy->GetHeight()/2;
-					int topSide = pEnemy->GetPosY() - pEnemy->GetHeight()/2;
-					int botSide = pEnemy->GetPosY() + pEnemy->GetHeight()/2;
-					int halfHeight = pEnemy->GetHeight()/2;
-
-
-					if(leftSide > rSelf.left)
-					{
-						pEnemy->SetPosX(rSelf.left - halfHeight);
-					}
-					else if(rightSide < rSelf.right)
-					{
-						pEnemy->SetPosX(rSelf.right + halfHeight);
-					}
-					else if(topSide < rSelf.top)
-					{
-						pEnemy->SetPosY(rSelf.top - halfHeight);
-					}
-					else if(botSide > rSelf.bottom)
-					{
-						pEnemy->SetPosY(rSelf.bottom + halfHeight);
-					}
-				}
-				break;
 			}
 
-		}
 
 		}
-
 	}
+
 }
 
 /*

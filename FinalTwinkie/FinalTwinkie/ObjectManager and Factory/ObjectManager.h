@@ -4,7 +4,7 @@
 class IEntity;
 #include <vector>
 using std::vector;
-
+class CTileManager;
 class CObjectManager
 {
 public:
@@ -25,6 +25,8 @@ private:
 
 	static CObjectManager* m_pInstance;
 	vector<IEntity*>	m_vObjectList;
+
+	CTileManager*	m_pTile;
 };
 
 #endif
