@@ -9,6 +9,7 @@
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/EventSystem.h"
 #include "../Headers/BitmapFont.h"
+#include "../GameStates/StartState.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -84,7 +85,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	//m_bWindowed		= bWindowed;
 
 	// Start the game in Main menu
-	ChangeState(CMainMenuState::GetInstance());
+	ChangeState(CStartState::GetInstance());
 
 	// Set game time
 	m_dwTime = GetTickCount();
