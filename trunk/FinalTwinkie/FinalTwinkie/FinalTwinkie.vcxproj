@@ -112,6 +112,7 @@
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="GameStates\GamePlayState.cpp" />
     <ClCompile Include="source\GUI.cpp" />
+    <ClCompile Include="GameStates\StartState.cpp" />
     <ClCompile Include="World and Tile\Layer.cpp" />
     <ClCompile Include="GameStates\MainMenuState.cpp" />
     <ClCompile Include="Event and Messages\Message.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameObjects\IEntity.h" />
     <ClInclude Include="GameStates\IGameState.h" />
     <ClInclude Include="Event and Messages\IListener.h" />
+    <ClInclude Include="GameStates\StartState.h" />
     <ClInclude Include="World and Tile\Layer.h" />
     <ClInclude Include="GameStates\MainMenuState.h" />
     <ClInclude Include="Event and Messages\Message.h" />

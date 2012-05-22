@@ -58,6 +58,7 @@
     <ClCompile Include="PickUps and Specials\Special.cpp" />
     <ClCompile Include="GameObjects\Building.cpp" />
     <ClCompile Include="GameStates\LoadGameState.cpp" />
+    <ClCompile Include="GameStates\StartState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="PickUps and Specials\AirStrike.h" />
     <ClInclude Include="GameObjects\Building.h" />
     <ClInclude Include="GameStates\LoadGameState.h" />
+    <ClInclude Include="GameStates\StartState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />
