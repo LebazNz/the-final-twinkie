@@ -534,7 +534,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 						Bullet->SetWidth(32);
 						Bullet->SetHeight(32);
-						Bullet->SetDamage(5.0f);
+						Bullet->SetDamage(35.0f);
 						Bullet->SetScale(0.35f);
 						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 							Bullet->SetWhoFired(true);
@@ -582,7 +582,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					Bullet->SetDamage(35.0f);
+					Bullet->SetDamage(5.0f);
 					Bullet->SetScale(0.15f);
 					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 						Bullet->SetWhoFired(true);
