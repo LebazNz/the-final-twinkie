@@ -16,6 +16,7 @@
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
+#include "../Event and Messages/DestroyTurretMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
@@ -86,10 +87,6 @@ CGamePlayState::~CGamePlayState(void)
 
 void CGamePlayState::Enter(void)
 {
-	/*Data dGameData = {"Herp Derp",1,0,0,1,500,1,0,1,0,1,0,1,0,1,1,0,1,0,1,"savedGame3.xml"};
-
-	m_dGameData = dGameData;*/
-
 	if(m_bPaused == false)
 	{
 		m_pD3D	= CSGD_Direct3D::GetInstance();
@@ -146,6 +143,7 @@ void CGamePlayState::Enter(void)
 		player->SetHeight(128);
 		player->SetVelX(90);
 		player->SetVelY(90);
+		player->SetHealth(250);
 		m_pOM->AddObject(player);
 
 	
@@ -180,7 +178,7 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(sapper);
 		sapper->Release();
 
-	/*	CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
+		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
 		pTank->SetImageID(m_nPlayerID);
 		pTank->SetPosX(500);
 		pTank->SetPosY(200);
@@ -193,6 +191,7 @@ void CGamePlayState::Enter(void)
 		pTank->SetVelX(30);
 		pTank->SetVelY(30);
 		pTank->SetHealth(300);
+		pTank->SetHasATurret(true);
 		m_pOM->AddObject(pTank);
 
 		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
@@ -207,13 +206,14 @@ void CGamePlayState::Enter(void)
 		pTurret->SetRotationPositon(32,98);
 		pTurret->SetUpVec(0,-1);
 		pTurret->SetDistance(300);
+		//pTurret->SetFireRate(2.5f);
 		pTurret->SetTarget(player);
 		m_pOM->AddObject(pTurret);
 		pTurret->Release();
 		pTank->Release();
 		m_nPosition = 0;
 		m_bPaused = false;
-*/
+
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
 		m_pTile->Load("resource/files/graphic_layer.xml");
@@ -534,6 +534,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 						Bullet->SetWidth(32);
 						Bullet->SetHeight(32);
+						Bullet->SetDamage(5.0f);
+						Bullet->SetScale(0.35f);
 						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 							Bullet->SetWhoFired(true);
 						else
@@ -545,8 +547,18 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 							norVec = Vector2DNormalize(norVec);
 							Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							if(Bullet->GetWhoFired())
+							{
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+								pSelf->m_dGameData.nShellAmmo--;
+							}
+							else
+							{
+								Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+								Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+
+							}
 							Bullet->SetVelX(norVec.fX*400);
 							Bullet->SetVelY(norVec.fY*400);
 						}
@@ -557,8 +569,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						pSelf->m_pOM->AddObject(Bullet);
 						Bullet->Release();
 						Bullet = nullptr;
-
-						pSelf->m_dGameData.nShellAmmo--;
 					}
 				}
 				break;
@@ -567,6 +577,46 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case BUL_ARTILLERY:
 				break;
 			case BUL_MACHINEGUN:
+				{
+					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+
+					Bullet->SetWidth(32);
+					Bullet->SetHeight(32);
+					Bullet->SetDamage(35.0f);
+					Bullet->SetScale(0.15f);
+					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+						Bullet->SetWhoFired(true);
+					else
+						Bullet->SetWhoFired(false);
+					if(pMessage->GetFiringEntity() != nullptr)
+					{
+						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+						tVector2D Up={0,-1};
+						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
+						norVec = Vector2DNormalize(norVec);
+						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+						if(Bullet->GetWhoFired())
+						{
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+						}
+						else
+						{
+							Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+							Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+
+						}
+						Bullet->SetVelX(norVec.fX*400);
+						Bullet->SetVelY(norVec.fY*400);
+					}
+						
+
+					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
+
+					pSelf->m_pOM->AddObject(Bullet);
+					Bullet->Release();
+					Bullet = nullptr;
+				}
 				break;
 			case BUL_LASER:
 				break;
@@ -620,8 +670,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYENEMY:
 		{
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
+			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 			pSelf->m_pOM->RemoveObject(pEnemy);
+		}
+		break;
+	case MSG_DESTROYTURRET:
+		{
+			CTurret* pTurret = dynamic_cast<CDestroyTurretMessage*>(pMsg)->GetTurret();
+			pSelf->m_pOM->RemoveObject(pTurret);
 		}
 		break;
 	};
@@ -671,4 +728,6 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	pRoot->LinkEndChild(data);
 
 	doc.SaveFile(szFileName);
+
+	delete(pDec);
 }

@@ -68,10 +68,21 @@ void CPlayer::Update(float fDt)
 		SetMoveLeft(true);
 	}
 
-	if(m_pDI->MouseButtonPressed(0) || m_pDI->KeyDown(DIK_SPACE))
+	if(m_pDI->MouseButtonPressed(0))
 	{
 		CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 		CMessageSystem::GetInstance()->SndMessage(msg);
+	}
+	if(m_pDI->MouseButtonDown(1))
+	{
+		if(m_fFireRate >= 0.15f)
+		{
+			m_fFireRate = 0.0f;
+			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
+			CMessageSystem::GetInstance()->SndMessage(msg);
+		}
+		else
+			m_fFireRate += fDt;
 	}
 
 	m_pTurret->SetPosX(GetPosX());
@@ -118,7 +129,7 @@ void CPlayer::Render(void)
 {
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2), (int)(GetPosY()-GetHeight()/2),1.0f,1.0f,0,GetWidth()/2.0f,GetHeight()/2.0f,m_fRotation);
 	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
+	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 RECT CPlayer::GetRect(void)
 {
@@ -144,6 +155,8 @@ CPlayer::CPlayer(void)
 	m_bMoveLeft		= false;
 	m_bMoveUp		= false;
 	m_bMoveDown		= false;
+
+	m_fFireRate = 0.0f;
 }
 CPlayer::~CPlayer(void)
 {

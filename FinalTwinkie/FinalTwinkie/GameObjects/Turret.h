@@ -18,7 +18,7 @@ public:
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
 	void SetUpVec(float x, float y);
 	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
-
+	//void SetFireRate(float fFireRate){m_fFireRate = fFireRate;}
 	void SetDistance(float fDistance) {m_fMaxDistance=fDistance;}
 
 

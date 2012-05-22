@@ -60,7 +60,7 @@ void CMainMenuState::Enter(void)
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
 
-	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/Menu_Screen.png"),D3DCOLOR_XRGB(255,0,255));
+	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/logo_game.png"));
 	m_nPointerID = m_pTM->LoadTexture(_T("resource/graphics/SGD_MenuCursor.png"),D3DCOLOR_XRGB(255,0,255));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	
@@ -212,6 +212,8 @@ void CMainMenuState::Update(float fDt)
 
 void CMainMenuState::Render(void)
 {
+	m_pD3D->Clear( 69, 69, 69 );
+
 	CBitmapFont* font = CBitmapFont::GetInstance();
 	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
 
@@ -245,7 +247,7 @@ void CMainMenuState::Render(void)
 		break;
 	}
 
-	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
+	m_pTM->Draw(m_nBGImageID,-50,50,0.85f,0.75f,nullptr,0,0,0);
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 	
 	m_pD3D->GetSprite()->Flush();

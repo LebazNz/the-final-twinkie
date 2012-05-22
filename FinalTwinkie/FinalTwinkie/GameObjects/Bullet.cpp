@@ -4,8 +4,13 @@
 #include "../Event and Messages/EventSystem.h"
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
+#include "../Event and Messages/DestroyTurretMessage.h"
 #include "../GameStates/OptionsState.h"
 #include "../Headers/Camera.h"
+#include "Enemy.h"
+#include "Player.h"
+#include "Turret.h"
+#include "Tank.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -18,6 +23,7 @@ CBullet::CBullet(void)
 	m_bWhoFired = false;
 	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
 	m_fRotation = 0.0f;
+	m_fDamage = 0.0f;
 }
 
 CBullet::~CBullet(void)
@@ -51,6 +57,8 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			{
 				if(GetWhoFired() == false)
 				{
+					CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
+					pPlayer->TakeDamage(this->m_fDamage);
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
@@ -63,6 +71,21 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			{
 				if(GetWhoFired() == true)
 				{
+					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
+					pEnemy->TakeDamage(this->m_fDamage);
+					if(pEnemy->GetHealth() <= 0.0f)
+					{
+						if(pEnemy->GetHasATuuert())
+						{
+							CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+							CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+							CMessageSystem::GetInstance()->SndMessage(pMst);
+							pMst = nullptr;
+						}
+						CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+						CMessageSystem::GetInstance()->SndMessage(pMse);
+						pMse = nullptr;
+					}
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
@@ -96,6 +119,6 @@ void CBullet::Render(void)
 	if(GetImageID() != -1)
 	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 1.0f, 1.0f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
-		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+		//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 	}
 }

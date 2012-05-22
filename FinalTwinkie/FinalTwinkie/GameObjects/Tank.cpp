@@ -63,7 +63,7 @@ void CTank::Render(void)
 {
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 0,255,0);
+	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 0,255,0);
 }
 bool CTank::CheckCollision(IEntity* pBase)
 {
