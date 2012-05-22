@@ -99,9 +99,9 @@ RECT CEnemy::GetRect(void)
 {
 	Camera* C=Camera::GetInstance();
 	RECT rect;
-	rect.bottom=(GetPosY()+C->GetPosY())-GetHeight();
-	rect.top=(GetPosY()+C->GetPosY())+GetHeight();
-	rect.left=(GetPosX()+C->GetPosX())-GetWidth();
-	rect.right=(GetPosX()+C->GetPosX())+GetWidth();
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())-GetHeight());
+	rect.top=(LONG)((GetPosY()+C->GetPosY())+GetHeight());
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-GetWidth());
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+GetWidth());
 	return rect;
 }

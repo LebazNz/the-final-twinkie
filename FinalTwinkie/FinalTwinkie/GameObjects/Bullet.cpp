@@ -58,7 +58,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				if(GetWhoFired() == false)
 				{
 					CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
-					pPlayer->TakeDamage(this->m_fDamage);
+					pPlayer->TakeDamage((int)this->m_fDamage);
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
@@ -72,7 +72,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				if(GetWhoFired() == true)
 				{
 					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
-					pEnemy->TakeDamage(this->m_fDamage);
+					pEnemy->TakeDamage((int)this->m_fDamage);
 					if(pEnemy->GetHealth() <= 0.0f)
 					{
 						if(pEnemy->GetHasATuuert())

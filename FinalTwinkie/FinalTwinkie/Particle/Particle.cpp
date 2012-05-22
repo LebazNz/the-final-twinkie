@@ -22,4 +22,5 @@ void CParticle::CreateParticle(float fLife, float fVelocityX, float fVelocityY, 
 	m_fCurPosY=nPosY;
 	m_dwColor=dwColor;
 	m_nParticleID=nImage;
+	m_fTotalLife=fLife;
 }

@@ -30,6 +30,7 @@ private:
 
 	bool m_bLooping;
 	float m_fMaxLife;
+	float m_fMinLife;
 	float m_fMaxSpeedX;
 	float m_fMaxSpeedY;
 	float m_fMinSpeedX;

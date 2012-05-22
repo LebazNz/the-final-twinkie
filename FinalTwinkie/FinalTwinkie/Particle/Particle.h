@@ -20,6 +20,7 @@ private:
 	float m_fCurPosY;
 	D3DXCOLOR m_dwColor;
 	int m_nParticleID;
+	float m_fTotalLife;
 
 public:
 
@@ -43,6 +44,8 @@ public:
 
 	float GetPosY(void){return m_fCurPosY;}
 	void SetPosY(float PY) {m_fCurPosY=PY;}
+
+	float GetTotalLife(void) {return m_fTotalLife;}
 
 };
 
