@@ -2,7 +2,7 @@
 #define TILE_H
 #include <Windows.h>
 
-#include "../Event and Messages/EventSystem.h"
+
 #include "../Event and Messages/IListener.h"
 
 class CTile : public IListener
@@ -35,8 +35,8 @@ public:
 	bool GetCollision(void) { return m_bHasCollision; }
 	int GetSpawn(void) { return m_bHasSpawn; }
 	int GetTrigger(void) { return m_bHasTrigger; }
-
-	virtual void HandleEvent(CEvent* pEvent);
+	void ClearTrigger(void) { m_bHasTrigger = 0;}
+	 void HandleEvent(CEvent *pEvent);
 	
 
 };

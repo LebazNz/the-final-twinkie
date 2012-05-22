@@ -45,6 +45,9 @@ public:
 	int GetType(void) { return m_eType;}
 	int GetMapWidth(void) { return m_nMapWidth;}
 	int GetMapHeight(void) { return m_nMapHeight;}
+	int GetTileWidth(void) { return m_nTileWidth;}
+	int GetTileHeight(void) { return m_nTileHeight;}
+	void SetTiles(vector<vector<CTile>> tiles) { m_vTiles = tiles;}
 	vector<vector<CTile>> GetTiles(void) {return m_vTiles;}
 	vector<ENEMY_INFO> GetSpawns(void);
 };

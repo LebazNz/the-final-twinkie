@@ -6,6 +6,8 @@ using namespace std;
 #include "../tinyxml/tinystr.h"
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/MessageSystem.h"
+#include "../Event and Messages/EventSystem.h"
+
 #include "../GameStates/GamePlayState.h"
 #include "../GameObjects/Entity.h"
 #include "../GameObjects/Bullet.h"
@@ -100,6 +102,7 @@ bool CTileManager::Load(string fileName)
 		TiXmlElement* pBaby;
 
 		vector<vector<CTile>> vTiles (mapHeight , vector<CTile> (mapWidth) );
+		m_vTiles = vTiles;
 
 		struct tempTile
 		{
@@ -142,8 +145,10 @@ bool CTileManager::Load(string fileName)
 				if( pBaby->Attribute( "trigger", &tile.bTrigger ) == nullptr )
 					tile.bTrigger = 0;
 				
-
-				vTiles[i][j].CreateTile(tile.index,tile.posY, tile.posX,tileWidth,tileHeight, tile.bCollision, tile.bSpawn, tile.bTrigger);
+				
+				m_vTiles[i][j].CreateTile(tile.index,tile.posY, tile.posX,tileWidth,tileHeight, tile.bCollision, tile.bSpawn, tile.bTrigger);
+				if(m_vTiles[i][j].GetTrigger() == 2)
+					wallTiles.push_back(&m_vTiles[i][j]);
 				j++;
 				pBaby = pBaby->NextSiblingElement();
 			}
@@ -153,8 +158,6 @@ bool CTileManager::Load(string fileName)
 			pChild = pChild->NextSiblingElement("tile_row");
 			
 		}
-
-		m_vTiles = vTiles;
 		pChild = pRoot->FirstChildElement("file_name")->NextSiblingElement("enemy_row");
 
 		
@@ -183,7 +186,7 @@ bool CTileManager::Load(string fileName)
 	
 		
 
-		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, vTiles);
+		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, m_vTiles);
 	}
 	else
 	{
@@ -224,6 +227,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 		{
 			if(m_vTiles[i][j].GetCollision() == false)
 				continue;
+
 			CEntity* pTarget =dynamic_cast<CEntity*>(pBase);
 	
 			RECT rOverLap = {}, rSelf = m_vTiles[i][j].GetRect(), rOther = pTarget->GetRect();
@@ -250,13 +254,13 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					{
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
-							CTile* pTile = dynamic_cast<CTile*>(&m_vTiles[i][j]);
-							CEventSystem::GetInstance()->SendUniqueEvent("arena",pTile);
+							RaiseWall();
+							m_vTiles[i][j].SetCollision(false);
 							break;
 						}
 
 						Camera *cam = Camera::GetInstance();
-						CPlayer* pPlayer =dynamic_cast<CPlayer*>(pBase);
+						CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
 
 						pPlayer->SetPosX(pPlayer->GetOldPos().fX);
 						pPlayer->SetPosY(pPlayer->GetOldPos().fY);
@@ -268,6 +272,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 				case OBJ_BULLET:
 					{
 						CBullet* pBullet =dynamic_cast<CBullet*>(pBase);
+						
 
 						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(pBullet);
 						CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -310,4 +315,14 @@ vector<ENEMY_INFO> CTileManager::GetEnemyInfo(void)
 vector<ENEMY_INFO> CTileManager::GetSpawnInfo(void)
 {
 	return m_pGraphics.GetSpawns();
+}
+
+void CTileManager::RaiseWall(void)
+{
+	int size = wallTiles.size();
+	for(int i = 0; i < size; i++)
+	{
+		CEventSystem::GetInstance()->SendEvent("wall_raise",wallTiles[i]);
+	}
+
 }

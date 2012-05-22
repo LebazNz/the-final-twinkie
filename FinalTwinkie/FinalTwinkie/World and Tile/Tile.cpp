@@ -1,15 +1,16 @@
 #include "Tile.h"
 
 #include "../Headers/Camera.h"
+#include "../Event and Messages/EventSystem.h"
 
 CTile::CTile(void)
 {
-	CEventSystem::GetInstance()->RegisterClient("arena",this);
+	
 	 m_nPosX = -1;
 	 m_nPosY = -1;
 	 m_bHasCollision = false;
 	 m_bHasSpawn = 0;
-     m_bHasTrigger = false;
+     m_bHasTrigger = 0;
 	 m_nIndex = -1;
 	 m_nWidth = -1;
 	 m_nHeight = -1;
@@ -18,11 +19,12 @@ CTile::CTile(void)
 
 CTile::~CTile(void)
 {
-	//CEventSystem::GetInstance()->UnregisterClient("arena",this);
+	CEventSystem::GetInstance()->UnregisterClient("wall_raise",this);
 }
 
 void CTile::CreateTile( int index,int nPosY,int nPosX, int width, int height, bool bHasCollision, int bHasSpawn, int bHasTrigger )
 {
+	CEventSystem::GetInstance()->RegisterClient("wall_raise",this);
 	m_nIndex = index;
 	m_nPosX = nPosX;
 	m_nPosY = nPosY;
@@ -50,15 +52,17 @@ RECT CTile::GetRect(void)
 	return m_rCollRect;
 }
 
-void CTile::HandleEvent(CEvent* pEvent)
+void CTile::HandleEvent(CEvent *pEvent)
 {
-	if(GetTrigger() == 1)
-		return;
-
+	
 	if(pEvent->GetParam() != this)
 		return;
 
-	if(pEvent->GetEventID() == "arena")
+
+	if(GetTrigger() != 2)
+		return;
+
+	if(pEvent->GetEventID() == "wall_raise")
 	{
 		SetCollision(true);
 	}

@@ -168,10 +168,10 @@ void CAnimationManager::Render()
 	int yOffSet =m_vpFrame[animframe]->GetAnchorY() - (m_vpFrame[animframe]->GetFrame().top   );
 
 	int x = m_vpFrame[animframe]->GetAnchorX();
-	CSGD_TextureManager::GetInstance()->Draw(m_pAV->m_vAnimationList[0]->GetImageID(),
+	/*CSGD_TextureManager::GetInstance()->Draw(m_pAV->m_vAnimationList[0]->GetImageID(),
 		(int)(100 - xOffSet + Camera::GetInstance()->GetPosX()),(int)(190 - yOffSet+ Camera::GetInstance()->GetPosY()),1.0f,1.0f,&m_vpFrame[animframe]->GetFrame(),
 		0.0f,0.0f,0.0f);
-	
+	*/
 	
 }
 

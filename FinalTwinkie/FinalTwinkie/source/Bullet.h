@@ -20,7 +20,7 @@ public:
 
 	float GetRotation(void) const { return m_fRotation; }
 	void SetRotation(float fRotation) { m_fRotation = fRotation; }
-
+	//virtual RECT GetRect(void);
 	virtual void HandleEvent(CEvent* pEvent);
 
 private:
