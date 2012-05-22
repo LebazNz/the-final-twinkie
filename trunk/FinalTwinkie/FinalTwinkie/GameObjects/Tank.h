@@ -20,6 +20,8 @@ public:
 	CTank(void);
 	~CTank(void);
 
+	CTurret* GetTurret(void)const{return m_pTurret;}
+
 private:
 	CTurret* m_pTurret;
 	float m_fRotationRate;

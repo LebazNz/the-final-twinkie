@@ -59,7 +59,7 @@ private:
 	bool m_bMoveUp;
 	bool m_bMoveDown;
 
-
+	float m_fFireRate;
 
 
 

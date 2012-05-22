@@ -20,6 +20,9 @@ public:
 
 	float GetRotation(void) const { return m_fRotation; }
 	void SetRotation(float fRotation) { m_fRotation = fRotation; }
+	void SetDamage(float fDamage){m_fDamage = fDamage;}
+
+	void SetScale(float fScale){m_fScale = fScale;}
 
 	virtual void HandleEvent(CEvent* pEvent);
 
@@ -29,5 +32,7 @@ private:
 	// flase	= enemy fired
 	bool m_bWhoFired;
 	float m_fRotation;
+	float m_fScale;
+	float m_fDamage;
 };
 #endif

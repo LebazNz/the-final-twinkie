@@ -122,6 +122,7 @@ void CGame::Shutdown(void)
 	CEventSystem::GetInstance()->DeleteInstance();
 	CBitmapFont::GetInstance()->DeleteInstance();
 	CLoadGameState::GetInstance()->DeleteInstance();
+	CStartState::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)

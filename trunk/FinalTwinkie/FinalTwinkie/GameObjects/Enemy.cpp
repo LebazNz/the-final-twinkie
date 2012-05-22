@@ -15,13 +15,14 @@ CEnemy::CEnemy(void)
 	m_nMainBulletType = BUL_SHELL;
 	m_nMachineGunBulletType = BUL_MACHINEGUN;
 	m_fFireRate = 0;
-	//CEventSystem::GetInstance()->RegisterClient("play_explode",this);
+	CEventSystem::GetInstance()->RegisterClient("explode",this);
 	SetHealth(3000);
+	m_bHasATurret = false;
 }
 
 CEnemy::~CEnemy(void)
 {
-	//CEventSystem::GetInstance()->UnregisterClient("play_explode",this);
+	CEventSystem::GetInstance()->UnregisterClient("explode",this);
 }
 
 void CEnemy::Update(float fDt)
@@ -88,7 +89,7 @@ void CEnemy::HandleEvent(CEvent* pEvent)
 	if(pEvent->GetParam() != this)
 		return;
 
-	if(pEvent->GetEventID() == "play_explode")
+	if(pEvent->GetEventID() == "explode")
 	{
 		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
 	}

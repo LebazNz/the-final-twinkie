@@ -31,6 +31,8 @@ public:
 	virtual void SetMainBulletType(int fMainBulletType) { m_nMainBulletType = fMainBulletType; }
 	virtual void SetMachineGunBulletType(int nMachineGunBulletType) { m_nMachineGunBulletType = nMachineGunBulletType; }
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
+	bool GetHasATuuert(void)const{return m_bHasATurret;}
+	void SetHasATurret(bool bTurret){m_bHasATurret = bTurret;}
 
 	void SetTail(CEmitter* Tail){m_pTail=Tail;}
 	CEmitter* GetTail(void){return m_pTail;}
@@ -43,6 +45,7 @@ private:
 	float	m_fFireRate;
 	int		m_nMainBulletType;
 	int		m_nMachineGunBulletType;
+	bool	m_bHasATurret;
 	
 	tVector2D m_v2OldPos;
 

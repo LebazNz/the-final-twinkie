@@ -46,6 +46,8 @@ void CTurret::Update(float fDt)
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			 }
+			  else
+				 m_fFireRate+=fDt;
 		}
 	}
 	else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)
@@ -109,6 +111,8 @@ void CTurret::Update(float fDt)
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			 }
+			 else
+				 m_fFireRate+=fDt;
 
 		}
 	}
@@ -138,7 +142,7 @@ void CTurret::Render(void)
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
 	else
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 
 CTurret::CTurret(void)
