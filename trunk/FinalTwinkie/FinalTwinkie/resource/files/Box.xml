@@ -4,7 +4,10 @@
 		<Number Number="90"></Number>
 		<Looping Looping="1"></Looping>
 		<Explosion Explosion="0"></Explosion>
-		<Life Life="1.0"></Life>
+		<Life>
+		 	<Max M="1.0"></Max>
+			<Min M=".01"></Min>
+		</Life>
 		<SpawnTime SpawnTime=".01"></SpawnTime>
 		<EmitterType Type="2"></EmitterType>
 		<Radius R="90"></Radius>

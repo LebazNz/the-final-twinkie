@@ -5,6 +5,7 @@
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
 #include <sstream>
+
 void CEmitter::CreateParticle(float fDt=0)
 {
 	if(m_nNumberParticles<=m_nMaxParticles)
@@ -18,8 +19,10 @@ void CEmitter::CreateParticle(float fDt=0)
 				{
 					float velocityX=(float)(((rand()%361)/180.0)-1.0);
 					float velocityY=(float)(((rand()%361)/180.0)-1.0);
+					float life=(float)(rand()/4294967294);
+					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
-					newPart->CreateParticle(m_fMaxLife,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					if(m_nNumberParticles>=m_nMaxParticles)
@@ -34,8 +37,10 @@ void CEmitter::CreateParticle(float fDt=0)
 				{
 					float velocityX=(float)(((rand()%361)/180.0)-1.0);
 					float velocityY=(float)(((rand()%361)/180.0)-1.0);
+					float life=(float)(rand()/4294967294);
+					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
-					newPart->CreateParticle(m_fMaxLife,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					m_fTimer=0;
@@ -60,8 +65,10 @@ void CEmitter::CreateParticle(float fDt=0)
 				}while(abs(posX)+abs(posY)>m_fRadius);
 				posX+=m_fStartPosX;
 				posY+=m_fStartPosY;
+				float life=float(rand()/4294967294);
+				life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 				CParticle* newPart=new CParticle();
-				newPart->CreateParticle(m_fMaxLife,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
+				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
 				m_vParticles.push_back(newPart);
 				m_nNumberParticles++;
 				m_fTimer=0;
@@ -81,8 +88,10 @@ void CEmitter::CreateParticle(float fDt=0)
 				float posY=rand()%(int)(m_fRadius*2)-m_fRadius;
 				posX+=m_fStartPosX;
 				posY+=m_fStartPosY;
+				float life=(float)(rand()/4294967294);
+				life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 				CParticle* newPart=new CParticle();
-				newPart->CreateParticle(m_fMaxLife,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
+				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
 				m_vParticles.push_back(newPart);
 				m_nNumberParticles++;
 				m_fTimer=0;
@@ -101,6 +110,7 @@ void CEmitter::CreateParticle(float fDt=0)
 void CEmitter::InitEmmitter(string szFile)
 {
 	TiXmlDocument doc(szFile.c_str());
+	doc.LoadFile();
 	if(doc.LoadFile())
 	{
 		TiXmlNode* pParent=doc.RootElement();
@@ -120,7 +130,10 @@ void CEmitter::InitEmmitter(string szFile)
 		pChild=pChild->NextSibling();
 		pChild->ToElement()->FirstAttribute()->IntValue()==1 ?m_bExplosion=true :m_bExplosion=false;
 		pChild=pChild->NextSibling();
-		m_fMaxLife=(float)pChild->ToElement()->FirstAttribute()->DoubleValue();
+		pSecond=pChild->FirstChild();
+		m_fMaxLife=(float)pSecond->ToElement()->FirstAttribute()->DoubleValue();
+		pSecond=pSecond->NextSibling();
+		m_fMinLife=(float)pSecond->ToElement()->FirstAttribute()->DoubleValue();
 		pChild=pChild->NextSibling();
 		m_fSpawnTimer=(float)pChild->ToElement()->FirstAttribute()->DoubleValue();
 		pChild=pChild->NextSibling();
@@ -195,35 +208,35 @@ void CEmitter::UpdateParticles(float fDt)
 
 		if(m_vParticles[i]->GetScale()>m_fMinScale)
 		{
-			m_vParticles[i]->SetScale(m_vParticles[i]->GetScale()-((m_fMaxScale-m_fMinScale)/m_fMaxLife)*fDt);
+			m_vParticles[i]->SetScale(m_vParticles[i]->GetScale()-((m_fMaxScale-m_fMinScale)/m_vParticles[i]->GetTotalLife())*fDt);
 		}
 
 		if(m_vParticles[i]->GetColor()!=m_dwEndColor)
 		{
 			D3DXCOLOR ParticleColor=m_vParticles[i]->GetColor();
-			ParticleColor.a-=((m_dwStartColor.a-m_dwEndColor.a)/m_fMaxLife)*fDt;
-			ParticleColor.r-=((m_dwStartColor.r-m_dwEndColor.r)/m_fMaxLife)*fDt;
-			ParticleColor.g-=((m_dwStartColor.g-m_dwEndColor.g)/m_fMaxLife)*fDt;
-			ParticleColor.b-=((m_dwStartColor.b-m_dwEndColor.b)/m_fMaxLife)*fDt;
+			ParticleColor.a-=((m_dwStartColor.a-m_dwEndColor.a)/m_vParticles[i]->GetTotalLife())*fDt;
+			ParticleColor.r-=((m_dwStartColor.r-m_dwEndColor.r)/m_vParticles[i]->GetTotalLife())*fDt;
+			ParticleColor.g-=((m_dwStartColor.g-m_dwEndColor.g)/m_vParticles[i]->GetTotalLife())*fDt;
+			ParticleColor.b-=((m_dwStartColor.b-m_dwEndColor.b)/m_vParticles[i]->GetTotalLife())*fDt;
 			m_vParticles[i]->SetColor(ParticleColor);
 		}
 
 		if(m_vParticles[i]->GetVelocityX()>0)
 		{
-			m_vParticles[i]->SetVelocityX(m_vParticles[i]->GetVelocityX()-((m_fMaxSpeedX-m_fMinSpeedX)/m_fMaxLife)*fDt);
+			m_vParticles[i]->SetVelocityX(m_vParticles[i]->GetVelocityX()-((m_fMaxSpeedX-m_fMinSpeedX)/m_vParticles[i]->GetTotalLife())*fDt);
 		}
 		if(m_vParticles[i]->GetVelocityX()<0)
 		{
-			m_vParticles[i]->SetVelocityX(m_vParticles[i]->GetVelocityX()+((m_fMaxSpeedX-m_fMinSpeedX)/m_fMaxLife)*fDt);
+			m_vParticles[i]->SetVelocityX(m_vParticles[i]->GetVelocityX()+((m_fMaxSpeedX-m_fMinSpeedX)/m_vParticles[i]->GetTotalLife())*fDt);
 		}
 
 		if(m_vParticles[i]->GetVelocityY()>0)
 		{
-			m_vParticles[i]->SetVelocityY(m_vParticles[i]->GetVelocityY()-((m_fMaxSpeedY-m_fMinSpeedY)/m_fMaxLife)*fDt);
+			m_vParticles[i]->SetVelocityY(m_vParticles[i]->GetVelocityY()-((m_fMaxSpeedY-m_fMinSpeedY)/m_vParticles[i]->GetTotalLife())*fDt);
 		}
 		if(m_vParticles[i]->GetVelocityY()<0)
 		{
-			m_vParticles[i]->SetVelocityY(m_vParticles[i]->GetVelocityY()+((m_fMaxSpeedY-m_fMinSpeedY)/m_fMaxLife)*fDt);
+			m_vParticles[i]->SetVelocityY(m_vParticles[i]->GetVelocityY()+((m_fMaxSpeedY-m_fMinSpeedY)/m_vParticles[i]->GetTotalLife())*fDt);
 		}
 
 		m_vParticles[i]->SetPosX((m_vParticles[i]->GetPosX()+m_vParticles[i]->GetVelocityX()));
