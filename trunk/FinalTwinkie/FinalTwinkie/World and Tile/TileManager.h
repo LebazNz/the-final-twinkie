@@ -15,6 +15,9 @@ class CTileManager
 	CSGD_TextureManager* m_pTM;
 	vector<ENEMY_INFO> m_vEnemies;
 	vector<vector<CTile>> m_vTiles;
+	vector<CTile*> wallTiles;
+
+	void RaiseWall(void);
 	
 	CTileManager(void);
 	CTileManager(const CTileManager&);

@@ -6,6 +6,7 @@
 #include "DestroyEnemyMessage.h"
 #include "OptionsState.h"
 #include "Camera.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -95,6 +96,8 @@ void CBullet::Render(void)
 	if(GetImageID() != -1)
 	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 0.75f, 0.75f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
-		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+		//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+		CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 	}
 }

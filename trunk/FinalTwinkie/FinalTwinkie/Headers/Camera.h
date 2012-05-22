@@ -1,7 +1,8 @@
 #ifndef CAM_H
 #define CAM_H
 
-#include "../GameObjects/Player.h"'
+#include "../GameObjects/Player.h"
+
 #include "../SGD Wrappers/SGD_Math.h"
 
 

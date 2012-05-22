@@ -1,7 +1,7 @@
 #include "Layer.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../Headers/Camera.h"
-
+#include "../Headers/Game.h"
 CLayer::CLayer(void)
 {
 }
@@ -29,6 +29,7 @@ void CLayer::RenderLayer(int imageID)
 {
 	CSGD_TextureManager *m_pTM = CSGD_TextureManager::GetInstance();
 	Camera* cam = Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
 
 	for(int i = 0; i < m_nMapHeight; i++)
 	{
@@ -36,13 +37,16 @@ void CLayer::RenderLayer(int imageID)
 		for(int j = 0; j < m_nMapWidth; j++)
 		{
 			
-			int x = m_vTiles[i][j].GetPosX();
-			int y = m_vTiles[i][j].GetPosY();
+			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
+			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
 			int index = m_vTiles[i][j].GetIndex();
 			RECT src = {};
 			src = CellAlgorithm(index);
 			
-			m_pTM->Draw(imageID,x+cam->GetPosX(),y+cam->GetPosY(),1.0f,1.0f,&src);
+			if(x >= -32 && x <= pGame->GetWidth() && y >= -32 && y <=  pGame->GetHeight())
+				m_pTM->Draw(imageID,m_vTiles[i][j].GetPosX()+(int)cam->GetPosX(),m_vTiles[i][j].GetPosY()+(int)cam->GetPosY(),1.0f,1.0f,&src);
+			else
+				continue;
 
 			if(m_vTiles[i][j].GetCollision() == true)
 			{
