@@ -38,6 +38,7 @@ private:
 	int						m_nBGImageID;
 	int						m_nPosition;
 	int						m_nCount;
+	int						m_nButtonImageID;
 
 	Data vSavedData[3];
 

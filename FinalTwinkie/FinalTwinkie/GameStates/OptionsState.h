@@ -15,6 +15,7 @@ public:
 	virtual void Render(void);	
 	float GetSFXVolume(void)const {return m_fSFXVolume;}
 	float GetMusicVolume(void)const {return m_fMusicVolume;}
+	int GetLang(void)const{return m_nLang;}
 	void SetMusicVolume(int nMusic) { m_fMusicVolume = nMusic/100.0f;}
 	void SetSFXVolume(int nSFX) { m_fSFXVolume = nSFX/100.0f;}
 	void SetLang(int nLang) {m_nLang = nLang; }
@@ -43,6 +44,7 @@ private:
 	float					m_fSFXVolume;
 	float					m_fMusicVolume;
 	bool					m_bWindowed;
+	int						m_nButtonID;
 
 	int m_nMouseX;
 	int m_nMouseY;

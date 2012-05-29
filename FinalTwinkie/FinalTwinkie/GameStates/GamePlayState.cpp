@@ -26,6 +26,9 @@
 #include "../GameObjects/Sapper.h"
 #include "../GameObjects/Tank.h"
 #include "../Particle/Emitter.h"
+#include "../PickUps and Specials/Pickup.h"
+#include "../Event and Messages/CreatePickupMessage.h"
+#include "../Event and Messages/DestroyPickupMessage.h"
 
 #include "../tinyxml/tinyxml.h"
 
@@ -79,6 +82,16 @@ CGamePlayState::CGamePlayState(void)
 	m_nCursor = -1;
 	m_nMouseX = 0;
 	m_nMouseY = 0;
+	m_nButtonImageID=-1;
+
+	m_nPickupHealthID = -1;
+	m_nPickupAmmoID = -1;
+	m_nPickupArmorID = -1;
+	m_nPickupDoubleDID = -1;
+	m_nPickupNoReloadID = -1;
+	m_nPickupInvuID = -1;
+	m_nPickupInfAmmoID = -1;
+	m_nPickupMoneyID = -1;
 }
 
 CGamePlayState::~CGamePlayState(void)
@@ -122,6 +135,16 @@ void CGamePlayState::Enter(void)
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
 		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
+		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+
+		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
+		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
+		m_nPickupArmorID = m_pTM->LoadTexture(_T("resource/graphics/ArmorPickUp.png"));
+		m_nPickupDoubleDID = m_pTM->LoadTexture(_T("resource/graphics/DoubleDamagePickUp.png"));
+		m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
+		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
+		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
+		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -132,6 +155,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CTurret>("CTurret");
 		m_pOF->RegisterClassType<CTank>("CTank");
 		m_pOF->RegisterClassType<CSapper>("CSapper");
+		m_pOF->RegisterClassType<CPickup>("CPickup");
 	
 		m_pPlayer=m_pOF->CreateObject("CPlayer");
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -237,6 +261,12 @@ void CGamePlayState::Exit(void)
 			m_pPlayer = nullptr;
 		}
 
+		if(m_nButtonImageID != -1)
+		{
+			m_pTM->UnloadTexture(m_nButtonImageID);
+			m_nButtonImageID = -1;
+		}
+
 		if(m_pEnemy != nullptr)
 		{
 			m_pEnemy->Release();
@@ -253,6 +283,54 @@ void CGamePlayState::Exit(void)
 		{
 			m_pTM->UnloadTexture(m_nPlayerID);
 			m_nPlayerID = -1;
+		}
+
+		if(m_nPickupHealthID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupHealthID);
+			m_nPickupHealthID = -1;
+		}
+
+		if(m_nPickupAmmoID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupAmmoID);
+			m_nPickupAmmoID = -1;
+		}
+
+		if(m_nPickupArmorID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupArmorID);
+			m_nPickupArmorID = -1;
+		}
+
+		if(m_nPickupDoubleDID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupDoubleDID);
+			m_nPickupDoubleDID = -1;
+		}
+
+		if(m_nPickupNoReloadID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupNoReloadID);
+			m_nPickupNoReloadID = -1;
+		}
+
+		if(m_nPickupInvuID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupInvuID);
+			m_nPickupInvuID = -1;
+		}
+
+		if(m_nPickupInfAmmoID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupInfAmmoID);
+			m_nPickupInfAmmoID = -1;
+		}
+
+		if(m_nPickupMoneyID != -1)
+		{
+			m_pTM->UnloadTexture(m_nPickupMoneyID);
+			m_nPickupMoneyID = -1;
 		}
 
 		for(int i = 0; i < 16; ++i)
@@ -452,43 +530,47 @@ void CGamePlayState::Render(void)
 	if(m_bPaused)
 	{
 		CBitmapFont* font = CBitmapFont::GetInstance();
-		font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
+		font->Init(COptionsState::GetInstance()->GetLang());
 
 
-		float fScale1, fScale2, fScale3;
+		DWORD fScale1, fScale2, fScale3;
 		switch(m_nPosition)
 		{
 		case 0:
-			fScale1 = 1.0f;
-			fScale2 = 0.75f;
-			fScale3 = 0.75f;
+			fScale1 = D3DCOLOR_XRGB(177,132,0);
+			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			fScale3 = D3DCOLOR_XRGB(255,255,255);
 			
 			break;
 		case 1:
-			fScale1 = 0.75f;
-			fScale2 = 1.0f;
-			fScale3 = 0.75f;
+			fScale1 = D3DCOLOR_XRGB(255,255,255);
+			fScale2 = D3DCOLOR_XRGB(177,132,0);
+			fScale3 = D3DCOLOR_XRGB(255,255,255);
 			
 			break;
 		case 2:
-			fScale1 = 0.75f;
-			fScale2 = 0.75f;
-			fScale3 = 1.0f;
+			fScale1 = D3DCOLOR_XRGB(255,255,255);
+			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			fScale3 = D3DCOLOR_XRGB(177,132,0);
 			
 			break;
 		}
+		m_pD3D->GetSprite()->Flush();
+		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2-10,0.75f,0.75f,nullptr,0,0,0,fScale1);
+		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2+40,0.75f,0.75f,nullptr,0,0,0,fScale2);
+		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2+90,0.75f,0.75f,nullptr,0,0,0,fScale3);
 
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,1.5f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(255,255,255));
-		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+50,fScale2,D3DCOLOR_XRGB(255,255,255));
-		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(255,255,255));
+		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(255,255,255));
+		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		fScale1);
+		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	fScale2);
+		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	fScale3);
 	
 	}
 
 	
 	CBitmapFont* font = CBitmapFont::GetInstance();
-	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
+	font->Init(COptionsState::GetInstance()->GetLang());
 
 	font->Print(m_dGameData.szName,25,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 
@@ -502,6 +584,9 @@ void CGamePlayState::Render(void)
 	_itoa_s(m_dGameData.nMoney,buffer,10);
 	font->Print("Money",400,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	font->Print(buffer,400,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(m_pPlayer->GetHealth(),buffer,10);
+	font->Print("HP",550,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,550,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
@@ -672,6 +757,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
+
+			int nRandNum = rand()%16;
+			if(nRandNum <= 7)
+			{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			}
+
 			pSelf->m_pOM->RemoveObject(pEnemy);
 		}
 		break;
@@ -679,6 +773,86 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			CTurret* pTurret = dynamic_cast<CDestroyTurretMessage*>(pMsg)->GetTurret();
 			pSelf->m_pOM->RemoveObject(pTurret);
+		}
+		break;
+	case MSG_CREATEPICKUP:
+		{
+			CEntity* pEntity = pSelf->m_pOF->CreateObject("CPickup");
+			CPickup* pPickup = dynamic_cast<CPickup*>(pEntity);
+			CCreatePickupMessage* pMessage = dynamic_cast<CCreatePickupMessage*>(pMsg);
+			pPickup->SetWidth(32);
+			pPickup->SetHeight(32);
+			switch(pMessage->GetPickUpType())
+			{
+			case 0:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupHealthID);
+					pPickup->SetGiven(50);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 1:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupAmmoID);
+					pPickup->SetGiven(50);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 2:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupArmorID);
+					pPickup->SetGiven(50);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 3:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupDoubleDID);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 4:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupNoReloadID);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 5:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupInvuID);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 6:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupInfAmmoID);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			case 7:
+				{
+					pPickup->SetImageID(pSelf->m_nPickupMoneyID);
+					pPickup->SetGiven(50);
+					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				}
+				break;
+			}
+
+			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
+			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
+
+			pPickup->SetAliveTime(5.0f);
+
+			pSelf->m_pOM->AddObject(pPickup);
+
+			pPickup->Release();
+			pPickup = nullptr;
+		}
+		break;
+	case MSG_DESTROYPICKUP:
+		{
+			CPickup* pPickup = dynamic_cast<CDestroyPickupMessage*>(pMsg)->GetPickUp();
+			pSelf->m_pOM->RemoveObject(pPickup);
 		}
 		break;
 	};

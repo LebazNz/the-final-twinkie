@@ -4,7 +4,7 @@
 
 
 CDestroyPickupMessage::CDestroyPickupMessage(CPickup* pPickup)
-	: CMessage(MSG_DESTROYBULLET),
+	: CMessage(MSG_DESTROYPICKUP),
 	  m_pPickup(pPickup)
 {
 	// Add ref to smart pointer

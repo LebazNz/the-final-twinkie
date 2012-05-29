@@ -80,7 +80,16 @@ private:
 
 	int m_nMouseX;
 	int m_nMouseY;
+	int	m_nButtonImageID;
 
+	int m_nPickupHealthID;
+	int m_nPickupAmmoID;
+	int m_nPickupArmorID;
+	int m_nPickupDoubleDID;
+	int m_nPickupNoReloadID;
+	int m_nPickupInvuID;
+	int m_nPickupInfAmmoID;
+	int m_nPickupMoneyID;
 };
 
 #endif

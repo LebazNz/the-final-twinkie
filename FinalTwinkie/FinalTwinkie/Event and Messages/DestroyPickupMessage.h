@@ -10,7 +10,7 @@ class CDestroyPickupMessage : public CMessage
 public:
 	CDestroyPickupMessage(CPickup* pPickup);
 	virtual ~CDestroyPickupMessage(void);
-
+	CPickup* GetPickUp(void) {return m_pPickup; }
 
 private:
 	CPickup* m_pPickup;

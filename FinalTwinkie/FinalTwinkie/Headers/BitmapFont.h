@@ -14,8 +14,9 @@ public:
 	static CBitmapFont* GetInstance(void);
 	static void DeleteInstance(void);
 	void Print(const char* szText, int nPosX, int nPosY,float fScale, DWORD dwColor);
-	void Init(string filename, float width, float height, int rows, int cols, float fOffset, char character);
+	void Init(int nType);
 	RECT CellAlgorithm(int id);
+	void SetOffset(int ch);
 
 private:
 	CBitmapFont(void);
@@ -32,6 +33,9 @@ private:
 	float m_nStartWidth;
 	float m_nEndWidth;
 	char m_cFirstChar;
+	int m_nType;
+	float m_fScale;
+	int m_nX;
 
 	static CBitmapFont*	m_pSelf;
 };
