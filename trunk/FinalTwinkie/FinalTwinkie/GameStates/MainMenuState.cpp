@@ -36,6 +36,8 @@ CMainMenuState::CMainMenuState(void)
 	m_nSelected = 0;
 	
 	m_nBGImageID = -1;
+	m_nNameImageID = -1;
+	m_nButtonImageID = -1;
 	m_nPosition = 0;
 	m_nPointerID = -1;
 	m_nSFXVolume = -1;
@@ -60,9 +62,11 @@ void CMainMenuState::Enter(void)
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
 
-	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/logo_game.png"));
+	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/Menu_Screen.png"));
+	m_nNameImageID = m_pTM->LoadTexture(_T("resource/graphics/logo_game.png"));
 	m_nPointerID = m_pTM->LoadTexture(_T("resource/graphics/SGD_MenuCursor.png"),D3DCOLOR_XRGB(255,0,255));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	
 	LoadOptions("options.txt");
 
@@ -81,6 +85,18 @@ void CMainMenuState::Exit(void)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);
 		m_nBGImageID = -1;
+	}
+
+	if(m_nNameImageID != -1)
+	{
+		m_pTM->UnloadTexture(m_nNameImageID);
+		m_nNameImageID = -1;
+	}
+
+	if(m_nButtonImageID != -1)
+	{
+		m_pTM->UnloadTexture(m_nButtonImageID);
+		m_nButtonImageID = -1;
 	}
 
 	if(m_nPointerID != -1)
@@ -188,22 +204,22 @@ void CMainMenuState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX()-16;
 	m_nMouseY = m_pDI->MouseGetPosY()-16;
 
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
+	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 295 && m_nMouseY <= 340)
 	{
 		m_nPosition = 0;
 	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
+	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 340 && m_nMouseY <= 390)
 	{
 		m_nPosition = 1;
 	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
+	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 390 && m_nMouseY <= 435)
 	{
 		m_nPosition = 2;
 	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
+	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 435 && m_nMouseY <= 480)
 	{
 		m_nPosition = 3;
@@ -215,47 +231,58 @@ void CMainMenuState::Render(void)
 	m_pD3D->Clear( 69, 69, 69 );
 
 	CBitmapFont* font = CBitmapFont::GetInstance();
-	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
+	font->Init(COptionsState::GetInstance()->GetLang());
 
 
-	float fScale1, fScale2, fScale3, fScale4;
+	DWORD fScale1, fScale2, fScale3, fScale4;
 	switch(m_nPosition)
 	{
 	case 0:
-		fScale1 = 1.0f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(177,132,0);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 1:
-		fScale1 = 0.75f;
-		fScale2 = 1.0f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(177,132,0);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 2:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 1.0f;
-		fScale4 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(177,132,0);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 3:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 1.0f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(177,132,0);
+		break;
+	default:
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	}
 
-	m_pTM->Draw(m_nBGImageID,-50,50,0.85f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
+	m_pTM->Draw(m_nNameImageID,-50,50,0.85f,0.75f,nullptr,0,0,0);
+	m_pTM->Draw(m_nButtonImageID,75,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
+	m_pTM->Draw(m_nButtonImageID,75,CGame::GetInstance()->GetHeight()/2+45,0.75f,0.75f,nullptr,0,0,0,fScale2);
+	m_pTM->Draw(m_nButtonImageID,75,CGame::GetInstance()->GetHeight()/2+95,0.75f,0.75f,nullptr,0,0,0,fScale3);
+	m_pTM->Draw(m_nButtonImageID,75,CGame::GetInstance()->GetHeight()/2+145,0.75f,0.75f,nullptr,0,0,0,fScale4);
+	
 	
 	m_pD3D->GetSprite()->Flush();
 
-	font->Print("Play",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2,fScale1,D3DCOLOR_XRGB(0,255,0));
-	font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+50,fScale2,D3DCOLOR_XRGB(0,255,0));
-	font->Print("Credits",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+100,fScale3,D3DCOLOR_XRGB(0,255,0));
-	font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-70,CGame::GetInstance()->GetHeight()/2+150,fScale4,D3DCOLOR_XRGB(0,255,0));
+	font->Print("Play",125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(255,255,255));
+	font->Print("Options",110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(255,255,255));
+	font->Print("Credits",110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(255,255,255));
+	font->Print("Exit",125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(255,255,255));
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
@@ -266,6 +293,9 @@ void CMainMenuState::Render(void)
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
 	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+	m_pD3D->GetSprite()->Flush();
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }
 
 bool CMainMenuState::LoadOptions(const char* szFileName)

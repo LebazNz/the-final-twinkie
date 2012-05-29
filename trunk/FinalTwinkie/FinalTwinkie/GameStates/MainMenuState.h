@@ -33,6 +33,8 @@ private:
 	int								m_nSelected;
 
 	int								m_nBGImageID;
+	int								m_nNameImageID;
+	int								m_nButtonImageID;
 	int								m_nPosition;
 	int								m_nPointerID;
 	int								m_nSFXVolume;

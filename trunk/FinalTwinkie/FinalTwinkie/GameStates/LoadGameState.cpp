@@ -3,6 +3,7 @@
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
 #include "GamePlayState.h"
+#include "OptionsState.h"
 
 #include <iostream>
 using namespace std;
@@ -40,6 +41,7 @@ CLoadGameState::CLoadGameState(void)
 	m_nMouseX = 0;
 	m_nMouseY = 0;
 	m_nCursor = -1;
+	m_nButtonImageID =-1;
 }
 
 CLoadGameState::~CLoadGameState(void)
@@ -54,9 +56,11 @@ void CLoadGameState::Enter(void)
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
 
-	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/load_screen.png"),D3DCOLOR_XRGB(255,0,255));
+	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-	
+	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+
+
 	for(int i = 0; i < 3; ++i)
 		vSavedData[i] = data;
 
@@ -79,6 +83,11 @@ void CLoadGameState::Exit(void)
 		m_nBGImageID = -1;
 	}
 
+	if(m_nButtonImageID != -1)
+	{
+		m_pTM->UnloadTexture(m_nButtonImageID);
+		m_nButtonImageID = -1;
+	}
 	
 	if(m_nCursor != -1)
 	{
@@ -448,123 +457,166 @@ void CLoadGameState::Update(float fDt)
 void CLoadGameState::Render(void)
 {
 	CBitmapFont* font = CBitmapFont::GetInstance();
-	font->Init("resource/graphics/Font.png",43,32,9,11,20,' ');
-
-	m_pTM->Draw(m_nBGImageID,0,0,0.85f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
-	
+	font->Init(COptionsState::GetInstance()->GetLang());
+	RECT rSelf = { };
+	SetRect(&rSelf, 0, 0, 800, 600);
+	m_pTM->Draw(m_nBGImageID,0,0,1.0f,1.0f,&rSelf,0,0,0);
+		
 	m_pD3D->GetSprite()->Flush();
 
-	char pos[10];
-	_itoa_s(m_nPosition,pos,10);
+	//char pos[10];
+	//_itoa_s(m_nPosition,pos,10);
 
-	font->Print(pos,50,50,0.75f,D3DCOLOR_XRGB(255,0,0));
+	//font->Print(pos,50,50,0.75f,D3DCOLOR_XRGB(255,0,0));
 
-	float fScale1, fScale2, fScale3, fScale4, fScale5, fScale6;
+	DWORD fScale1, fScale2, fScale3, fScale4, fScale5, fScale6;
 	switch(m_nPosition)
 	{
 	case 0:
-		fScale1 = 1.0f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
-		fScale5 = 0.75f;
-		fScale6 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(177,132,0);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
+		fScale5 = D3DCOLOR_XRGB(255,255,255);
+		fScale6 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 1:
-		fScale1 = 0.75f;
-		fScale2 = 1.0f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
-		fScale5 = 0.75f;
-		fScale6 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(177,132,0);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
+		fScale5 = D3DCOLOR_XRGB(255,255,255);
+		fScale6 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 2:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 1.0f;
-		fScale4 = 0.75f;
-		fScale5 = 0.75f;
-		fScale6 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(177,132,0);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
+		fScale5 = D3DCOLOR_XRGB(255,255,255);
+		fScale6 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 3:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 1.0f;
-		fScale5 = 0.75f;
-		fScale6 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(177,132,0);
+		fScale5 = D3DCOLOR_XRGB(255,255,255);
+		fScale6 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 4:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
-		fScale5 = 1.0f;
-		fScale6 = 0.75f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
+		fScale5 = D3DCOLOR_XRGB(177,132,0);
+		fScale6 = D3DCOLOR_XRGB(255,255,255);
 		break;
 	case 5:
-		fScale1 = 0.75f;
-		fScale2 = 0.75f;
-		fScale3 = 0.75f;
-		fScale4 = 0.75f;
-		fScale5 = 0.75f;
-		fScale6 = 1.0f;
+		fScale1 = D3DCOLOR_XRGB(255,255,255);
+		fScale2 = D3DCOLOR_XRGB(255,255,255);
+		fScale3 = D3DCOLOR_XRGB(255,255,255);
+		fScale4 = D3DCOLOR_XRGB(255,255,255);
+		fScale5 = D3DCOLOR_XRGB(255,255,255);
+		fScale6 = D3DCOLOR_XRGB(177,132,0);
 		break;
 	}
 
 	if(vSavedData[0].nLevel == 0)
-		font->Print("New Game",50,500,fScale1,D3DCOLOR_XRGB(255,0,0));
+	{
+		SetRect(&rSelf, 30, 630, 175, 940);
+		m_pTM->Draw(m_nBGImageID,75,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,65,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("New Game",80,480,1.0f,fScale1);
+	}
 	else
 	{
-		font->Print("Save 1",50,500,fScale1,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Delete",50,550,fScale4,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[0].szName,50,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		SetRect(&rSelf, 210, 630, 360, 940);
+		m_pTM->Draw(m_nBGImageID,75,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,65,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
+		m_pTM->Draw(m_nButtonImageID,63,520,0.75f,0.75f,nullptr,0,0,0,fScale4);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("Save 1",100,480,1.0f,fScale1);
+		font->Print("Delete",100,525,1.0f,fScale4);
+		font->Print("Name:",80,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Level:",80,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Money:",80,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[0].szName,150,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[0].nLevel,buffer,10);
-		font->Print(buffer,50,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,150,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		_itoa_s(vSavedData[0].nMoney,buffer,10);
-		font->Print(buffer,50,300,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,150,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	if(vSavedData[1].nLevel == 0)
-		font->Print("New Game",300,500,fScale2,D3DCOLOR_XRGB(255,0,0));
+	{
+
+		SetRect(&rSelf, 30, 630, 175, 940);
+		m_pTM->Draw(m_nBGImageID,327,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,317,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("New Game",332,480,1.0f,fScale2);
+	}
 	else
 	{
-		float fScale;
-		if(vSavedData[0].nLevel == 0)
-			fScale = fScale4;
-		else
-			fScale = fScale5;
-		font->Print("Save 2",300,500,fScale2,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Delete",300,550,fScale,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[1].szName,300,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		SetRect(&rSelf, 210, 630, 360, 940);
+		m_pTM->Draw(m_nBGImageID,327,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,317,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
+		m_pTM->Draw(m_nButtonImageID,315,520,0.75f,0.75f,nullptr,0,0,0,fScale5);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("Save 2",352,480,1.0f,fScale2);
+		font->Print("Delete",352,525,1.0f,fScale5);
+		font->Print("Name:",332,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Level:",332,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Money:",332,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[1].szName,402,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[1].nLevel,buffer,10);
-		font->Print(buffer,300,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,402,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		_itoa_s(vSavedData[1].nMoney,buffer,10);
-		font->Print(buffer,300,300,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,402,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	if(vSavedData[2].nLevel == 0)
-		font->Print("New Game",600,500,fScale3,D3DCOLOR_XRGB(255,0,0));
+	{
+		SetRect(&rSelf, 30, 630, 175, 940);
+		m_pTM->Draw(m_nBGImageID,580,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,570,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("New Game",585,480,1.0f,fScale3);
+	}
 	else
 	{
-		float fScale;
-		if(vSavedData[0].nLevel == 0 && vSavedData[1].nLevel == 0)
-			fScale = fScale4;
-		else if(vSavedData[1].nLevel == 0)
-			fScale = fScale5;
-		else
-			fScale = fScale6;
-		font->Print("Save 3",600,500,fScale3,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Delete",600,550,fScale,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[2].szName,600,250,0.75f,D3DCOLOR_XRGB(255,0,0));
+		SetRect(&rSelf, 210, 630, 360, 940);
+		m_pTM->Draw(m_nBGImageID,580,53,1.0f,1.0f,&rSelf,0,0,0);
+		SetRect(&rSelf, 467, 638, 631, 760);
+		m_pTM->Draw(m_nBGImageID,570,350,1.0f,1.0f,&rSelf,0,0,0);
+		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
+		m_pTM->Draw(m_nButtonImageID,568,520,0.75f,0.75f,nullptr,0,0,0,fScale6);
+		m_pD3D->GetSprite()->Flush();
+		font->Print("Save 3",605,480,1.0f,fScale3);
+		font->Print("Delete",605,525,1.0f,fScale6);
+		font->Print("Name:",585,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Level:",585,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print("Money:",585,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(vSavedData[2].szName,655,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[2].nLevel,buffer,10);
-		font->Print(buffer,600,275,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,655,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		_itoa_s(vSavedData[2].nMoney,buffer,10);
-		font->Print(buffer,600,300,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(buffer,655,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	char buffer[10];
@@ -576,6 +628,9 @@ void CLoadGameState::Render(void)
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
 	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+
 
 }
 
