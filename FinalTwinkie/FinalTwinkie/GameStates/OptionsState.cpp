@@ -63,8 +63,8 @@ void COptionsState::Enter(void)
 	m_nButtonID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 
 
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 }
 
 void COptionsState::Exit(void)
@@ -338,8 +338,8 @@ bool COptionsState::Input(void)
 
 void COptionsState::Update(float fDt)
 {
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
 	if((m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 240 && m_nMouseY <= 280)||

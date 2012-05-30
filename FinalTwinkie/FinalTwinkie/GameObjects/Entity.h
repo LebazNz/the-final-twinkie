@@ -51,6 +51,14 @@ public:
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 	virtual void AddEmitter(int nEmitter){ m_vEmitters.push_back(nEmitter);  }
 
+	virtual float GetArmor(void)const { return m_fArmor; }
+	virtual float GetMaxArmor(void)const { return m_fMaxArmor; }
+	virtual void SetArmor(float fArmor) { m_fArmor = fArmor; }
+	virtual void SetMaxArmor(float fArmor) { m_fMaxArmor = fArmor; }
+
+	virtual float GetMaxHealth(void) { return m_fMaxHealth; }
+	virtual void SetMaxHealth(float fHealth) { m_fMaxHealth = fHealth; }
+
 private:
 	// Position
 	float m_fPosX;
@@ -67,6 +75,9 @@ private:
 	// Health
 	float m_fHealth;
 	float m_fMaxHealth;	
+	// Armor
+	float m_fArmor;
+	float m_fMaxArmor;
 	// Reference Counter
 	int m_nRefCount;
 
