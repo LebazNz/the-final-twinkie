@@ -100,7 +100,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				{
 					CBuilding* pBuilding = dynamic_cast<CBuilding*>(pBase);
 					pBuilding->TakeDamage((int)this->m_fDamage);
-					if(pBuilding->GetHealth()<0)
+					if(pBuilding->GetHealth()<=0)
 					{
 						CDestroyBuildingMessage* pMst=new CDestroyBuildingMessage(pBuilding);
 						CMessageSystem::GetInstance()->SndMessage(pMst);

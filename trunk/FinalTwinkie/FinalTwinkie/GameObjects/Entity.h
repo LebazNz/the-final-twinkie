@@ -38,6 +38,9 @@ public:
 	virtual int GetHeight(void) { return m_nHeight; }
 	virtual int GetColor(void) { return m_nColor; }
 	virtual float GetHealth(void) { return m_fHealth; }
+	virtual float GetArmor(void) {return m_fArmor;}
+	virtual float GetMaxHealth(void) {return m_fMaxHealth;}
+	virtual float GetMaxArmor(void) {return m_fMaxArmor;}
 
 	virtual void SetPosX(float fPosX) {m_fPosX = fPosX; }
 	virtual void SetPosY(float fPosY) {m_fPosY = fPosY; }
@@ -47,17 +50,13 @@ public:
 	virtual void SetHeight(int nHeight) {m_nHeight = nHeight; }
 	virtual void SetColor(int nColor) {m_nColor = nColor; }
 	virtual void SetHealth(float fHealth) { m_fHealth = fHealth; }
+	virtual void SetArmor(float fArmor) {m_fArmor=fArmor;}
+	virtual void SetMaxHealth(float fHealth) {m_fMaxHealth = fHealth;}
+	virtual void SetMaxArmor(float fArmor) { m_fMaxArmor = fArmor; }
 
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 	virtual void AddEmitter(int nEmitter){ m_vEmitters.push_back(nEmitter);  }
-
-	virtual float GetArmor(void)const { return m_fArmor; }
-	virtual float GetMaxArmor(void)const { return m_fMaxArmor; }
-	virtual void SetArmor(float fArmor) { m_fArmor = fArmor; }
-	virtual void SetMaxArmor(float fArmor) { m_fMaxArmor = fArmor; }
-
-	virtual float GetMaxHealth(void) { return m_fMaxHealth; }
-	virtual void SetMaxHealth(float fHealth) { m_fMaxHealth = fHealth; }
+	
 
 private:
 	// Position
@@ -74,8 +73,8 @@ private:
 	int m_nColor;
 	// Health
 	float m_fHealth;
-	float m_fMaxHealth;	
-	// Armor
+	float m_fMaxHealth;
+	//Armor
 	float m_fArmor;
 	float m_fMaxArmor;
 	// Reference Counter

@@ -151,8 +151,8 @@ bool CMainMenuState::Input(void)
 	{
 		if(m_nPosition == 0)
 		{
-			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
 			CGame::GetInstance()->my_channel->stop();
+			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
 			playing=false;
 			return true;
 		}
@@ -175,8 +175,8 @@ bool CMainMenuState::Input(void)
 	{
 		if(m_nPosition == 0)
 		{
-			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
 			CGame::GetInstance()->my_channel->stop();
+			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
 			playing=false;
 			return true;
 		}
