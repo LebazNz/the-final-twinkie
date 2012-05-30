@@ -32,6 +32,7 @@
 #include "../Event and Messages/CreatePickupMessage.h"
 #include "../Event and Messages/DestroyPickupMessage.h"
 #include "../tinyxml/tinyxml.h"
+#include "../Headers/GUI.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -114,6 +115,7 @@ void CGamePlayState::Enter(void)
 		m_pTile = CTileManager::GetInstance();
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
+		m_pGUI = CGUI::GetInstance();
 
 		for(int i = 0; i < 16; ++i)
 		{
@@ -138,6 +140,7 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -169,7 +172,9 @@ void CGamePlayState::Enter(void)
 		player->SetVelX(90);
 		player->SetVelY(90);
 		player->SetHealth(250);
-		player->SetMaxHealth(500);
+		player->SetMaxHealth(250);
+		player->SetArmor(50);
+		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
 		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
 		m_pOM->AddObject(player);
@@ -256,14 +261,18 @@ void CGamePlayState::Enter(void)
 
 		building->Release();
 
+		m_pGUI->SetHudID(m_anEnemyIDs[3]);
+		m_pGUI->SetPlayer(player);
+
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
 		m_pTile->Load("resource/files/graphic_layer.xml");
+
+		player->SetMoney(m_dGameData.nMoney);
 	}
 	m_nMouseX = m_pDI->MouseGetPosX()-16;
 	m_nMouseY = m_pDI->MouseGetPosY()-16;
 
-	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
 }
 
 void CGamePlayState::Exit(void)
@@ -399,13 +408,16 @@ void CGamePlayState::Exit(void)
 			m_pTile = nullptr;
 		}
 		m_AM	= nullptr;
-
 		if(m_pPlayer!=nullptr)
 		{
 			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
 		}
 		CGame::GetInstance()->my_channel->stop();
-
+		if(m_pGUI!=nullptr)
+		{
+			m_pGUI->DeleteInstance();
+			m_pGUI=nullptr;
+		}
 	}
 	
 }
@@ -517,7 +529,6 @@ void CGamePlayState::Update(float fDt)
 
 		m_pES->ProcessEvents();
 		m_pMS->ProcessMessages();
-
 	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -553,7 +564,7 @@ void CGamePlayState::Render(void)
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();	
 	m_PM->RenderEverything();
-
+	m_pGUI->Render();
 
 	if(m_bPaused)
 	{
@@ -606,22 +617,6 @@ void CGamePlayState::Render(void)
 	_itoa_s(m_dGameData.nLevel,buffer,10);
 	font->Print("Level",150,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	font->Print(buffer,150,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_dGameData.nShellAmmo,buffer,10);
-	font->Print("Ammo",275,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,275,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_dGameData.nMoney,buffer,10);
-	font->Print("Money",400,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,400,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_pPlayer->GetHealth(),buffer,10);
-	font->Print("HP",550,75,0.75f,D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,550,100,0.75f,D3DCOLOR_XRGB(255,255,255));
-
-	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
-	_itoa_s(player->GetHeat(), buffer, 10);
-
-	font->Print("Heat",525 ,25,0.75f, D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,500,50, 0.75f, D3DCOLOR_XRGB(255,255,255));
-	font->Print(" / 100", 550, 50, 0.75, D3DCOLOR_XRGB(255,255,255));
 
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
@@ -648,7 +643,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{
-					if(pSelf->m_dGameData.nShellAmmo > 0)
+					CPlayer* player=dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
+					if(player->GetWeaponAmmoOne()> 0)
 					{
 						CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
 
@@ -671,7 +667,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-								pSelf->m_dGameData.nShellAmmo--;
+								
+								int ammoChange=player->GetWeaponAmmoOne();
+								player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoTwo(), player->GetWeaponAmmoThree());
 							}
 							else
 							{
