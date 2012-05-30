@@ -40,9 +40,9 @@ CMainMenuState::CMainMenuState(void)
 	m_nButtonImageID = -1;
 	m_nPosition = 0;
 	m_nPointerID = -1;
-	m_nSFXVolume = -1;
-	m_nCurVolume = -1;
-	m_nLang = -1;
+	m_nSFXVolume = 50;
+	m_nCurVolume = 50;
+	m_nLang = 0;
 	m_bWindowed = false;
 
 	LoadOptions("options.txt");
@@ -75,8 +75,8 @@ void CMainMenuState::Enter(void)
 	COptionsState::GetInstance()->SetWindowed(m_bWindowed);
 	COptionsState::GetInstance()->SetLang(m_nLang);
 
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 	StartPlay=0;
 }
 

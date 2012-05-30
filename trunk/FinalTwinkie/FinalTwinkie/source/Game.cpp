@@ -37,7 +37,7 @@ CGame::CGame(void)
 	if(CMainMenuState::GetInstance()->LoadOptions("options.txt"))
 		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
 	else
-		m_bWindowed = false;
+		m_bWindowed = true;
 }
 
 CGame::~CGame(void)

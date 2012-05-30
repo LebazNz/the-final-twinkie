@@ -1,15 +1,16 @@
 #ifndef PICKUP_H
 #define PICKUP_H
 #include "../GameObjects/Entity.h"
+#include "../GameObjects/Player.h"
 
-enum PICKUPTYPE { PU_HEALTH, PU_AMMO, PU_ARMOR, PU_DD, PU_NORELOAD, PU_INVU, PU_INFAMMO, PU_MONEY };
+enum PICKUPTYPE { PU_HEALTH, PU_AMMO, PU_ARMOR, PU_MONEY, PU_DD, PU_NORELOAD, PU_INVU, PU_INFAMMO };
 
 class CPickup: public CEntity
 {
 public:
 	virtual void Update(float);
 	virtual void Render(void);
-	virtual bool CheckColision(IEntity*);
+	virtual bool CheckCollision(IEntity* pBase);
 	virtual int GetType(void) { return m_nType; }
 	CPickup(void);
 	~CPickup(void);
@@ -24,6 +25,6 @@ private:
 	int m_nGiven;
 	int m_nPickUpType;
 	
-
+	CPlayer* m_pPlayer;
 };
 #endif

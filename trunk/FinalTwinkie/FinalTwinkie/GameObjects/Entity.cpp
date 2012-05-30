@@ -20,6 +20,9 @@ CEntity::CEntity(void)
 	// Health
 	m_fHealth = 0;
 	m_fMaxHealth = 0;	
+	// Armor
+	m_fArmor = 0;
+	m_fMaxArmor = 0;
 	// Reference Counter
 	m_nRefCount = 1;	
 	// Object Type

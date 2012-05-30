@@ -1,6 +1,6 @@
 #include "Building.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
-#include "../source/Camera.h"
+#include "../Headers/Camera.h"
 void CBuilding::Update(float)
 {
 }

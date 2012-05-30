@@ -66,7 +66,10 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 
 void CBitmapFont::Init(int nType)
 {
-	m_nType = nType;
+	if(nType == 0 || nType == 1 || nType == 2)
+		m_nType = nType;
+	else
+		m_nType = 0;
 
 	switch(m_nType)
 	{
@@ -121,8 +124,8 @@ RECT CBitmapFont::CellAlgorithm(int id)
 
 void CBitmapFont::SetOffset(int ch)
 {
-	float fScale = 0.0f;//0.25f
-	int nY = 0;//6
+	float fScale = 0.25f;//0.25f
+	int nY = 6;//6
 	switch(m_nType)
 	{
 	case 0:

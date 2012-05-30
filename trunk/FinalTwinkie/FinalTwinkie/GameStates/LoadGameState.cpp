@@ -215,7 +215,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Jack",1,40,0,0,4500,0,0,0,1,0,0,1,0,0,0,1,0,0,1,"savedGame1.xml"};
+				Data data = {"Jack",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame1.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -228,7 +228,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Bob",1,40,0,0,500,0,0,1,0,0,0,1,0,0,0,1,0,0,1,"savedGame2.xml"};
+				Data data = {"Bob",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -241,7 +241,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Fred",1,40,0,0,1500,0,0,0,0,0,1,0,0,0,0,1,0,0,1,"savedGame3.xml"};
+				Data data = {"Fred",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame3.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -311,7 +311,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Jack",1,40,0,0,4500,0,0,0,1,0,0,1,0,0,0,1,0,0,1,"savedGame1.xml"};
+				Data data = {"Jack",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,11,"savedGame1.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -325,7 +325,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Bob",1,40,0,0,500,0,0,1,0,0,0,1,0,0,0,1,0,0,1,"savedGame2.xml"};
+				Data data = {"Bob",1,1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -339,7 +339,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Fred",1,40,0,0,1500,0,0,0,0,0,1,0,0,0,0,1,0,0,1,"savedGame3.xml"};
+				Data data = {"Fred",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame3.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
@@ -410,40 +410,40 @@ bool CLoadGameState::Input(void)
 
 void CLoadGameState::Update(float fDt)
 {
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 25 && m_nMouseX <= 225
-		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	if(m_nMouseX >= 45 && m_nMouseX <= 215
+		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
 		m_nPosition = 0;
 	}
-	if(m_nMouseX >= 290 && m_nMouseX <= 490
-		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	if(m_nMouseX >= 295 && m_nMouseX <= 465
+		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
 		m_nPosition = 1;
 	}
-	if(m_nMouseX >= 540 && m_nMouseX <= 740
-		&& m_nMouseY >= 475 && m_nMouseY <= 520)
+	if(m_nMouseX >= 550 && m_nMouseX <= 720
+		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
 		m_nPosition = 2;
 	}
-	if(m_nMouseX >= 25 && m_nMouseX <= 225
-		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	if(m_nMouseX >= 45 && m_nMouseX <= 215
+		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
 		if(vSavedData[0].nLevel != 0)
 			m_nPosition = 3;
 	}
-	if(m_nMouseX >= 290 && m_nMouseX <= 490
-		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	if(m_nMouseX >= 295 && m_nMouseX <= 465
+		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
 		if(vSavedData[0].nLevel == 0)
 			m_nPosition = 3;
 		else
 			m_nPosition = 4;
 	}
-	if(m_nMouseX >= 540 && m_nMouseX <= 740
-		&& m_nMouseY >= 540 && m_nMouseY <= 560)
+	if(m_nMouseX >= 550 && m_nMouseX <= 720
+		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
 		if(vSavedData[0].nLevel == 0 && vSavedData[1].nLevel == 0 )
 			m_nPosition = 3;

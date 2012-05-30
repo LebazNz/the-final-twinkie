@@ -169,6 +169,9 @@ void CGamePlayState::Enter(void)
 		player->SetVelX(90);
 		player->SetVelY(90);
 		player->SetHealth(250);
+		player->SetMaxHealth(500);
+		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
+		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
 		m_pOM->AddObject(player);
 
 	
@@ -396,12 +399,15 @@ void CGamePlayState::Exit(void)
 			m_pTile = nullptr;
 		}
 		m_AM	= nullptr;
+
+		if(m_pPlayer!=nullptr)
+		{
+			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
+		}
+		CGame::GetInstance()->my_channel->stop();
+
 	}
-	if(m_pPlayer!=nullptr)
-	{
-		dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
-	}
-	CGame::GetInstance()->my_channel->stop();
+	
 }
 
 bool CGamePlayState::Input(void)
@@ -501,9 +507,10 @@ bool CGamePlayState::Input(void)
 
 void CGamePlayState::Update(float fDt)
 {
-	Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
+	
 	if(!m_bPaused)
 	{
+		Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
 		m_PM->UpdateEverything(fDt);
 		m_pOM->UpdateAllObjects(fDt);
 		m_pOM->CheckCollisions();
@@ -513,8 +520,8 @@ void CGamePlayState::Update(float fDt)
 
 	}
 
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
 	if(m_nMouseX >= 315 && m_nMouseX <= 435
 		&& m_nMouseY >= 295 && m_nMouseY <= 340)
@@ -858,10 +865,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
-			int nRandNum = rand()%16;
+			int nRandNum = rand()%7;
 			if(nRandNum <= 7)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,0);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			}
@@ -946,7 +953,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
 			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
 
-			pPickup->SetAliveTime(5.0f);
+			pPickup->SetAliveTime(15.0f);
 
 			pSelf->m_pOM->AddObject(pPickup);
 
