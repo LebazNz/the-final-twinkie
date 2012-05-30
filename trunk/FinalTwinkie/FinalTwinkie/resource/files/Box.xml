@@ -1,44 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
-	<Effect>
-		<Picture>Cloud.png</Picture>
-		<Number Number="90"></Number>
-		<Looping Looping="1"></Looping>
-		<Explosion Explosion="0"></Explosion>
-		<Life>
-		 	<Max M="1.0"></Max>
-			<Min M=".01"></Min>
-		</Life>
-		<SpawnTime SpawnTime=".01"></SpawnTime>
-		<EmitterType Type="2"></EmitterType>
-		<Radius R="90"></Radius>
-		<Angle A="0"></Angle>
-		<Source S="4"></Source>
-		<Dest D="2"></Dest>
-		<SpeedX>
-			<MinX M="1.0"></MinX>
-			<MaxX M="4.0"></MaxX>
-		</SpeedX>
-		<SpeedY>
-			<MinY M="1.0"></MinY>
-			<MaxY M="4.0"></MaxY>
-		</SpeedY>
-		<Scale>
-			<Min M=".01"></Min>
-			<Max M=".5"></Max>
-		</Scale>
-		<Color>
-			<Start>
-				<Alpha A="180"></Alpha>
-				<Red R="255"></Red>
-				<Green G="255"></Green>
-				<Blue B="0"></Blue>
-			</Start>
-			<End>
-				<Alpha A="180"></Alpha>
-				<Red R="255"></Red>
-				<Green G="140"></Green>
-				<Blue B="0"></Blue>
-			</End>
-		</Color>
-	</Effect>
+  <Effect>
+    <Picture>Cloud.png</Picture>
+    <Number Number="90" />
+    <Looping Looping="1" />
+    <Explosion Explosion="0" />
+    <Life>
+      <Max M="1" />
+      <Min M="1" />
+    </Life>
+    <SpawnTime SpawnTime="0.01" />
+    <EmitterType Type="2" />
+    <Radius R="90" />
+    <Angle A="1" />
+    <Source S="4" />
+    <Dest D="2" />
+    <SpeedX>
+      <MinX M="1" />
+      <MaxX M="4" />
+    </SpeedX>
+    <SpeedY>
+      <MinY M="1" />
+      <MaxY M="4" />
+    </SpeedY>
+    <Scale>
+      <Min M="0.5" />
+      <Max M="0.5" />
+    </Scale>
+    <Color>
+      <Start>
+        <Alpha A="180" />
+        <Red R="255" />
+        <Green G="255" />
+        <Blue B="0" />
+      </Start>
+      <End>
+        <Alpha A="180" />
+        <Red R="255" />
+        <Green G="140" />
+        <Blue B="0" />
+      </End>
+    </Color>
+  </Effect>
 </Root>

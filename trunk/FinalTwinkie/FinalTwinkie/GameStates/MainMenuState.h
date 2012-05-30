@@ -46,6 +46,9 @@ private:
 	int m_nMouseY;
 
 	int m_nCursor;
+
+	static bool playing;
+	float StartPlay;
 	
 };
 

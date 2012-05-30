@@ -16,8 +16,6 @@ public:
 	virtual int GetType(void) { return m_nType; }
 	virtual bool CheckCollision(IEntity*);
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
-	CPlayer(void);
-	~CPlayer(void);
 
 
 	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
@@ -35,8 +33,18 @@ public:
 	void	SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
 	void	SetRotation(float fRotate) {m_fRotation=fRotate;}
 	float	GetRotation() const { return m_fRotation;}
+	CTurret* GetTurret(){return m_pTurret;}
+	float	GetHeat(){return m_fHeat;}
+
+	static CPlayer* GetInstance(void);
+	static void DeleteInstance(void);
 
 private:
+
+	CPlayer(void);
+	~CPlayer(void);
+	CPlayer& operator=(CPlayer&);
+	CPlayer(CPlayer&);
 	int m_nMoney;
 	std::string m_szName;
 	CSpecial* m_apSpec;
@@ -61,8 +69,10 @@ private:
 
 	float m_fFireRate;
 
+	float m_fHeat;
 
 
+	static CPlayer* m_pInstance;
 	CSGD_DirectInput* m_pDI;
 };
 #endif

@@ -5,12 +5,14 @@
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/DestroyTurretMessage.h"
+#include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../GameStates/OptionsState.h"
 #include "../Headers/Camera.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "Turret.h"
 #include "Tank.h"
+#include "Building.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -85,6 +87,24 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
 						CMessageSystem::GetInstance()->SndMessage(pMse);
 						pMse = nullptr;
+					}
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
+			}
+			break;
+			case OBJ_BUILDING:
+			{
+				if(GetWhoFired()==true)
+				{
+					CBuilding* pBuilding = dynamic_cast<CBuilding*>(pBase);
+					pBuilding->TakeDamage((int)this->m_fDamage);
+					if(pBuilding->GetHealth()<0)
+					{
+						CDestroyBuildingMessage* pMst=new CDestroyBuildingMessage(pBuilding);
+						CMessageSystem::GetInstance()->SndMessage(pMst);
+						pMst=nullptr;
 					}
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);

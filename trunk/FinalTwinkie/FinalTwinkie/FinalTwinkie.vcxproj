@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Event and Messages\DestroyBuildingMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyTurretMessage.cpp" />
     <ClCompile Include="GameStates\LoadGameState.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Event and Messages\DestroyBuildingMessage.h" />
     <ClInclude Include="Event and Messages\DestroyTurretMessage.h" />
     <ClInclude Include="GameStates\LoadGameState.h" />
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />

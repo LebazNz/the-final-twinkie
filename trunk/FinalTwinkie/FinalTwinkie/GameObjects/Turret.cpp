@@ -32,11 +32,12 @@ void CTurret::Update(float fDt)
 			 tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 			
 
-			 m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
-			 m_vLookVec = Vec;
+			 m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
 
-			 if(Steering(m_vUpVec,Vec) <= 0.0f)
-				 m_fRotation = -m_fRotation;
+			if(Steering(m_vLookVec,Vec) < -1)
+				m_fRotation -= m_fRotationRate*fDt;
+			else if(Steering(m_vLookVec,Vec) > 1)
+				m_fRotation += m_fRotationRate*fDt;
 
 			 if(m_fFireRate >= SHOT_DELAY)
 			 {
@@ -68,16 +69,22 @@ void CTurret::Update(float fDt)
 			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 		
 
-			m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
-			m_vLookVec = Vec;
+			//m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
+			//m_vLookVec = Vec;
+			tVector2D Up={0,-1};
 
-			if(Steering(m_vUpVec,Vec) <= 0.0f)
-				m_fRotation = -m_fRotation;
+			m_vLookVec=Vector2DRotate(Up, m_fRotation);
 
+			if(Steering(m_vLookVec,Vec) < -1)
+				m_fRotation -= m_fRotationRate*fDt;
+			else if(Steering(m_vLookVec,Vec) > 1)
+				m_fRotation += m_fRotationRate*fDt;
+			
 
 		}
 		 
-
+		m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
+		m_pFlamer->UpdateEmitterPos(GetPosX(), GetPosY());
 	}
 	else if(m_pOwner == nullptr && m_pTarget == nullptr)
 	{
@@ -96,12 +103,12 @@ void CTurret::Update(float fDt)
 			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 		
 
-			m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
+			m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
 
-			m_vLookVec = Vec;
-
-			if(Steering(m_vUpVec,Vec) <= 0.0f)
-				m_fRotation = -m_fRotation;
+			if(Steering(m_vLookVec,Vec) < -1)
+				m_fRotation -= m_fRotationRate*fDt;
+			else if(Steering(m_vLookVec,Vec) > 1)
+				m_fRotation += m_fRotationRate*fDt;
 
 			 if(m_fFireRate >= SHOT_DELAY)
 			 {

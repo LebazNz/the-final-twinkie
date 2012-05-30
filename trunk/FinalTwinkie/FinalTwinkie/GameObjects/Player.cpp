@@ -5,6 +5,20 @@
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
+CPlayer* CPlayer::m_pInstance=nullptr;
+CPlayer* CPlayer::GetInstance(void)
+{
+	if(m_pInstance==nullptr)
+		m_pInstance=new CPlayer();
+	return m_pInstance;
+}
+
+void CPlayer::DeleteInstance(void)
+{
+	if(m_pInstance!=nullptr)
+		delete m_pInstance;
+	m_pInstance=nullptr;
+}
 void CPlayer::Update(float fDt)
 {
 	tVector2D Up={0,-1};
@@ -75,11 +89,12 @@ void CPlayer::Update(float fDt)
 	}
 	if(m_pDI->MouseButtonDown(1))
 	{
-		if(m_fFireRate >= 0.15f)
+		if(m_fFireRate >= 0.15f&&m_fHeat<100)
 		{
 			m_fFireRate = 0.0f;
 			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
 			CMessageSystem::GetInstance()->SndMessage(msg);
+			m_fHeat+=3;
 		}
 		else
 			m_fFireRate += fDt;
@@ -123,7 +138,12 @@ void CPlayer::Update(float fDt)
 		m_fRotationHeight=128;
 		m_fRotationWidth=64;
 	}
-
+	if(m_fHeat>0)
+	{
+		m_fHeat-=.1;
+	}
+	if(m_fHeat<0)
+		m_fHeat=0;
 }
 void CPlayer::Render(void)
 {
@@ -157,6 +177,7 @@ CPlayer::CPlayer(void)
 	m_bMoveDown		= false;
 
 	m_fFireRate = 0.0f;
+	m_fHeat=0.0;
 }
 CPlayer::~CPlayer(void)
 {

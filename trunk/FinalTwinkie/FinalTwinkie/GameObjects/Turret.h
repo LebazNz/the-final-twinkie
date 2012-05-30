@@ -2,6 +2,7 @@
 #define TURRET_H
 #include "Entity.h"
 #include "../SGD Wrappers/SGD_Math.h"
+#include "../Particle/Emitter.h"
 
 #define SHOT_DELAY 1.0
 
@@ -20,6 +21,8 @@ public:
 	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
 	//void SetFireRate(float fFireRate){m_fFireRate = fFireRate;}
 	void SetDistance(float fDistance) {m_fMaxDistance=fDistance;}
+	void SetFlamer(CEmitter* pEmitter) {m_pFlamer=pEmitter;}
+	CEmitter* GetFlamer(void) {return m_pFlamer;}
 
 
 	// Getters
@@ -51,5 +54,6 @@ private:
 
 	float m_fRotationHeight;
 	float m_fRotationWidth;
+	CEmitter* m_pFlamer;
 };
 #endif

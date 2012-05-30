@@ -77,7 +77,13 @@ bool CStartState::Input(void)
 {
 	if(m_pDI->KeyPressed(DIK_ESCAPE))
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+		if(m_bSwitch==false)
+			m_bSwitch=true;
+		else
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			CGame::GetInstance()->my_channel->stop();
+		}
 		return true;
 	}
 	return true;
@@ -86,22 +92,21 @@ bool CStartState::Input(void)
 void CStartState::Update(float fDt)
 {
 	m_nEndTimer += fDt;
-	if(m_nEndTimer >= 5 && m_bSwitch == false)
+	if(m_nEndTimer >= 4 && m_bSwitch == false)
 	{
 		m_bSwitch = true;
 		m_nEndTimer = 0;
 	}
-	else if(m_nEndTimer >= 5 && m_bSwitch == true)
+	else if(m_nEndTimer >= 8 && m_bSwitch == true)
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 }
 
 void CStartState::Render(void)
 {
 	m_pD3D->Clear( 0, 255, 255 );
-
 	if(m_bSwitch == false)
-		m_pTM->Draw(m_nBG1ID,0,0,0.85f,0.65f,nullptr,0,0,0);
+		m_pTM->Draw(m_nBG1ID,-45,-20,0.85f,0.65f,nullptr,0,0,0);
 	else
-		m_pTM->Draw(m_nBG2ID,0,0,0.85f,0.60f,nullptr,0,0,0);
+		m_pTM->Draw(m_nBG2ID,-25,0,0.85f,0.60f,nullptr,0,0,0);
 
 }

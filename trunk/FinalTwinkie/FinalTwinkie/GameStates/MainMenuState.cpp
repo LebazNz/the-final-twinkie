@@ -7,7 +7,7 @@
 #include "../Headers/BitmapFont.h"
 #include <fstream>
 using namespace std;
-
+bool CMainMenuState::playing=false;
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
 
 CMainMenuState* CMainMenuState::GetInstance(void)
@@ -77,6 +77,7 @@ void CMainMenuState::Enter(void)
 
 	m_nMouseX = m_pDI->MouseGetPosX()-16;
 	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	StartPlay=0;
 }
 
 void CMainMenuState::Exit(void)
@@ -151,6 +152,8 @@ bool CMainMenuState::Input(void)
 		if(m_nPosition == 0)
 		{
 			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+			CGame::GetInstance()->my_channel->stop();
+			playing=false;
 			return true;
 		}
 		else if(m_nPosition == 1)
@@ -173,6 +176,8 @@ bool CMainMenuState::Input(void)
 		if(m_nPosition == 0)
 		{
 			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+			CGame::GetInstance()->my_channel->stop();
+			playing=false;
 			return true;
 		}
 		else if(m_nPosition == 1)
@@ -223,6 +228,16 @@ void CMainMenuState::Update(float fDt)
 		&& m_nMouseY >= 435 && m_nMouseY <= 480)
 	{
 		m_nPosition = 3;
+	}
+	if(StartPlay<1)
+	{
+		StartPlay+=fDt;
+	}
+	else if(StartPlay>=1&&playing==false)
+	{
+		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE, CGame::GetInstance()->Menu_theme, false, &CGame::GetInstance()->my_channel);
+		CGame::GetInstance()->my_channel->setVolume(GetMusicVolume()/100.0f);
+		playing=true;
 	}
 }
 

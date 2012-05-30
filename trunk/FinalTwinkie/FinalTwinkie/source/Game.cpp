@@ -96,8 +96,10 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	result = FMOD::System_Create(&system);
 	system->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
 	system->init(2000,FMOD_INIT_NORMAL,NULL);
-	result = system->createSound("resource/sound/Battletoads.mp3",FMOD_LOOP_NORMAL,NULL,&my_sound);
+	result = system->createSound("resource/sound/Exciting Trailer2.wav",FMOD_LOOP_OFF,NULL,&my_sound);
 	result = system->createSound("resource/sound/explode.wav",FMOD_LOOP_OFF,NULL,&sound);
+	result = system->createSound("resource/sound/Junkyard Tribe.mp3", FMOD_LOOP_NORMAL, NULL, &Menu_theme);
+	result = system->createSound("resource/sound/Big Mojo.mp3", FMOD_LOOP_NORMAL, NULL, &Game_theme);
 	channel->setVolume(0.0f);
 	
 	channel = 0;
