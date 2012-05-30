@@ -16,7 +16,6 @@ void CTank::Update(float fDt)
 	tVector2D Up={0,-1};
 	tVector2D Look=Vector2DRotate(Up,m_fRotation);
 	tVector2D toTarget;
-	this;
 	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
 	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
 	float length=Vector2DLength(toTarget);

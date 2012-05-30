@@ -64,6 +64,8 @@ public:
 	FMOD_RESULT result;
 	FMOD::Sound* sound;
 	FMOD::Sound* my_sound;
+	FMOD::Sound* Menu_theme;
+	FMOD::Sound* Game_theme;
 	FMOD::Channel* channel;
 	FMOD::Channel* my_channel;
 	bool mute, isPlaying;

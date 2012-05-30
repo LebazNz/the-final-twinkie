@@ -17,6 +17,7 @@
 #include "../Event and Messages/DestroyBulletMessage.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/DestroyTurretMessage.h"
+#include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
@@ -26,10 +27,10 @@
 #include "../GameObjects/Sapper.h"
 #include "../GameObjects/Tank.h"
 #include "../Particle/Emitter.h"
+#include "../GameObjects/Building.h"
 #include "../PickUps and Specials/Pickup.h"
 #include "../Event and Messages/CreatePickupMessage.h"
 #include "../Event and Messages/DestroyPickupMessage.h"
-
 #include "../tinyxml/tinyxml.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
@@ -121,13 +122,13 @@ void CGamePlayState::Enter(void)
 
 		m_AM->Load("AnimationInfo.xml");
 		//m_AM->Save("AnimationInfo.xml");
-		m_pOF->RegisterClassType<CEntity>("CEntity");
-		m_pOF->RegisterClassType<CEnemy>("CEnemy");
 
 		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/backgroundwall.png"));
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
+		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
+
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
 		m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
@@ -135,6 +136,7 @@ void CGamePlayState::Enter(void)
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
 		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
+		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
@@ -151,13 +153,12 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CEntity>("CEntity");
 		m_pOF->RegisterClassType<CEnemy>("CEnemy");
 		m_pOF->RegisterClassType<CBullet>("CBullet");
-		m_pOF->RegisterClassType<CPlayer>("CPlayer");
 		m_pOF->RegisterClassType<CTurret>("CTurret");
 		m_pOF->RegisterClassType<CTank>("CTank");
 		m_pOF->RegisterClassType<CSapper>("CSapper");
+		m_pOF->RegisterClassType<CBuilding>("CBuilding");
 		m_pOF->RegisterClassType<CPickup>("CPickup");
-	
-		m_pPlayer=m_pOF->CreateObject("CPlayer");
+		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
 		player->SetImageID(m_nPlayerID);
 		player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
@@ -183,6 +184,8 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetRotationPositon(32,98);
 		PlayerTurret->SetUpVec(0,-1);
 		PlayerTurret->SetDistance(800);
+		PlayerTurret->SetRotationRate(1.0f);
+		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
 		//player->Release();
@@ -232,11 +235,23 @@ void CGamePlayState::Enter(void)
 		pTurret->SetDistance(300);
 		//pTurret->SetFireRate(2.5f);
 		pTurret->SetTarget(player);
+		pTurret->SetRotationRate(1.0f);
 		m_pOM->AddObject(pTurret);
 		pTurret->Release();
 		pTank->Release();
 		m_nPosition = 0;
 		m_bPaused = false;
+
+		CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
+		building->SetPosX(200);
+		building->SetPosY(200);
+		building->SetHeight(128);
+		building->SetWidth(128);
+		building->SetHealth(50);
+		building->SetImageID(m_anEnemyIDs[2]);
+		m_pOM->AddObject(building);
+
+		building->Release();
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
@@ -244,6 +259,8 @@ void CGamePlayState::Enter(void)
 	}
 	m_nMouseX = m_pDI->MouseGetPosX()-16;
 	m_nMouseY = m_pDI->MouseGetPosY()-16;
+
+	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
 }
 
 void CGamePlayState::Exit(void)
@@ -254,12 +271,6 @@ void CGamePlayState::Exit(void)
 	{
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
-	
-		if(m_pPlayer != nullptr)
-		{
-			m_pPlayer->Release();
-			m_pPlayer = nullptr;
-		}
 
 		if(m_nButtonImageID != -1)
 		{
@@ -386,6 +397,11 @@ void CGamePlayState::Exit(void)
 		}
 		m_AM	= nullptr;
 	}
+	if(m_pPlayer!=nullptr)
+	{
+		dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
+	}
+	CGame::GetInstance()->my_channel->stop();
 }
 
 bool CGamePlayState::Input(void)
@@ -474,6 +490,11 @@ bool CGamePlayState::Input(void)
 		CEmitter* pEmi=m_PM->GetEmitter(emitter);
 		pEmi->UpdateEmitterPos(400,300);
 		pEmi->ActivateEmitter();
+	}
+	if(m_pDI->KeyPressed(DIK_SPACE))
+	{
+		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+		player->GetTurret()->GetFlamer()->ActivateEmitter();
 	}
 	return true;
 }
@@ -585,8 +606,15 @@ void CGamePlayState::Render(void)
 	font->Print("Money",400,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	font->Print(buffer,400,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pPlayer->GetHealth(),buffer,10);
-	font->Print("HP",550,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,550,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("HP",550,75,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,550,100,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+	CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+	_itoa_s(player->GetHeat(), buffer, 10);
+
+	font->Print("Heat",525 ,25,0.75f, D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,500,50, 0.75f, D3DCOLOR_XRGB(255,255,255));
+	font->Print(" / 100", 550, 50, 0.75, D3DCOLOR_XRGB(255,255,255));
 
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
@@ -773,6 +801,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			CTurret* pTurret = dynamic_cast<CDestroyTurretMessage*>(pMsg)->GetTurret();
 			pSelf->m_pOM->RemoveObject(pTurret);
+		}
+		break;	case MSG_DESTROYBUILDING:
+		{
+			pSelf->m_pOM->RemoveObject(dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding());
 		}
 		break;
 	case MSG_CREATEPICKUP:

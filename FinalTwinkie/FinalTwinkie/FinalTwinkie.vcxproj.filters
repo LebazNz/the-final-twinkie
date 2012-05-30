@@ -60,6 +60,7 @@
     <ClCompile Include="GameStates\LoadGameState.cpp" />
     <ClCompile Include="GameStates\StartState.cpp" />
     <ClCompile Include="Event and Messages\DestroyTurretMessage.cpp" />
+    <ClCompile Include="Event and Messages\DestroyBuildingMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
@@ -124,6 +125,7 @@
     <ClInclude Include="GameStates\LoadGameState.h" />
     <ClInclude Include="GameStates\StartState.h" />
     <ClInclude Include="Event and Messages\DestroyTurretMessage.h" />
+    <ClInclude Include="Event and Messages\DestroyBuildingMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

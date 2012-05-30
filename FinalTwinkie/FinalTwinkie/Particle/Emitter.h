@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "../SGD Wrappers/CSGD_Direct3D.h"
+#include "../SGD Wrappers/SGD_Math.h"
 using std::string;
 
 enum Type {Point, CIRCLE, SQUARE, ANGLE};
@@ -18,6 +19,7 @@ public:
 	void UpdateParticles(float fDt);
 	void RenderParticles(void);
 	void UpdateEmitterPos(float fPosX, float fPosY);
+	void UpdateEmitterDirecton(tVector2D vDir);
 
 	void ActivateEmitter(void){m_bActive=true;}
 	void DeactivateEmitter(void){m_bActive=false;}
@@ -52,6 +54,7 @@ private:
 	float m_fAngle;
 	bool m_bActive;
 
+	tVector2D m_vDirection;
 	D3DBLEND m_nSource;
 	D3DBLEND m_nDest;
 

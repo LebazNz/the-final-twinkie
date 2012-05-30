@@ -3,6 +3,7 @@
 #include "IEntity.h"
 #include "Entity.h"
 #include "Enemy.h"
+#include "Player.h"
 class CBuilding:public CEntity
 {
 public:
@@ -14,9 +15,15 @@ public:
 	CBuilding(void);
 	~CBuilding(void);
 
+	void SetSpawn(CEnemy* pEnemy) {m_pSpawn=pEnemy;}
+	void SetCanSpawn(bool bSpawn) {m_bCanSpawn=bSpawn;}
+	void SetSpawnTime(float fTime) {m_fSpawnTime=fTime;}
+	void SetPlayer(CPlayer* pPlayer) {m_pPlayer=pPlayer;}
+
 private:
-	CEnemy* n_pSpawn;
+	CEnemy* m_pSpawn;
 	bool m_bCanSpawn;
 	float m_fSpawnTime;
+	CPlayer* m_pPlayer;
 };
 #endif

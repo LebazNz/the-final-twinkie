@@ -1,9 +1,11 @@
+#define _USE_MATH_DEFINES
 #include "Emitter.h"
 #include "../Headers/Game.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
+#include <math.h>
 #include <sstream>
 
 void CEmitter::CreateParticle(float fDt=0)
@@ -103,6 +105,62 @@ void CEmitter::CreateParticle(float fDt=0)
 		}
 #pragma endregion
 #pragma region Angle_Emitter
+		if(m_nType==ANGLE)
+		{
+			if(m_bExplosion)
+			{
+				for(;;)
+				{
+					float velocityX;
+					float velocityY;
+					tVector2D vel;
+					do
+					{
+						velocityX=(float)(((rand()%361)/180.0)-1.0);
+						velocityY=(float)(((rand()%361)/180.0)-1.0);
+						vel.fX=velocityX;
+						vel.fY=velocityY;
+					}while(abs(AngleBetweenVectors(m_vDirection, vel))>abs(AngleBetweenVectors(m_vDirection, Vector2DRotate(m_vDirection, m_fAngle))));
+					float life=(float)(rand()/4294967294);
+					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
+					CParticle* newPart=new CParticle();
+					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					m_vParticles.push_back(newPart);
+					m_nNumberParticles++;
+					if(m_nNumberParticles>=m_nMaxParticles)
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				if(m_fTimer>m_fSpawnTimer)
+				{
+					float velocityX;
+					float velocityY;
+					tVector2D vel;
+					do
+					{
+						velocityX=(float)(((rand()%361)/180.0)-1.0);
+						velocityY=(float)(((rand()%361)/180.0)-1.0);
+						vel.fX=velocityX;
+						vel.fY=velocityY;
+					}while(abs(AngleBetweenVectors(m_vDirection, vel))>abs(AngleBetweenVectors(m_vDirection, Vector2DRotate(m_vDirection, m_fAngle))));
+					float life=(float)(rand()/4294967294);
+					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
+					CParticle* newPart=new CParticle();
+					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					m_vParticles.push_back(newPart);
+					m_nNumberParticles++;
+					m_fTimer=0;
+				}
+				else
+				{
+					m_fTimer+=fDt;
+				}
+			}
+		}
 #pragma endregion
 	}
 }
@@ -142,6 +200,7 @@ void CEmitter::InitEmmitter(string szFile)
 		m_fRadius=(float)pChild->ToElement()->FirstAttribute()->DoubleValue();
 		pChild=pChild->NextSibling();
 		m_fAngle=(float)pChild->ToElement()->FirstAttribute()->DoubleValue();
+		m_fAngle=(float)(m_fAngle*(M_PI/180));		
 		pChild=pChild->NextSibling();
 		m_nSource=(D3DBLEND)pChild->ToElement()->FirstAttribute()->IntValue();
 		pChild=pChild->NextSibling();
@@ -283,4 +342,9 @@ void CEmitter::UpdateEmitterPos(float fPosX, float fPosY)
 {
 	m_fStartPosX=fPosX;
 	m_fStartPosY=fPosY;
+}
+
+void  CEmitter::UpdateEmitterDirecton(tVector2D vDir)
+{
+	m_vDirection=vDir;
 }
