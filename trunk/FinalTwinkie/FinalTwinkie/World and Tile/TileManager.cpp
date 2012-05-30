@@ -14,6 +14,8 @@ using namespace std;
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Player.h"
 #include "../Headers/Camera.h"
+#include "../GameStates/GamePlayState.h"
+#include "../source/Game.h"
 
 CTileManager* CTileManager::m_pSelf = nullptr;
 
@@ -84,12 +86,18 @@ bool CTileManager::Load(string fileName)
 			playerPosX = 0;
 
 		//CPlayer *pPlayer = 
-		Camera::GetInstance()->SetPosX(float(playerPosX));
+		CPlayer* player = CPlayer::GetInstance();
+	
+		
+		player->SetPosX(playerPosX);
+		Camera::GetInstance()->SetPosX(float(playerPosX + CGame::GetInstance()->GetWidth()/2));
 
 		if( pChild->Attribute( "playery", &playerPosY ) == nullptr )
 			playerPosY = 0;
 
-		Camera::GetInstance()->SetPosY(float(playerPosY));
+		
+		player->SetPosY(playerPosY);
+		Camera::GetInstance()->SetPosY(float(playerPosY + CGame::GetInstance()->GetHeight()/2));
 
 		if( pChild->Attribute( "mapwidth", &mapWidth ) == nullptr )
 			mapWidth = 1;
@@ -274,8 +282,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						Camera *cam = Camera::GetInstance();
 						CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
 
-						pPlayer->SetPosX(pPlayer->GetOldPos().fX);
-						pPlayer->SetPosY(pPlayer->GetOldPos().fY);
+						//pPlayer->SetPosX(pPlayer->GetOldPos().fX);
+						//pPlayer->SetPosY(pPlayer->GetOldPos().fY);
 						cam->SetPosX(cam->GetOldPos().fX);
 						cam->SetPosY(cam->GetOldPos().fY);
 					

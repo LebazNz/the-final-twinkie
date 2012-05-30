@@ -6,17 +6,22 @@
 class CCreateBuildingMessage : public CMessage
 {
 public:
-	CCreateBuildingMessage(MessageType msgType, int nType, int x = 0, int y = 0);
+	CCreateBuildingMessage(MessageType msgType, int nType, float x = 0.0f, float y = 0.0f, bool spawn = false, float time = 0.25f);
 	virtual ~CCreateBuildingMessage(void);
 
 	int GetType(void) const { return m_nType; }
-	int GetPosX(void) const { return m_nPosX; }
-	int GetPosY(void) const { return m_nPosY; }
+	float GetPosX(void) const { return m_nPosX; }
+	float GetPosY(void) const { return m_nPosY; }
+	bool GetSpawn(void) const { return m_bSpawn;}
+	float GetTime(void) const{ return m_fTime;}
 
 private:
 	int m_nType;
-	int m_nPosX;
-	int m_nPosY;
+	float m_nPosX;
+	float m_nPosY;
+	bool m_bSpawn;
+	float m_fTime;
+	
 };
 
 #endif
