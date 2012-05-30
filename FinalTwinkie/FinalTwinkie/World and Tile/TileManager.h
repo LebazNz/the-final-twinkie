@@ -18,6 +18,7 @@ class CTileManager
 	vector<CTile*> wallTiles;
 
 	void RaiseWall(void);
+	void CreateObjects(void);
 	
 	CTileManager(void);
 	CTileManager(const CTileManager&);
@@ -32,10 +33,11 @@ public:
 	void Unload(void);
 	void Render(void);
 	void CheckCollision(IEntity* pBase);
+	
 
 	// Getters
-	vector<ENEMY_INFO> GetEnemyInfo(void); // You can only call this once after that the data will be gone
-	vector<ENEMY_INFO> GetSpawnInfo(void); 
+	//vector<ENEMY_INFO> GetEnemyInfo(void); // You can only call this once after that the data will be gone
+	//vector<ENEMY_INFO> GetSpawnInfo(void); 
 
 };
 #endif

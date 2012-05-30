@@ -28,7 +28,7 @@ class CLayer
 	int m_eType;
 
 	RECT CellAlgorithm(int id);
-	void Fill(void);   // this fills the collision and spawn vectors
+	
 
 public:
 	CLayer(void);
@@ -40,6 +40,7 @@ public:
 	
 	//Setters
 	void SetType(int type) { m_eType = type;}
+	void Fill(void);   // this creates all the objects
 
 	//Getters
 	int GetType(void) { return m_eType;}

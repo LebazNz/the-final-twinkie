@@ -62,6 +62,7 @@ private:
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
 	CEntity*				m_pEnemy;
+	CEntity*				m_pTurret;
 
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];

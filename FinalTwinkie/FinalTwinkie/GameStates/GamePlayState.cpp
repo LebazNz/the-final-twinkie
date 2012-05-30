@@ -771,9 +771,81 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case TANK:
 				{
+					// TO DO: SET UP MESSAGES TO GET POSITIONS
+					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
+					pSelf->m_pEnemy->SetImageID(pSelf->m_nPlayerID);
+					pSelf->m_pEnemy->SetPosX(500);
+					pSelf->m_pEnemy->SetPosY(200);	
+					pSelf->m_pEnemy->SetWidth(64);
+					pSelf->m_pEnemy->SetHeight(128);
+
+					CTank* tank = dynamic_cast<CTank*>(pSelf->m_pEnemy);
+					CPlayer* player = dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
+					tank->SetPlayer(player);
+					tank->SetRotation(0);
+					tank->SetRotationRate(0.75f);
+					tank->SetSight(400);
+					tank->SetVelX(30);
+					tank->SetVelY(30);
+					tank->SetHealth(300);
+					tank->SetHasATurret(true);
+					pSelf->m_pOM->AddObject(pSelf->m_pEnemy);
+
+					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
+					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
+					pSelf->m_pTurret->SetPosX(pSelf->m_pEnemy->GetPosX());
+					pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
+					pSelf->m_pTurret->SetWidth(64);
+					pSelf->m_pTurret->SetHeight(128);
+
+					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
+					tank->SetTurret(turret);
+					turret->SetOwner(pSelf->m_pEnemy);
+					turret->SetBullet(BUL_SHELL);	
+					turret->SetRotationPositon(32,98);
+					turret->SetUpVec(0,-1);
+					turret->SetDistance(300);
+					//pTurret->SetFireRate(2.5f);
+					turret->SetTarget(player);
+					turret->SetRotationRate(1.0f);
+					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
+					pSelf->m_pTurret->Release();
+					pSelf->m_pEnemy->Release();
+					
 				}
 				break;
 			case TURRET:
+				{
+					// TO DO: SET UP MESSAGE TO GET POSITIONS
+					
+					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
+					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
+					pSelf->m_pTurret->SetPosX(0);
+					pSelf->m_pTurret->SetPosY(0);
+					pSelf->m_pTurret->SetWidth(64);
+					pSelf->m_pTurret->SetHeight(128);
+
+					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
+					
+					turret->SetOwner(nullptr);
+					turret->SetBullet(BUL_SHELL);	
+					turret->SetRotationPositon(32,98);
+					turret->SetUpVec(0,-1);
+					turret->SetDistance(300);
+					//pTurret->SetFireRate(2.5f);
+					turret->SetTarget(pSelf->m_pPlayer);
+					turret->SetRotationRate(1.0f);
+					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
+					pSelf->m_pTurret->Release();
+				
+				}
+				break;
+
+			case RIFLE:
+				{
+				}
+				break;
+			case ROCKET:
 				{
 				}
 				break;
@@ -802,7 +874,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CTurret* pTurret = dynamic_cast<CDestroyTurretMessage*>(pMsg)->GetTurret();
 			pSelf->m_pOM->RemoveObject(pTurret);
 		}
-		break;	case MSG_DESTROYBUILDING:
+		break;	
+	case MSG_DESTROYBUILDING:
 		{
 			pSelf->m_pOM->RemoveObject(dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding());
 		}
@@ -885,6 +958,18 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			CPickup* pPickup = dynamic_cast<CDestroyPickupMessage*>(pMsg)->GetPickUp();
 			pSelf->m_pOM->RemoveObject(pPickup);
+		}
+		break;
+	case MSG_CREATEBUILDING:
+		{
+		}
+		break;
+	case MSG_CREATEMINE:
+		{
+		}
+		break;
+	case MSG_DESTROYMINE:
+		{
 		}
 		break;
 	};
