@@ -18,6 +18,9 @@
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/DestroyTurretMessage.h"
 #include "../Event and Messages/DestroyBuildingMessage.h"
+#include "../Event and Messages/CreateBuildingMessage.h"
+#include "../Event and Messages/CreateMineMessage.h"
+#include "../Event and Messages/DestroyMineMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
@@ -198,7 +201,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->Release();
 		//player->Release();
 
-		CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
+		/*CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
 		sapper->SetImageID(m_anEnemyIDs[1]);
 		sapper->SetPosX(500);
 		sapper->SetPosY(500);
@@ -211,7 +214,7 @@ void CGamePlayState::Enter(void)
 		sapper->SetHealth(35);
 		sapper->SetExplosion(m_PM->GetEmitter(FXSapper_Explosion));
 		m_pOM->AddObject(sapper);
-		sapper->Release();
+		sapper->Release();*/
 
 		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
 		pTank->SetImageID(m_nPlayerID);
@@ -560,7 +563,9 @@ void CGamePlayState::Render(void)
 	m_pTile->Render();
 	m_pOM->RenderAllObjects();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
-	m_AM->Render();
+	
+	
+	//m_AM->Render();
 	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();	
 	m_PM->RenderEverything();
@@ -626,6 +631,20 @@ void CGamePlayState::Render(void)
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
 	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+
+	// Player pos
+	_itoa_s(CPlayer::GetInstance()->GetPosX(),buffer,10);
+	font->Print(buffer,700,200,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(CPlayer::GetInstance()->GetPosY(),buffer,10);
+	font->Print(buffer,700,250,0.75f,D3DCOLOR_XRGB(255,255,255));
+
+
+	//Camera Pos
+	_itoa_s(Camera::GetInstance()->GetPosX(),buffer,10);
+	font->Print(buffer,700,300,0.75f,D3DCOLOR_XRGB(255,255,255));
+	_itoa_s(Camera::GetInstance()->GetPosY(),buffer,10);
+	font->Print(buffer,700,350,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
 void CGamePlayState::MessageProc(CMessage* pMsg)
@@ -756,22 +775,22 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case SAPPER:
 				{
-					int i = rand()%10;
-					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CEnemy");
+					CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
+					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+					sapper->SetPosX(pMessage->GetPosX());
+					sapper->SetPosY(pMessage->GetPosY());
+					sapper->SetHeight(32);
+					sapper->SetWidth(32);
 
-					pSelf->m_pEnemy->SetPosX((float)(50*(i+1)));
-					pSelf->m_pEnemy->SetPosY(50);
-					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[0]);
-					pSelf->m_pEnemy->SetWidth(40);
-					pSelf->m_pEnemy->SetHeight(40);
-					CEnemy* enemy=dynamic_cast<CEnemy*>(pSelf->m_pEnemy);
-					enemy->SetTail(pSelf->m_PM->GetEmitter(pSelf->FXEnemy_Tails));
-					enemy->GetTail()->ActivateEmitter();
-
-					pSelf->m_pOM->AddObject(pSelf->m_pEnemy);
-
-					pSelf->m_pEnemy->Release();
-					pSelf->m_pEnemy = nullptr;
+					CPlayer* player = CPlayer::GetInstance();
+					sapper->SetPlayer(player);
+					sapper->SetSight(400);
+					sapper->SetVelX(45);
+					sapper->SetVelY(45);
+					sapper->SetHealth(35);
+					sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
+					pSelf->m_pOM->AddObject(sapper);
+					sapper->Release();
 				}
 				break;
 			case TANK:
@@ -779,13 +798,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					// TO DO: SET UP MESSAGES TO GET POSITIONS
 					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
 					pSelf->m_pEnemy->SetImageID(pSelf->m_nPlayerID);
-					pSelf->m_pEnemy->SetPosX(500);
-					pSelf->m_pEnemy->SetPosY(200);	
+					pSelf->m_pEnemy->SetPosX(pMessage->GetPosX());
+					pSelf->m_pEnemy->SetPosY(pMessage->GetPosY());	
 					pSelf->m_pEnemy->SetWidth(64);
 					pSelf->m_pEnemy->SetHeight(128);
 
+					CPlayer* player = CPlayer::GetInstance();
 					CTank* tank = dynamic_cast<CTank*>(pSelf->m_pEnemy);
-					CPlayer* player = dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
+					
 					tank->SetPlayer(player);
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
@@ -822,11 +842,12 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case TURRET:
 				{
 					// TO DO: SET UP MESSAGE TO GET POSITIONS
-					
+					CPlayer* player = CPlayer::GetInstance();
+
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
 					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
-					pSelf->m_pTurret->SetPosX(0);
-					pSelf->m_pTurret->SetPosY(0);
+					pSelf->m_pTurret->SetPosX(pMessage->GetPosX());
+					pSelf->m_pTurret->SetPosY(pMessage->GetPosY());
 					pSelf->m_pTurret->SetWidth(64);
 					pSelf->m_pTurret->SetHeight(128);
 
@@ -838,7 +859,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					//pTurret->SetFireRate(2.5f);
-					turret->SetTarget(pSelf->m_pPlayer);
+					turret->SetTarget(player);
 					turret->SetRotationRate(1.0f);
 					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
 					pSelf->m_pTurret->Release();
@@ -852,6 +873,11 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case ROCKET:
 				{
+				}
+				break;
+			default:
+				{
+
 				}
 				break;
 			};
@@ -967,6 +993,26 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_CREATEBUILDING:
 		{
+
+			CCreateBuildingMessage *pMessage = dynamic_cast<CCreateBuildingMessage*>(pMsg);
+
+			CEntity* m_pBuilding = pSelf->m_pOF->CreateObject("CBuilding");
+			m_pBuilding->SetPosX(pMessage->GetPosX());
+			m_pBuilding->SetPosY(pMessage->GetPosY());
+			m_pBuilding->SetHeight(128);
+			m_pBuilding->SetWidth(128);
+			m_pBuilding->SetHealth(50);
+			m_pBuilding->SetImageID(pSelf->m_anEnemyIDs[2]);
+
+			CBuilding* pBuilding = dynamic_cast<CBuilding*>(m_pBuilding);
+
+			//pBuilding->SetSpawn(CEnemy* pEnemy);
+			//pBuilding->SetCanSpawn(bool bSpawn);
+			//pBuilding->SetSpawnTime(2.0f);
+			pBuilding->SetPlayer((CPlayer*)pSelf->m_pPlayer);
+			pSelf->m_pOM->AddObject(m_pBuilding);
+
+			m_pBuilding->Release();
 		}
 		break;
 	case MSG_CREATEMINE:

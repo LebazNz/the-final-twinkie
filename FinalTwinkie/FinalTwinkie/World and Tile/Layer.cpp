@@ -98,19 +98,32 @@ void CLayer::Fill(void)
 	{
 		for(int j = 0; j < m_nMapWidth; j++)
 		{
-			
+			float x = (float)m_vTiles[i][j].GetPosX();
+			float y = (float)m_vTiles[i][j].GetPosY();
+
 			switch(m_vTiles[i][j].GetSpawn())
 			{
-				
+			case 0:
+				{
+					/*   This is an empty tile */
+				}
+				break;
+
 			case 1:
 				{
 					/*  SBASE   */
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,SAPPER,x,y,true,1.5f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 
 				}
 				break;
 			case 2:
 				{
 					/*  TBASE   */
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,TANK,x,y,true,1.5f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 3:
@@ -121,12 +134,15 @@ void CLayer::Fill(void)
 			case 4:
 				{
 					/*  BUILDING   */
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,0,x,y,false,0.0f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 5:
 				{
 					/*  SAPPER   */
-					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,SAPPER);
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,SAPPER,x,y);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
@@ -144,7 +160,7 @@ void CLayer::Fill(void)
 			case 8:
 				{
 					/*  TANK   */
-					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TANK);
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TANK,x,y);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
@@ -152,6 +168,9 @@ void CLayer::Fill(void)
 			case 9:
 				{
 					/*  TURRET   */
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TURRET,x,y);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 
@@ -177,6 +196,11 @@ void CLayer::Fill(void)
 			case 14:
 				{
 					/*  TREE   */
+				}
+				break;
+
+			default:
+				{
 				}
 				break;
 

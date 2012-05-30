@@ -14,6 +14,8 @@ using std::sqrt;
 void CTurret::Update(float fDt)
 {
 	Camera* C=Camera::GetInstance();
+
+	//TANK
 	if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr) // change target check to !=
 	{
 		
@@ -51,7 +53,7 @@ void CTurret::Update(float fDt)
 				 m_fFireRate+=fDt;
 		}
 	}
-	else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)
+	else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)  //PLAYER
 	{
 
 			
@@ -86,7 +88,7 @@ void CTurret::Update(float fDt)
 		m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
 		m_pFlamer->UpdateEmitterPos(GetPosX(), GetPosY());
 	}
-	else if(m_pOwner == nullptr && m_pTarget == nullptr)
+	else if(m_pOwner == nullptr && m_pTarget == nullptr)  //TURRET ON ITS OWN
 	{
 
 		float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
@@ -123,8 +125,7 @@ void CTurret::Update(float fDt)
 
 		}
 	}
-	if(m_pOwner->GetType()==OBJ_PLAYER)
-	{
+	
 		if(abs(m_fRotation)>=2.335)
 		{
 			m_fRotationHeight=128;
@@ -140,15 +141,25 @@ void CTurret::Update(float fDt)
 			m_fRotationHeight=128;
 			m_fRotationWidth=64;
 		}
-	}
+	
 }
 void CTurret::Render(void)
 {
 	Camera* C=Camera::GetInstance();
-	if(m_pOwner->GetType()!=OBJ_PLAYER)
+
+	if(m_pOwner != nullptr)
+	{
+		if(m_pOwner->GetType()!=OBJ_PLAYER)
+			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+		else
+			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+	}
+	else if(m_pOwner == nullptr)
+	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
-	else
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+	}
+
+		
 	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 
@@ -182,6 +193,8 @@ void CTurret::SetUpVec(float x, float y)
 RECT CTurret::GetRect(void)
 {
 	RECT rect={};
+	if(m_pOwner != nullptr)
+	{
 	if(m_pOwner->GetType()==OBJ_PLAYER)
 	{
 		if(abs(m_fRotation)>=2.335)
@@ -212,6 +225,7 @@ RECT CTurret::GetRect(void)
 			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2-32);
 			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
 		}
+	}
 	}
 	return rect;
 }

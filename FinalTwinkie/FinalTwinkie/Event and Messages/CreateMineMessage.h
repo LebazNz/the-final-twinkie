@@ -6,15 +6,15 @@
 class CCreateMineMessage : public CMessage
 {
 public:
-	CCreateMineMessage(MessageType msgType, int x = 0, int y = 0);
+	CCreateMineMessage(MessageType msgType, float x = 0, float y = 0);
 	virtual ~CCreateMineMessage(void);
 
-	int GetPosX(void) const { return m_nPosX; }
-	int GetPosY(void) const { return m_nPosY; }
+	float GetPosX(void) const { return m_nPosX; }
+	float GetPosY(void) const { return m_nPosY; }
 
 private:
-	int m_nPosX;
-	int m_nPosY;
+	float m_nPosX;
+	float m_nPosY;
 };
 
 #endif
