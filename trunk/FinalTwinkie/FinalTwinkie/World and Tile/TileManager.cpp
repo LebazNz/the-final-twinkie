@@ -77,9 +77,20 @@ bool CTileManager::Load(string fileName)
 		TiXmlElement* pChild = pRoot->FirstChildElement();
 		pChild = pChild->NextSiblingElement("map_info");
 
-		int mapWidth, mapHeight, tileWidth, tileHeight, setWidth,setHeight;
+		int mapWidth, mapHeight, tileWidth, tileHeight, setWidth,setHeight, playerPosX, playerPosY;
 
 			// Read the attributes (within the XML tag)
+		if( pChild->Attribute( "playerx", &playerPosX ) == nullptr )
+			playerPosX = 0;
+
+		//CPlayer *pPlayer = 
+		Camera::GetInstance()->SetPosX(float(playerPosX));
+
+		if( pChild->Attribute( "playery", &playerPosY ) == nullptr )
+			playerPosY = 0;
+
+		Camera::GetInstance()->SetPosY(float(playerPosY));
+
 		if( pChild->Attribute( "mapwidth", &mapWidth ) == nullptr )
 			mapWidth = 1;
 
@@ -187,6 +198,7 @@ bool CTileManager::Load(string fileName)
 		
 
 		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, m_vTiles);
+		m_pGraphics.Fill();
 	}
 	else
 	{
@@ -300,22 +312,22 @@ void CTileManager::CheckCollision(IEntity* pBase)
 	If m_vEnemies has info in it,then after this method it will be empty
 	in order to free up as much as i can out of the tile manager while a level is running.
 */
-vector<ENEMY_INFO> CTileManager::GetEnemyInfo(void)
-{
-	if(m_vEnemies.size() > 0)
-	{
-		vector<ENEMY_INFO> tempvec;
-		tempvec = m_vEnemies;
-		m_vEnemies.clear();
-		return tempvec;
-	}
-	return m_vEnemies;
-}
-
-vector<ENEMY_INFO> CTileManager::GetSpawnInfo(void)
-{
-	return m_pGraphics.GetSpawns();
-}
+//vector<ENEMY_INFO> CTileManager::GetEnemyInfo(void)
+//{
+//	if(m_vEnemies.size() > 0)
+//	{
+//		vector<ENEMY_INFO> tempvec;
+//		tempvec = m_vEnemies;
+//		m_vEnemies.clear();
+//		return tempvec;
+//	}
+//	return m_vEnemies;
+//}
+//
+//vector<ENEMY_INFO> CTileManager::GetSpawnInfo(void)
+//{
+//	return m_pGraphics.GetSpawns();
+//}
 
 void CTileManager::RaiseWall(void)
 {

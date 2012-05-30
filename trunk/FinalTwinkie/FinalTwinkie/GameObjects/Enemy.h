@@ -5,7 +5,7 @@
 #include "../Event and Messages/IListener.h"
 #include "../Particle/Emitter.h"
 
-enum ENEMYTYPE { SAPPER, TANK, TURRET };
+enum ENEMYTYPE { SAPPER, TANK, TURRET, RIFLE, ROCKET };
 
 class CEnemy:public CEntity, public IListener
 {
