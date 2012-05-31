@@ -53,10 +53,12 @@ public:
 	virtual void SetArmor(float fArmor) {m_fArmor=fArmor;}
 	virtual void SetMaxHealth(float fHealth) {m_fMaxHealth = fHealth;}
 	virtual void SetMaxArmor(float fArmor) { m_fMaxArmor = fArmor; }
-
+	virtual void SetOldPos(tVector2D v2OldPos) { m_v2OldPos = v2OldPos; }
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 	virtual void AddEmitter(int nEmitter){ m_vEmitters.push_back(nEmitter);  }
-	
+	virtual bool GetInvul(void)const{return m_bInvul;}
+	virtual void SetInvul(bool bInv){m_bInvul = bInv;}
+	virtual void SetInvulTimer(float fTimer){m_fInvulTimer = fTimer;}
 
 private:
 	// Position
@@ -79,6 +81,9 @@ private:
 	float m_fMaxArmor;
 	// Reference Counter
 	int m_nRefCount;
+	// Invul 
+	bool  m_bInvul;
+	float m_fInvulTimer;
 
 	tVector2D m_v2OldPos;
 

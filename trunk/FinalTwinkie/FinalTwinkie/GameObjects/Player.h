@@ -51,6 +51,13 @@ public:
 	int GetMaxWeaponAmmoArtillery(void) const { return m_anMaxWeaponAmmo[1]; }
 	int GetMaxWeaponAmmoMissile(void) const { return m_anMaxWeaponAmmo[2]; }
 	int GetMoney(void) const {return m_nMoney; }
+	void SetNoReloadTimer(float fNoReload) { m_fNoReloadTimer = fNoReload; }
+	bool GetDoubleDamage(void) {return m_bDoubleDamage; }
+	void SetDoubleDamage(bool bDD) { m_bDoubleDamage = bDD; }
+	void SetDamageTimer(float fTimer) { m_fDamageTime = fTimer; }
+	bool GetInfAmmo(void) {return m_bInfAmmo; }
+	void SetInfAmmo(bool bAmmo) {m_bInfAmmo = bAmmo;}
+	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
 
 private:
 
@@ -88,6 +95,15 @@ private:
 
 	static CPlayer* m_pInstance;
 	CSGD_DirectInput* m_pDI;
+
+	float m_fFireTimer;
+	float m_fTime;
+	float m_fNoReloadTimer;
+	bool m_bDoubleDamage;
+	float m_fDamageTime;
+	bool  m_bInfAmmo;
+	float m_fInfAmmoTimer;	
+
 };
 #endif
 

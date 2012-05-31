@@ -80,8 +80,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Event and Messages\CreateBuildingMessage.cpp" />
+    <ClCompile Include="Event and Messages\CreateMineMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyBuildingMessage.cpp" />
+    <ClCompile Include="Event and Messages\DestroyMineMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyTurretMessage.cpp" />
+    <ClCompile Include="GameObjects\Mine.cpp" />
     <ClCompile Include="GameStates\LoadGameState.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_DirectInput.cpp" />
@@ -142,8 +146,12 @@
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Event and Messages\CreateBuildingMessage.h" />
+    <ClInclude Include="Event and Messages\CreateMineMessage.h" />
     <ClInclude Include="Event and Messages\DestroyBuildingMessage.h" />
+    <ClInclude Include="Event and Messages\DestroyMineMessage.h" />
     <ClInclude Include="Event and Messages\DestroyTurretMessage.h" />
+    <ClInclude Include="gameobjects\mine.h" />
     <ClInclude Include="GameStates\LoadGameState.h" />
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
     <ClInclude Include="SGD Wrappers\CSGD_DirectInput.h" />
