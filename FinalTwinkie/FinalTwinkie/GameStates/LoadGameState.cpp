@@ -327,7 +327,7 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Bob",1,1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml"};
+				Data data = {"Bob",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml"};
 				vSavedData[m_nPosition] = data;
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}

@@ -5,6 +5,8 @@
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
+#include "Enemy.h"
+
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
 {
@@ -162,7 +164,50 @@ RECT CPlayer::GetRect(void)
 }
 bool CPlayer::CheckCollision(IEntity* pBase)
 {
-	return false;
+	if(CEntity::CheckCollision(pBase) == true)
+	{
+		switch(pBase->GetType())
+		{
+		case OBJ_BASE:
+			break;
+		case OBJ_PLAYER:
+			{
+			}
+			break;
+		case OBJ_BULLET:
+			{				
+			}
+			break;
+		case OBJ_ENEMY:
+			{
+				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		case OBJ_PICKUP:
+			{
+			}
+			break;
+		case OBJ_BUILDING:
+			{
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		case OBJ_MINE:
+			{
+			}
+			break;
+		};
+		return true;
+	}
+	else
+		return false;
 }
 CPlayer::CPlayer(void)
 {

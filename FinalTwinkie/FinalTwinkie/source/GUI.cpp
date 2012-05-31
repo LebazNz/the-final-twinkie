@@ -1,6 +1,6 @@
 #include "../Headers/GUI.h"
 #include "../GameObjects/Player.h"
-#include "../source/Game.h"
+#include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 
 CGUI* CGUI::m_pSelf = nullptr;
@@ -72,7 +72,7 @@ void CGUI::Render(void)
 	m_pTM->Draw(m_nHudID, 27, 476, 1,1,&rect);
 
 	char buffer[10];
-	itoa(m_pPlayer->GetWeaponAmmoOne(), buffer, 10);
+	itoa(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
 	m_pFont->Print(buffer, 30, 506, .5f, D3DCOLOR_XRGB(255,255,255));
 
 	itoa(m_pPlayer->GetMoney(), buffer, 10);

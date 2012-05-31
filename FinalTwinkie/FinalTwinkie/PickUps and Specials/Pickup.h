@@ -3,7 +3,7 @@
 #include "../GameObjects/Entity.h"
 #include "../GameObjects/Player.h"
 
-enum PICKUPTYPE { PU_HEALTH, PU_AMMO, PU_ARMOR, PU_MONEY, PU_DD, PU_NORELOAD, PU_INVU, PU_INFAMMO };
+enum PICKUPTYPE { PU_HEALTH, PU_AMMO, PU_ARMOR, PU_DD, PU_NORELOAD, PU_INVU, PU_INFAMMO, PU_MONEY };
 
 class CPickup: public CEntity
 {

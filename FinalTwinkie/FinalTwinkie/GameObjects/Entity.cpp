@@ -53,6 +53,7 @@ void CEntity::Render(void)
 
 bool CEntity::CheckCollision(IEntity* pObject)
 {
+	this;
 	RECT rOverLap = {}, rSelf = GetRect(), rOther = pObject->GetRect();
 
 	m_pTM->CheckCollision(pObject);
