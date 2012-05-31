@@ -59,6 +59,7 @@ public:
 	virtual bool GetInvul(void)const{return m_bInvul;}
 	virtual void SetInvul(bool bInv){m_bInvul = bInv;}
 	virtual void SetInvulTimer(float fTimer){m_fInvulTimer = fTimer;}
+	virtual float GetInvulTimer(void)const{return m_fInvulTimer;}
 
 private:
 	// Position

@@ -84,26 +84,34 @@ void CPlayer::Update(float fDt)
 		SetMoveLeft(true);
 	}
 
-	if(m_pDI->MouseButtonPressed(0) && m_fFireTimer >= m_fTime)
+	if(m_pDI->MouseButtonDown(0) && m_fFireTimer >= m_fTime)
 	{
-		if(m_fNoReloadTimer == 0.0f)
-		{			
+		if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
+		{
+			if(m_fNoReloadTimer == 0.0f)
+			{			
+					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
+					CMessageSystem::GetInstance()->SndMessage(msg);
+					m_fFireTimer = 0.0f;
+			}
+			else
+			{
 				CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 				CMessageSystem::GetInstance()->SndMessage(msg);
 				m_fFireTimer = 0.0f;
-				m_fTime = 1.0f;
-		}
-		else
-		{
-			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
-			CMessageSystem::GetInstance()->SndMessage(msg);
-			m_fFireTimer = 0.0f;
-			m_fTime = 0.25f;
-			m_fNoReloadTimer -= fDt;
+			}
 		}
 	}
 	else
 		m_fFireTimer += fDt;
+
+	if(m_fNoReloadTimer > 0.0)
+	{
+		m_fNoReloadTimer -= fDt;
+		m_fTime = 0.25f;
+	}
+	else
+		m_fTime = 1.0;
 
 	if(m_pDI->MouseButtonDown(1))
 	{
@@ -192,6 +200,16 @@ void CPlayer::Update(float fDt)
 			m_fInfAmmoTimer-=fDt;
 		else
 			m_bInfAmmo = false;
+
+	if(GetInvul() == true)
+		if(GetInvulTimer() > 0.0f)
+		{
+			float fTime = GetInvulTimer();
+			fTime-=fDt;
+			SetInvulTimer(fTime);
+		}
+		else
+			SetInvul(false);
 }
 void CPlayer::Render(void)
 {
