@@ -45,10 +45,11 @@ void CLayer::RenderLayer(int imageID)
 			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
 			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
 			int index = m_vTiles[i][j].GetIndex();
+			int width = 32, height = 32;
 			RECT src = {};
 			src = CellAlgorithm(index);
 			
-			if(x >= -10 && x <= pGame->GetWidth() && y >= -10 && y <=  pGame->GetHeight())
+			if(x >= -width && x <= pGame->GetWidth()+width && y >= -height && y <=  pGame->GetHeight()+height)
 				m_pTM->Draw(imageID,m_vTiles[i][j].GetPosX()+(int)cam->GetPosX(),m_vTiles[i][j].GetPosY()+(int)cam->GetPosY(),1.0f,1.0f,&src);
 			else
 				continue;

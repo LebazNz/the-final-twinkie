@@ -1,7 +1,9 @@
 #include "ObjectManager.h"
 #include "../GameObjects/Entity.h"
 #include "../World and Tile/TileManager.h"
-
+#include "../GameObjects/Player.h"
+#include "../source/Camera.h"
+#include "../source/Game.h"
 CObjectManager* CObjectManager::m_pInstance = nullptr;
 
 CObjectManager* CObjectManager::GetInstance(void)
@@ -109,4 +111,48 @@ void CObjectManager::RenderAllObjects(void)
 	{
 		(*iter)->Render();
 	}
+}
+
+
+void CObjectManager::AreaEffect(int x, int y, int radius, int damage, bool arc)
+{
+	CPlayer *pPlayer = CPlayer::GetInstance();
+	
+	// For arc we will need to take turret rotation into effect 
+
+	Camera  *pCam = Camera::GetInstance();
+	int playerX = pCam->GetPosX() + CGame::GetInstance()->GetWidth()/2;
+	int playerY = pCam->GetPosY() + CGame::GetInstance()->GetHeight()/2;
+
+	/*float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+	float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
+	xPos *= xPos;
+	yPos *= yPos;
+
+	float distance = sqrt(float(xPos+yPos));*/
+
+
+	vector< IEntity* >::iterator iter;
+
+	for(iter = m_vObjectList.begin(); iter != m_vObjectList.end(); iter++)
+	{
+		CEntity* m_pTarget = dynamic_cast<CEntity*>(*iter);
+		if(m_pTarget->GetPosX() >= 0 && m_pTarget->GetPosX() <= CGame::GetInstance()->GetWidth() && m_pTarget->GetPosY() >= 0 && m_pTarget->GetPosY() <= CGame::GetInstance()->GetHeight())
+		{
+
+			/*float xPos = ((pTarget->GetPosX()) - ((m_vTiles[i][j].GetPosX()+cam->GetPosX())+m_vTiles[i][j].GetWidth()/2));
+			float yPos = ((pTarget->GetPosY()) - ((m_vTiles[i][j].GetPosY()+cam->GetPosY())+m_vTiles[i][j].GetHeight()/2));
+			xPos *= xPos;
+			yPos *= yPos;
+
+			float distance = sqrt(xPos+yPos);
+
+			if(pBase->GetType() != OBJ_PLAYER)
+				continue;*/
+
+
+		}
+	
+	}
+
 }

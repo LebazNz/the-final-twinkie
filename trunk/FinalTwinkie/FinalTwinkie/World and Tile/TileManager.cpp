@@ -90,14 +90,14 @@ bool CTileManager::Load(string fileName)
 	
 		
 		//player->SetPosX(playerPosX);
-		Camera::GetInstance()->SetPosX((CGame::GetInstance()->GetWidth()/2) - playerPosX);
+		Camera::GetInstance()->SetPosX(float((CGame::GetInstance()->GetWidth()/2) - playerPosX));
 
 		if( pChild->Attribute( "playery", &playerPosY ) == nullptr )
 			playerPosY = 0;
 
 		
 		//player->SetPosY(playerPosY);
-		Camera::GetInstance()->SetPosY((CGame::GetInstance()->GetHeight()/2) - playerPosY);
+		Camera::GetInstance()->SetPosY(float((CGame::GetInstance()->GetHeight()/2) - playerPosY));
 
 		if( pChild->Attribute( "mapwidth", &mapWidth ) == nullptr )
 			mapWidth = 1;
@@ -252,15 +252,15 @@ void CTileManager::CheckCollision(IEntity* pBase)
 	
 			RECT rOverLap = {}, rSelf = m_vTiles[i][j].GetRect(), rOther = pTarget->GetRect();
 
-			/*float xPos = ((m_vTiles[i][j].GetPosX()+cam->GetPosX())+m_vTiles[i][j].GetWidth()/2) - pTarget->GetPosX();
-			float yPos = ((m_vTiles[i][j].GetPosY()+cam->GetPosY())+m_vTiles[i][j].GetHeight()/2) - pTarget->GetPosY();
+			float xPos = ((pTarget->GetPosX()+cam->GetPosX()) - ((m_vTiles[i][j].GetPosX()+cam->GetPosX())+m_vTiles[i][j].GetWidth()/2));
+			float yPos = ((pTarget->GetPosY()+cam->GetPosY()) - ((m_vTiles[i][j].GetPosY()+cam->GetPosY())+m_vTiles[i][j].GetHeight()/2));
 			xPos *= xPos;
 			yPos *= yPos;
 
-			float distance = sqrt(float(xPos+yPos));
+			float distance = sqrt(xPos+yPos);
 
-			if(distance > 100)
-				continue;*/
+			if(distance > 150 &&  pBase->GetType() != OBJ_PLAYER)
+				continue;
 
 			BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, &rOther);
 
@@ -275,6 +275,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
 							RaiseWall();
+							
 							m_vTiles[i][j].SetCollision(false);
 							break;
 						}
@@ -301,8 +302,13 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_ENEMY:
 					{
-						CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+						if(m_vTiles[i][j].GetTrigger() == 1)
+						{
+							break;
+						}
 
+						CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+						// USE THIS TO TEST DISTANCE FORMULA int blah = distance;
 						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
 						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
 					}
