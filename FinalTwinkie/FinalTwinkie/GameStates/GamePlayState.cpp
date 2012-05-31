@@ -880,6 +880,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
 					pSelf->m_pOM->AddObject(sapper);
 					sapper->Release();
+					sapper = nullptr;
 				}
 				break;
 			case TANK:
@@ -925,6 +926,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
 					pSelf->m_pTurret->Release();
 					pSelf->m_pEnemy->Release();
+					pSelf->m_pEnemy = nullptr;
+					pSelf->m_pTurret = nullptr;
 					
 				}
 				break;
@@ -952,6 +955,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationRate(1.0f);
 					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
 					pSelf->m_pTurret->Release();
+					pSelf->m_pTurret = nullptr;
 				
 				}
 				break;

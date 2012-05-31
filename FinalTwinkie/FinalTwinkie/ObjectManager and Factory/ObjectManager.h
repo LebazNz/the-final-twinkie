@@ -17,6 +17,8 @@ public:
 	void CheckCollisions(void);
 	void RenderAllObjects(void);
 
+	void AreaEffect(int x, int y, int radius, int damage, bool arc = false);
+
 private:
 	CObjectManager(void);
 	CObjectManager(const CObjectManager&);
