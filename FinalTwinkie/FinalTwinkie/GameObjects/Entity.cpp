@@ -44,12 +44,6 @@ void CEntity::Update(float fDt)
 	m_v2OldPos.fY = GetPosY();
 	m_fPosX += int(m_fVelX * fDt);
 	m_fPosY += int(m_fVelY * fDt);
-
-	if(m_bInvul == true)
-		if(m_fInvulTimer > 0.0f)
-			m_fInvulTimer-=fDt;
-		else
-			m_bInvul = false;
 }
 
 void CEntity::Render(void)

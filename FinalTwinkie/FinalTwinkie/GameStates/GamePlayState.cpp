@@ -795,8 +795,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							if(player->GetWeaponAmmoShell()> 0)
-							{
+							/*if(player->GetWeaponAmmoShell()> 0)
+							{*/
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 								if(player->GetDoubleDamage())
@@ -808,7 +808,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoShell();
 									player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
 								}
-							}
+							//}
 						}
 						else
 						{
@@ -1015,7 +1015,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			int nRandNum = rand()%8;
 			if(nRandNum <= 7)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,5);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			}
