@@ -58,6 +58,7 @@ public:
 	bool GetInfAmmo(void) {return m_bInfAmmo; }
 	void SetInfAmmo(bool bAmmo) {m_bInfAmmo = bAmmo;}
 	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
+	float GetNoReload(){return m_fNoReloadTimer;}
 
 private:
 
@@ -87,6 +88,8 @@ private:
 	bool m_bMoveLeft;
 	bool m_bMoveUp;
 	bool m_bMoveDown;
+	bool m_bOverheat;
+	float m_fOverheatTimer;
 
 	float m_fFireRate;
 

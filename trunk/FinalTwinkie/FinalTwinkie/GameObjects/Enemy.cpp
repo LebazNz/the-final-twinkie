@@ -6,18 +6,20 @@
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Headers/Game.h"
 #include "../Headers/Camera.h"
+#include "../SGD Wrappers/SGD_Math.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 
 CEnemy::CEnemy(void)
 {
 	m_nType = OBJ_ENEMY;
-	m_fMaxDist = 0;
-	m_fMinDist = 0;
 	m_nMainBulletType = BUL_SHELL;
 	m_nMachineGunBulletType = BUL_MACHINEGUN;
 	m_fFireRate = 0;
 	CEventSystem::GetInstance()->RegisterClient("explode",this);
-	SetHealth(3000);
+	SetHealth(35);
 	m_bHasATurret = false;
+	m_fRotation=0;
+	m_pTail=nullptr;
 }
 
 CEnemy::~CEnemy(void)
@@ -27,35 +29,55 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Update(float fDt)
 {
-	float nY = GetPosY();
-	nY++;
-	SetPosY(nY);
-	m_pTail->UpdateEmitterPos(GetPosX(), GetPosY());	float hp = GetHealth();
-	if(hp > 0)
+	Camera* C=Camera::GetInstance();
+	if(m_pTail!=nullptr)
+		m_pTail->UpdateEmitterPos(GetPosX(), GetPosY());
+	if(m_nEType==RIFLE||m_nEType==ROCKET)
 	{
-		SetHealth(hp-5);
-	}
-	else
-	{
-		CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
-		CMessageSystem::GetInstance()->SndMessage(pMsg);
-		pMsg = nullptr;
+		tVector2D Up={0,-1};
+		tVector2D toTarget;
+		toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+		toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+		m_fRotation=AngleBetweenVectors(toTarget, Up);
+		if(m_pPlayer->GetPosX()<(GetPosX()+C->GetPosX()))
+		{
+			m_fRotation=-m_fRotation;
+		}
+		tVector2D Look=Vector2DRotate(Up, m_fRotation);
+		if(Vector2DLength(toTarget)>m_fMinDist)
+		{
+			float DY=(Look.fY*GetVelY()*fDt);
+			float DX=(Look.fX*GetVelX()*fDt);
+			m_v2OldPos.fX = GetPosX();
+			m_v2OldPos.fY = GetPosY();
+			SetPosX(GetPosX()+DX);
+			SetPosY(GetPosY()+DY);
+		}
+		if(m_nEType==RIFLE)
+		{
+			if(Vector2DLength(toTarget)<m_fMaxDist)
+			{
+			}
+		}
+		else if(m_nEType==ROCKET)
+		{
+		}
 	}
 }
 
 void CEnemy::Render(void)
 {
+	Camera* C=Camera::GetInstance();
 	if(GetImageID() != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw( GetImageID(), 
-					int(GetPosX()), int(GetPosY()), 1.0f, 1.0f, nullptr, 
-					GetWidth()/2.0f, GetHeight()/2.0f, 0, 
-					DWORD(GetColor()) );
+		CSGD_TextureManager::GetInstance()->Draw( GetImageID(), int((GetPosX()+C->GetPosX())-GetWidth()/2), int((GetPosY()+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, nullptr, GetWidth()/2.0f, GetHeight()/2.0f, m_fRotation, DWORD(GetColor()) );
 	}
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 
 bool CEnemy::CheckCollision(IEntity* pBase)
 {
+	this;
 	if(CEntity::CheckCollision(pBase) == true)
 	{
 		switch(pBase->GetType())
@@ -70,9 +92,9 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_BULLET:
 			{				
-					/*CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
+					CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;*/
+					pMsg = nullptr;
 			}
 			break;
 		case OBJ_ENEMY:
@@ -103,9 +125,9 @@ RECT CEnemy::GetRect(void)
 {
 	Camera* C=Camera::GetInstance();
 	RECT rect;
-	rect.bottom=(LONG)((GetPosY()+C->GetPosY())-GetHeight());
-	rect.top=(LONG)((GetPosY()+C->GetPosY())+GetHeight());
-	rect.left=(LONG)((GetPosX()+C->GetPosX())-GetWidth());
-	rect.right=(LONG)((GetPosX()+C->GetPosX())+GetWidth());
+	rect.bottom=(LONG)(GetPosY()+C->GetPosY()+GetHeight()/2);
+	rect.top=(LONG)(GetPosY()+C->GetPosY()-GetHeight()/2);
+	rect.left=(LONG)(GetPosX()+C->GetPosX()-GetWidth()/2);
+	rect.right=(LONG)(GetPosX()+C->GetPosX()+GetWidth()/2);
 	return rect;
 }

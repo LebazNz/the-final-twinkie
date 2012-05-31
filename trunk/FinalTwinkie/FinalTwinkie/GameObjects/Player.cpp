@@ -107,7 +107,7 @@ void CPlayer::Update(float fDt)
 
 	if(m_pDI->MouseButtonDown(1))
 	{
-		if(m_fFireRate >= 0.15f&&m_fHeat<100)
+		if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
 		{
 			m_fFireRate = 0.0f;
 			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
@@ -117,6 +117,19 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			m_fFireRate += fDt;
+		if(m_fHeat>100)
+		{
+			m_bOverheat=true;
+		}
+		if(m_bOverheat&&m_fOverheatTimer>=2.0f)
+		{
+			m_bOverheat=false;
+			m_fOverheatTimer=0.0f;
+		}
+		else if(m_bOverheat&&m_fOverheatTimer<2.0f)
+		{
+			m_fOverheatTimer+=fDt;
+		}
 	}
 
 	m_pTurret->SetPosX(GetPosX());
@@ -157,9 +170,13 @@ void CPlayer::Update(float fDt)
 		m_fRotationHeight=128;
 		m_fRotationWidth=64;
 	}
-	if(m_fHeat>0)
+	if(m_fHeat>0&&!m_bOverheat)
 	{
-		m_fHeat-=.1;
+		m_fHeat-=0.1f;
+	}
+	else if(m_fHeat>0&&m_bOverheat)
+	{
+		m_fHeat-=.5;
 	}
 	if(m_fHeat<0)
 		m_fHeat=0;
@@ -249,9 +266,11 @@ CPlayer::CPlayer(void)
 	m_bMoveLeft		= false;
 	m_bMoveUp		= false;
 	m_bMoveDown		= false;
+	m_bOverheat		= false;
 
 	m_fFireRate = 0.0f;
-	m_fHeat=0.0;
+	m_fHeat=0.0f;
+	m_fOverheatTimer=0.0f;
 	m_fTime=1.0f;
 	m_fFireTimer=m_fTime;	
 	m_fNoReloadTimer=0.0f;

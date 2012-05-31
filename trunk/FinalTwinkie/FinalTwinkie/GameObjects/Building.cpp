@@ -1,22 +1,48 @@
 #include "Building.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../Headers/Camera.h"
-void CBuilding::Update(float)
+#include "../Event and Messages/CreateEnemyMessage.h"
+#include "../Event and Messages/MessageSystem.h"
+#include "../SGD Wrappers/SGD_Math.h"
+void CBuilding::Update(float fDt)
 {
+	Camera* C=Camera::GetInstance();
+	m_pFlames->UpdateEmitterPos(GetPosX(), GetPosY());
+	tVector2D toTarget;
+	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+	float length=Vector2DLength(toTarget);
+	if(length<=m_fRange)
+	{
+		if(m_bCanSpawn&&m_fTimer>=m_fSpawnTime)
+		{
+			CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, m_nSpawnType, GetPosX(), GetPosY()+GetHeight());
+			CMessageSystem::GetInstance()->SndMessage(msg);
+			m_fTimer=0.0f;
+		}
+		else 
+		{
+			m_fTimer+=fDt;
+		}
+	}
+	else
+	{
+		m_fTimer+=fDt;
+	}
 }
 void CBuilding::Render(void)
 {
 	Camera* C=Camera::GetInstance();
-	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (GetPosX()+C->GetPosX())-(GetWidth()/2), (GetPosY()+C->GetPosY())-(GetWidth()/2));
+	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-(GetWidth()/2)), (int)((GetPosY()+C->GetPosY())-(GetWidth()/2)));
 }
 RECT CBuilding::GetRect(void)
 {
 	Camera* C=Camera::GetInstance();
 	RECT rect;
-	rect.top=(GetPosY()+C->GetPosY())-GetHeight()/2;
-	rect.bottom=(GetPosY()+C->GetPosY())+GetHeight()/2;
-	rect.left=(GetPosX()+C->GetPosX())-GetWidth()/2;
-	rect.right=(GetPosX()+C->GetPosX())+GetWidth()/2;
+	rect.top=(LONG)((GetPosY()+C->GetPosY())-GetHeight()/2);
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+GetHeight()/2);
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-GetWidth()/2);
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+GetWidth()/2);
 	return rect;
 }
 bool CBuilding::CheckCollision(IEntity* pBase)
@@ -71,6 +97,7 @@ bool CBuilding::CheckCollision(IEntity* pBase)
 CBuilding::CBuilding(void)
 {
 	m_nType=OBJ_BUILDING;
+	m_fTimer=0.0f;
 }
 CBuilding::~CBuilding(void)
 {
