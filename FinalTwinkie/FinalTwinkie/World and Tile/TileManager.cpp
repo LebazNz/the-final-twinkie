@@ -15,7 +15,7 @@ using namespace std;
 #include "../GameObjects/Player.h"
 #include "../Headers/Camera.h"
 #include "../GameStates/GamePlayState.h"
-#include "../source/Game.h"
+#include "../Headers/Game.h"
 
 CTileManager* CTileManager::m_pSelf = nullptr;
 

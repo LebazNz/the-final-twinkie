@@ -94,18 +94,25 @@ bool CPickup::CheckCollision(IEntity* pBase)
 					break;
 				case PU_DD:
 					{
+						m_pPlayer->SetDamageTimer(15.0f);
+						m_pPlayer->SetDoubleDamage(true);
 					}
 					break;
 				case PU_NORELOAD:
 					{
+						m_pPlayer->SetNoReloadTimer(15.0f);
 					}
 					break;
 				case PU_INVU:
 					{
+						m_pPlayer->SetInvul(true);
+						m_pPlayer->SetInvulTimer(15.0f);
 					}
 					break;
 				case PU_INFAMMO:
 					{
+						m_pPlayer->SetInfAmmo(true);
+						m_pPlayer->SetInfoAmmoTimer(15.0f);
 					}
 					break;
 				case PU_MONEY:

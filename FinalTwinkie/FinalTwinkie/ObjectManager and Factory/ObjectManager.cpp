@@ -2,8 +2,8 @@
 #include "../GameObjects/Entity.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Player.h"
-#include "../source/Camera.h"
-#include "../source/Game.h"
+#include "../Headers/Camera.h"
+#include "../Headers/Game.h"
 CObjectManager* CObjectManager::m_pInstance = nullptr;
 
 CObjectManager* CObjectManager::GetInstance(void)

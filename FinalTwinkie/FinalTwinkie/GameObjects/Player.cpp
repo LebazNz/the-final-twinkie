@@ -84,11 +84,27 @@ void CPlayer::Update(float fDt)
 		SetMoveLeft(true);
 	}
 
-	if(m_pDI->MouseButtonPressed(0))
+	if(m_pDI->MouseButtonPressed(0) && m_fFireTimer >= m_fTime)
 	{
-		CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
-		CMessageSystem::GetInstance()->SndMessage(msg);
+		if(m_fNoReloadTimer == 0.0f)
+		{			
+				CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
+				CMessageSystem::GetInstance()->SndMessage(msg);
+				m_fFireTimer = 0.0f;
+				m_fTime = 1.0f;
+		}
+		else
+		{
+			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
+			CMessageSystem::GetInstance()->SndMessage(msg);
+			m_fFireTimer = 0.0f;
+			m_fTime = 0.25f;
+			m_fNoReloadTimer -= fDt;
+		}
 	}
+	else
+		m_fFireTimer += fDt;
+
 	if(m_pDI->MouseButtonDown(1))
 	{
 		if(m_fFireRate >= 0.15f&&m_fHeat<100)
@@ -96,7 +112,8 @@ void CPlayer::Update(float fDt)
 			m_fFireRate = 0.0f;
 			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
 			CMessageSystem::GetInstance()->SndMessage(msg);
-			m_fHeat+=3;
+			if(m_bInfAmmo == false)
+				m_fHeat+=3;
 		}
 		else
 			m_fFireRate += fDt;
@@ -146,6 +163,18 @@ void CPlayer::Update(float fDt)
 	}
 	if(m_fHeat<0)
 		m_fHeat=0;
+
+	if(m_bDoubleDamage == true)
+		if(m_fDamageTime > 0.0f)
+			m_fDamageTime-=fDt;
+		else
+			m_bDoubleDamage = false;
+
+	if(m_bInfAmmo == true)
+		if(m_fInfAmmoTimer > 0.0f)
+			m_fInfAmmoTimer-=fDt;
+		else
+			m_bInfAmmo = false;
 }
 void CPlayer::Render(void)
 {
@@ -223,6 +252,13 @@ CPlayer::CPlayer(void)
 
 	m_fFireRate = 0.0f;
 	m_fHeat=0.0;
+	m_fTime=1.0f;
+	m_fFireTimer=m_fTime;	
+	m_fNoReloadTimer=0.0f;
+	m_bDoubleDamage = false;
+	m_fDamageTime = 0.0f;
+	m_bInfAmmo = false;
+	m_fInfAmmoTimer = 0.0f;
 }
 CPlayer::~CPlayer(void)
 {

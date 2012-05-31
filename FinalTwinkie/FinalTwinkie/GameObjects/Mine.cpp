@@ -1,6 +1,6 @@
 #include "Mine.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
-#include "../source/Camera.h"
+#include "../Headers/Camera.h"
 #include "Player.h"
 
 CMine::CMine(void)

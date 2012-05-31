@@ -180,6 +180,9 @@ void CGamePlayState::Enter(void)
 		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
 		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
+		player->SetMoney(m_dGameData.nMoney);
+		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
+		player->SetOldPos(v2Pos);
 		m_pOM->AddObject(player);
 
 	
@@ -747,18 +750,17 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEntity* pBullet = pSelf->m_pOF->CreateObject("CBullet");
 			CBullet* Bullet = dynamic_cast<CBullet*>(pBullet);
 			CCreateBulletMessage* pMessage = dynamic_cast<CCreateBulletMessage*>(pMsg);
+			CPlayer* player=dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
 			switch(pMessage->GetBulletType())
 			{
 			case BUL_SHELL:
-				{
-					CPlayer* player=dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
+				{					
 					if(player->GetWeaponAmmoShell()> 0)
 					{
 						CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
 
 						Bullet->SetWidth(32);
 						Bullet->SetHeight(32);
-						Bullet->SetDamage(35.0f);
 						Bullet->SetScale(0.35f);
 						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 							Bullet->SetWhoFired(true);
@@ -775,15 +777,21 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-								
-								int ammoChange=player->GetWeaponAmmoShell();
-								player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
+								if(player->GetDoubleDamage())
+									Bullet->SetDamage(35.0f*2);
+								else
+									Bullet->SetDamage(35.0f);
+								if(player->GetInfAmmo() == false)
+								{
+									int ammoChange=player->GetWeaponAmmoShell();
+									player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
+								}
 							}
 							else
 							{
 								Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-
+								Bullet->SetDamage(35.0f);
 							}
 							Bullet->SetVelX(norVec.fX*400);
 							Bullet->SetVelY(norVec.fY*400);
@@ -808,7 +816,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					Bullet->SetDamage(5.0f);
 					Bullet->SetScale(0.15f);
 					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 						Bullet->SetWhoFired(true);
@@ -825,12 +832,16 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							if(player->GetDoubleDamage())
+									Bullet->SetDamage(5.0f*2);
+								else
+									Bullet->SetDamage(5.0f);
 						}
 						else
 						{
 							Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 							Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-
+							Bullet->SetDamage(5.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -985,7 +996,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			int nRandNum = rand()%8;
 			if(nRandNum <= 7)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,5);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			}
