@@ -132,7 +132,8 @@ void CGamePlayState::Enter(void)
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
-		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
+		FXFlame=m_PM->AddEmitter("resource/files/Flame2.xml");
+		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
 
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -144,6 +145,7 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
+		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -164,6 +166,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CSapper>("CSapper");
 		m_pOF->RegisterClassType<CBuilding>("CBuilding");
 		m_pOF->RegisterClassType<CPickup>("CPickup");
+
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
 		player->SetImageID(m_nPlayerID);
@@ -202,7 +205,6 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
-		//player->Release();
 
 		/*CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
 		sapper->SetImageID(m_anEnemyIDs[1]);
@@ -299,9 +301,30 @@ void CGamePlayState::Enter(void)
 		building->SetWidth(128);
 		building->SetHealth(50);
 		building->SetImageID(m_anEnemyIDs[2]);
+		building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
+		building->SetCanSpawn(true);
+		building->SetSpawn(SAPPER);
+		building->SetSpawnTime(5.0f);
+		building->SetPlayer(player);
+		building->SetRange(500);
 		m_pOM->AddObject(building);
 
 		building->Release();
+
+		CEnemy* enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
+		enemy->SetEType(RIFLE);
+		enemy->SetImageID(m_anEnemyIDs[4]);
+		enemy->SetPosX(300);
+		enemy->SetPosY(300);
+		enemy->SetHeight(32);
+		enemy->SetWidth(32);
+		enemy->SetPlayer(player);
+		enemy->SetHealth(50);
+		enemy->SetVelX(30);
+		enemy->SetVelY(30);
+		enemy->SetMinDistance(200);
+		enemy->SetMaxDistance(600);
+		m_pOM->AddObject(enemy);
 
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
@@ -726,16 +749,16 @@ void CGamePlayState::Render(void)
 
 
 	// Player pos
-	_itoa_s(CPlayer::GetInstance()->GetPosX(),buffer,10);
+	_itoa_s((int)(CPlayer::GetInstance()->GetPosX()),buffer,10);
 	font->Print(buffer,700,200,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(CPlayer::GetInstance()->GetPosY(),buffer,10);
+	_itoa_s((int)(CPlayer::GetInstance()->GetPosY()),buffer,10);
 	font->Print(buffer,700,250,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 
 	//Camera Pos
-	_itoa_s(Camera::GetInstance()->GetPosX(),buffer,10);
+	_itoa_s((int)(Camera::GetInstance()->GetPosX()),buffer,10);
 	font->Print(buffer,700,300,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(Camera::GetInstance()->GetPosY(),buffer,10);
+	_itoa_s((int)(Camera::GetInstance()->GetPosY()),buffer,10);
 	font->Print(buffer,700,350,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
@@ -755,55 +778,51 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{					
-					if(player->GetWeaponAmmoShell()> 0)
+					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetWidth(32);
+					Bullet->SetHeight(32);
+					Bullet->SetScale(0.35f);
+					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+						Bullet->SetWhoFired(true);
+					else
+						Bullet->SetWhoFired(false);
+					if(pMessage->GetFiringEntity() != nullptr)
 					{
-						CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
-
-						Bullet->SetWidth(32);
-						Bullet->SetHeight(32);
-						Bullet->SetScale(0.35f);
-						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-							Bullet->SetWhoFired(true);
-						else
-							Bullet->SetWhoFired(false);
-						if(pMessage->GetFiringEntity() != nullptr)
+						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+						tVector2D Up={0,-1};
+						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
+						norVec = Vector2DNormalize(norVec);
+						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+						if(Bullet->GetWhoFired())
 						{
-							tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
-							tVector2D Up={0,-1};
-							Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
-							norVec = Vector2DNormalize(norVec);
-							Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-							if(Bullet->GetWhoFired())
+							if(player->GetWeaponAmmoShell()> 0)
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
-									Bullet->SetDamage(35.0f);
+									Bullet->SetDamage(900.0f);
 								if(player->GetInfAmmo() == false)
 								{
 									int ammoChange=player->GetWeaponAmmoShell();
 									player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
 								}
 							}
-							else
-							{
-								Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-								Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
-								Bullet->SetDamage(35.0f);
-							}
-							Bullet->SetVelX(norVec.fX*400);
-							Bullet->SetVelY(norVec.fY*400);
 						}
-						
-
-						Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
-
-						pSelf->m_pOM->AddObject(Bullet);
-						Bullet->Release();
-						Bullet = nullptr;
+						else
+						{
+							Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
+							Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							Bullet->SetDamage(35.0f);
+						}
+						Bullet->SetVelX(norVec.fX*400);
+						Bullet->SetVelY(norVec.fY*400);
 					}
+					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
+					pSelf->m_pOM->AddObject(Bullet);
+					Bullet->Release();
+					Bullet = nullptr;
 				}
 				break;
 			case BUL_ROCKET:
@@ -1012,6 +1031,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;	
 	case MSG_DESTROYBUILDING:
 		{
+			dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding()->GetFlames()->ActivateEmitter();
 			pSelf->m_pOM->RemoveObject(dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding());
 		}
 		break;

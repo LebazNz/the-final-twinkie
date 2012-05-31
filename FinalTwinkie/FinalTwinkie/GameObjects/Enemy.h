@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "../Event and Messages/IListener.h"
 #include "../Particle/Emitter.h"
+#include "../GameObjects/Player.h"
 
 enum ENEMYTYPE { SAPPER, TANK, TURRET, RIFLE, ROCKET };
 
@@ -12,7 +13,7 @@ class CEnemy:public CEntity, public IListener
 public:
 	virtual void Update(float);
 	virtual void Render(void);
-	virtual bool CheckCollision(IEntity* pObject);
+	virtual bool CheckCollision(IEntity*);
 	virtual int GetType(void)const { return m_nType; }
 	
 	CEnemy(void);
@@ -31,13 +32,16 @@ public:
 	virtual void SetMainBulletType(int fMainBulletType) { m_nMainBulletType = fMainBulletType; }
 	virtual void SetMachineGunBulletType(int nMachineGunBulletType) { m_nMachineGunBulletType = nMachineGunBulletType; }
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
-	bool GetHasATuuert(void)const{return m_bHasATurret;}
+	bool GetHasATuert(void)const{return m_bHasATurret;}
 	void SetHasATurret(bool bTurret){m_bHasATurret = bTurret;}
 
 	void SetTail(CEmitter* Tail){m_pTail=Tail;}
 	CEmitter* GetTail(void){return m_pTail;}
 
 	virtual void HandleEvent(CEvent* pEvent);
+
+	void SetPlayer(CPlayer* pPlayer){m_pPlayer=pPlayer;}
+	void SetEType(ENEMYTYPE eType){m_nEType=eType;}
 
 private:
 	float	m_fMaxDist;
@@ -50,5 +54,10 @@ private:
 	tVector2D m_v2OldPos;
 
 	CEmitter* m_pTail;
+
+	ENEMYTYPE m_nEType;
+	CPlayer* m_pPlayer;
+
+	float m_fRotation;
 };
 #endif

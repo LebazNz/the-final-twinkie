@@ -45,7 +45,7 @@ void CLayer::RenderLayer(int imageID)
 			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
 			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
 			int index = m_vTiles[i][j].GetIndex();
-			int width = 32, height = 32;
+			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
 			RECT src = {};
 			src = CellAlgorithm(index);
 			
@@ -113,18 +113,18 @@ void CLayer::Fill(void)
 			case 1:
 				{
 					/*  SBASE   */
-					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,SAPPER,x,y,true,1.5f);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,SAPPER,x,y,true,1.5f);
+					//CMessageSystem::GetInstance()->SndMessage(pMsg);
+					//pMsg = nullptr;
 
 				}
 				break;
 			case 2:
 				{
 					/*  TBASE   */
-					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,TANK,x,y,true,1.5f);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,TANK,x,y,true,1.5f);
+					//CMessageSystem::GetInstance()->SndMessage(pMsg);
+					//pMsg = nullptr;
 				}
 				break;
 			case 3:
@@ -135,9 +135,9 @@ void CLayer::Fill(void)
 			case 4:
 				{
 					/*  BUILDING   */
-					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,0,x,y,false,0.0f);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,0,x,y,false,0.0f);
+					//CMessageSystem::GetInstance()->SndMessage(pMsg);
+					//pMsg = nullptr;
 				}
 				break;
 			case 5:

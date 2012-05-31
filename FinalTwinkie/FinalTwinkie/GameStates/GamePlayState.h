@@ -77,6 +77,7 @@ private:
 	int FXEnemy_Tails;
 	int FXSapper_Explosion;
 	int FXFlame;
+	int FXBuildingFlame;
 
 	int m_nCursor;
 

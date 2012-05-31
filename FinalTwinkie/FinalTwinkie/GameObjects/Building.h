@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "../Particle/Emitter.h"
 class CBuilding:public CEntity
 {
 public:
@@ -15,15 +16,22 @@ public:
 	CBuilding(void);
 	~CBuilding(void);
 
-	void SetSpawn(CEnemy* pEnemy) {m_pSpawn=pEnemy;}
+	void SetSpawn(int nType) {m_nSpawnType=nType;}
 	void SetCanSpawn(bool bSpawn) {m_bCanSpawn=bSpawn;}
 	void SetSpawnTime(float fTime) {m_fSpawnTime=fTime;}
 	void SetPlayer(CPlayer* pPlayer) {m_pPlayer=pPlayer;}
+	void SetFlames(CEmitter* pFlames) {m_pFlames=pFlames;}
+	void SetRange(int fRange) {m_fRange=fRange;}
+
+	CEmitter* GetFlames(void) {return m_pFlames;}
 
 private:
-	CEnemy* m_pSpawn;
+	int m_nSpawnType;
 	bool m_bCanSpawn;
 	float m_fSpawnTime;
+	float m_fTimer;
 	CPlayer* m_pPlayer;
+	CEmitter* m_pFlames;
+	int m_fRange;
 };
 #endif

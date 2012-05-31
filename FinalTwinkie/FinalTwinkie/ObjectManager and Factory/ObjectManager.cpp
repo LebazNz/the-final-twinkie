@@ -93,6 +93,8 @@ void CObjectManager::CheckCollisions(void)
 		{
 			/*if( (*iCollider)->GetType() == (*iOtherObject)->GetType() )
 				continue;*/
+			if(iCollider==iOtherObject)
+				continue;
 
 			if( (*iCollider)->CheckCollision( (*iOtherObject) ) )
 			{
@@ -121,8 +123,8 @@ void CObjectManager::AreaEffect(int x, int y, int radius, int damage, bool arc)
 	// For arc we will need to take turret rotation into effect 
 
 	Camera  *pCam = Camera::GetInstance();
-	int playerX = pCam->GetPosX() + CGame::GetInstance()->GetWidth()/2;
-	int playerY = pCam->GetPosY() + CGame::GetInstance()->GetHeight()/2;
+	float playerX = pCam->GetPosX() + CGame::GetInstance()->GetWidth()/2;
+	float playerY = pCam->GetPosY() + CGame::GetInstance()->GetHeight()/2;
 
 	/*float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
 	float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
