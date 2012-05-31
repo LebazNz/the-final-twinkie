@@ -89,15 +89,15 @@ bool CTileManager::Load(string fileName)
 		CPlayer* player = CPlayer::GetInstance();
 	
 		
-		player->SetPosX(playerPosX);
-		Camera::GetInstance()->SetPosX(float(playerPosX + CGame::GetInstance()->GetWidth()/2));
+		//player->SetPosX(playerPosX);
+		Camera::GetInstance()->SetPosX((CGame::GetInstance()->GetWidth()/2) - playerPosX);
 
 		if( pChild->Attribute( "playery", &playerPosY ) == nullptr )
 			playerPosY = 0;
 
 		
-		player->SetPosY(playerPosY);
-		Camera::GetInstance()->SetPosY(float(playerPosY + CGame::GetInstance()->GetHeight()/2));
+		//player->SetPosY(playerPosY);
+		Camera::GetInstance()->SetPosY((CGame::GetInstance()->GetHeight()/2) - playerPosY);
 
 		if( pChild->Attribute( "mapwidth", &mapWidth ) == nullptr )
 			mapWidth = 1;
