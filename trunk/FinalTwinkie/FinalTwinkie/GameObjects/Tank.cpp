@@ -6,6 +6,7 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 CTank::CTank(void)
 {
+	m_nType = OBJ_ENEMY;
 }
 CTank::~CTank(void)
 {
@@ -66,7 +67,77 @@ void CTank::Render(void)
 }
 bool CTank::CheckCollision(IEntity* pBase)
 {
-	return false;
+	if(pBase->GetType() == OBJ_TURRET)
+		return false;
+
+	if(pBase == this)
+		return false;
+
+	if(CEntity::CheckCollision(pBase) == true)
+	{
+		switch(pBase->GetType())
+		{
+		case OBJ_BASE:
+			break;
+		case OBJ_PLAYER:
+			{
+				Camera *cam = Camera::GetInstance();
+				CPlayer* pPlayer = CPlayer::GetInstance();
+
+				pPlayer->SetPosX(pPlayer->GetOldPos().fX);
+				pPlayer->SetPosY(pPlayer->GetOldPos().fY);
+				cam->SetPosX(cam->GetOldPos().fX);
+				cam->SetPosY(cam->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		case OBJ_BULLET:
+			{				
+			}
+			break;
+		case OBJ_ENEMY:
+			{
+				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		case OBJ_PICKUP:
+			{
+			}
+			break;
+		case OBJ_BUILDING:
+			{
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		case OBJ_MINE:
+			{
+			}
+			break;
+		case OBJ_TANK:
+			{
+				CTank* pEnemy =dynamic_cast<CTank*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		};
+		return true;
+	}
+	else
+		return false;
 }
 RECT CTank::GetRect(void)
 {

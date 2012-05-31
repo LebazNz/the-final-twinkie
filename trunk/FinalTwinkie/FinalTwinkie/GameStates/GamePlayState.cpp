@@ -250,6 +250,42 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(pTurret);
 		pTurret->Release();
 		pTank->Release();
+
+		pTank=(CTank*)m_pOF->CreateObject("CTank");
+		pTank->SetImageID(m_nPlayerID);
+		pTank->SetPosX(200);
+		pTank->SetPosY(400);
+		pTank->SetRotation(0);
+		pTank->SetWidth(64);
+		pTank->SetHeight(128);
+		pTank->SetPlayer(player);
+		pTank->SetRotationRate(0.75f);
+		pTank->SetSight(400);
+		pTank->SetVelX(30);
+		pTank->SetVelY(30);
+		pTank->SetHealth(300);
+		pTank->SetHasATurret(true);
+		m_pOM->AddObject(pTank);
+
+		pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		pTurret->SetImageID(m_nPlayerTurretID);
+		pTank->SetTurret(pTurret);
+		pTurret->SetPosX(pTank->GetPosX());
+		pTurret->SetPosY(pTank->GetPosY());
+		pTurret->SetOwner(pTank);
+		pTurret->SetBullet(BUL_SHELL);
+		pTurret->SetWidth(64);
+		pTurret->SetHeight(128);
+		pTurret->SetRotationPositon(32,98);
+		pTurret->SetUpVec(0,-1);
+		pTurret->SetDistance(300);
+		//pTurret->SetFireRate(2.5f);
+		pTurret->SetTarget(player);
+		pTurret->SetRotationRate(1.0f);
+		m_pOM->AddObject(pTurret);
+		pTurret->Release();
+		pTank->Release();
+
 		m_nPosition = 0;
 		m_bPaused = false;
 
@@ -273,8 +309,8 @@ void CGamePlayState::Enter(void)
 
 		player->SetMoney(m_dGameData.nMoney);
 	}
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
 }
 
@@ -498,11 +534,64 @@ bool CGamePlayState::Input(void)
 		{
 			m_bPaused = !m_bPaused;
 		}
-		if(m_pDI->KeyPressed(DIK_N))
+		if(m_pDI->KeyPressed(DIK_1))
 		{
-			CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,SAPPER);
-			CMessageSystem::GetInstance()->SndMessage(pMsg);
-			pMsg = nullptr;
+			CPlayer::GetInstance()->SetHealth(CPlayer::GetInstance()->GetHealth()-100);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),0);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_2))
+		{
+			
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),1);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_3))
+		{
+			CPlayer::GetInstance()->SetArmor(CPlayer::GetInstance()->GetArmor()-50);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),2);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_4))
+		{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),3);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_5))
+		{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),4);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_6))
+		{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),5);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_7))
+		{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),6);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
+		}
+		if(m_pDI->KeyPressed(DIK_8))
+		{
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),7);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+			
 		}
 	}
 	if(m_pDI->KeyPressed(DIK_RETURN))
@@ -663,7 +752,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case BUL_SHELL:
 				{
 					CPlayer* player=dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
-					if(player->GetWeaponAmmoOne()> 0)
+					if(player->GetWeaponAmmoShell()> 0)
 					{
 						CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
 
@@ -687,8 +776,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 								
-								int ammoChange=player->GetWeaponAmmoOne();
-								player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoTwo(), player->GetWeaponAmmoThree());
+								int ammoChange=player->GetWeaponAmmoShell();
+								player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
 							}
 							else
 							{
@@ -889,10 +978,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
-			int nRandNum = rand()%7;
+			int nRandNum = rand()%8;
 			if(nRandNum <= 7)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,0);
+				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			}
@@ -977,7 +1066,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
 			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
 
-			pPickup->SetAliveTime(15.0f);
+			pPickup->SetAliveTime(150.0f);
 
 			pSelf->m_pOM->AddObject(pPickup);
 

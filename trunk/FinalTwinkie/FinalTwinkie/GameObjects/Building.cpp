@@ -19,9 +19,54 @@ RECT CBuilding::GetRect(void)
 	rect.right=(GetPosX()+C->GetPosX())+GetWidth()/2;
 	return rect;
 }
-bool CBuilding::CheckCollision(IEntity*)
+bool CBuilding::CheckCollision(IEntity* pBase)
 {
-	return false;
+	if(CEntity::CheckCollision(pBase) == true)
+	{
+		switch(pBase->GetType())
+		{
+		case OBJ_BASE:
+			break;
+		case OBJ_PLAYER:
+			{
+				Camera *cam = Camera::GetInstance();
+				CPlayer* pPlayer = CPlayer::GetInstance();
+
+				pPlayer->SetPosX(pPlayer->GetOldPos().fX);
+				pPlayer->SetPosY(pPlayer->GetOldPos().fY);
+				cam->SetPosX(cam->GetOldPos().fX);
+				cam->SetPosY(cam->GetOldPos().fY);
+			}
+			break;
+		case OBJ_BULLET:
+			{				
+			}
+			break;
+		case OBJ_ENEMY:
+			{
+				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+			}
+			break;
+		case OBJ_PICKUP:
+			{
+			}
+			break;
+		case OBJ_BUILDING:
+			{
+			}
+			break;
+		case OBJ_MINE:
+			{
+			}
+			break;
+		};
+		return true;
+	}
+	else
+		return false;
 }
 CBuilding::CBuilding(void)
 {

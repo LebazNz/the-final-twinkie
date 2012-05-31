@@ -67,18 +67,19 @@ bool CPickup::CheckCollision(IEntity* pBase)
 				case PU_AMMO:
 					{
 						int nAmmo[3];
-						nAmmo[0] = m_pPlayer->GetWeaponAmmoOne();
-						nAmmo[1] = m_pPlayer->GetWeaponAmmoTwo();
-						nAmmo[2] = m_pPlayer->GetWeaponAmmoThree();
+						nAmmo[0] = m_pPlayer->GetWeaponAmmoShell();
+						nAmmo[1] = m_pPlayer->GetWeaponAmmoArtillery();
+						nAmmo[2] = m_pPlayer->GetWeaponAmmoMissile();
 						int nMaxAmmo[3];
-						nMaxAmmo[0] = m_pPlayer->GetMaxWeaponAmmoOne();
-						nMaxAmmo[1] = m_pPlayer->GetMaxWeaponAmmoTwo();
-						nMaxAmmo[2] = m_pPlayer->GetMaxWeaponAmmoThree();
+						nMaxAmmo[0] = m_pPlayer->GetMaxWeaponAmmoShell();
+						nMaxAmmo[1] = m_pPlayer->GetMaxWeaponAmmoArtillery();
+						nMaxAmmo[2] = m_pPlayer->GetMaxWeaponAmmoMissile();
 						for(int i = 0; i < 3; ++i)
 						{
 							if(nAmmo[i] != -1)
 								nAmmo[i] = nMaxAmmo[i];
 						}
+						m_pPlayer->SetWeaponAmmo(nAmmo[0],nAmmo[1],nAmmo[3]);
 					}
 					break;
 				case PU_ARMOR:
@@ -92,12 +93,20 @@ bool CPickup::CheckCollision(IEntity* pBase)
 					}
 					break;
 				case PU_DD:
+					{
+					}
 					break;
 				case PU_NORELOAD:
+					{
+					}
 					break;
 				case PU_INVU:
+					{
+					}
 					break;
 				case PU_INFAMMO:
+					{
+					}
 					break;
 				case PU_MONEY:
 					{

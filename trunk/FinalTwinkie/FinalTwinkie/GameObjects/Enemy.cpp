@@ -64,17 +64,21 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_PLAYER:
 			{
+				SetPosX(GetOldPos().fX);
+				SetPosY(GetOldPos().fY);
 			}
 			break;
 		case OBJ_BULLET:
 			{				
-					CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
+					/*CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+					pMsg = nullptr;*/
 			}
 			break;
 		case OBJ_ENEMY:
 			{
+				SetPosX(GetOldPos().fX);
+				SetPosY(GetOldPos().fY);
 			}
 			break;
 		};

@@ -89,8 +89,8 @@ void CObjectManager::CheckCollisions(void)
 	{
 		for( iOtherObject = m_vObjectList.begin(); iOtherObject != m_vObjectList.end(); ++iOtherObject )
 		{
-			if( (*iCollider)->GetType() == (*iOtherObject)->GetType() )
-				continue;
+			/*if( (*iCollider)->GetType() == (*iOtherObject)->GetType() )
+				continue;*/
 
 			if( (*iCollider)->CheckCollision( (*iOtherObject) ) )
 			{

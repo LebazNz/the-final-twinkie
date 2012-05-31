@@ -44,12 +44,12 @@ public:
 	void SetSpecialAmmo(int nAmmoOne, int nAmmoTwo) { m_anSpecialammo[0] = nAmmoOne; m_anSpecialammo[1] = nAmmoTwo; }
 	void SetMoney(int nMoney) { m_nMoney = nMoney; }
 	void SetName(std::string szName) { m_szName = szName; }
-	int GetWeaponAmmoOne(void) const { return m_anWeaponAmmo[0]; }
-	int GetWeaponAmmoTwo(void) const { return m_anWeaponAmmo[1]; }
-	int GetWeaponAmmoThree(void) const { return m_anWeaponAmmo[2]; }
-	int GetMaxWeaponAmmoOne(void) const { return m_anMaxWeaponAmmo[0]; }
-	int GetMaxWeaponAmmoTwo(void) const { return m_anMaxWeaponAmmo[1]; }
-	int GetMaxWeaponAmmoThree(void) const { return m_anMaxWeaponAmmo[2]; }
+	int GetWeaponAmmoShell(void) const { return m_anWeaponAmmo[0]; }
+	int GetWeaponAmmoArtillery(void) const { return m_anWeaponAmmo[1]; }
+	int GetWeaponAmmoMissile(void) const { return m_anWeaponAmmo[2]; }
+	int GetMaxWeaponAmmoShell(void) const { return m_anMaxWeaponAmmo[0]; }
+	int GetMaxWeaponAmmoArtillery(void) const { return m_anMaxWeaponAmmo[1]; }
+	int GetMaxWeaponAmmoMissile(void) const { return m_anMaxWeaponAmmo[2]; }
 	int GetMoney(void) const {return m_nMoney; }
 
 private:
