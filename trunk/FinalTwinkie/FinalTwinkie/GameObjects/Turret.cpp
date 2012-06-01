@@ -235,6 +235,9 @@ RECT CTurret::GetRect(void)
 
 void CTurret::TakeDamage(int nDamage)
 {
+	if(GetOwner() != nullptr)
+		return;
+
 	if(GetHealth() <= 0.0f)
 	{
 		CDestroyTurretMessage* pMst = new CDestroyTurretMessage(this);

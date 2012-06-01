@@ -97,11 +97,19 @@ bool CBullet::CheckCollision(IEntity* pBase)
 		case OBJ_TURRET:
 			{
 				CTurret* pEnemy = dynamic_cast<CTurret*>(pBase);
-				pEnemy->TakeDamage((int)this->m_fDamage);
+
 				
+
+				if(pEnemy->GetOwner() != nullptr)
+					break;
+
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
+
+				pEnemy->TakeDamage((int)this->m_fDamage);
+				
+				
 			}
 			break;
 			case OBJ_BUILDING:
