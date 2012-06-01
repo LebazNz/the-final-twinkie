@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 #include <windows.h>	//	Needed for Windows Applications.
 #include <tchar.h>
-#include <vld.h>
+//#include <vld.h>
 
 #include <dbghelp.h>	//	Used for Dump File
 #pragma comment(lib, "dbghelp.lib")

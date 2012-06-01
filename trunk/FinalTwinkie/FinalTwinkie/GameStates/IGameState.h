@@ -28,7 +28,36 @@ struct Data
 	int bSmoke;
 	int nLaser;
 	int nMachineGun;
+
 	char szFileName[32];
+
+	// shop stuff
+	float	fHeatModifier;
+	int		nHeatLevel;
+	float	fDamageMod;
+	int		nDamageLevel;
+	float	fAmmoMod;
+	int		nAmmoLevel;
+	float	fHealthMod;
+	int		nHealthLevel;
+	float	fArmorMod;
+	int		nArmorLevel;
+	float	fSpeedMod;
+	int		nSpeedLevel;
+
+	float	fPurchaseLevel;
+
+	//int		bRocketAccess;
+	//int		bLaserAccess;
+	//int		bNukeAccess;
+	//int		bEMPAccess;
+	//int		bArtilleryAccess;
+	//int		bFlamerAccess;
+	//int		bAirStrikeAccess;
+	//int		bSmokeBombAccess;
+
+
+	
 };
 
 class IGameState

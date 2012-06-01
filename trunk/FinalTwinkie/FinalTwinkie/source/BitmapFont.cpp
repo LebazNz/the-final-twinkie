@@ -1,6 +1,6 @@
 #include "../Headers/BitmapFont.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
-
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 CBitmapFont* CBitmapFont::m_pSelf = nullptr;
 
 CBitmapFont* CBitmapFont::GetInstance(void)
@@ -33,6 +33,8 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 	m_fScale = fScale;
 	int ColStart = nPosX;
 	int nLen = strlen(szText);
+	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+
 	for(int i = 0; i < nLen; i++)
 	{
 		char ch = szText[i];

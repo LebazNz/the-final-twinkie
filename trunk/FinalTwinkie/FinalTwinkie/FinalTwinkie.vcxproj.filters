@@ -61,10 +61,14 @@
     <ClCompile Include="GameStates\StartState.cpp" />
     <ClCompile Include="Event and Messages\DestroyTurretMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyBuildingMessage.cpp" />
+<<<<<<< .mine
+    <ClCompile Include="Event and Messages\CreateBuildingMessage.cpp" />
+=======
     <ClCompile Include="Event and Messages\CreateBuildingMessage.cpp" />
     <ClCompile Include="Event and Messages\CreateMineMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyMineMessage.cpp" />
     <ClCompile Include="GameObjects\Mine.cpp" />
+>>>>>>> .r58
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
@@ -130,10 +134,14 @@
     <ClInclude Include="GameStates\StartState.h" />
     <ClInclude Include="Event and Messages\DestroyTurretMessage.h" />
     <ClInclude Include="Event and Messages\DestroyBuildingMessage.h" />
+<<<<<<< .mine
+    <ClInclude Include="Event and Messages\CreateBuildingMessage.h" />
+=======
     <ClInclude Include="Event and Messages\CreateBuildingMessage.h" />
     <ClInclude Include="Event and Messages\CreateMineMessage.h" />
     <ClInclude Include="Event and Messages\DestroyMineMessage.h" />
     <ClInclude Include="gameobjects\mine.h" />
+>>>>>>> .r58
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

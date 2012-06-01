@@ -60,6 +60,55 @@ public:
 	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
 	float GetNoReload(){return m_fNoReloadTimer;}
 
+
+	float	GetDamageMod() const { return m_fDamageMod; }
+	void	SetDamageMod(float val) { m_fDamageMod = val; }
+	float	GetAmmoMod() const { return m_fAmmoMod; }
+	void	SetAmmoMod(float val) { m_fAmmoMod = val; }
+	float	GetHealthMod() const { return m_fHealthMod; }
+	void	SetHealthMod(float val) { m_fHealthMod = val; }
+	float	GetArmorMod() const { return m_fArmorMod; }
+	void	SetArmorMod(float val) { m_fArmorMod = val; }
+	float	GetSpeedMod() const { return m_fSpeedMod; }
+	void	SetSpeedMod(float val) { m_fSpeedMod = val; }
+	float	GetHeatModifier() const { return m_fHeatModifier; }
+	void	SetHeatModifier(float val) { m_fHeatModifier = val; }
+	float	GetPurchaseLevel() const { return m_fPurchaseLevel; }
+	void	SetPurchaseLevel(float val) { m_fPurchaseLevel = val; }
+
+	int		GetHealthLevel() { return m_nHealthLevel; }
+	void	SetHealthLevel(int rhs) { m_nHealthLevel = rhs; }
+	int		GetDamageLevel() { return m_nDamageLevel; }
+	void	SetDamageLevel(int rhs) { m_nDamageLevel = rhs; } 
+	int		GetAmmoLevel() { return m_nAmmoLevel; }
+	void	SetAmmoLevel(int rhs) { m_nAmmoLevel = rhs; }
+	int		GetHeatLevel() { return m_nHeatLevel; }
+	void	SetHeatLevel(int rhs) { m_nHeatLevel = rhs; }
+	int		GetArmorLevel() { return m_nArmorLevel; }
+	void	SetArmorLevel(int rhs) { m_nArmorLevel = rhs; }
+	int		GetSpeedLevel() { return m_nSpeedLevel; }
+	void	SetSpeedLevel(int rhs) { m_nSpeedLevel = rhs; }
+
+	bool	GetRocketAccess() { return  m_bRocketAccess; }
+	void	SetRocketAccess(bool rhs) { m_bRocketAccess = rhs; } 
+	bool	GetLaserAccess() { return  m_bLaserAccess; }
+	void	SetLaserAccess(bool rhs) { m_bLaserAccess = rhs; } 
+	bool	GetNukeAccess() { return  m_bNukeAccess; }
+	void	SetNukeAccess(bool rhs) { m_bNukeAccess = rhs; } 
+	bool	GetEMPAccess() { return  m_bEMPAccess; }
+	void	SetEMPAccess(bool rhs) { m_bEMPAccess = rhs; } 
+	bool	GetArtilleryAccess() { return  m_bArtilleryAccess; }
+	void	SetArtilleryAccess(bool rhs) { m_bArtilleryAccess = rhs; } 
+	bool	GetFlamerAccess() { return  m_bFlamerAccess; }
+	void	SetFlamerAccess(bool rhs) { m_bFlamerAccess = rhs; } 
+	bool	GetAirStrikeAccess() { return  m_bAirStrikeAccess; }
+	void	SetAirStrikeAccess(bool rhs) { m_bAirStrikeAccess = rhs; } 
+	bool	GetSmokeBombAccess() { return  m_bSmokeBombAccess; }
+	void	SetSmokeBombAccess(bool rhs) { m_bSmokeBombAccess = rhs; } 
+
+
+
+
 private:
 
 	CPlayer(void);
@@ -94,6 +143,35 @@ private:
 	float m_fFireRate;
 
 	float m_fHeat;
+
+	// STUFF FOR THE SHOP STATE!
+	// IF THIS IS CHANGED ORE REMOVED
+	// PEOPLE WILL SUFFER
+	// PEOPLE WILL CRY
+	// BECAUSE KITTENS WILL ATTACK YOU
+	float	m_fHeatModifier;
+	int		m_nHeatLevel;
+	float	m_fDamageMod;
+	int		m_nDamageLevel;
+	float	m_fAmmoMod;
+	int		m_nAmmoLevel;
+	float	m_fHealthMod;
+	int		m_nHealthLevel;
+	float	m_fArmorMod;
+	int		m_nArmorLevel;
+	float	m_fSpeedMod;
+	int		m_nSpeedLevel;
+	
+	float m_fPurchaseLevel;
+
+	bool m_bRocketAccess;
+	bool m_bLaserAccess;
+	bool m_bNukeAccess;
+	bool m_bEMPAccess;
+	bool m_bArtilleryAccess;
+	bool m_bFlamerAccess;
+	bool m_bAirStrikeAccess;
+	bool m_bSmokeBombAccess;
 
 
 	static CPlayer* m_pInstance;
