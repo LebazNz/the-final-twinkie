@@ -213,7 +213,7 @@ void CPlayer::Update(float fDt)
 		else
 			SetInvul(false);
 
-	if(m_pDI->KeyDown(DIK_SPACE))
+	if(m_pDI->KeyPressed(DIK_SPACE))
 	{
 		m_apSpec->ActivateSpecial();
 	}
