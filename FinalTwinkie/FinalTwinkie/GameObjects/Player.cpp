@@ -7,6 +7,7 @@
 #include "../Headers/Game.h"
 #include "../GameStates/ShopState.h"
 #include "Enemy.h"
+#include "../PickUps and Specials/Special.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
@@ -211,6 +212,11 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			SetInvul(false);
+
+	if(m_pDI->KeyDown(DIK_SPACE))
+	{
+		m_apSpec->ActivateSpecial();
+	}
 }
 void CPlayer::Render(void)
 {

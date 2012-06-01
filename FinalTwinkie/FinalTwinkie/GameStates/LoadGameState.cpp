@@ -218,8 +218,8 @@ bool CLoadGameState::Input(void)
 			else
 			{
 				//Data data = {"Jack",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame1.xml"};
-				Data data = {"Phillipe",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Phillipe",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame1.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
@@ -232,8 +232,8 @@ bool CLoadGameState::Input(void)
 			else
 			{
 				//Data data = {"Bob",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml"};
-				Data data = {"Pablo",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Pablo",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame2.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
@@ -246,8 +246,8 @@ bool CLoadGameState::Input(void)
 			else
 			{
 				//Data data = {"Fred",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame3.xml"};
-				Data data = {"Marcos",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Marcos",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame3.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
@@ -316,8 +316,8 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Phillipe",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Phillipe",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame1.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			m_pDI->ReadDevices();
@@ -331,8 +331,8 @@ bool CLoadGameState::Input(void)
 			else
 			{
 				
-				Data data = {"Pablo",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Pablo",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame2.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			m_pDI->ReadDevices();
@@ -345,8 +345,8 @@ bool CLoadGameState::Input(void)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
 			{
-				Data data = {"Marcos",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition] = data;
+				//Data data = {"Marcos",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame3.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
 			m_pDI->ReadDevices();

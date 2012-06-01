@@ -98,6 +98,7 @@ CGamePlayState::CGamePlayState(void)
 	m_nPickupInvuID = -1;
 	m_nPickupInfAmmoID = -1;
 	m_nPickupMoneyID = -1;
+	m_nLevel = 1;
 }
 
 CGamePlayState::~CGamePlayState(void)
@@ -183,9 +184,10 @@ void CGamePlayState::Enter(void)
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
-		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
+		player->SetMaxWeaponAmmo(40,-1,-1);
 		player->SetMoney(m_dGameData.nMoney);
 		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
+		//player->SetSpecial(
 		player->SetOldPos(v2Pos);
 		m_pOM->AddObject(player);
 
@@ -1170,6 +1172,8 @@ void CGamePlayState::SetSavedGame(Data gameData)
 
 void CGamePlayState::SaveGame(const char* szFileName)
 {
+	CPlayer* pPlayer = CPlayer::GetInstance();
+
 	TiXmlDocument doc;
 
 	TiXmlDeclaration* pDec = new TiXmlDeclaration("1.0", "utf-8", "");
@@ -1180,34 +1184,33 @@ void CGamePlayState::SaveGame(const char* szFileName)
 
 	TiXmlElement* data = new TiXmlElement("game_data");
 
-	data->SetAttribute("level",			m_dGameData.nLevel);
-	data->SetAttribute("money",			m_dGameData.nMoney);
-	data->SetAttribute("hp",			m_dGameData.nHp);
-	data->SetAttribute("armor",			m_dGameData.nArmor);
+	data->SetAttribute("level",			m_nLevel);
+	data->SetAttribute("money",			pPlayer->GetMoney());
+	data->SetAttribute("hp",			pPlayer->GetMaxHealth());
+	data->SetAttribute("armor",			pPlayer->GetMaxArmor());
 	data->SetAttribute("ammo",			m_dGameData.nAmmo);
 	data->SetAttribute("speed",			m_dGameData.nSpeed);
-	data->SetAttribute("shellammo",		m_dGameData.nShellAmmo);
-	data->SetAttribute("missileammo",	m_dGameData.nMissileAmmo);
-	data->SetAttribute("artilleryammo", m_dGameData.nArtilleryAmmo);
-	data->SetAttribute("shell",			m_dGameData.bShell);
-	data->SetAttribute("missile",		m_dGameData.bMissile);
-	data->SetAttribute("artillery",		m_dGameData.bArtillery);
-	data->SetAttribute("airstrike",		m_dGameData.bAirStrike);
-	data->SetAttribute("emp",			m_dGameData.bEMP);
-	data->SetAttribute("nuke",			m_dGameData.bNuke);
-	data->SetAttribute("reinforce",		m_dGameData.bReinforce);
-	data->SetAttribute("smoke",			m_dGameData.bSmoke);
-	data->SetAttribute("laser",			m_dGameData.nLaser);
-	data->SetAttribute("machinegun",	m_dGameData.nMachineGun);
+	data->SetAttribute("shellammo",		pPlayer->GetMaxWeaponAmmoShell());
+	data->SetAttribute("missileammo",	pPlayer->GetMaxWeaponAmmoMissile());
+	data->SetAttribute("artilleryammo", pPlayer->GetMaxWeaponAmmoArtillery());
+	data->SetAttribute("shell",			1);
+	data->SetAttribute("missile",		pPlayer->GetRocketAccess());
+	data->SetAttribute("artillery",		pPlayer->GetArtilleryAccess());
+	data->SetAttribute("airstrike",		pPlayer->GetAirStrikeAccess());
+	data->SetAttribute("emp",			pPlayer->GetEMPAccess());
+	data->SetAttribute("nuke",			pPlayer->GetNukeAccess());
+	data->SetAttribute("reinforce",		1);
+	data->SetAttribute("smoke",			pPlayer->GetSmokeBombAccess());
+	data->SetAttribute("laser",			pPlayer->GetLaserAccess());
+	data->SetAttribute("machinegun",	1);
 	data->SetAttribute("filename",		m_dGameData.szFileName);
 
-	data->SetAttribute("HeatModifier",		m_dGameData.fHeatModifier);
-	data->SetAttribute("HeatLevel",			m_dGameData.nHeatLevel);
-	data->SetAttribute("DamageLevel",		m_dGameData.nDamageLevel);
-	data->SetAttribute("AmmoLevel",			m_dGameData.nAmmoLevel);
-	data->SetAttribute("HealthLevel",		m_dGameData.nHealthLevel);
-	data->SetAttribute("ArmorLevel",		m_dGameData.nArmorLevel);
-	data->SetAttribute("SpeedLevel",		m_dGameData.nSpeedLevel);
+	data->SetAttribute("HeatLevel",		pPlayer->GetHealthLevel());
+	data->SetAttribute("DamageLevel",	pPlayer->GetDamageLevel());
+	data->SetAttribute("AmmoLevel",		pPlayer->GetAmmoLevel());
+	data->SetAttribute("HealthLevel",	pPlayer->GetHealthLevel());
+	data->SetAttribute("ArmorLevel",	pPlayer->GetArmorLevel());
+	data->SetAttribute("SpeedLevel",	pPlayer->GetSpeedLevel());
 	
 	//data->SetAttribute("RocketAccess",		m_dGameData.bRocketAccess);
 	//data->SetAttribute("LaserAccess",		m_dGameData.bLaserAccess);

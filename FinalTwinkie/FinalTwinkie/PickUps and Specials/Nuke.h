@@ -2,16 +2,19 @@
 #define CNUKE_H_
 
 #include "Special.h"
-class CNuke :
-	public CSpecial
+
+class CNuke : public CSpecial
 {
 public:
 	CNuke(void);
 	~CNuke(void);
+	virtual void Update(float fDt);
+	virtual void ActivateSpecial(void);
 
 private:
-	float m_fDamage;
-	int m_nRadius;
+	int		m_nDamage;
+	int		m_nRadius;
+	float	m_fTimer;
 };
 
 #endif
