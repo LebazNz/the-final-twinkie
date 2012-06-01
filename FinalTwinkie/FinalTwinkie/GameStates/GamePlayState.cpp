@@ -149,6 +149,7 @@ void CGamePlayState::Enter(void)
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
+		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -298,22 +299,24 @@ void CGamePlayState::Enter(void)
 		//m_nPosition = 0;
 		//m_bPaused = false;
 
-		//CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
-		//building->SetPosX(200);
-		//building->SetPosY(200);
-		//building->SetHeight(128);
-		//building->SetWidth(128);
-		//building->SetHealth(50);
-		//building->SetImageID(m_anEnemyIDs[2]);
-		//building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
-		//building->SetCanSpawn(true);
-		//building->SetSpawn(SAPPER);
-		//building->SetSpawnTime(5.0f);
-		//building->SetPlayer(player);
-		//building->SetRange(500);
-		//m_pOM->AddObject(building);
+		CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
+		building->SetPosX(200);
+		building->SetPosY(200);
+		building->SetHeight(128);
+		building->SetWidth(128);
+		building->SetHealth(50);
+		building->SetImageID(m_anEnemyIDs[2]);
+		building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
+		building->SetCanSpawn(true);
+		building->SetSpawn(SAPPER);
+		building->SetSpawnTime(5.0f);
+		building->SetPlayer(player);
+		building->SetRange(500);
+		building->SetDead(false);
+		building->SetDeathImage(m_anEnemyIDs[5]);
+		m_pOM->AddObject(building);
 
-		//building->Release();
+		building->Release();
 
 		CEnemy* enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
 		enemy->SetEType(RIFLE);
@@ -1055,7 +1058,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYBUILDING:
 		{
 			dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding()->GetFlames()->ActivateEmitter();
-			pSelf->m_pOM->RemoveObject(dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding());
+			//pSelf->m_pOM->RemoveObject(dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding());
+			dynamic_cast<CDestroyBuildingMessage*>(pMsg)->GetBuilding()->SetDead(true);
 		}
 		break;
 	case MSG_CREATEPICKUP:
