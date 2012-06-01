@@ -220,8 +220,9 @@ void CPlayer::Update(float fDt)
 }
 void CPlayer::Render(void)
 {
+	this;
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2), (int)(GetPosY()-GetHeight()/2),1.0f,1.0f,0,GetWidth()/2.0f,GetHeight()/2.0f,m_fRotation);
-	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	//CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
 	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 RECT CPlayer::GetRect(void)

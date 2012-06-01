@@ -16,6 +16,7 @@ public:
 	void RemoveAllObjects(void);
 	void CheckCollisions(void);
 	void RenderAllObjects(void);
+	void RenderDots(void);
 
 	void AreaEffect(float x, float y, int radius, int damage);
 

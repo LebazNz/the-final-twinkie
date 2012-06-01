@@ -46,6 +46,7 @@ CTileManager::CTileManager(void)
 
 CTileManager::~CTileManager(void)
 {
+	m_pGraphics.EmptyLayer();
 }
 
 

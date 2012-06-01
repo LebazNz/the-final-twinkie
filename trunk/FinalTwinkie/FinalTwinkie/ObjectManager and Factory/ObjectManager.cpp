@@ -130,13 +130,12 @@ void CObjectManager::CheckCollisions(void)
 void CObjectManager::RenderAllObjects(void)
 {
 	vector< IEntity* >::iterator iter;
-
+	//std::sort(m_vObjectList.begin(), m_vObjectList.end(), 
 	for(iter = m_vObjectList.begin(); iter != m_vObjectList.end(); iter++)
 	{
 		(*iter)->Render();
 	}
 }
-
 
 void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 {

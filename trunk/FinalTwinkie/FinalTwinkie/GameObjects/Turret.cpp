@@ -151,6 +151,7 @@ void CTurret::Render(void)
 
 	if(m_pOwner != nullptr)
 	{
+		this;
 		if(m_pOwner->GetType()!=OBJ_PLAYER)
 			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
 		else

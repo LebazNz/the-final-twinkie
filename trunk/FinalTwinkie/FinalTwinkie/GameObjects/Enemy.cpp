@@ -4,6 +4,7 @@
 #include "../Event and Messages/EventSystem.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/CreateBulletMessage.h"
+#include "../Event and Messages/SoldierFireMessage.h"
 #include "../Headers/Game.h"
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/SGD_Math.h"
@@ -20,6 +21,7 @@ CEnemy::CEnemy(void)
 	m_bHasATurret = false;
 	m_fRotation=0;
 	m_pTail=nullptr;
+	m_fTimer=0;
 }
 
 CEnemy::~CEnemy(void)
@@ -55,8 +57,16 @@ void CEnemy::Update(float fDt)
 		}
 		if(m_nEType==RIFLE)
 		{
-			if(Vector2DLength(toTarget)<m_fMaxDist)
+			if(Vector2DLength(toTarget)<=m_fMaxDist)
 			{
+				if(m_fTimer>=m_fShotTimer)
+				{
+					SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
+					CMessageSystem::GetInstance()->SndMessage(msg);
+					m_fTimer=0;
+				}
+				else
+					m_fTimer+=fDt;
 			}
 		}
 		else if(m_nEType==ROCKET)
@@ -88,13 +98,6 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 			{
 				SetPosX(GetOldPos().fX);
 				SetPosY(GetOldPos().fY);
-			}
-			break;
-		case OBJ_BULLET:
-			{				
-					CDestroyEnemyMessage* pMsg = new CDestroyEnemyMessage(this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
 			}
 			break;
 		case OBJ_ENEMY:
