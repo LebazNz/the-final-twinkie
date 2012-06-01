@@ -222,80 +222,80 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(sapper);
 		sapper->Release();*/
 
-		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
-		pTank->SetImageID(m_nPlayerID);
-		pTank->SetPosX(500);
-		pTank->SetPosY(200);
-		pTank->SetRotation(0);
-		pTank->SetWidth(64);
-		pTank->SetHeight(128);
-		pTank->SetPlayer(player);
-		pTank->SetRotationRate(0.75f);
-		pTank->SetSight(400);
-		pTank->SetVelX(30);
-		pTank->SetVelY(30);
-		pTank->SetHealth(300);
-		pTank->SetHasATurret(true);
-		m_pOM->AddObject(pTank);
+		//CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
+		//pTank->SetImageID(m_nPlayerID);
+		//pTank->SetPosX(500);
+		//pTank->SetPosY(200);
+		//pTank->SetRotation(0);
+		//pTank->SetWidth(64);
+		//pTank->SetHeight(128);
+		//pTank->SetPlayer(player);
+		//pTank->SetRotationRate(0.75f);
+		//pTank->SetSight(400);
+		//pTank->SetVelX(30);
+		//pTank->SetVelY(30);
+		//pTank->SetHealth(300);
+		//pTank->SetHasATurret(true);
+		//m_pOM->AddObject(pTank);
 
-		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		pTurret->SetImageID(m_nPlayerTurretID);
-		pTank->SetTurret(pTurret);
-		pTurret->SetPosX(pTank->GetPosX());
-		pTurret->SetPosY(pTank->GetPosY());
-		pTurret->SetOwner(pTank);
-		pTurret->SetBullet(BUL_SHELL);
-		pTurret->SetWidth(64);
-		pTurret->SetHeight(128);
-		pTurret->SetRotationPositon(32,98);
-		pTurret->SetUpVec(0,-1);
-		pTurret->SetDistance(300);
-		//pTurret->SetFireRate(2.5f);
-		pTurret->SetTarget(player);
-		pTurret->SetRotationRate(1.0f);
-		m_pOM->AddObject(pTurret);
-		pTurret->Release();
-		pTank->Release();
+		//CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		//pTurret->SetImageID(m_nPlayerTurretID);
+		//pTank->SetTurret(pTurret);
+		//pTurret->SetPosX(pTank->GetPosX());
+		//pTurret->SetPosY(pTank->GetPosY());
+		//pTurret->SetOwner(pTank);
+		//pTurret->SetBullet(BUL_SHELL);
+		//pTurret->SetWidth(64);
+		//pTurret->SetHeight(128);
+		//pTurret->SetRotationPositon(32,98);
+		//pTurret->SetUpVec(0,-1);
+		//pTurret->SetDistance(300);
+		////pTurret->SetFireRate(2.5f);
+		//pTurret->SetTarget(player);
+		//pTurret->SetRotationRate(1.0f);
+		//m_pOM->AddObject(pTurret);
+		//pTurret->Release();
+		//pTank->Release();
 
-		pTank=(CTank*)m_pOF->CreateObject("CTank");
-		pTank->SetImageID(m_nPlayerID);
-		pTank->SetPosX(200);
-		pTank->SetPosY(400);
-		pTank->SetRotation(0);
-		pTank->SetWidth(64);
-		pTank->SetHeight(128);
-		pTank->SetPlayer(player);
-		pTank->SetRotationRate(0.75f);
-		pTank->SetSight(400);
-		pTank->SetVelX(30);
-		pTank->SetVelY(30);
-		pTank->SetHealth(300);
-		pTank->SetHasATurret(true);
-		m_pOM->AddObject(pTank);
+		//pTank=(CTank*)m_pOF->CreateObject("CTank");
+		//pTank->SetImageID(m_nPlayerID);
+		//pTank->SetPosX(200);
+		//pTank->SetPosY(400);
+		//pTank->SetRotation(0);
+		//pTank->SetWidth(64);
+		//pTank->SetHeight(128);
+		//pTank->SetPlayer(player);
+		//pTank->SetRotationRate(0.75f);
+		//pTank->SetSight(400);
+		//pTank->SetVelX(30);
+		//pTank->SetVelY(30);
+		//pTank->SetHealth(300);
+		//pTank->SetHasATurret(true);
+		//m_pOM->AddObject(pTank);
 
-		pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		pTurret->SetImageID(m_nPlayerTurretID);
-		pTank->SetTurret(pTurret);
-		pTurret->SetPosX(pTank->GetPosX());
-		pTurret->SetPosY(pTank->GetPosY());
-		pTurret->SetOwner(pTank);
-		pTurret->SetBullet(BUL_SHELL);
-		pTurret->SetWidth(64);
-		pTurret->SetHeight(128);
-		pTurret->SetRotationPositon(32,98);
-		pTurret->SetUpVec(0,-1);
-		pTurret->SetDistance(300);
-		//pTurret->SetFireRate(2.5f);
-		pTurret->SetTarget(player);
-		pTurret->SetRotationRate(1.0f);
-		m_pOM->AddObject(pTurret);
-		pTurret->Release();
-		pTank->Release();
+		//pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		//pTurret->SetImageID(m_nPlayerTurretID);
+		//pTank->SetTurret(pTurret);
+		//pTurret->SetPosX(pTank->GetPosX());
+		//pTurret->SetPosY(pTank->GetPosY());
+		//pTurret->SetOwner(pTank);
+		//pTurret->SetBullet(BUL_SHELL);
+		//pTurret->SetWidth(64);
+		//pTurret->SetHeight(128);
+		//pTurret->SetRotationPositon(32,98);
+		//pTurret->SetUpVec(0,-1);
+		//pTurret->SetDistance(300);
+		////pTurret->SetFireRate(2.5f);
+		//pTurret->SetTarget(player);
+		//pTurret->SetRotationRate(1.0f);
+		//m_pOM->AddObject(pTurret);
+		//pTurret->Release();
+		//pTank->Release();
 
 		m_nPosition = 0;
 		m_bPaused = false;
 
-		CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
+		/*CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
 		building->SetPosX(200);
 		building->SetPosY(200);
 		building->SetHeight(128);
@@ -325,7 +325,7 @@ void CGamePlayState::Enter(void)
 		enemy->SetVelY(30);
 		enemy->SetMinDistance(200);
 		enemy->SetMaxDistance(600);
-		m_pOM->AddObject(enemy);
+		m_pOM->AddObject(enemy);*/
 
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
@@ -563,10 +563,8 @@ bool CGamePlayState::Input(void)
 		}
 		if(m_pDI->KeyPressed(DIK_1))
 		{
-			CPlayer::GetInstance()->SetHealth(CPlayer::GetInstance()->GetHealth()-100);
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),0);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+			CPlayer *player = CPlayer::GetInstance();
+			m_pOM->AreaEffect((float)m_pDI->MouseGetPosX(),(float)m_pDI->MouseGetPosY(),200,10000);
 			
 		}
 		if(m_pDI->KeyPressed(DIK_2))
@@ -635,11 +633,11 @@ bool CGamePlayState::Input(void)
 	}
 
 	// Enter ShopState
-	if(m_pDI->KeyPressed(DIK_1))
-	{
-		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
-		return true;
-	}
+	//if(m_pDI->KeyPressed(DIK_1))
+	//{
+	//	CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+	//	return true;
+	//}
 
 	return true;
 }
@@ -681,8 +679,8 @@ void CGamePlayState::Update(float fDt)
 void CGamePlayState::Render(void)
 {
 	m_pD3D->Clear( 0, 255, 255 );
-	m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
-		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
+	/*m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
+		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));*/
 	// Render game entities
 	m_pTile->Render();
 	m_pOM->RenderAllObjects();
@@ -791,10 +789,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
-					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-						Bullet->SetWhoFired(true);
+
+					if(pMessage->GetFiringEntity()->GetOwner() != nullptr)
+					{
+						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+							Bullet->SetWhoFired(true);
+					}
 					else
 						Bullet->SetWhoFired(false);
+
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
 						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
@@ -943,7 +946,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					tank->SetVelY(30);
 					tank->SetHealth(300);
 					tank->SetHasATurret(true);
-					pSelf->m_pOM->AddObject(pSelf->m_pEnemy);
+					pSelf->m_pOM->AddObject(tank);
 
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
 					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
@@ -989,10 +992,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
-					//pTurret->SetFireRate(2.5f);
+				//	turret->SetFireRate(2.5f);
 					turret->SetTarget(player);
 					turret->SetRotationRate(1.0f);
-					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
+					pSelf->m_pOM->AddObject(turret);
 					pSelf->m_pTurret->Release();
 					pSelf->m_pTurret = nullptr;
 				
@@ -1128,7 +1131,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 
 			CCreateBuildingMessage *pMessage = dynamic_cast<CCreateBuildingMessage*>(pMsg);
-
+		
 			CEntity* m_pBuilding = pSelf->m_pOF->CreateObject("CBuilding");
 			m_pBuilding->SetPosX(pMessage->GetPosX());
 			m_pBuilding->SetPosY(pMessage->GetPosY());
@@ -1138,11 +1141,12 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			m_pBuilding->SetImageID(pSelf->m_anEnemyIDs[2]);
 
 			CBuilding* pBuilding = dynamic_cast<CBuilding*>(m_pBuilding);
-
-			//pBuilding->SetSpawn(CEnemy* pEnemy);
-			//pBuilding->SetCanSpawn(bool bSpawn);
-			//pBuilding->SetSpawnTime(2.0f);
+			pBuilding->SetFlames(pSelf->m_PM->GetEmitter(pSelf->FXBuildingFlame));
+			pBuilding->SetSpawn(pMessage->GetType());
+			pBuilding->SetCanSpawn(pMessage->GetSpawn());
+			pBuilding->SetSpawnTime(pMessage->GetTime());
 			pBuilding->SetPlayer((CPlayer*)pSelf->m_pPlayer);
+			pBuilding->SetRange(500);
 			pSelf->m_pOM->AddObject(m_pBuilding);
 
 			m_pBuilding->Release();

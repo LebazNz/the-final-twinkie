@@ -24,6 +24,8 @@ public:
 	void SetFlamer(CEmitter* pEmitter) {m_pFlamer=pEmitter;}
 	CEmitter* GetFlamer(void) {return m_pFlamer;}
 
+	virtual void TakeDamage(int nDamage);
+
 
 	// Getters
 	int GetBullet(void) { return m_nBulletType;}

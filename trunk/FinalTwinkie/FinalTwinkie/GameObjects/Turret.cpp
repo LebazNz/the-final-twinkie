@@ -4,6 +4,7 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/CreateBulletMessage.h"
+#include "../Event and Messages/DestroyTurretMessage.h"
 #include <math.h>
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Headers/Camera.h"
@@ -88,11 +89,11 @@ void CTurret::Update(float fDt)
 		m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
 		m_pFlamer->UpdateEmitterPos(GetPosX(), GetPosY());
 	}
-	else if(m_pOwner == nullptr && m_pTarget == nullptr)  //TURRET ON ITS OWN
+	else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
 	{
 
-		float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
-		float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
+		float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+		float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
 		xPos *= xPos;
 		yPos *= yPos;
 
@@ -100,7 +101,8 @@ void CTurret::Update(float fDt)
 
 		if(distance <= m_fMaxDistance)
 		{
-			tVector2D target = {float(CSGD_DirectInput::GetInstance()->MouseGetPosX()),float(CSGD_DirectInput::GetInstance()->MouseGetPosY())};
+			 tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
+			
 	 
 			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
 		
@@ -228,4 +230,15 @@ RECT CTurret::GetRect(void)
 	}
 	}
 	return rect;
+}
+
+
+void CTurret::TakeDamage(int nDamage)
+{
+	if(GetHealth() <= 0.0f)
+	{
+		CDestroyTurretMessage* pMst = new CDestroyTurretMessage(this);
+		CMessageSystem::GetInstance()->SndMessage(pMst);
+		pMst = nullptr;
+	}
 }
