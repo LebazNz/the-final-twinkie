@@ -4,6 +4,8 @@
 #include "../Event and Messages/CreateEnemyMessage.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../SGD Wrappers/SGD_Math.h"
+#include "../Event and Messages/DestroyBuildingMessage.h"
+
 void CBuilding::Update(float fDt)
 {
 	Camera* C=Camera::GetInstance();
@@ -101,4 +103,19 @@ CBuilding::CBuilding(void)
 }
 CBuilding::~CBuilding(void)
 {
+}
+
+void CBuilding::TakeDamage(int nDamage)
+{
+
+	int m_fHealth = GetHealth();
+	m_fHealth -= nDamage;
+	if(m_fHealth<0)
+	{
+		m_fHealth=0;
+		CDestroyBuildingMessage* pMst = new CDestroyBuildingMessage(this);
+		CMessageSystem::GetInstance()->SndMessage(pMst);
+		pMst=nullptr;
+	}
+
 }

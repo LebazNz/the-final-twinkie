@@ -44,13 +44,14 @@ void CLayer::RenderLayer(int imageID)
 			
 			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
 			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
+			
 			int index = m_vTiles[i][j].GetIndex();
 			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
 			RECT src = {};
 			src = CellAlgorithm(index);
 			
 			if(x >= -width && x <= pGame->GetWidth()+width && y >= -height && y <=  pGame->GetHeight()+height)
-				m_pTM->Draw(imageID,m_vTiles[i][j].GetPosX()+(int)cam->GetPosX(),m_vTiles[i][j].GetPosY()+(int)cam->GetPosY(),1.0f,1.0f,&src);
+				m_pTM->Draw(imageID,int(x),int(y),1.0f,1.0f,&src);
 			else
 				continue;
 
@@ -95,6 +96,10 @@ void CLayer::EmptyLayer(void)
 
 void CLayer::Fill(void)
 {
+	
+	
+	
+	
 	for(int i = 0; i < m_nMapHeight; i++)
 	{
 		for(int j = 0; j < m_nMapWidth; j++)
@@ -113,18 +118,18 @@ void CLayer::Fill(void)
 			case 1:
 				{
 					/*  SBASE   */
-					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,SAPPER,x,y,true,1.5f);
-					//CMessageSystem::GetInstance()->SndMessage(pMsg);
-					//pMsg = nullptr;
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,SAPPER,x,y,true,1.5f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 
 				}
 				break;
 			case 2:
 				{
 					/*  TBASE   */
-					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,TANK,x,y,true,1.5f);
-					//CMessageSystem::GetInstance()->SndMessage(pMsg);
-					//pMsg = nullptr;
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,TANK,x,y,true,1.5f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 3:
@@ -135,9 +140,9 @@ void CLayer::Fill(void)
 			case 4:
 				{
 					/*  BUILDING   */
-					//CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,0,x,y,false,0.0f);
-					//CMessageSystem::GetInstance()->SndMessage(pMsg);
-					//pMsg = nullptr;
+					CCreateBuildingMessage* pMsg = new CCreateBuildingMessage(MSG_CREATEBUILDING,0,x,y,false,0.0f);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 5:

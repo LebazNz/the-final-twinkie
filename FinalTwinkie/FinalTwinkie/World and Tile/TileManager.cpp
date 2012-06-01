@@ -40,7 +40,7 @@ CTileManager::CTileManager(void)
 	m_pTM = CSGD_TextureManager::GetInstance();
 	m_nTileImageID = -1;
 	vector<vector<CTile>> tiles;
-	m_pGraphics.CreateLayer(0,0,0,0,0,0,0,tiles);
+	//m_pGraphics.CreateLayer(0,0,0,0,0,0,0,tiles);
 }
 
 
@@ -206,7 +206,6 @@ bool CTileManager::Load(string fileName)
 		
 
 		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, m_vTiles);
-		m_pGraphics.Fill();
 	}
 	else
 	{
@@ -292,6 +291,11 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_BULLET:
 					{
+						if(m_vTiles[i][j].GetTrigger() == 1)
+						{
+							break;
+						}
+
 						CBullet* pBullet =dynamic_cast<CBullet*>(pBase);
 						
 

@@ -4,7 +4,29 @@
 #include "../GameObjects/Player.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
+#include "../Event and Messages/DestroyEnemyMessage.h"
+#include "../Event and Messages/DestroyTurretMessage.h"
+#include "../Event and Messages/MessageSystem.h"
+#include "../GameObjects/Enemy.h"
+#include "../GameObjects/Tank.h"
+
+#include <math.h>
 CObjectManager* CObjectManager::m_pInstance = nullptr;
+
+struct point{float x, y;};
+
+float getDistance(point &x, point &y)
+{
+    float distance, tempx, tempy;
+    tempx = (y.x - x.x);
+    tempx = pow(tempx, 2.0f);
+    tempy = (y.y - x.y);
+    tempy = pow(tempy, 2.0f);
+    distance = tempx + tempy;
+    distance = sqrt(distance);
+    return distance;
+}
+
 
 CObjectManager* CObjectManager::GetInstance(void)
 {
@@ -116,43 +138,86 @@ void CObjectManager::RenderAllObjects(void)
 }
 
 
-void CObjectManager::AreaEffect(int x, int y, int radius, int damage, bool arc)
+void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 {
 	CPlayer *pPlayer = CPlayer::GetInstance();
 	
 	// For arc we will need to take turret rotation into effect 
-
+	
 	Camera  *pCam = Camera::GetInstance();
-	float playerX = pCam->GetPosX() + CGame::GetInstance()->GetWidth()/2;
-	float playerY = pCam->GetPosY() + CGame::GetInstance()->GetHeight()/2;
-
-	/*float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
-	float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
-	xPos *= xPos;
-	yPos *= yPos;
-
-	float distance = sqrt(float(xPos+yPos));*/
-
-
+	//x += pCam->GetPosX();
+	//y += pCam->GetPosY();
+	point pos; pos.x = x; pos.y = y;
 	vector< IEntity* >::iterator iter;
+	
 
 	for(iter = m_vObjectList.begin(); iter != m_vObjectList.end(); iter++)
 	{
 		CEntity* m_pTarget = dynamic_cast<CEntity*>(*iter);
-		if(m_pTarget->GetPosX() >= 0 && m_pTarget->GetPosX() <= CGame::GetInstance()->GetWidth() && m_pTarget->GetPosY() >= 0 && m_pTarget->GetPosY() <= CGame::GetInstance()->GetHeight())
+		if(m_pTarget->GetType() == OBJ_PLAYER)
+			continue;
+
+		if(m_pTarget->GetPosX()+pCam->GetPosX() >= -100 && m_pTarget->GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && m_pTarget->GetPosY()+pCam->GetPosY() >= -100 && m_pTarget->GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 		{
+			RECT rect = m_pTarget->GetRect();
+				point a, b, c, d;
+				
+				a.x = (float)rect.left; b.x = (float)rect.left;
+				a.y = (float)rect.bottom; b.y = (float)rect.top;
+				c.x = (float)rect.right; d.x = (float)rect.right;
+				c.y = (float)rect.top; d.y = (float)rect.bottom;
+				float e,f,g,h;
+				e = getDistance(pos,a);
+				f = getDistance(pos,b);
+				g = getDistance(pos,c);
+				h = getDistance(pos,d);
 
-			/*float xPos = ((pTarget->GetPosX()) - ((m_vTiles[i][j].GetPosX()+cam->GetPosX())+m_vTiles[i][j].GetWidth()/2));
-			float yPos = ((pTarget->GetPosY()) - ((m_vTiles[i][j].GetPosY()+cam->GetPosY())+m_vTiles[i][j].GetHeight()/2));
-			xPos *= xPos;
-			yPos *= yPos;
+				if(e <= radius || f <= radius || g <= radius || h <= radius)
+				{
+					
 
-			float distance = sqrt(xPos+yPos);
+					switch(m_pTarget->GetType())
+					{
+					case OBJ_ENEMY:
+						{
+							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
+							pEnemy->TakeDamage(damage);
+								if(pEnemy->GetHealth() <= 0.0f)
+								{
+									if(pEnemy->GetHasATuert())
+									{
+										CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+										CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+										CMessageSystem::GetInstance()->SndMessage(pMst);
+										pMst = nullptr;
+									}
+									CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+									CMessageSystem::GetInstance()->SndMessage(pMse);
+									pMse = nullptr;
+								}
+						}
+						break;
+					case OBJ_TURRET:
+						{
+							CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);
+							if(pTurret->GetOwner() == nullptr)
+							{
+								pTurret->TakeDamage(damage);
+							}
+						}
+						break;
+						
+					case OBJ_BUILDING:
+						{
+							m_pTarget->TakeDamage(damage);
+						}
+						break;
+						
+					default:
+						{} break;
 
-			if(pBase->GetType() != OBJ_PLAYER)
-				continue;*/
-
-
+					}
+				}
 		}
 	
 	}

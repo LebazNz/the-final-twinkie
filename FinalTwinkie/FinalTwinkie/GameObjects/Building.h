@@ -13,6 +13,7 @@ public:
 	virtual RECT GetRect(void);
 	virtual int GetType(void) { return m_nType; }
 	virtual bool CheckCollision(IEntity*);
+	virtual void TakeDamage(int nDamage);
 	CBuilding(void);
 	~CBuilding(void);
 

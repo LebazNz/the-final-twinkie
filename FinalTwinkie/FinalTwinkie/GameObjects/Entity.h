@@ -28,7 +28,7 @@ public:
 	CEntity(void);
 	virtual ~CEntity(void);
 
-	void TakeDamage(int nDamage);
+	virtual void TakeDamage(int nDamage);
 
 	virtual float GetPosX(void) {return m_fPosX; }
 	virtual float GetPosY(void) {return m_fPosY; }
