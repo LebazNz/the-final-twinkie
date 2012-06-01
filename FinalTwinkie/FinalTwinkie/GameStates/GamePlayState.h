@@ -78,6 +78,7 @@ private:
 	int FXSapper_Explosion;
 	int FXFlame;
 	int FXBuildingFlame;
+	int FXNuke;
 
 	int m_nCursor;
 

@@ -1,6 +1,7 @@
 #include "Nuke.h"
 #include "../GameObjects/Player.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
+#include "../Headers/Camera.h"
 
 CNuke::CNuke(void)
 {
@@ -13,6 +14,7 @@ CNuke::CNuke(void)
 
 CNuke::~CNuke(void)
 {
+	//m_pPM->RemoveAttachedEmitter(m_pEmmiter);
 }
 
 void CNuke::Update(float fDt)
@@ -21,5 +23,8 @@ void CNuke::Update(float fDt)
 
 void CNuke::ActivateSpecial(void)
 {
+	Camera* c = Camera::GetInstance();
+	m_pEmitter->UpdateEmitterPos(CPlayer::GetInstance()->GetPosX()-c->GetPosX(),CPlayer::GetInstance()->GetPosY()-c->GetPosY());
+	m_pEmitter->ActivateEmitter();
 	CObjectManager::GetInstance()->AreaEffect(CPlayer::GetInstance()->GetPosX(),CPlayer::GetInstance()->GetPosY(),m_nRadius,m_nDamage);
 }

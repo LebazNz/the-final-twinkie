@@ -249,6 +249,7 @@ void CEmitter::InitEmmitter(string szFile)
 
 void CEmitter::UpdateParticles(float fDt)
 {
+	this;
 	for(unsigned int i=0; i<m_vParticles.size(); i++)
 	{
 		if(m_vParticles[i]->GetLife()>0)

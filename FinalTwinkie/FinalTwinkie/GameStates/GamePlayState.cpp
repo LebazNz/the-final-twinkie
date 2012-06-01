@@ -38,6 +38,8 @@
 #include "../tinyxml/tinyxml.h"
 #include "ShopState.h"
 #include "../Headers/GUI.h"
+#include "../PickUps and Specials/Special.h"
+#include "../PickUps and Specials/Nuke.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -137,6 +139,7 @@ void CGamePlayState::Enter(void)
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
 		FXFlame=m_PM->AddEmitter("resource/files/Flame2.xml");
 		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
+		FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
 
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -189,7 +192,9 @@ void CGamePlayState::Enter(void)
 		player->SetMaxWeaponAmmo(40,-1,-1);
 		player->SetMoney(m_dGameData.nMoney);
 		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
-		//player->SetSpecial(
+		CNuke* pNuke = new CNuke;
+		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
+		player->SetSpecial(pNuke);
 		player->SetOldPos(v2Pos);
 		m_pOM->AddObject(player);
 
@@ -211,7 +216,7 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
 
-		/*CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
+		CSapper* sapper=(CSapper*)m_pOF->CreateObject("CSapper");
 		sapper->SetImageID(m_anEnemyIDs[1]);
 		sapper->SetPosX(500);
 		sapper->SetPosY(500);
@@ -224,77 +229,77 @@ void CGamePlayState::Enter(void)
 		sapper->SetHealth(35);
 		sapper->SetExplosion(m_PM->GetEmitter(FXSapper_Explosion));
 		m_pOM->AddObject(sapper);
-		sapper->Release();*/
+		sapper->Release();
 
-		//CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
-		//pTank->SetImageID(m_nPlayerID);
-		//pTank->SetPosX(500);
-		//pTank->SetPosY(200);
-		//pTank->SetRotation(0);
-		//pTank->SetWidth(64);
-		//pTank->SetHeight(128);
-		//pTank->SetPlayer(player);
-		//pTank->SetRotationRate(0.75f);
-		//pTank->SetSight(400);
-		//pTank->SetVelX(30);
-		//pTank->SetVelY(30);
-		//pTank->SetHealth(300);
-		//pTank->SetHasATurret(true);
-		//m_pOM->AddObject(pTank);
+		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
+		pTank->SetImageID(m_nPlayerID);
+		pTank->SetPosX(500);
+		pTank->SetPosY(200);
+		pTank->SetRotation(0);
+		pTank->SetWidth(64);
+		pTank->SetHeight(128);
+		pTank->SetPlayer(player);
+		pTank->SetRotationRate(0.75f);
+		pTank->SetSight(400);
+		pTank->SetVelX(30);
+		pTank->SetVelY(30);
+		pTank->SetHealth(300);
+		pTank->SetHasATurret(true);
+		m_pOM->AddObject(pTank);
 
-		//CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		//pTurret->SetImageID(m_nPlayerTurretID);
-		//pTank->SetTurret(pTurret);
-		//pTurret->SetPosX(pTank->GetPosX());
-		//pTurret->SetPosY(pTank->GetPosY());
-		//pTurret->SetOwner(pTank);
-		//pTurret->SetBullet(BUL_SHELL);
-		//pTurret->SetWidth(64);
-		//pTurret->SetHeight(128);
-		//pTurret->SetRotationPositon(32,98);
-		//pTurret->SetUpVec(0,-1);
-		//pTurret->SetDistance(300);
-		////pTurret->SetFireRate(2.5f);
-		//pTurret->SetTarget(player);
-		//pTurret->SetRotationRate(1.0f);
-		//m_pOM->AddObject(pTurret);
-		//pTurret->Release();
-		//pTank->Release();
+		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		pTurret->SetImageID(m_nPlayerTurretID);
+		pTank->SetTurret(pTurret);
+		pTurret->SetPosX(pTank->GetPosX());
+		pTurret->SetPosY(pTank->GetPosY());
+		pTurret->SetOwner(pTank);
+		pTurret->SetBullet(BUL_SHELL);
+		pTurret->SetWidth(64);
+		pTurret->SetHeight(128);
+		pTurret->SetRotationPositon(32,98);
+		pTurret->SetUpVec(0,-1);
+		pTurret->SetDistance(300);
+		//pTurret->SetFireRate(2.5f);
+		pTurret->SetTarget(player);
+		pTurret->SetRotationRate(1.0f);
+		m_pOM->AddObject(pTurret);
+		pTurret->Release();
+		pTank->Release();
 
-		//pTank=(CTank*)m_pOF->CreateObject("CTank");
-		//pTank->SetImageID(m_nPlayerID);
-		//pTank->SetPosX(200);
-		//pTank->SetPosY(400);
-		//pTank->SetRotation(0);
-		//pTank->SetWidth(64);
-		//pTank->SetHeight(128);
-		//pTank->SetPlayer(player);
-		//pTank->SetRotationRate(0.75f);
-		//pTank->SetSight(400);
-		//pTank->SetVelX(30);
-		//pTank->SetVelY(30);
-		//pTank->SetHealth(300);
-		//pTank->SetHasATurret(true);
-		//m_pOM->AddObject(pTank);
+		pTank=(CTank*)m_pOF->CreateObject("CTank");
+		pTank->SetImageID(m_nPlayerID);
+		pTank->SetPosX(200);
+		pTank->SetPosY(400);
+		pTank->SetRotation(0);
+		pTank->SetWidth(64);
+		pTank->SetHeight(128);
+		pTank->SetPlayer(player);
+		pTank->SetRotationRate(0.75f);
+		pTank->SetSight(400);
+		pTank->SetVelX(30);
+		pTank->SetVelY(30);
+		pTank->SetHealth(300);
+		pTank->SetHasATurret(true);
+		m_pOM->AddObject(pTank);
 
-		//pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		//pTurret->SetImageID(m_nPlayerTurretID);
-		//pTank->SetTurret(pTurret);
-		//pTurret->SetPosX(pTank->GetPosX());
-		//pTurret->SetPosY(pTank->GetPosY());
-		//pTurret->SetOwner(pTank);
-		//pTurret->SetBullet(BUL_SHELL);
-		//pTurret->SetWidth(64);
-		//pTurret->SetHeight(128);
-		//pTurret->SetRotationPositon(32,98);
-		//pTurret->SetUpVec(0,-1);
-		//pTurret->SetDistance(300);
-		////pTurret->SetFireRate(2.5f);
-		//pTurret->SetTarget(player);
-		//pTurret->SetRotationRate(1.0f);
-		//m_pOM->AddObject(pTurret);
-		//pTurret->Release();
-		//pTank->Release();
+		pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		pTurret->SetImageID(m_nPlayerTurretID);
+		pTank->SetTurret(pTurret);
+		pTurret->SetPosX(pTank->GetPosX());
+		pTurret->SetPosY(pTank->GetPosY());
+		pTurret->SetOwner(pTank);
+		pTurret->SetBullet(BUL_SHELL);
+		pTurret->SetWidth(64);
+		pTurret->SetHeight(128);
+		pTurret->SetRotationPositon(32,98);
+		pTurret->SetUpVec(0,-1);
+		pTurret->SetDistance(300);
+		//pTurret->SetFireRate(2.5f);
+		pTurret->SetTarget(player);
+		pTurret->SetRotationRate(1.0f);
+		m_pOM->AddObject(pTurret);
+		pTurret->Release();
+		pTank->Release();
 
 		//m_nPosition = 0;
 		//m_bPaused = false;
@@ -304,7 +309,7 @@ void CGamePlayState::Enter(void)
 		building->SetPosY(200);
 		building->SetHeight(128);
 		building->SetWidth(128);
-		building->SetHealth(50);
+		building->SetHealth(5);
 		building->SetImageID(m_anEnemyIDs[2]);
 		building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
 		building->SetCanSpawn(true);
@@ -630,8 +635,8 @@ bool CGamePlayState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_RETURN))
 	{
-		int emitter=m_PM->AddEmitter("resource/files/Box.xml");
-		CEmitter* pEmi=m_PM->GetEmitter(emitter);
+		//int emitter=m_PM->AddEmitter("resource/files/Nuke.xml");
+		CEmitter* pEmi=m_PM->GetEmitter(FXNuke);
 		pEmi->UpdateEmitterPos(400,300);
 		pEmi->ActivateEmitter();
 	}
@@ -828,7 +833,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
-									Bullet->SetDamage(900.0f);
+									Bullet->SetDamage(35.0f);
 								if(player->GetInfAmmo() == false)
 								{
 									int ammoChange=player->GetWeaponAmmoShell();
