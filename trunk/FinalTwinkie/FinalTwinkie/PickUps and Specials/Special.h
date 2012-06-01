@@ -1,7 +1,7 @@
 #ifndef CSPECIAL_H_
 #define CSPECIAL_H_
 
-enum SpecialType{SMOKE,EMP,NUKE,REINFORCEAIRSTRIKE  };
+enum SpecialType{SPECIAL,SMOKE,EMP,NUKE,REINFORCE,AIRSTRIKE };
 
 class CSpecial
 {
@@ -9,14 +9,14 @@ public:
 	CSpecial(void);
 	~CSpecial(void);
 
-	void Update(float fDt);
-	void Render(void);
-	void ActivateSpecial(void);
+	virtual void Update(float fDt);
+	virtual void Render(void);
+	virtual void ActivateSpecial(void);
 
-private:
-	int m_nType;
-	int m_nAmmo;
-	float m_fDuration;
+protected:
+	int		m_nAmmo;
+	float	m_fDuration;
+	int		m_nType;
 };
 
 

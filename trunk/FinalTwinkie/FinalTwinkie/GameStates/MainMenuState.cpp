@@ -197,10 +197,10 @@ bool CMainMenuState::Input(void)
 		}
 	}
 	// Exit the game when the user presses esc
-	else if(m_pDI->KeyPressed(DIK_ESCAPE))
+	/*else if(m_pDI->KeyPressed(DIK_ESCAPE))
 	{
 		return false;
-	}
+	}*/
 
 	
 

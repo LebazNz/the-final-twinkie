@@ -95,6 +95,8 @@ private:
 	int m_nPickupInvuID;
 	int m_nPickupInfAmmoID;
 	int m_nPickupMoneyID;
+
+	int m_nLevel;
 };
 
 #endif

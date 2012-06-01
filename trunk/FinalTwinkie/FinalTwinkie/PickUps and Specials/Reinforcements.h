@@ -4,7 +4,7 @@
 #include "Special.h"
 #include <vector>
 using namespace std;
-
+class CEntity;
 class CEnemy;
 
 class CReinforcements :
@@ -13,6 +13,7 @@ class CReinforcements :
 public:
 	CReinforcements(void);
 	~CReinforcements(void);
+	CEntity* GetTarget(void);
 
 private:
 	int m_nAmmount;

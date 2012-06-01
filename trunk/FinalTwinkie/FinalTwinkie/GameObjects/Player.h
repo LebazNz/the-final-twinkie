@@ -59,6 +59,7 @@ public:
 	void SetInfAmmo(bool bAmmo) {m_bInfAmmo = bAmmo;}
 	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
 	float GetNoReload(){return m_fNoReloadTimer;}
+	void SetSpecial(CSpecial* pSpecial){ m_apSpec = pSpecial; }
 
 
 	float	GetDamageMod() const { return m_fDamageMod; }

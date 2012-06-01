@@ -1,20 +1,100 @@
-﻿Build started 6/1/2012 10:50:06 AM.
-     1>Project "C:\Users\Ryan\Documents\FS School\SGP\REPOSITORY!\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" on node 2 (build target(s)).
+﻿Build started 6/1/2012 1:50:07 PM.
+     1>Project "C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\FinalTwinkie.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         All outputs are up-to-date.
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GameStates\GamePlayState.cpp GameStates\LoadGameState.cpp GameStates\MainMenuState.cpp GameStates\OptionsState.cpp GameStates\ShopState.cpp "PickUps and Specials\Reinforcements.cpp" "World and Tile\TileManager.cpp" source\Game.cpp
+         GamePlayState.cpp
+     1>c:\users\jfraney\desktop\nerdy ninjas\the-final-twinkie\finaltwinkie\finaltwinkie\gamestates\gameplaystate.cpp(1189): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jfraney\desktop\nerdy ninjas\the-final-twinkie\finaltwinkie\finaltwinkie\gamestates\gameplaystate.cpp(1190): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Game.cpp
+         TileManager.cpp
+         Reinforcements.cpp
+         ShopState.cpp
+         OptionsState.cpp
+         MainMenuState.cpp
+         LoadGameState.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
-         All outputs are up-to-date.
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\Debug\FinalTwinkie.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FinalTwinkie.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\Debug\FinalTwinkie.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\Debug\FinalTwinkie.lib" /MACHINE:X86 Debug\FinalTwinkie.exe.embed.manifest.res
+         Debug\CreateBuildingMessage.obj
+         Debug\CreateMineMessage.obj
+         Debug\DestroyBuildingMessage.obj
+         Debug\DestroyMineMessage.obj
+         Debug\DestroyTurretMessage.obj
+         Debug\Mine.obj
+         Debug\LoadGameState.obj
+         Debug\CSGD_Direct3D.obj
+         Debug\CSGD_DirectInput.obj
+         Debug\CSGD_TextureManager.obj
+         Debug\SGD_Math.obj
+         Debug\AirStrike.obj
+         Debug\AnimatingObject.obj
+         Debug\Animation.obj
+         Debug\AnimationManager.obj
+         Debug\AnimationVault.obj
+         Debug\AnimInfo.obj
+         Debug\BitmapFont.obj
+         Debug\Building.obj
+         Debug\Bullet.obj
+         Debug\Camera.obj
+         Debug\CreateBulletMessage.obj
+         Debug\CreateEnemyMessage.obj
+         Debug\CreatePickupMessage.obj
+         Debug\CreditsState.obj
+         Debug\DestroyBulletMessage.obj
+         Debug\DestroyEnemyMessage.obj
+         Debug\DestroyPickupMessage.obj
+         Debug\Emitter.obj
+         Debug\EMP.obj
+         Debug\Enemy.obj
+         Debug\Entity.obj
+         Debug\EventSystem.obj
+         Debug\FlyText.obj
+         Debug\Frame.obj
+         Debug\Game.obj
+         Debug\GamePlayState.obj
+         Debug\GUI.obj
+         Debug\StartState.obj
+         Debug\Layer.obj
+         Debug\MainMenuState.obj
+         Debug\Message.obj
+         Debug\MessageSystem.obj
+         Debug\Nuke.obj
+         Debug\ObjectManager.obj
+         Debug\OptionsState.obj
+         Debug\Particle.obj
+         Debug\ParticleManager.obj
+         Debug\Pickup.obj
+         Debug\Player.obj
+         Debug\Reinforcements.obj
+         Debug\Sapper.obj
+         Debug\ShopState.obj
+         Debug\Smoke.obj
+         Debug\Special.obj
+         Debug\Tank.obj
+         Debug\Tile.obj
+         Debug\TileManager.obj
+         Debug\Turret.obj
+         Debug\WinMain.obj
+         Debug\tinystr.obj
+         Debug\tinyxml.obj
+         Debug\tinyxmlerror.obj
+         Debug\tinyxmlparser.obj fmodex_vc.lib 
        Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FinalTwinkie.exe.embed.manifest" /manifest Debug\FinalTwinkie.exe.intermediate.manifest
          All outputs are up-to-date.
+       LinkEmbedManifest:
+         All outputs are up-to-date.
+         FinalTwinkie.vcxproj -> C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\Debug\FinalTwinkie.exe
        FinalizeBuildStatus:
          Deleting file "Debug\FinalTwinkie.unsuccessfulbuild".
          Touching "Debug\FinalTwinkie.lastbuildstate".
-     1>Done Building Project "C:\Users\Ryan\Documents\FS School\SGP\REPOSITORY!\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\jfraney\Desktop\Nerdy Ninjas\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.14
+Time Elapsed 00:00:03.77
