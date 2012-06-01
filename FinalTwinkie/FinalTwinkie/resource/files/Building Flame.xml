@@ -11,7 +11,7 @@
     </Life>
     <SpawnTime SpawnTime="0.01" />
     <EmitterType Type="2" />
-    <Radius R="128" />
+    <Radius R="64" />
     <Angle A="30" />
     <Source S="3" />
     <Dest D="2" />

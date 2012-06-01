@@ -21,6 +21,7 @@
 #include "../Event and Messages/CreateBuildingMessage.h"
 #include "../Event and Messages/CreateMineMessage.h"
 #include "../Event and Messages/DestroyMineMessage.h"
+#include "../Event and Messages/SoldierFireMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
@@ -294,25 +295,25 @@ void CGamePlayState::Enter(void)
 		//pTurret->Release();
 		//pTank->Release();
 
-		m_nPosition = 0;
-		m_bPaused = false;
+		//m_nPosition = 0;
+		//m_bPaused = false;
 
-		/*CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
-		building->SetPosX(200);
-		building->SetPosY(200);
-		building->SetHeight(128);
-		building->SetWidth(128);
-		building->SetHealth(50);
-		building->SetImageID(m_anEnemyIDs[2]);
-		building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
-		building->SetCanSpawn(true);
-		building->SetSpawn(SAPPER);
-		building->SetSpawnTime(5.0f);
-		building->SetPlayer(player);
-		building->SetRange(500);
-		m_pOM->AddObject(building);
+		//CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
+		//building->SetPosX(200);
+		//building->SetPosY(200);
+		//building->SetHeight(128);
+		//building->SetWidth(128);
+		//building->SetHealth(50);
+		//building->SetImageID(m_anEnemyIDs[2]);
+		//building->SetFlames(m_PM->GetEmitter(FXBuildingFlame));
+		//building->SetCanSpawn(true);
+		//building->SetSpawn(SAPPER);
+		//building->SetSpawnTime(5.0f);
+		//building->SetPlayer(player);
+		//building->SetRange(500);
+		//m_pOM->AddObject(building);
 
-		building->Release();
+		//building->Release();
 
 		CEnemy* enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
 		enemy->SetEType(RIFLE);
@@ -327,7 +328,8 @@ void CGamePlayState::Enter(void)
 		enemy->SetVelY(30);
 		enemy->SetMinDistance(200);
 		enemy->SetMaxDistance(600);
-		m_pOM->AddObject(enemy);*/
+		enemy->SetShotTimer(0.1f);
+		m_pOM->AddObject(enemy);
 
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
@@ -340,6 +342,8 @@ void CGamePlayState::Enter(void)
 	}
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
+
+	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
 
 }
 
@@ -563,12 +567,12 @@ bool CGamePlayState::Input(void)
 		{
 			m_bPaused = !m_bPaused;
 		}
-		if(m_pDI->KeyPressed(DIK_1))
+		/*if(m_pDI->KeyPressed(DIK_1))
 		{
 			CPlayer *player = CPlayer::GetInstance();
 			m_pOM->AreaEffect((float)m_pDI->MouseGetPosX(),(float)m_pDI->MouseGetPosY(),200,10000);
 			
-		}
+		}*/
 		if(m_pDI->KeyPressed(DIK_2))
 		{
 			
@@ -613,7 +617,7 @@ bool CGamePlayState::Input(void)
 				pMsg = nullptr;
 			
 		}
-		if(m_pDI->KeyPressed(DIK_8))
+		if(m_pDI->KeyDown(DIK_8))
 		{
 				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,CPlayer::GetInstance(),7);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -635,11 +639,11 @@ bool CGamePlayState::Input(void)
 	}
 
 	// Enter ShopState
-	//if(m_pDI->KeyPressed(DIK_1))
-	//{
-	//	CGame::GetInstance()->ChangeState(CShopState::GetInstance());
-	//	return true;
-	//}
+	if(m_pDI->KeyPressed(DIK_1))
+	{
+		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+		return true;
+	}
 
 	return true;
 }
@@ -680,20 +684,46 @@ void CGamePlayState::Update(float fDt)
 
 void CGamePlayState::Render(void)
 {
+	
+	
 	m_pD3D->Clear( 0, 255, 255 );
-	/*m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
-		int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));*/
-	// Render game entities
-	m_pTile->Render();
-	m_pOM->RenderAllObjects();
-	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	IDirect3DSurface9 *current=0, *output=0;
+	m_pD3D->GetDirect3DDevice()->GetRenderTarget(0, &current);
+
+	MiniMap->GetSurfaceLevel(0,&output);
+	m_pD3D->GetDirect3DDevice()->SetRenderTarget(0, output);
+	m_pD3D->Clear( 0, 0, 0 );
+
+	{
+
+		m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
+			int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
+		// Render game entities
+		m_pTile->Render();
+		m_pOM->RenderAllObjects();
+		CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	}
+	m_pD3D->GetDirect3DDevice()->SetRenderTarget(0, current);
+	{
+		Camera* C=Camera::GetInstance();
+		CGame* G=CGame::GetInstance();
+		m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
+			int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
+		// Render game entities
+		m_pTile->Render();
+		m_pOM->RenderAllObjects();
+		//m_AM->Render();
+		// Flush the sprites
+		m_PM->RenderEverything();
+		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
+		m_pGUI->Render();
+	}
+
+	
+
 	
 	
-	//m_AM->Render();
-	// Flush the sprites
 	m_pD3D->GetSprite()->Flush();	
-	m_PM->RenderEverything();
-	m_pGUI->Render();
 
 	if(m_bPaused)
 	{
@@ -736,39 +766,18 @@ void CGamePlayState::Render(void)
 	
 	}
 
-	
-	CBitmapFont* font = CBitmapFont::GetInstance();
-	font->Init(COptionsState::GetInstance()->GetLang());
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	//CBitmapFont* font = CBitmapFont::GetInstance();
+	//font->Init(COptionsState::GetInstance()->GetLang());
 
-	font->Print(m_dGameData.szName,25,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-
-	char buffer[10];
-	_itoa_s(m_dGameData.nLevel,buffer,10);
-	font->Print("Level",150,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	font->Print(buffer,150,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-
-	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
-	font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,650,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
-	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-
-
-	// Player pos
-	_itoa_s((int)(CPlayer::GetInstance()->GetPosX()),buffer,10);
-	font->Print(buffer,700,200,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s((int)(CPlayer::GetInstance()->GetPosY()),buffer,10);
-	font->Print(buffer,700,250,0.75f,D3DCOLOR_XRGB(255,255,255));
-
-
-	//Camera Pos
-	_itoa_s((int)(Camera::GetInstance()->GetPosX()),buffer,10);
-	font->Print(buffer,700,300,0.75f,D3DCOLOR_XRGB(255,255,255));
-	_itoa_s((int)(Camera::GetInstance()->GetPosY()),buffer,10);
-	font->Print(buffer,700,350,0.75f,D3DCOLOR_XRGB(255,255,255));
+	//_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	//font->Print(buffer,650,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	//_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	//font->Print(buffer,650,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	//_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	//font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	//_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	//font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
 }
 
 void CGamePlayState::MessageProc(CMessage* pMsg)
@@ -809,8 +818,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							/*if(player->GetWeaponAmmoShell()> 0)
-							{*/
+							if(player->GetWeaponAmmoShell()> 0)
+							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
 								if(player->GetDoubleDamage())
@@ -822,7 +831,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoShell();
 									player->SetWeaponAmmo(--ammoChange, player->GetWeaponAmmoArtillery(), player->GetWeaponAmmoMissile());
 								}
-							//}
+							}
 						}
 						else
 						{
@@ -1160,6 +1169,41 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_DESTROYMINE:
 		{
+		}
+		break;
+	case MSG_SOLDIERFIRE:
+		{
+			CBullet* pBullet = (CBullet*)pSelf->m_pOF->CreateObject("CBullet");
+			SoldierFireMessage* pMessage = dynamic_cast<SoldierFireMessage*>(pMsg);
+			tVector2D Up={0,-1};
+			Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
+			pBullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+(pMessage->GetFiringEntity()->GetWidth())*Up.fX);//-C->GetPosX());
+			pBullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+(pMessage->GetFiringEntity()->GetHeight())*Up.fY);//-C->GetPosY());
+			switch(pMessage->GetBulletType())
+			{
+			case BUL_SHELL:
+				{
+					tVector2D norVec = Vector2DNormalize(Up);
+					pBullet->SetWidth(32);
+					pBullet->SetHeight(32);
+					pBullet->SetScale(0.35f);
+					pBullet->SetWhoFired(false);
+					pBullet->SetVelX(norVec.fX*400);
+					pBullet->SetVelY(norVec.fY*400);
+					pBullet->SetDamage(1);
+					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
+					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+					pSelf->m_pOM->AddObject(pBullet);
+					pBullet->Release();
+					pBullet = nullptr;
+				}
+				break;
+			case BUL_ROCKET:
+				{
+				}
+				break;
+			}
+
 		}
 		break;
 	};

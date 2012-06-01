@@ -184,7 +184,7 @@ void CGame::Render(void)
 
 	// Start D3D rendering
 	m_pD3D->DeviceBegin();
-	m_pD3D->SpriteBegin();	
+	m_pD3D->SpriteBegin();
 
 	// Let the current state render
 	m_pCurState->Render();

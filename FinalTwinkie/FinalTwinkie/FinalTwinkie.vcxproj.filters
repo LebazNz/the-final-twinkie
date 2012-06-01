@@ -68,7 +68,7 @@
     <ClCompile Include="Event and Messages\CreateMineMessage.cpp" />
     <ClCompile Include="Event and Messages\DestroyMineMessage.cpp" />
     <ClCompile Include="GameObjects\Mine.cpp" />
->>>>>>> .r58
+    <ClCompile Include="Event and Messages\SoldierFireMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
@@ -141,7 +141,7 @@
     <ClInclude Include="Event and Messages\CreateMineMessage.h" />
     <ClInclude Include="Event and Messages\DestroyMineMessage.h" />
     <ClInclude Include="gameobjects\mine.h" />
->>>>>>> .r58
+    <ClInclude Include="Event and Messages\SoldierFireMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

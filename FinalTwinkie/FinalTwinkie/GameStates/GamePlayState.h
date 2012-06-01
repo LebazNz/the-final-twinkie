@@ -96,6 +96,8 @@ private:
 	int m_nPickupInfAmmoID;
 	int m_nPickupMoneyID;
 
+	IDirect3DTexture9* MiniMap;
+
 	int m_nLevel;
 };
 

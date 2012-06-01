@@ -42,6 +42,9 @@ public:
 
 	void SetPlayer(CPlayer* pPlayer){m_pPlayer=pPlayer;}
 	void SetEType(ENEMYTYPE eType){m_nEType=eType;}
+	float GetRotation(void){return m_fRotation;}
+
+	void SetShotTimer(float fTimer){m_fShotTimer=fTimer;}
 
 private:
 	float	m_fMaxDist;
@@ -59,5 +62,7 @@ private:
 	CPlayer* m_pPlayer;
 
 	float m_fRotation;
+	float m_fTimer;
+	float m_fShotTimer;
 };
 #endif

@@ -75,12 +75,32 @@ void CGUI::Render(void)
 	char buffer[10];
 	_itoa_s(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
 	m_pFont->Print(buffer, 30, 506, .5f, D3DCOLOR_XRGB(255,255,255));
+	
+	//Rocket Ammo
+	if(m_pPlayer->GetRocketAccess())
+	{
+		rect.top=(LONG)489; rect.left=(LONG)51; rect.right=(LONG)75; rect.bottom=(LONG)534;
+		m_pTM->Draw(m_nHudID, 66, 476, 1,1,&rect);
 
+		char buffer[10];
+		_itoa_s(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
+		m_pFont->Print(buffer, 68, 506, .5f, D3DCOLOR_XRGB(255,255,255));
+	}
+	
+	//Artillery Ammo
+	if(m_pPlayer->GetArtilleryAccess())
+	{
+		rect.top=(LONG)489; rect.left=(LONG)51; rect.right=(LONG)75; rect.bottom=(LONG)534;
+		m_pTM->Draw(m_nHudID, 105, 476, 1,1,&rect);
+
+		char buffer[10];
+		_itoa_s(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
+		m_pFont->Print(buffer, 106, 506, .5f, D3DCOLOR_XRGB(255,255,255));
+	}
+
+	//Money
 	_itoa_s(m_pPlayer->GetMoney(), buffer, 10);
 	m_pFont->Print(buffer, 551, 575, .5f, D3DCOLOR_XRGB(255,255,255));
-
-
-
 
 	//Buffs
 	if(m_pPlayer->GetDoubleDamage())
