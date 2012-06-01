@@ -35,6 +35,7 @@
 #include "../Event and Messages/CreatePickupMessage.h"
 #include "../Event and Messages/DestroyPickupMessage.h"
 #include "../tinyxml/tinyxml.h"
+#include "ShopState.h"
 #include "../Headers/GUI.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
@@ -473,10 +474,10 @@ void CGamePlayState::Exit(void)
 			m_pTile = nullptr;
 		}
 		m_AM	= nullptr;
-		if(m_pPlayer!=nullptr)
+	/*	if(m_pPlayer!=nullptr)
 		{
 			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
-		}
+		}*/
 		CGame::GetInstance()->my_channel->stop();
 		if(m_pGUI!=nullptr)
 		{
@@ -632,6 +633,14 @@ bool CGamePlayState::Input(void)
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
 		player->GetTurret()->GetFlamer()->ActivateEmitter();
 	}
+
+	// Enter ShopState
+	if(m_pDI->KeyPressed(DIK_1))
+	{
+		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+		return true;
+	}
+
 	return true;
 }
 
@@ -1187,6 +1196,29 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	data->SetAttribute("laser",			m_dGameData.nLaser);
 	data->SetAttribute("machinegun",	m_dGameData.nMachineGun);
 	data->SetAttribute("filename",		m_dGameData.szFileName);
+
+	data->SetAttribute("HeatModifier",		m_dGameData.fHeatModifier);
+	data->SetAttribute("HeatLevel",			m_dGameData.nHeatLevel);
+	data->SetAttribute("DamageLevel",		m_dGameData.nDamageLevel);
+	data->SetAttribute("AmmoLevel",			m_dGameData.nAmmoLevel);
+	data->SetAttribute("HealthLevel",		m_dGameData.nHealthLevel);
+	data->SetAttribute("ArmorLevel",		m_dGameData.nArmorLevel);
+	data->SetAttribute("SpeedLevel",		m_dGameData.nSpeedLevel);
+	
+	//data->SetAttribute("RocketAccess",		m_dGameData.bRocketAccess);
+	//data->SetAttribute("LaserAccess",		m_dGameData.bLaserAccess);
+	//data->SetAttribute("NukeAccess",		m_dGameData.bNukeAccess);
+	//data->SetAttribute("EMPAccess",			m_dGameData.bEMPAccess);
+	//data->SetAttribute("ArtilleryAccess",	m_dGameData.bArtilleryAccess);
+	//data->SetAttribute("FlamerAccess",		m_dGameData.bFlamerAccess);
+	//data->SetAttribute("AirStrikeAccess",	m_dGameData.bAirStrikeAccess);
+	//data->SetAttribute("SmokeBombAccess",	m_dGameData.bSmokeBombAccess);
+
+	
+	
+
+
+
 
 	TiXmlText* pText = new TiXmlText(m_dGameData.szName);
 	data->LinkEndChild(pText);

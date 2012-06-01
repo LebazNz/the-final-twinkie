@@ -5,6 +5,7 @@
 #include "../Event and Messages/CreateBulletMessage.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
+#include "../GameStates/ShopState.h"
 #include "Enemy.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
@@ -121,7 +122,7 @@ void CPlayer::Update(float fDt)
 			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
 			CMessageSystem::GetInstance()->SndMessage(msg);
 			if(m_bInfAmmo == false)
-				m_fHeat+=3;
+			m_fHeat+=3*m_fHeatModifier;
 		}
 		else
 			m_fFireRate += fDt;
@@ -286,6 +287,22 @@ CPlayer::CPlayer(void)
 	m_bMoveDown		= false;
 	m_bOverheat		= false;
 
+	m_fHeatModifier	= 1;
+	m_nHeatLevel	= 1;
+	m_fDamageMod	= 1;
+	m_nDamageLevel	= 1;
+	m_fAmmoMod		= 1;
+	m_nAmmoLevel	= 1;
+	m_fHealthMod	= 1;
+	m_nHealthLevel	= 1;
+	m_fArmorMod		= 1;
+	m_nArmorLevel	= 1;
+	m_fSpeedMod		= 1;
+	m_nSpeedLevel	= 1;
+
+
+	m_fHeatModifier = CShopState::GetInstance()->GetHeat();
+
 	m_fFireRate = 0.0f;
 	m_fHeat=0.0f;
 	m_fOverheatTimer=0.0f;
@@ -296,6 +313,16 @@ CPlayer::CPlayer(void)
 	m_fDamageTime = 0.0f;
 	m_bInfAmmo = false;
 	m_fInfAmmoTimer = 0.0f;
+
+	m_bRocketAccess		= false;
+	m_bLaserAccess		= false;
+	m_bNukeAccess		= false;
+	m_bEMPAccess		= false;
+	m_bArtilleryAccess	= false;
+	m_bFlamerAccess		= false;
+	m_bAirStrikeAccess	= false;
+	m_bSmokeBombAccess	= false;
+
 }
 CPlayer::~CPlayer(void)
 {

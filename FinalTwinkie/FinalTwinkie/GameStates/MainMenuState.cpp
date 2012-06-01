@@ -3,6 +3,7 @@
 #include "CreditsState.h"
 #include "OptionsState.h"
 #include "LoadGameState.h"
+#include "ShopState.h"
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 #include <fstream>
@@ -200,6 +201,8 @@ bool CMainMenuState::Input(void)
 	{
 		return false;
 	}
+
+	
 
 	return true;
 }

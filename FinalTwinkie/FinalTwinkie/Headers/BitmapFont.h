@@ -18,6 +18,9 @@ public:
 	RECT CellAlgorithm(int id);
 	void SetOffset(int ch);
 
+	float	GetCharWidth() const { return m_nCharWidth; }
+	void	SetCharWidth(float val) { m_nCharWidth = val; }
+
 private:
 	CBitmapFont(void);
 	CBitmapFont(const CBitmapFont&);
@@ -26,6 +29,7 @@ private:
 
 	int m_nFontID;
 	float m_nCharWidth;
+	
 	float m_nCharHeight;
 	int m_nNumCols;
 	int m_nNumRows;

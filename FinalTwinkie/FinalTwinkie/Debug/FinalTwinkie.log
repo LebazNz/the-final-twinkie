@@ -1,0 +1,20 @@
+﻿Build started 6/1/2012 10:50:06 AM.
+     1>Project "C:\Users\Ryan\Documents\FS School\SGP\REPOSITORY!\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\FinalTwinkie.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+       Manifest:
+         All outputs are up-to-date.
+       FinalizeBuildStatus:
+         Deleting file "Debug\FinalTwinkie.unsuccessfulbuild".
+         Touching "Debug\FinalTwinkie.lastbuildstate".
+     1>Done Building Project "C:\Users\Ryan\Documents\FS School\SGP\REPOSITORY!\the-final-twinkie\FinalTwinkie\FinalTwinkie\FinalTwinkie.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.14
