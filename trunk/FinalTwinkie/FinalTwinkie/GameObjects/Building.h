@@ -26,6 +26,8 @@ public:
 
 	CEmitter* GetFlames(void) {return m_pFlames;}
 
+	void SetDead(bool dead){m_bDead=dead;}
+	void SetDeathImage(int img){m_nDeathImage=img;}
 private:
 	int m_nSpawnType;
 	bool m_bCanSpawn;
@@ -34,5 +36,7 @@ private:
 	CPlayer* m_pPlayer;
 	CEmitter* m_pFlames;
 	int m_fRange;
+	int m_nDeathImage;
+	bool m_bDead;
 };
 #endif

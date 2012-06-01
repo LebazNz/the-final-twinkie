@@ -35,7 +35,7 @@ void CSapper::Update(float fDt)
 	}
 	if(m_pExplosion!=nullptr)
 	{
-		m_pExplosion->UpdateEmitterPos(GetPosX()+C->GetPosX(), GetPosY()+C->GetPosY());
+		m_pExplosion->UpdateEmitterPos(GetPosX(), GetPosY());
 	}
 	if(length<=100)
 	{
