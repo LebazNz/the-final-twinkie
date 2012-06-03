@@ -45,6 +45,7 @@ public:
 	float GetRotation(void){return m_fRotation;}
 
 	void SetShotTimer(float fTimer){m_fShotTimer=fTimer;}
+	void SetOnFire();
 
 private:
 	float	m_fMaxDist;
@@ -64,5 +65,10 @@ private:
 	float m_fRotation;
 	float m_fTimer;
 	float m_fShotTimer;
+
+	bool m_bOnFire;
+	bool m_bHurt1;
+	bool m_bHurt2;
+	float m_fFireTimer;
 };
 #endif

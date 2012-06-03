@@ -152,6 +152,8 @@ private:
 
 	float m_fHeat;
 
+	bool SlowFlame;
+
 	// STUFF FOR THE SHOP STATE!
 	// IF THIS IS CHANGED ORE REMOVED
 	// PEOPLE WILL SUFFER

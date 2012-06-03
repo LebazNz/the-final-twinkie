@@ -42,8 +42,8 @@ void CEntity::Update(float fDt)
 {
 	m_v2OldPos.fX = GetPosX();
 	m_v2OldPos.fY = GetPosY();
-	m_fPosX += int(m_fVelX * fDt);
-	m_fPosY += int(m_fVelY * fDt);
+	m_fPosX += m_fVelX * fDt;
+	m_fPosY += m_fVelY * fDt;
 }
 
 void CEntity::Render(void)

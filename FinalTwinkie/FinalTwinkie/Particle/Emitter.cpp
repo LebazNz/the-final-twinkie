@@ -19,9 +19,9 @@ void CEmitter::CreateParticle(float fDt=0)
 			{
 				for(;;)
 				{
-					float velocityX=(float)(((rand()%361)/180.0)-1.0);
-					float velocityY=(float)(((rand()%361)/180.0)-1.0);
-					float life=(float)(rand()/4294967294);
+					float velocityX=(float)(((rand()%361)/180.0f)-1.0f);
+					float velocityY=(float)(((rand()%361)/180.0f)-1.0f);
+					float life=(float)(rand()/RAND_MAX);
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
@@ -37,9 +37,9 @@ void CEmitter::CreateParticle(float fDt=0)
 			{
 				if(m_fTimer>m_fSpawnTimer)
 				{
-					float velocityX=(float)(((rand()%361)/180.0)-1.0);
-					float velocityY=(float)(((rand()%361)/180.0)-1.0);
-					float life=(float)(rand()/4294967294);
+					float velocityX=(float)(((rand()%361)/180.0f)-1.0f);
+					float velocityY=(float)(((rand()%361)/180.0f)-1.0f);
+					float life=(float)(rand()/RAND_MAX);
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);

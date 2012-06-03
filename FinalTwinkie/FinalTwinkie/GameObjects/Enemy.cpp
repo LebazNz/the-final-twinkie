@@ -72,6 +72,25 @@ void CEnemy::Update(float fDt)
 		else if(m_nEType==ROCKET)
 		{
 		}
+		if(m_bOnFire)
+		{
+			m_fFireTimer-=fDt;
+			if(m_fFireTimer<=0)
+			{
+				TakeDamage(3);
+				m_bOnFire=false;
+			}
+			if(m_fFireTimer<=2&&!m_bHurt2)
+			{
+				TakeDamage(3);
+				m_bHurt2=true;
+			}
+			if(m_fFireTimer<=4&&!m_bHurt1)
+			{
+				TakeDamage(3);
+				m_bHurt1=true;
+			}
+		}
 	}
 }
 
@@ -133,4 +152,12 @@ RECT CEnemy::GetRect(void)
 	rect.left=(LONG)(GetPosX()+C->GetPosX()-GetWidth()/2);
 	rect.right=(LONG)(GetPosX()+C->GetPosX()+GetWidth()/2);
 	return rect;
+}
+
+void CEnemy::SetOnFire()
+{
+	m_bOnFire=true;
+	m_fFireTimer=6.0f;
+	m_bHurt1=false;
+	m_bHurt2=false;
 }

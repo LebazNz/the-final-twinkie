@@ -26,6 +26,8 @@ CBullet::CBullet(void)
 	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
 	m_fRotation = 0.0f;
 	m_fDamage = 0.0f;
+	m_nType=0;
+	m_fFlameTimer=0.0f;
 }
 
 CBullet::~CBullet(void)
@@ -44,6 +46,16 @@ void CBullet::Update(float fDT)
 		CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
+	}
+	if(m_nBulletType==BUL_FLAME)
+	{
+		m_fFlameTimer-=fDT;
+		if(m_fFlameTimer<=0.0f)
+		{
+			CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
 	}
 }
 
