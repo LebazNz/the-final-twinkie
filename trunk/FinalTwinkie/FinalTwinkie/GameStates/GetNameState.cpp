@@ -59,6 +59,8 @@ void CGetNameState::Enter(void)
 
 	m_bLowCase = false;
 	m_nCount = 0;
+	for(int i = 0; i < 32; ++i)
+		szName[i] = 0;
 }
 
 void CGetNameState::Exit(void)
@@ -87,6 +89,9 @@ void CGetNameState::Exit(void)
 	m_pFont = nullptr;
 
 	m_bLowCase = false;
+
+	for(int i = 0; i < 32; ++i)
+		szName[i] = 0;
 }
 
 bool CGetNameState::Input(void)
@@ -100,7 +105,9 @@ bool CGetNameState::Input(void)
 	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 	{
 		szName[m_nCount] = 0;
-		CPlayer::GetInstance()->SetName(szName);
+		if(m_nCount == 0)
+			strcpy_s(szName,32,"Player\0");		
+		CPlayer::GetInstance()->SetName(szName);		
 		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
 		return true;
 	}
@@ -343,9 +350,15 @@ bool CGetNameState::Input(void)
 	{
 		m_bLowCase = !m_bLowCase;
 	}
+	if(m_pDI->KeyReleased(DIK_LSHIFT) || m_pDI->KeyReleased(DIK_RSHIFT))
+	{
+		m_bLowCase = !m_bLowCase;
+	}
 	if(m_pDI->KeyPressed(DIK_BACK))
 	{
 		m_nCount--;
+		if(m_nCount <= 0)
+			m_nCount = 0;
 		szName[m_nCount] = char(32);
 		if(m_nCount == 0)
 			m_bLowCase = false;
