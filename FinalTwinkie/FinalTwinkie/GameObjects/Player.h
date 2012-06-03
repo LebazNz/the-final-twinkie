@@ -7,6 +7,7 @@
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 class CSpecial;
 
+enum SecondType {MACHINEGUN, LAZER, FLAME};
 class CPlayer:public CEntity
 {
 public:
@@ -107,8 +108,14 @@ public:
 	bool	GetSmokeBombAccess() { return  m_bSmokeBombAccess; }
 	void	SetSmokeBombAccess(bool rhs) { m_bSmokeBombAccess = rhs; } 
 
+	CSpecial* GetSpecial(void) {return m_apSpec;} 
+	int GetSpecial1Ammo(void) {return  m_anSpecialammo[0];}
+	int GetSpecial2Ammo(void) {return  m_anSpecialammo[1];}
+	void SetSpecial1Ammo(int ammo) {m_anSpecialammo[0]=ammo;}
+	void SetSpecial2Ammo(int ammo) {m_anSpecialammo[1]=ammo;}
 
-
+	void SetSecondType(int nType){m_nSecondType=nType;}
+	int GetSecondType(void){return m_nSecondType;}
 
 private:
 
@@ -184,7 +191,9 @@ private:
 	bool m_bDoubleDamage;
 	float m_fDamageTime;
 	bool  m_bInfAmmo;
-	float m_fInfAmmoTimer;	
+	float m_fInfAmmoTimer;
+
+	int m_nSecondType;
 
 };
 #endif

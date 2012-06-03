@@ -85,9 +85,9 @@ void CTurret::Update(float fDt)
 			
 
 		}
-		 
+
 		m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
-		m_pFlamer->UpdateEmitterPos(GetPosX(), GetPosY());
+		m_pFlamer->UpdateEmitterPos(GetPosX()-GetWidth()/2+32+98*m_vLookVec.fX-C->GetPosX(), GetPosY()-GetHeight()/2+64+98*m_vLookVec.fY-C->GetPosY());
 	}
 	else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
 	{
@@ -238,6 +238,10 @@ void CTurret::TakeDamage(int nDamage)
 {
 	if(GetOwner() != nullptr)
 		return;
+	else
+	{
+		SetHealth(GetHealth()-nDamage);
+	}
 
 	if(GetHealth() <= 0.0f)
 	{

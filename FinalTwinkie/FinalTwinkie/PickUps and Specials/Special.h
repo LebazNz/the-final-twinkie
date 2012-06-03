@@ -13,6 +13,9 @@ public:
 	virtual void Render(void);
 	virtual void ActivateSpecial(void);
 
+	int GetType(void){return m_nType;}
+	void SetType(int Type){m_nType=Type;}
+
 protected:
 	int		m_nAmmo;
 	float	m_fDuration;

@@ -3,6 +3,7 @@
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 #include "../GameObjects/Enemy.h"
+#include "../PickUps and Specials/Special.h"
 
 CGUI* CGUI::m_pSelf = nullptr;
 
@@ -50,14 +51,6 @@ void CGUI::Render(void)
 	m_pTM->Draw(m_nHudID, 320, 572, 1,1,&rect);
 	rect.top=(LONG)391; rect.left=(LONG)351; rect.right=(LONG)(351+((509-351)*(m_pPlayer->GetHealth()/m_pPlayer->GetMaxHealth()))); rect.bottom=(LONG)403;
 	m_pTM->Draw(m_nHudID, 320, 575, 1,1,&rect);
-	
-	
-
-	//Specials
-	rect.top=(LONG)280; rect.left=(LONG)558; rect.right=(LONG)598; rect.bottom=(LONG)321;
-	m_pTM->Draw(m_nHudID, 172, 548, 1,1,&rect);
-
-	m_pTM->Draw(m_nHudID, 228, 548, 1,1,&rect);
 
 	//Money
 	rect.top=(LONG)360; rect.left=(LONG)558; rect.right=(LONG)682; rect.bottom=(LONG)382;
@@ -79,7 +72,7 @@ void CGUI::Render(void)
 	//Rocket Ammo
 	if(m_pPlayer->GetRocketAccess())
 	{
-		rect.top=(LONG)489; rect.left=(LONG)51; rect.right=(LONG)75; rect.bottom=(LONG)534;
+		rect.top=(LONG)489; rect.left=(LONG)88; rect.right=(LONG)114; rect.bottom=(LONG)534;
 		m_pTM->Draw(m_nHudID, 66, 476, 1,1,&rect);
 
 		char buffer[10];
@@ -90,7 +83,7 @@ void CGUI::Render(void)
 	//Artillery Ammo
 	if(m_pPlayer->GetArtilleryAccess())
 	{
-		rect.top=(LONG)489; rect.left=(LONG)51; rect.right=(LONG)75; rect.bottom=(LONG)534;
+		rect.top=(LONG)489; rect.left=(LONG)12; rect.right=(LONG)37; rect.bottom=(LONG)534;
 		m_pTM->Draw(m_nHudID, 105, 476, 1,1,&rect);
 
 		char buffer[10];
@@ -122,6 +115,86 @@ void CGUI::Render(void)
 	{
 		rect.top=(LONG)273; rect.left=(LONG)926; rect.right=(LONG)976; rect.bottom=(LONG)323;
 		m_pTM->Draw(m_nHudID, 453, 457, 1,1,&rect);
+	}
+
+	//Special 1
+	CSpecial* spec= m_pPlayer->GetSpecial();
+	if(spec)
+	{
+		switch(spec->GetType())
+		{
+		case SPECIAL:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)558; rect.right=(LONG)598; rect.bottom=(LONG)321;
+			}
+			break;
+		case SMOKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)718; rect.right=(LONG)758; rect.bottom=(LONG)321;
+			}
+			break;
+		case EMP:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)610; rect.right=(LONG)649; rect.bottom=(LONG)321;
+			}
+			break;
+		case NUKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)664; rect.right=(LONG)705; rect.bottom=(LONG)321;
+			}
+			break;
+		case REINFORCE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
+			}
+			break;
+		case AIRSTRIKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
+			}
+			break;
+		}
+		m_pTM->Draw(m_nHudID, 172, 548, 1,1,&rect);
+		_itoa_s(m_pPlayer->GetSpecial1Ammo(), buffer, 10);
+		m_pFont->Print(buffer, 188, 575, .5f, D3DCOLOR_XRGB(255,255,255));
+
+		switch(spec->GetType())
+		{
+		case SPECIAL:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)558; rect.right=(LONG)598; rect.bottom=(LONG)321;
+			}
+			break;
+		case SMOKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)718; rect.right=(LONG)758; rect.bottom=(LONG)321;
+			}
+			break;
+		case EMP:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)610; rect.right=(LONG)649; rect.bottom=(LONG)321;
+			}
+			break;
+		case NUKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)664; rect.right=(LONG)705; rect.bottom=(LONG)321;
+			}
+			break;
+		case REINFORCE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
+			}
+			break;
+		case AIRSTRIKE:
+			{
+				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
+			}
+			break;
+		}
+		m_pTM->Draw(m_nHudID, 228, 548, 1,1,&rect);
+		_itoa_s(m_pPlayer->GetSpecial2Ammo(), buffer, 10);
+		m_pFont->Print(buffer, 243, 575, .5f, D3DCOLOR_XRGB(255,255,255));
+
 	}
 
 

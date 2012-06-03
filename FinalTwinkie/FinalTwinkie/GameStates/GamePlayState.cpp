@@ -137,7 +137,7 @@ void CGamePlayState::Enter(void)
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
-		FXFlame=m_PM->AddEmitter("resource/files/Flame2.xml");
+		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
 		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
 		FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
 
@@ -195,7 +195,10 @@ void CGamePlayState::Enter(void)
 		CNuke* pNuke = new CNuke;
 		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
 		player->SetSpecial(pNuke);
+		player->SetSpecial1Ammo(1);
+		player->SetSpecial2Ammo(0);
 		player->SetOldPos(v2Pos);
+		player->SetSecondType(FLAME);
 		m_pOM->AddObject(player);
 
 	
@@ -575,12 +578,6 @@ bool CGamePlayState::Input(void)
 		{
 			m_bPaused = !m_bPaused;
 		}
-		/*if(m_pDI->KeyPressed(DIK_1))
-		{
-			CPlayer *player = CPlayer::GetInstance();
-			m_pOM->AreaEffect((float)m_pDI->MouseGetPosX(),(float)m_pDI->MouseGetPosY(),200,10000);
-			
-		}*/
 		if(m_pDI->KeyPressed(DIK_2))
 		{
 			
@@ -637,13 +634,8 @@ bool CGamePlayState::Input(void)
 	{
 		//int emitter=m_PM->AddEmitter("resource/files/Nuke.xml");
 		CEmitter* pEmi=m_PM->GetEmitter(FXNuke);
-		pEmi->UpdateEmitterPos(400,300);
+		pEmi->UpdateEmitterPos(400-Camera::GetInstance()->GetPosX(),300-Camera::GetInstance()->GetPosY());
 		pEmi->ActivateEmitter();
-	}
-	if(m_pDI->KeyPressed(DIK_SPACE))
-	{
-		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
-		player->GetTurret()->GetFlamer()->ActivateEmitter();
 	}
 
 	// Enter ShopState
@@ -906,6 +898,37 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				}
 				break;
 			case BUL_LASER:
+				break;
+			case BUL_FLAME:
+				{
+					CTurret* tur=dynamic_cast<CCreateBulletMessage*>(pMsg)->GetFiringEntity();
+					Bullet->SetWidth(32);
+					Bullet->SetHeight(32);
+					Bullet->SetScale(0.35f);
+					float velocityX;
+					float velocityY;
+					tVector2D vel;
+					do
+					{
+						velocityX=(float)(((rand()%361)/180.0)-1.0);
+						velocityY=(float)(((rand()%361)/180.0)-1.0);
+						vel.fX=velocityX;
+						vel.fY=velocityY;
+					}while(abs(AngleBetweenVectors(tur->GetFlamer()->GetDir(), vel))>abs(AngleBetweenVectors(tur->GetFlamer()->GetDir(), Vector2DRotate(tur->GetFlamer()->GetDir(), tur->GetFlamer()->GetAngle()))));
+					Bullet->SetVelX(vel.fX*200);
+					Bullet->SetVelY(vel.fY*200);
+					Bullet->SetWhoFired(true);
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*vel.fX-C->GetPosX());
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*vel.fY-C->GetPosY());
+					if(player->GetDoubleDamage())
+						Bullet->SetDamage(1.0f*2);
+					else
+						Bullet->SetDamage(1.0f);
+					//Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
+					pSelf->m_pOM->AddObject(Bullet);
+					Bullet->Release();
+					Bullet = nullptr;
+				}
 				break;
 			};
 			

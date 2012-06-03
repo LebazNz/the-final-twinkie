@@ -8,6 +8,7 @@
 #include "../GameStates/ShopState.h"
 #include "Enemy.h"
 #include "../PickUps and Specials/Special.h"
+#include "../ObjectManager and Factory/ObjectManager.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
@@ -117,31 +118,68 @@ void CPlayer::Update(float fDt)
 
 	if(m_pDI->MouseButtonDown(1))
 	{
-		if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
+		switch(m_nSecondType)
 		{
-			m_fFireRate = 0.0f;
-			CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
-			CMessageSystem::GetInstance()->SndMessage(msg);
-			if(m_bInfAmmo == false)
-			m_fHeat+=3*m_fHeatModifier;
+		case MACHINEGUN:
+			 {
+				if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
+				{
+					m_fFireRate = 0.0f;
+					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
+					CMessageSystem::GetInstance()->SndMessage(msg);
+					if(m_bInfAmmo == false)
+					m_fHeat+=3*m_fHeatModifier;
+				}
+				else
+					m_fFireRate += fDt;
+			 }
+			 break;
+		case LAZER:
+			{
+			}
+			break;
+		case FLAME:
+			{
+				if(!m_bOverheat)
+				{
+					GetTurret()->GetFlamer()->ActivateEmitter();
+					m_fHeat+=.2*m_fHeatModifier;
+					CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+				}
+			}
+			break;
 		}
-		else
-			m_fFireRate += fDt;
 		if(m_fHeat>100)
 		{
 			m_bOverheat=true;
+			GetTurret()->GetFlamer()->DeactivateEmitter();
 		}
-		if(m_bOverheat&&m_fOverheatTimer>=2.0f)
+		if(m_bOverheat&&m_fOverheatTimer>=1.5f)
 		{
 			m_bOverheat=false;
 			m_fOverheatTimer=0.0f;
 		}
-		else if(m_bOverheat&&m_fOverheatTimer<2.0f)
+		else if(m_bOverheat&&m_fOverheatTimer<1.5f)
 		{
 			m_fOverheatTimer+=fDt;
 		}
 	}
+	if(m_pDI->MouseButtonReleased(1))
+	{
+		if(m_nSecondType==FLAME)
+		{
+			GetTurret()->GetFlamer()->DeactivateEmitter();
+		}
+	}
+	if(m_pDI->KeyPressed(DIK_SPACE)&&m_anSpecialammo[0]>0)
+	{
+		m_apSpec->ActivateSpecial();
+		m_anSpecialammo[0]--;
+	}
 
+
+	Camera* C=Camera::GetInstance();
 	m_pTurret->SetPosX(GetPosX());
 	m_pTurret->SetPosY(GetPosY());
 	if(GetPosX()-GetHeight()/2<0)
@@ -212,11 +250,6 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			SetInvul(false);
-
-	if(m_pDI->KeyPressed(DIK_SPACE))
-	{
-		m_apSpec->ActivateSpecial();
-	}
 }
 void CPlayer::Render(void)
 {
