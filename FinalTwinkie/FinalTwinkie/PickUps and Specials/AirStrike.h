@@ -7,6 +7,10 @@ class CAirStrike : public CSpecial
 public:
 	CAirStrike(void);
 	~CAirStrike(void);
+	virtual void Update(float fDt);
+	virtual void ActivateSpecial(void);
+
+	virtual void SetEmitter(CEmitter* pEmitter){m_pEmitter = pEmitter;}
 
 private:
 	float m_fDamage;

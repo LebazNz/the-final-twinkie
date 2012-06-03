@@ -61,7 +61,7 @@ void CCreditsState::Exit(void)
 bool CCreditsState::Input(void)
 {
 	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE))
+	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 	{
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;

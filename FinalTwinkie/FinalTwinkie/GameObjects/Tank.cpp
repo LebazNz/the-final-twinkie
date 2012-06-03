@@ -6,57 +6,69 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 CTank::CTank(void)
 {
-	m_nType = OBJ_ENEMY;
+	m_nType = OBJ_TANK;
 }
 CTank::~CTank(void)
 {
 }
 void CTank::Update(float fDt)
 {
-	Camera* C=Camera::GetInstance();
-	tVector2D Up={0,-1};
-	tVector2D Look=Vector2DRotate(Up,m_fRotation);
-	tVector2D toTarget;
-	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
-	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
-	float length=Vector2DLength(toTarget);
-	if(length<=m_fSight)
+	if(m_bStop == false)
 	{
-		float Steer=Steering(toTarget, Look);
-		if(Steer>0)
+		Camera* C=Camera::GetInstance();
+		tVector2D Up={0,-1};
+		tVector2D Look=Vector2DRotate(Up,m_fRotation);
+		tVector2D toTarget;
+		toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+		toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+		float length=Vector2DLength(toTarget);
+		if(length<=m_fSight)
 		{
-			m_fRotation-=m_fRotationRate*fDt;
+			float Steer=Steering(toTarget, Look);
+			if(Steer>0)
+			{
+				m_fRotation-=m_fRotationRate*fDt;
+			}
+			else if(Steer<0)
+			{
+				m_fRotation+=m_fRotationRate*fDt;
+			}
+  
+			Look=Vector2DRotate(Up, m_fRotation);
+			float DY=(Look.fY*GetVelY()*fDt);
+			float DX=(Look.fX*GetVelX()*fDt);
+			m_v2OldPos.fX = GetPosX();
+			m_v2OldPos.fY = GetPosY();
+			SetPosX(GetPosX()+DX);
+			SetPosY(GetPosY()+DY);
 		}
-		else if(Steer<0)
+		m_pTurret->SetPosX(GetPosX()+16*Look.fX);
+		m_pTurret->SetPosY(GetPosY()+16*Look.fY);
+		CGame* game=CGame::GetInstance();
+		if(abs(m_fRotation)>=2.335)
 		{
-			m_fRotation+=m_fRotationRate*fDt;
+			m_fRotationHeight=(float)GetHeight();
+			m_fRotationWidth=(float)GetWidth();
 		}
-		
-		Look=Vector2DRotate(Up, m_fRotation);
-		float DY=(Look.fY*GetVelY()*fDt);
-		float DX=(Look.fX*GetVelX()*fDt);
-		m_v2OldPos.fX = GetPosX();
-		m_v2OldPos.fY = GetPosY();
-		SetPosX(GetPosX()+DX);
-		SetPosY(GetPosY()+DY);
+		else if(abs(m_fRotation)>0.785)
+		{
+			m_fRotationHeight=(float)GetWidth();
+			m_fRotationWidth=(float)GetHeight();
+		}
+		else if(abs(m_fRotation)<=0.785)
+		{
+			m_fRotationHeight=(float)GetHeight();
+			m_fRotationWidth=(float)GetWidth();
+		}
 	}
-	m_pTurret->SetPosX(GetPosX()+16*Look.fX);
-	m_pTurret->SetPosY(GetPosY()+16*Look.fY);
-	CGame* game=CGame::GetInstance();
-	if(abs(m_fRotation)>=2.335)
+	else
 	{
-		m_fRotationHeight=(float)GetHeight();
-		m_fRotationWidth=(float)GetWidth();
-	}
-	else if(abs(m_fRotation)>0.785)
-	{
-		m_fRotationHeight=(float)GetWidth();
-		m_fRotationWidth=(float)GetHeight();
-	}
-	else if(abs(m_fRotation)<=0.785)
-	{
-		m_fRotationHeight=(float)GetHeight();
-		m_fRotationWidth=(float)GetWidth();
+		if(m_fStopTimer > 0.0f)
+		{
+			m_fStopTimer -= fDt;
+		}
+		else
+			m_bStop = false;
 	}
 }
 void CTank::Render(void)

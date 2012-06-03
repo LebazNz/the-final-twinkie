@@ -40,6 +40,7 @@
 #include "../Headers/GUI.h"
 #include "../PickUps and Specials/Special.h"
 #include "../PickUps and Specials/Nuke.h"
+#include "../PickUps and Specials/Smoke.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -140,6 +141,7 @@ void CGamePlayState::Enter(void)
 		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
 		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
 		FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
+		FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
 
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -194,13 +196,14 @@ void CGamePlayState::Enter(void)
 		player->SetMaxWeaponAmmo(40,-1,-1);
 		player->SetMoney(m_dGameData.nMoney);
 		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
-		CNuke* pNuke = new CNuke;
-		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
+		CSmoke* pNuke = new CSmoke;
+		pNuke->SetEmitter(m_PM->GetEmitter(FXSmoke));
 		player->SetSpecial(pNuke);
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(0);
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(FLAME);
+		//player->SetName(m_dGameData.szName);
 		m_pOM->AddObject(player);
 
 	
@@ -511,13 +514,13 @@ bool CGamePlayState::Input(void)
 {
 	if(m_bPaused)
 	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE))
+		/*if(m_pDI->KeyPressed(DIK_ESCAPE))
 		{
 			m_bPaused = false;
 			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 			return true;
-		}
-		if(m_pDI->KeyPressed(DIK_RETURN))
+		}*/
+		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 		{
 			if(m_nPosition == 0)
 			{
@@ -534,7 +537,7 @@ bool CGamePlayState::Input(void)
 				return true;		
 			}
 		}
-		if(m_pDI->KeyPressed(DIK_UP))
+		if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 		{
 			if(m_nPosition == 0)
 			{
@@ -545,7 +548,7 @@ bool CGamePlayState::Input(void)
 				m_nPosition -= 1;
 			}
 		}
-		else if(m_pDI->KeyPressed(DIK_DOWN))
+		else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 		{
 			if(m_nPosition == 2)
 			{
@@ -556,7 +559,7 @@ bool CGamePlayState::Input(void)
 				m_nPosition += 1;
 			}
 		}
-		else if(m_pDI->MouseButtonPressed(0))
+		/*else if(m_pDI->MouseButtonPressed(0))
 		{
 			if(m_nPosition == 0)
 			{
@@ -572,11 +575,11 @@ bool CGamePlayState::Input(void)
 				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 				return true;		
 			}
-		}
+		}*/
 	}
 	else
 	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE))
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
 		{
 			m_bPaused = !m_bPaused;
 		}
@@ -663,6 +666,15 @@ void CGamePlayState::Update(float fDt)
 		m_pES->ProcessEvents();
 		m_pMS->ProcessMessages();
 	}
+
+	if(m_pDI->JoystickGetLStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetLStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetLStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetLStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -1070,7 +1082,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
-			int nRandNum = rand()%8;
+			int nRandNum = rand()%12;
 			if(nRandNum <= 7)
 			{
 				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
@@ -1304,10 +1316,11 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	
 	
 
+	char szName[32];
+	strcpy_s(szName,32,pPlayer->GetUserName().c_str());
 
 
-
-	TiXmlText* pText = new TiXmlText(m_dGameData.szName);
+	TiXmlText* pText = new TiXmlText(szName);
 	data->LinkEndChild(pText);
 
 	pRoot->LinkEndChild(data);

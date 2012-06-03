@@ -61,6 +61,11 @@ public:
 	virtual void SetInvulTimer(float fTimer){m_fInvulTimer = fTimer;}
 	virtual float GetInvulTimer(void)const{return m_fInvulTimer;}
 
+	virtual void SetStopTimer(float fTimer){m_fStopTimer = fTimer;}
+	virtual float GetStopTimer(void){return m_fStopTimer;}
+	virtual void SetStop(bool bStop){m_bStop = bStop;}
+	virtual bool GetStop(void){return m_bStop;}
+
 private:
 	// Position
 	float m_fPosX;
@@ -97,6 +102,8 @@ private:
 protected:
 	// Object Type
 	int m_nType;
-
+	// Stop moving
+	float m_fStopTimer;
+	bool  m_bStop;
 };
 #endif

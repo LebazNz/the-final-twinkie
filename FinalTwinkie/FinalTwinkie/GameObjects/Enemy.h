@@ -46,6 +46,10 @@ public:
 
 	void SetShotTimer(float fTimer){m_fShotTimer=fTimer;}
 	void SetOnFire();
+	virtual void SetStopTimer(float fTimer){m_fStopTimer = fTimer;}
+	virtual float GetStopTimer(void){return m_fStopTimer;}
+	virtual void SetStop(bool bStop){m_bStop = bStop;}
+	virtual bool GetStop(void){return m_bStop;}
 
 private:
 	float	m_fMaxDist;
