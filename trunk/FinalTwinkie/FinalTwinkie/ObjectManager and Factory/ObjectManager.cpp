@@ -180,7 +180,7 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 					case OBJ_ENEMY:
 						{
 							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
-							pEnemy->TakeDamage(damage);
+							pEnemy->TakeDamage((int)damage);
 								if(pEnemy->GetHealth() <= 0.0f)
 								{
 									if(pEnemy->GetHasATuert())
@@ -201,14 +201,14 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 							CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);
 							if(pTurret->GetOwner() == nullptr)
 							{
-								pTurret->TakeDamage(damage);
+								pTurret->TakeDamage((int)damage);
 							}
 						}
 						break;
 						
 					case OBJ_BUILDING:
 						{
-							m_pTarget->TakeDamage(damage);
+							m_pTarget->TakeDamage((int)damage);
 						}
 						break;
 						

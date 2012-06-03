@@ -144,8 +144,16 @@ void CPlayer::Update(float fDt)
 				{
 					GetTurret()->GetFlamer()->ActivateEmitter();
 					m_fHeat+=.2*m_fHeatModifier;
-					CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					if(!SlowFlame)
+					{
+						CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
+						CMessageSystem::GetInstance()->SndMessage(pMsg);
+						SlowFlame=true;
+					}
+					else
+					{
+						SlowFlame=false;
+					}
 				}
 			}
 			break;
@@ -362,7 +370,7 @@ CPlayer::CPlayer(void)
 	m_bFlamerAccess		= false;
 	m_bAirStrikeAccess	= false;
 	m_bSmokeBombAccess	= false;
-
+	SlowFlame			= false;
 }
 CPlayer::~CPlayer(void)
 {

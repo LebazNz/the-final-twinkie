@@ -75,6 +75,7 @@ void CLoadGameState::Enter(void)
 	m_nMouseY = m_pDI->MouseGetPosY()-16;
 
 	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
+	CGame::GetInstance()->my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
 }
 
 void CLoadGameState::Exit(void)

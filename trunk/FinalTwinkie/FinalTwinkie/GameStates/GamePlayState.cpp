@@ -153,6 +153,8 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
 		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
+		m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
+		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -235,7 +237,7 @@ void CGamePlayState::Enter(void)
 		sapper->Release();
 
 		CTank* pTank=(CTank*)m_pOF->CreateObject("CTank");
-		pTank->SetImageID(m_nPlayerID);
+		pTank->SetImageID(m_anEnemyIDs[6]);
 		pTank->SetPosX(500);
 		pTank->SetPosY(200);
 		pTank->SetRotation(0);
@@ -251,7 +253,7 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(pTank);
 
 		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		pTurret->SetImageID(m_nPlayerTurretID);
+		pTurret->SetImageID(m_anEnemyIDs[7]);
 		pTank->SetTurret(pTurret);
 		pTurret->SetPosX(pTank->GetPosX());
 		pTurret->SetPosY(pTank->GetPosY());
@@ -270,7 +272,7 @@ void CGamePlayState::Enter(void)
 		pTank->Release();
 
 		pTank=(CTank*)m_pOF->CreateObject("CTank");
-		pTank->SetImageID(m_nPlayerID);
+		pTank->SetImageID(m_anEnemyIDs[6]);
 		pTank->SetPosX(200);
 		pTank->SetPosY(400);
 		pTank->SetRotation(0);
@@ -286,7 +288,7 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(pTank);
 
 		pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		pTurret->SetImageID(m_nPlayerTurretID);
+		pTurret->SetImageID(m_anEnemyIDs[7]);
 		pTank->SetTurret(pTurret);
 		pTurret->SetPosX(pTank->GetPosX());
 		pTurret->SetPosY(pTank->GetPosY());
@@ -820,8 +822,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoShell()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
@@ -835,8 +837,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-							Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
 							Bullet->SetDamage(35.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
@@ -872,8 +874,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 							if(player->GetDoubleDamage())
 									Bullet->SetDamage(5.0f*2);
 								else
@@ -881,8 +883,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX((pMessage->GetFiringEntity()->GetPosX()+C->GetPosX())-pMessage->GetFiringEntity()->GetWidth()/2+32+98*Up.fX-C->GetPosX());//+norVec.fX-30);
-							Bullet->SetPosY((pMessage->GetFiringEntity()->GetPosY()+C->GetPosY())-pMessage->GetFiringEntity()->GetHeight()/2+64+98*Up.fY-C->GetPosY());//+norVec.fY*pMessage->GetFiringEntity()->GetHeight());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
 							Bullet->SetDamage(5.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
@@ -908,6 +910,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					float velocityX;
 					float velocityY;
 					tVector2D vel;
+					tVector2D dir=pMessage->GetFiringEntity()->GetLook();
 					do
 					{
 						velocityX=(float)(((rand()%361)/180.0)-1.0);
@@ -918,13 +921,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetVelX(vel.fX*200);
 					Bullet->SetVelY(vel.fY*200);
 					Bullet->SetWhoFired(true);
-					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()-pMessage->GetFiringEntity()->GetWidth()/2+32+98*vel.fX-C->GetPosX());
-					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()-pMessage->GetFiringEntity()->GetHeight()/2+64+98*vel.fY-C->GetPosY());
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX());
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY());
+					Bullet->SetBulletType(BUL_FLAME);
+					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())
 						Bullet->SetDamage(1.0f*2);
 					else
 						Bullet->SetDamage(1.0f);
-					//Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pSelf->m_pOM->AddObject(Bullet);
 					Bullet->Release();
 					Bullet = nullptr;

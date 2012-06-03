@@ -168,6 +168,15 @@ void CGame::Update(void)
 	float fElapsedTime = (newTime - m_dwTime)/1000.0f;
 	m_dwTime = newTime;
 
+	if(m_pDI->MouseGetPosX()<0)
+		m_pDI->MouseSetPosX(0);
+	if(m_pDI->MouseGetPosX()>GetWidth())
+		m_pDI->MouseSetPosX(GetWidth());
+	if(m_pDI->MouseGetPosY()<0)
+		m_pDI->MouseSetPosY(0);
+	if(m_pDI->MouseGetPosY()>GetHeight())
+		m_pDI->MouseSetPosY(GetHeight());
+
 	if(fElapsedTime > 0.125f)
 		fElapsedTime = 0.125f;
 

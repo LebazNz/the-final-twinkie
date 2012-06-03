@@ -26,6 +26,9 @@ public:
 
 	virtual void HandleEvent(CEvent* pEvent);
 
+	void SetFlameTimer(float Time){m_fFlameTimer=Time;}
+	void SetBulletType(int Type){m_nBulletType=Type;}
+
 private:
 	// bool for who fired the bullet
 	// true		= player fired
@@ -34,5 +37,8 @@ private:
 	float m_fRotation;
 	float m_fScale;
 	float m_fDamage;
+
+	float m_fFlameTimer;
+	int m_nBulletType;
 };
 #endif
