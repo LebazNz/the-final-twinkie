@@ -3,6 +3,7 @@
 #include "../SGD Wrappers/SGD_Math.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/CreateBulletMessage.h"
+#include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
 #include "../GameStates/ShopState.h"
@@ -42,7 +43,7 @@ void CPlayer::Update(float fDt)
 
 	if(Camera::GetInstance()->GetPlayerCannotMove() == false)
 	{
-		if(m_pDI->KeyDown(DIK_W))
+		if(m_pDI->KeyDown(DIK_W) || m_pDI->JoystickDPadDown(DIR_UP) /*|| m_pDI->JoystickGetLStickYAmount() < 0*/)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
@@ -54,7 +55,7 @@ void CPlayer::Update(float fDt)
 			SetMoveUp(true);
 			SetMoveDown(false);
 		}
-		else if(m_pDI->KeyDown(DIK_S))
+		else if(m_pDI->KeyDown(DIK_S) || m_pDI->JoystickDPadDown(DIR_DOWN) /*|| m_pDI->JoystickGetLStickYAmount() > 0*/)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
@@ -72,14 +73,14 @@ void CPlayer::Update(float fDt)
 			SetMoveDown(false);
 		}
 	}
-	if(m_pDI->KeyDown(DIK_D))
+	if(m_pDI->KeyDown(DIK_D) || m_pDI->JoystickDPadDown(DIR_RIGHT) /*|| m_pDI->JoystickGetLStickXAmount() > 0*/)
 	{
 		m_fRotation+=m_fRotationRate*fDt;
 
 		SetMoveRight(true);
 		SetMoveLeft(false);
 	}
-	else if(m_pDI->KeyDown(DIK_A))
+	else if(m_pDI->KeyDown(DIK_A) || m_pDI->JoystickDPadDown(DIR_LEFT) /*|| m_pDI->JoystickGetLStickXAmount() < 0*/)
 	{
 		m_fRotation-=m_fRotationRate*fDt;
 
@@ -87,7 +88,7 @@ void CPlayer::Update(float fDt)
 		SetMoveLeft(true);
 	}
 
-	if(m_pDI->MouseButtonDown(0) && m_fFireTimer >= m_fTime)
+	if((m_pDI->MouseButtonDown(0) || m_pDI->JoystickGetRStickXAmount() > 0) && m_fFireTimer >= m_fTime)
 	{
 		if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
 		{
@@ -116,7 +117,7 @@ void CPlayer::Update(float fDt)
 	else
 		m_fTime = 1.0;
 
-	if(m_pDI->MouseButtonDown(1))
+	if(m_pDI->MouseButtonDown(1) || m_pDI->JoystickGetRStickXAmount() < 0)
 	{
 		switch(m_nSecondType)
 		{
@@ -180,7 +181,7 @@ void CPlayer::Update(float fDt)
 			GetTurret()->GetFlamer()->DeactivateEmitter();
 		}
 	}
-	if(m_pDI->KeyPressed(DIK_SPACE)&&m_anSpecialammo[0]>0)
+	if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[0]>0)
 	{
 		m_apSpec->ActivateSpecial();
 		m_anSpecialammo[0]--;
@@ -294,12 +295,9 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 		case OBJ_ENEMY:
 			{
 				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
-
-				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
-				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
-
-				this->SetPosX(this->GetOldPos().fX);
-				this->SetPosY(this->GetOldPos().fY);
+				CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+				CMessageSystem::GetInstance()->SndMessage(pMse);
+				pMse = nullptr;
 			}
 			break;
 		case OBJ_PICKUP:
@@ -314,6 +312,17 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_MINE:
 			{
+			}
+			break;
+		case OBJ_TANK:
+			{
+				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
 			}
 			break;
 		};

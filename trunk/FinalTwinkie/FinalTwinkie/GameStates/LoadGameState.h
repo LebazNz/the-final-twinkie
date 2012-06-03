@@ -21,7 +21,6 @@ public:
 
 	bool LoadSavedGame(const char* szFileName, int nGameData);
 
-
 private:
 	CLoadGameState(void);
 	virtual ~CLoadGameState(void);

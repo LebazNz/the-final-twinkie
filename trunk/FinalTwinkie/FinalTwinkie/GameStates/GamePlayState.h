@@ -79,6 +79,7 @@ private:
 	int FXFlame;
 	int FXBuildingFlame;
 	int FXNuke;
+	int FXSmoke;
 
 	int m_nCursor;
 

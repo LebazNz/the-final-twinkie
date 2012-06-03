@@ -124,7 +124,7 @@ void CMainMenuState::Exit(void)
 bool CMainMenuState::Input(void)
 {
 	// Move the cursor position
-	if(m_pDI->KeyPressed(DIK_UP))
+	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 	{
 		if(m_nPosition == 0)
 		{
@@ -135,7 +135,7 @@ bool CMainMenuState::Input(void)
 			m_nPosition -= 1;
 		}
 	}
-	else if(m_pDI->KeyPressed(DIK_DOWN))
+	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 	{
 		if(m_nPosition == 3)
 		{
@@ -148,7 +148,7 @@ bool CMainMenuState::Input(void)
 	}
 	
 	// Make selection
-	else if(m_pDI->KeyPressed(DIK_RETURN))
+	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
 	{
 		if(m_nPosition == 0)
 		{
@@ -172,7 +172,7 @@ bool CMainMenuState::Input(void)
 			return false;
 		}
 	}
-	else if(m_pDI->MouseButtonPressed(0))
+	/*else if(m_pDI->MouseButtonPressed(0))
 	{
 		if(m_nPosition == 0)
 		{
@@ -195,7 +195,7 @@ bool CMainMenuState::Input(void)
 		{
 			return false;
 		}
-	}
+	}*/
 	// Exit the game when the user presses esc
 	/*else if(m_pDI->KeyPressed(DIK_ESCAPE))
 	{
@@ -209,8 +209,26 @@ bool CMainMenuState::Input(void)
 
 void CMainMenuState::Update(float fDt)
 {
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	if(m_pDI->JoystickGetLStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetLStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetLStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetLStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+
+	/*if(m_pDI->JoystickGetRStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetRStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetRStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetRStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);*/
+
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
 	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 295 && m_nMouseY <= 340)

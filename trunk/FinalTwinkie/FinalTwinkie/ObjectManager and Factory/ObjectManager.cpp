@@ -180,35 +180,51 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 					case OBJ_ENEMY:
 						{
 							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
-							pEnemy->TakeDamage((int)damage);
-								if(pEnemy->GetHealth() <= 0.0f)
+							pEnemy->TakeDamage(damage);
+							if(damage > 0)
+								pEnemy->TakeDamage((int)damage);
+							else
+							{
+								pEnemy->SetStopTimer(10.0f);
+								pEnemy->SetStop(true);								
+							}
+							if(pEnemy->GetHealth() <= 0.0f)
+							{
+								if(pEnemy->GetHasATuert())
 								{
-									if(pEnemy->GetHasATuert())
-									{
-										CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
-										CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
-										CMessageSystem::GetInstance()->SndMessage(pMst);
-										pMst = nullptr;
-									}
-									CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
-									CMessageSystem::GetInstance()->SndMessage(pMse);
-									pMse = nullptr;
+									CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+									CMessageSystem::GetInstance()->SndMessage(pMst);
+									pMst = nullptr;
 								}
+								CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+								CMessageSystem::GetInstance()->SndMessage(pMse);
+								pMse = nullptr;
+							}
 						}
 						break;
 					case OBJ_TURRET:
 						{
 							CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);
-							if(pTurret->GetOwner() == nullptr)
+							if(damage > 0)
 							{
-								pTurret->TakeDamage((int)damage);
+								if(pTurret->GetOwner() == nullptr)
+								{								
+									pTurret->TakeDamage((int)damage);								
+								}
+							}
+							else
+							{
+								pTurret->SetStopTimer(10.0f);
+								pTurret->SetStop(true);
 							}
 						}
 						break;
 						
 					case OBJ_BUILDING:
 						{
-							m_pTarget->TakeDamage((int)damage);
+							if(damage > 0)
+								m_pTarget->TakeDamage((int)damage);
 						}
 						break;
 						

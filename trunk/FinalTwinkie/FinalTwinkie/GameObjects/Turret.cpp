@@ -14,120 +14,122 @@ using std::sqrt;
 
 void CTurret::Update(float fDt)
 {
-	Camera* C=Camera::GetInstance();
-
-	//TANK
-	if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr) // change target check to !=
+	if(m_bStop == false)
 	{
-		
+		Camera* C=Camera::GetInstance();
 
-		float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
-		float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
-		xPos *= xPos;
-		yPos *= yPos;
-
-		float distance = sqrt(float(xPos+yPos));
-
-		if(distance <= m_fMaxDistance)
+		//TANK
+		if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr) // change target check to !=
 		{
-			 tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
-	 
-			 tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
-			
+  
 
-			 m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
+			float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+			float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
+			xPos *= xPos;
+			yPos *= yPos;
 
-			if(Steering(m_vLookVec,Vec) < -1)
+			float distance = sqrt(float(xPos+yPos));
+
+			if(distance <= m_fMaxDistance)
+			{
+				tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
+  
+				tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
+   
+
+				m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
+
+				if(Steering(m_vLookVec,Vec) < -1)
 				m_fRotation -= m_fRotationRate*fDt;
-			else if(Steering(m_vLookVec,Vec) > 1)
+				else if(Steering(m_vLookVec,Vec) > 1)
 				m_fRotation += m_fRotationRate*fDt;
 
-			 if(m_fFireRate >= SHOT_DELAY)
-			 {
-				 m_fFireRate = 0.0f;
+				if(m_fFireRate >= SHOT_DELAY)
+				{
+					m_fFireRate = 0.0f;
 
 				CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
-			 }
-			  else
-				 m_fFireRate+=fDt;
+				}
+				else
+					m_fFireRate+=fDt;
+			}
 		}
-	}
-	else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)  //PLAYER
-	{
-
-			
-		float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
-		float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
-		xPos *= xPos;
-		yPos *= yPos;
-
-		float distance = sqrt(float(xPos+yPos));
-
-		if(distance <= m_fMaxDistance)
+		else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)  //PLAYER
 		{
-			tVector2D target = {float(CSGD_DirectInput::GetInstance()->MouseGetPosX()),float(CSGD_DirectInput::GetInstance()->MouseGetPosY())};
-	 
-			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
-		
 
-			//m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
-			//m_vLookVec = Vec;
-			tVector2D Up={0,-1};
+   
+			float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
+			float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
+			xPos *= xPos;
+			yPos *= yPos;
 
-			m_vLookVec=Vector2DRotate(Up, m_fRotation);
+			float distance = sqrt(float(xPos+yPos));
 
-			if(Steering(m_vLookVec,Vec) < -1)
+			if(distance <= m_fMaxDistance)
+			{
+				tVector2D target = {float(CSGD_DirectInput::GetInstance()->MouseGetPosX()),float(CSGD_DirectInput::GetInstance()->MouseGetPosY())};
+  
+				tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
+  
+
+				//m_fRotation = AngleBetweenVectors(m_vUpVec,Vec);
+				//m_vLookVec = Vec;
+				tVector2D Up={0,-1};
+
+				m_vLookVec=Vector2DRotate(Up, m_fRotation);
+
+				if(Steering(m_vLookVec,Vec) < -1)
 				m_fRotation -= m_fRotationRate*fDt;
-			else if(Steering(m_vLookVec,Vec) > 1)
+				else if(Steering(m_vLookVec,Vec) > 1)
 				m_fRotation += m_fRotationRate*fDt;
-			
+   
 
+			}
+
+			m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
+			m_pFlamer->UpdateEmitterPos(GetPosX()-GetWidth()/2+32+98*m_vLookVec.fX-C->GetPosX(), GetPosY()-GetHeight()/2+64+98*m_vLookVec.fY-C->GetPosY());
 		}
-
-		m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
-		m_pFlamer->UpdateEmitterPos(GetPosX()-GetWidth()/2+32+98*m_vLookVec.fX-C->GetPosX(), GetPosY()-GetHeight()/2+64+98*m_vLookVec.fY-C->GetPosY());
-	}
-	else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
-	{
-
-		float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
-		float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
-		xPos *= xPos;
-		yPos *= yPos;
-
-		float distance = sqrt(float(xPos+yPos));
-
-		if(distance <= m_fMaxDistance)
+		else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
 		{
-			 tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
-			
-	 
-			tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
-		
 
-			m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
+			float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+			float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
+			xPos *= xPos;
+			yPos *= yPos;
 
-			if(Steering(m_vLookVec,Vec) < -1)
-				m_fRotation -= m_fRotationRate*fDt;
-			else if(Steering(m_vLookVec,Vec) > 1)
-				m_fRotation += m_fRotationRate*fDt;
+			float distance = sqrt(float(xPos+yPos));
 
-			 if(m_fFireRate >= SHOT_DELAY)
-			 {
-				 m_fFireRate = 0.0f;
+			if(distance <= m_fMaxDistance)
+			{
+				tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
+   
+  
+				tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
+  
 
-				CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
-			 }
-			 else
-				 m_fFireRate+=fDt;
+				m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
 
+				if(Steering(m_vLookVec,Vec) < -1)
+					m_fRotation -= m_fRotationRate*fDt;
+				else if(Steering(m_vLookVec,Vec) > 1)
+					m_fRotation += m_fRotationRate*fDt;
+
+				if(m_fFireRate >= SHOT_DELAY)
+				{
+					m_fFireRate = 0.0f;
+
+					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
+				else
+					m_fFireRate+=fDt;
+
+			}
 		}
-	}
-	
+ 
 		if(abs(m_fRotation)>=2.335)
 		{
 			m_fRotationHeight=128;
@@ -143,7 +145,16 @@ void CTurret::Update(float fDt)
 			m_fRotationHeight=128;
 			m_fRotationWidth=64;
 		}
-	
+	}
+	else
+	{
+		if(m_fStopTimer > 0.0f)
+		{
+			m_fStopTimer -= fDt;
+		}
+		else
+			m_bStop = false;
+	}
 }
 void CTurret::Render(void)
 {
@@ -182,6 +193,8 @@ CTurret::CTurret(void)
 	m_fMaxDistance = 300.0f;
 	m_vUpVec.fX = 0.0;
 	m_vUpVec.fY = -1.0f;
+	m_fStopTimer = 0.0f;
+	m_bStop = false;
 }
 CTurret::~CTurret(void)
 {

@@ -32,6 +32,9 @@ CEntity::CEntity(void)
 
 	m_bInvul = false;
 	m_fInvulTimer = 0.0f;
+
+	m_fStopTimer = 0.0f;
+	m_bStop = false;
 }
 
 CEntity::~CEntity(void)

@@ -44,7 +44,8 @@ public:
 	void SetMaxWeaponAmmo(int nShell, int nArtillery, int nMissile){ m_anMaxWeaponAmmo[0] = nShell; m_anMaxWeaponAmmo[1] = nArtillery; m_anMaxWeaponAmmo[2] = nMissile; }
 	void SetSpecialAmmo(int nAmmoOne, int nAmmoTwo) { m_anSpecialammo[0] = nAmmoOne; m_anSpecialammo[1] = nAmmoTwo; }
 	void SetMoney(int nMoney) { m_nMoney = nMoney; }
-	void SetName(std::string szName) { m_szName = szName; }
+	void SetName(char* szName) { m_szName = szName; }
+	std::string GetUserName(void){return m_szName;}
 	int GetWeaponAmmoShell(void) const { return m_anWeaponAmmo[0]; }
 	int GetWeaponAmmoArtillery(void) const { return m_anWeaponAmmo[1]; }
 	int GetWeaponAmmoMissile(void) const { return m_anWeaponAmmo[2]; }

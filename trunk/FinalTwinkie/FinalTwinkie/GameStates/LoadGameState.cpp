@@ -5,6 +5,8 @@
 #include "GamePlayState.h"
 #include "OptionsState.h"
 #include "ShopState.h"
+#include "GetNameState.h"
+#include "../GameObjects/Player.h"
 #include <iostream>
 using namespace std;
 
@@ -71,8 +73,8 @@ void CLoadGameState::Enter(void)
 	if(LoadSavedGame("savedGame3.xml",2) == true)
 		m_nCount++;
 
-	m_nMouseX = m_pDI->MouseGetPosX()-16;
-	m_nMouseY = m_pDI->MouseGetPosY()-16;
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
 
 	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
 	CGame::GetInstance()->my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
@@ -110,14 +112,14 @@ void CLoadGameState::Exit(void)
 bool CLoadGameState::Input(void)
 {
 	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE))
+	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 	{
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
 	}
 
 	// Move the cursor position
-	if(m_pDI->KeyPressed(DIK_LEFT))
+	if(m_pDI->KeyPressed(DIK_LEFT) || m_pDI->JoystickDPadPressed(DIR_LEFT))
 	{
 		switch(m_nCount)
 		{
@@ -163,7 +165,7 @@ bool CLoadGameState::Input(void)
 			break;
 		}
 	}
-	else if(m_pDI->KeyPressed(DIK_RIGHT))
+	else if(m_pDI->KeyPressed(DIK_RIGHT) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
 	{
 		switch(m_nCount)
 		{
@@ -210,7 +212,7 @@ bool CLoadGameState::Input(void)
 		}
 	}
 
-	if(m_pDI->KeyPressed(DIK_RETURN))
+	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 	{
 		if(m_nPosition == 0)
 		{	
@@ -223,8 +225,17 @@ bool CLoadGameState::Input(void)
 				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame1.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
+			if(vSavedData[m_nPosition].nLevel == 0)
+			{
+				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+				return true;
+			}
+			else
+			{
+				CPlayer::GetInstance()->SetName(vSavedData[m_nPosition].szName);
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+				return true;
+			}
 		}
 		else if(m_nPosition == 1)
 		{
@@ -237,8 +248,17 @@ bool CLoadGameState::Input(void)
 				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame2.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
+			if(vSavedData[m_nPosition].nLevel == 0)
+			{
+				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+				return true;
+			}
+			else
+			{
+				CPlayer::GetInstance()->SetName(vSavedData[m_nPosition].szName);
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+				return true;
+			}
 		}
 		else if(m_nPosition == 2)
 		{		
@@ -251,15 +271,24 @@ bool CLoadGameState::Input(void)
 				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame3.xml");
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			}
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
+			if(vSavedData[m_nPosition].nLevel == 0)
+			{
+				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+				return true;
+			}
+			else
+			{
+				CPlayer::GetInstance()->SetName(vSavedData[m_nPosition].szName);
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+				return true;
+			}
 		}
 		else if(m_nPosition == 3)
 		{	
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame1.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-3] = data;
 				m_nCount--;
 				m_nPosition-=3;
@@ -267,7 +296,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-2].nLevel != 0)
 			{
 				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-2] = data;
 				m_nCount--;
 				m_nPosition-=2;
@@ -275,7 +304,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-1].nLevel != 0)
 			{
 				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-1] = data;
 				m_nCount--;
 				m_nPosition-=1;
@@ -286,7 +315,7 @@ bool CLoadGameState::Input(void)
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-3] = data;
 				m_nCount--;
 				m_nPosition-=3;
@@ -294,7 +323,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-2].nLevel != 0)
 			{
 				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-2] = data;
 				m_nCount--;
 				m_nPosition-=2;
@@ -303,120 +332,26 @@ bool CLoadGameState::Input(void)
 		else if(m_nPosition == 5)
 		{	
 			remove("savedGame3.xml");
-			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 			vSavedData[m_nPosition-3] = data;
 			m_nCount--;
 			m_nPosition-=3;			
 		}
 	}
-	else if(m_pDI->MouseButtonPressed(0))
-	{
-		if(m_nPosition == 0)
-		{	
-			if(vSavedData[m_nPosition].nLevel != 0)
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			else
-			{
-				//Data data = {"Phillipe",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame1.xml");
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			}
-			m_pDI->ReadDevices();
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 1)
-		{
-			if(vSavedData[m_nPosition].nLevel != 0)
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			else
-			{
-				
-				//Data data = {"Pablo",1,40,-1,-1,500,0,0,0,0,1,0,0,0,0,0,1,0,0,1,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame2.xml");
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			}
-			m_pDI->ReadDevices();
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 2)
-		{		
-			if(vSavedData[m_nPosition].nLevel != 0)
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			else
-			{
-				//Data data = {"Marcos",1,40,-1,-1,500,0,0,0,0,0,0,0,0,0,0,1,0,0,1,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				strcpy_s(vSavedData[m_nPosition].szFileName,"savedGame3.xml");
-				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
-			}
-			m_pDI->ReadDevices();
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 3)
-		{	
-			if(vSavedData[m_nPosition-3].nLevel != 0)
-			{
-				remove("savedGame1.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition-3] = data;
-				m_nCount--;
-				m_nPosition-=3;
-			}
-			else if(vSavedData[m_nPosition-2].nLevel != 0)
-			{
-				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition-2] = data;
-				m_nCount--;
-				m_nPosition-=2;
-			}
-			else if(vSavedData[m_nPosition-1].nLevel != 0)
-			{
-				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition-1] = data;
-				m_nCount--;
-				m_nPosition-=1;
-			}
-		}
-		else if(m_nPosition == 4)
-		{	
-			if(vSavedData[m_nPosition-3].nLevel != 0)
-			{
-				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition-3] = data;
-				m_nCount--;
-				m_nPosition-=3;
-			}
-			else if(vSavedData[m_nPosition-2].nLevel != 0)
-			{
-				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-				vSavedData[m_nPosition-2] = data;
-				m_nCount--;
-				m_nPosition-=2;
-			}
-		}
-		else if(m_nPosition == 5)
-		{	
-			remove("savedGame3.xml");
-			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
-			vSavedData[m_nPosition-3] = data;
-			m_nCount--;
-			m_nPosition-=3;			
-		}
-	}
-
-
-
 	return true;
 }
 
 void CLoadGameState::Update(float fDt)
 {
+	if(m_pDI->JoystickGetLStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetLStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetLStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetLStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
@@ -802,4 +737,3 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 
 	return true;
 }
-

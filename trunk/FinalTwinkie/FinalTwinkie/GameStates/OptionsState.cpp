@@ -108,7 +108,7 @@ void COptionsState::Exit(void)
 bool COptionsState::Input(void)
 {
 	// Move the cursor position
-	if(m_pDI->KeyPressed(DIK_UP))
+	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 	{
 		if(m_nPosition == 0)
 		{
@@ -119,7 +119,7 @@ bool COptionsState::Input(void)
 			m_nPosition -= 1;
 		}
 	}
-	else if(m_pDI->KeyPressed(DIK_DOWN))
+	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 	{
 		if(m_nPosition == 4)
 		{
@@ -131,7 +131,7 @@ bool COptionsState::Input(void)
 		}
 	}
 	// Make selection
-	else if(m_pDI->KeyPressed(DIK_LEFTARROW))
+	else if(m_pDI->KeyPressed(DIK_LEFTARROW) || m_pDI->JoystickDPadPressed(DIR_LEFT))
 	{	
 		if(m_nPosition == 0)
 		{	
@@ -169,7 +169,7 @@ bool COptionsState::Input(void)
 				m_nLang = 2;
 		}
 	}
-	else if(m_pDI->KeyPressed(DIK_RIGHTARROW))
+	else if(m_pDI->KeyPressed(DIK_RIGHTARROW) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
 	{	
 		if(m_nPosition == 0)
 		{	
@@ -207,7 +207,7 @@ bool COptionsState::Input(void)
 				m_nLang = 0;		
 		}
 	}
-	else if(m_pDI->MouseButtonPressed(0))
+	else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 	{
 		if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 240 && m_nMouseY <= 280))
@@ -302,7 +302,7 @@ bool COptionsState::Input(void)
 		}
 	}
 		// Make selection
-	else if(m_pDI->KeyPressed(DIK_RETURN))
+	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0))
 	{
 		if(m_nPosition == 4)
 		{
@@ -319,7 +319,7 @@ bool COptionsState::Input(void)
 		}
 	}
 	// Exit the game when the user presses esc
-	else if(m_pDI->KeyPressed(DIK_ESCAPE))
+	else if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 	{
 		if(CGamePlayState::GetInstance()->GetPaused() == false)
 			{
@@ -338,6 +338,15 @@ bool COptionsState::Input(void)
 
 void COptionsState::Update(float fDt)
 {
+	if(m_pDI->JoystickGetLStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetLStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetLStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetLStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 

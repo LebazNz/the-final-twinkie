@@ -81,7 +81,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_BULLET:
 			break;
-		case OBJ_ENEMY:
+		case OBJ_TANK:
 			{
 				if(GetWhoFired() == true)
 				{
@@ -134,6 +134,22 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
+			}
+			break;
+			case OBJ_ENEMY:
+			{
+				CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
+				pEnemy->TakeDamage((int)this->m_fDamage);
+				if(pEnemy->GetHealth() <= 0.0f)
+				{
+					CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+					CMessageSystem::GetInstance()->SndMessage(pMse);
+					pMse = nullptr;
+				}
+				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
+				
 			}
 			break;
 		};
