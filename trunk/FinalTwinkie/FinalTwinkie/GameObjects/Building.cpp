@@ -8,6 +8,7 @@
 
 void CBuilding::Update(float fDt)
 {
+	this;
 	Camera* C=Camera::GetInstance();
 	m_pFlames->UpdateEmitterPos(GetPosX(), GetPosY());
 	if(!m_bDead)
@@ -116,6 +117,7 @@ void CBuilding::TakeDamage(int nDamage)
 
 	int m_fHealth = GetHealth();
 	m_fHealth -= nDamage;
+	SetHealth(m_fHealth);
 	if(m_fHealth<0)
 	{
 		m_fHealth=0;

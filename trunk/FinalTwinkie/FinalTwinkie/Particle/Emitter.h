@@ -26,6 +26,9 @@ public:
 
 	int NumActiveParticles(void){return m_nNumberParticles;}
 
+	float GetAngle(void){return m_fAngle;}
+	tVector2D GetDir(void) {return m_vDirection;}
+
 private:
 
 	void CreateParticle(float fDt);
