@@ -5,11 +5,17 @@
 #include "../Event and Messages/MessageSystem.h"
 #include "../SGD Wrappers/SGD_Math.h"
 #include "../Event and Messages/DestroyBuildingMessage.h"
+#include "../Headers/Game.h"
 
 void CBuilding::Update(float fDt)
 {
 	this;
 	Camera* C=Camera::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	m_pFlames->UpdateEmitterPos(GetPosX(), GetPosY());
 	if(!m_bDead)
 	{
@@ -35,14 +41,21 @@ void CBuilding::Update(float fDt)
 			m_fTimer+=fDt;
 		}
 	}
+	}
 }
 void CBuilding::Render(void)
 {
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	Camera* C=Camera::GetInstance();
 	if(!m_bDead)
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-(GetWidth()/2)), (int)((GetPosY()+C->GetPosY())-(GetWidth()/2)));
 	else
 		CSGD_TextureManager::GetInstance()->Draw(m_nDeathImage, (int)((GetPosX()+C->GetPosX())-(GetWidth()/2)), (int)((GetPosY()+C->GetPosY())-(GetWidth()/2)));
+	}
 }
 RECT CBuilding::GetRect(void)
 {
@@ -56,6 +69,12 @@ RECT CBuilding::GetRect(void)
 }
 bool CBuilding::CheckCollision(IEntity* pBase)
 {
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
+	
 	if(CEntity::CheckCollision(pBase) == true)
 	{
 		switch(pBase->GetType())
@@ -102,6 +121,8 @@ bool CBuilding::CheckCollision(IEntity* pBase)
 	}
 	else
 		return false;
+	}
+	else return false;
 }
 CBuilding::CBuilding(void)
 {

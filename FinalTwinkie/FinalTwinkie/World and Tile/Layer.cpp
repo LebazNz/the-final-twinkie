@@ -7,6 +7,7 @@
 #include "../Event and Messages/CreateEnemyMessage.h"
 #include "../Event and Messages/CreateMineMessage.h"
 #include "../Event and Messages/MessageSystem.h"
+#include "../Event and Messages/CreateTreeMessage.h"
 CLayer::CLayer(void)
 {
 }
@@ -196,12 +197,18 @@ void CLayer::Fill(void)
 			case 13:
 				{
 					/*  MINE   */
+					CCreateMineMessage* pMsg = new CCreateMineMessage(MSG_CREATEMINE,x,y);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 
 			case 14:
 				{
 					/*  TREE   */
+					CCreateTreeMessage* pMsg = new CCreateTreeMessage(MSG_CREATETREE,x,y);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 

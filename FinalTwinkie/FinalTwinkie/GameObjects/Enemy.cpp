@@ -9,6 +9,7 @@
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/SGD_Math.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
+#include "../Headers/Game.h"
 
 CEnemy::CEnemy(void)
 {
@@ -34,11 +35,19 @@ CEnemy::~CEnemy(void)
 
 void CEnemy::Update(float fDt)
 {
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 	if(m_bStop == false)
 	{
 		Camera* C=Camera::GetInstance();
-		if(m_pOnFire!=nullptr)
-			m_pOnFire->UpdateEmitterPos(GetPosX(), GetPosY());
+		tVector2D Up = {0,-1};
+		tVector2D toTarget;
+		toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+		toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+
+
 		if(m_nEType==RIFLE||m_nEType==ROCKET)
 		{
 			tVector2D Up={0,-1};
@@ -116,17 +125,27 @@ void CEnemy::Update(float fDt)
 
 void CEnemy::Render(void)
 {
-	Camera* C=Camera::GetInstance();
-	if(GetImageID() != -1)
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 	{
-		CSGD_TextureManager::GetInstance()->Draw( GetImageID(), int((GetPosX()+C->GetPosX())-GetWidth()/2), int((GetPosY()+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, nullptr, GetWidth()/2.0f, GetHeight()/2.0f, m_fRotation, DWORD(GetColor()) );
+		Camera* C=Camera::GetInstance();
+		if(GetImageID() != -1)
+		{
+			CSGD_TextureManager::GetInstance()->Draw( GetImageID(), int((GetPosX()+C->GetPosX())-GetWidth()/2), int((GetPosY()+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, nullptr, GetWidth()/2.0f, GetHeight()/2.0f, m_fRotation, DWORD(GetColor()) );
+		}
+		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 	}
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 
 bool CEnemy::CheckCollision(IEntity* pBase)
 {
-	this;
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	if(CEntity::CheckCollision(pBase) == true)
 	{
 		switch(pBase->GetType())
@@ -148,6 +167,9 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 			break;
 		};
 		return true;
+	}
+	else
+		return false;
 	}
 	else
 		return false;

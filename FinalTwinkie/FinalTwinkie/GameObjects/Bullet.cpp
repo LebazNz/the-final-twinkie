@@ -6,6 +6,7 @@
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/DestroyTurretMessage.h"
 #include "../Event and Messages/DestroyBuildingMessage.h"
+#include "../Event and Messages/DestroyTreeMessage.h"
 #include "../GameStates/OptionsState.h"
 #include "../Headers/Camera.h"
 #include "Enemy.h"
@@ -13,6 +14,7 @@
 #include "Turret.h"
 #include "Tank.h"
 #include "Building.h"
+#include "Tree.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -110,16 +112,15 @@ bool CBullet::CheckCollision(IEntity* pBase)
 			{
 				CTurret* pEnemy = dynamic_cast<CTurret*>(pBase);
 
-				
 
 				if(pEnemy->GetOwner() != nullptr)
 					break;
 
+				pEnemy->TakeDamage((int)this->m_fDamage);
+
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
-
-				pEnemy->TakeDamage((int)this->m_fDamage);
 				
 				
 				
@@ -157,6 +158,20 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				
 			}
 			break;
+
+			case OBJ_TREE:
+				{
+					CTree* pTree = dynamic_cast<CTree*>(pBase);
+					//destroy tree
+					CDestroyTreeMessage* pMsg = new CDestroyTreeMessage(pTree);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+
+					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pmsg);
+					pmsg = nullptr;
+				}
+				break;
 		};
 		return true;
 	}

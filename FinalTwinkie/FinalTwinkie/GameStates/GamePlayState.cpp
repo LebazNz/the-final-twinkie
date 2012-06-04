@@ -22,11 +22,15 @@
 #include "../Event and Messages/CreateMineMessage.h"
 #include "../Event and Messages/DestroyMineMessage.h"
 #include "../Event and Messages/SoldierFireMessage.h"
+#include "../Event and Messages/CreateTreeMessage.h"
+#include "../Event and Messages/DestroyTreeMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Turret.h"
+#include "../GameObjects/Mine.h"
+#include "../GameObjects/Tree.h"
 #include "../Headers/Camera.h"
 #include "../GameObjects/Sapper.h"
 #include "../GameObjects/Tank.h"
@@ -103,6 +107,14 @@ CGamePlayState::CGamePlayState(void)
 	m_nPickupInfAmmoID = -1;
 	m_nPickupMoneyID = -1;
 	m_nLevel = 1;
+	WinnerID = -1;
+	GameOverID = -1;
+	m_nMine = -1;
+	m_nTree = -1;
+	m_nEnemyCount = 0;
+	gameEndTimer = 0.0f;
+	m_bWinner = false;
+	m_bGameOver = false;
 }
 
 CGamePlayState::~CGamePlayState(void)
@@ -113,6 +125,8 @@ void CGamePlayState::Enter(void)
 {
 	if(m_bPaused == false)
 	{
+		m_nEnemyCount = 0;
+
 		m_pD3D	= CSGD_Direct3D::GetInstance();
 		m_pDI	= CSGD_DirectInput::GetInstance();
 		m_pTM	= CSGD_TextureManager::GetInstance();
@@ -133,7 +147,25 @@ void CGamePlayState::Enter(void)
 		m_AM->Load("AnimationInfo.xml");
 		//m_AM->Save("AnimationInfo.xml");
 
-		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/backgroundwall.png"));
+		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
+
+		m_pD3D->Clear( 0, 255, 255 );// Clear the background
+
+		// Start D3D rendering
+		m_pD3D->DeviceBegin();
+		m_pD3D->SpriteBegin();	
+
+		m_pTM->Draw(m_nBackGround,0,0,0.8f,0.8f);
+	
+		m_pD3D->GetSprite()->Flush();	
+		m_pD3D->SpriteEnd();
+		m_pD3D->DeviceEnd();	
+
+		m_pD3D->Present();
+		
+		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
+		WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
+		
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
@@ -168,6 +200,9 @@ void CGamePlayState::Enter(void)
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
+		m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
+		m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
+
 		m_pMS->InitMessageSystem(&MessageProc);
 
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -178,6 +213,8 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CSapper>("CSapper");
 		m_pOF->RegisterClassType<CBuilding>("CBuilding");
 		m_pOF->RegisterClassType<CPickup>("CPickup");
+		m_pOF->RegisterClassType<CMine>("CMine");
+		m_pOF->RegisterClassType<CTree>("CTree");
 
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -366,11 +403,15 @@ void CGamePlayState::Enter(void)
 	m_nMouseY = m_pDI->MouseGetPosY();
 
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
+	m_bWinner = false;
+	m_bGameOver = false;
+	gameEndTimer = 0.0f;
 
 }
 
 void CGamePlayState::Exit(void)
 {
+	m_nEnemyCount = 0;
 	SaveGame(m_dGameData.szFileName);
 
 	if(m_bPaused == false)
@@ -378,6 +419,30 @@ void CGamePlayState::Exit(void)
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
+		if(WinnerID == -1)
+		{
+			m_pTM->UnloadTexture(WinnerID);
+			WinnerID = -1;
+		}
+	
+		if(GameOverID == -1)
+		{
+			m_pTM->UnloadTexture(GameOverID);
+			GameOverID = -1;
+		}
+
+		if(m_nMine == -1)
+		{
+			m_pTM->UnloadTexture(m_nMine);
+			m_nMine = -1;
+		}
+
+		if(m_nTree == -1)
+		{
+			m_pTM->UnloadTexture(m_nTree);
+			m_nTree = -1;
+		}
+		
 		if(m_nButtonImageID != -1)
 		{
 			m_pTM->UnloadTexture(m_nButtonImageID);
@@ -490,7 +555,9 @@ void CGamePlayState::Exit(void)
 			m_pES->ShutdownEventSystem();
 			m_pES = nullptr;
 		}
-
+	
+	m_bWinner = false;
+	m_bGameOver = false;
 		m_pD3D	= nullptr;
 		m_pDI	= nullptr;
 		m_pTM	= nullptr;
@@ -518,6 +585,8 @@ void CGamePlayState::Exit(void)
 
 bool CGamePlayState::Input(void)
 {
+	if(m_bGameOver == false && (m_bWinner == false || m_nEnemyCount > 0))
+	{
 	if(m_bPaused)
 	{
 		if(m_pDI->KeyPressed(DIK_ESCAPE))
@@ -631,6 +700,7 @@ bool CGamePlayState::Input(void)
 		return true;
 	}*/
 	return true;
+	}
 }
 
 void CGamePlayState::Update(float fDt)
@@ -674,6 +744,12 @@ void CGamePlayState::Update(float fDt)
 	{
 		m_nPosition = 2;
 	}
+
+	if(m_pPlayer->GetHealth() <= 0)
+		m_bGameOver = true;
+
+	if(m_bGameOver == true || (m_bWinner == true && m_nEnemyCount <= 0))
+			gameEndTimer += fDt;
 }
 
 void CGamePlayState::Render(void)
@@ -681,6 +757,8 @@ void CGamePlayState::Render(void)
 	
 	
 	m_pD3D->Clear( 0, 255, 255 );
+	if(m_bGameOver == false && (m_bWinner == false || m_nEnemyCount > 0))
+	{
 	IDirect3DSurface9 *current=0, *output=0;
 	m_pD3D->GetDirect3DDevice()->GetRenderTarget(0, &current);
 
@@ -714,7 +792,7 @@ void CGamePlayState::Render(void)
 	}
 
 	m_pD3D->GetSprite()->Flush();	
-
+	
 	if(m_bPaused)
 	{
 		CBitmapFont* font = CBitmapFont::GetInstance();
@@ -756,6 +834,22 @@ void CGamePlayState::Render(void)
 	}
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	}
+	else if(m_bGameOver == true)
+	{
+		if(gameEndTimer <= 5.0f)
+			m_pTM->Draw(GameOverID,0,0,0.8f,0.7f);
+		else
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+	}
+	else if(m_bWinner == true && m_nEnemyCount <= 0)
+	{
+		if(gameEndTimer <= 5.0f)
+			m_pTM->Draw(WinnerID,0,0,0.8f,0.7f);
+		else
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
+	}
 }
 
 void CGamePlayState::MessageProc(CMessage* pMsg)
@@ -905,6 +999,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetDamage(1.0f*2);
 					else
 						Bullet->SetDamage(1.0f);
+					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pSelf->m_pOM->AddObject(Bullet);
 					Bullet->Release();
 					Bullet = nullptr;
@@ -923,6 +1018,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_CREATEENEMY:
 		{
+			pSelf->m_nEnemyCount++;
+
 			CCreateEnemyMessage* pMessage = dynamic_cast<CCreateEnemyMessage*>(pMsg);
 			switch(pMessage->GetEnemyType())
 			{
@@ -1058,6 +1155,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_DESTROYENEMY:
 		{
+			pSelf->m_nEnemyCount--;
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
@@ -1192,10 +1290,24 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_CREATEMINE:
 		{
+			CCreateMineMessage* pMessage = dynamic_cast<CCreateMineMessage*>(pMsg);
+			CMine* pMine = (CMine*)pSelf->m_pOF->CreateObject("CMine");
+			pMine->SetPosX(pMessage->GetPosX());
+			pMine->SetPosY(pMessage->GetPosY());
+			pMine->SetWidth(64);
+			pMine->SetHeight(32);
+			pMine->SetHealth(100);
+			pMine->SetImageID(pSelf->m_nMine);
+			pMine->SetDamage(75);
+			pSelf->m_pOM->AddObject(pMine);
+			pMine->Release();
+			
 		}
 		break;
 	case MSG_DESTROYMINE:
 		{
+			CMine* pMine = dynamic_cast<CDestroyMineMessage*>(pMsg)->GetMine();
+			pSelf->m_pOM->RemoveObject(pMine);
 		}
 		break;
 	case MSG_SOLDIERFIRE:
@@ -1230,6 +1342,34 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				}
 				break;
 			}
+
+		}
+		break;
+
+	case MSG_CREATETREE:
+		{
+			CCreateTreeMessage* pMessage = dynamic_cast<CCreateTreeMessage*>(pMsg);
+			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
+			pTree->SetPosX(pMessage->GetPosX());
+			pTree->SetPosY(pMessage->GetPosY());
+			pTree->SetWidth(32);
+			pTree->SetHeight(32);
+			pTree->SetHealth(100);
+			pTree->SetImageID(pSelf->m_nTree);
+			pSelf->m_pOM->AddObject(pTree);
+			pTree->Release();
+		}
+		break;
+
+	case MSG_DESTROYTREE:
+		{
+			CTree* pTree = dynamic_cast<CDestroyTreeMessage*>(pMsg)->GetTree();
+			pSelf->m_pOM->RemoveObject(pTree);
+		}
+		break;
+
+	default:
+		{
 
 		}
 		break;

@@ -17,6 +17,7 @@ using namespace std;
 #include "../GameStates/GamePlayState.h"
 #include "../Headers/Game.h"
 
+
 CTileManager* CTileManager::m_pSelf = nullptr;
 
 CTileManager* CTileManager::GetInstance(void)
@@ -232,6 +233,7 @@ void CTileManager::Render()
 void CTileManager::CheckCollision(IEntity* pBase)
 {
 	Camera* cam = Camera::GetInstance();
+	CGame* pGame = CGame::GetInstance();
 
 	if(m_vTiles.size() == 0 || pBase == nullptr)
 		return;
@@ -245,6 +247,15 @@ void CTileManager::CheckCollision(IEntity* pBase)
 	{
 		for(int j = 0; j < width; j++)
 		{
+			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
+			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
+			
+			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
+			
+			if(x >= -width && x <= pGame->GetWidth()+width && y >= -height && y <=  pGame->GetHeight()+height)
+				continue;
+			
+
 			if(m_vTiles[i][j].GetCollision() == false)
 				continue;
 
@@ -274,9 +285,10 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					{
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
-							RaiseWall();
-							
-							m_vTiles[i][j].SetCollision(false);
+							//RaiseWall();
+							CGamePlayState::GetInstance()->SetWinner(true);
+
+							//m_vTiles[i][j].SetCollision(false);
 							break;
 						}
 

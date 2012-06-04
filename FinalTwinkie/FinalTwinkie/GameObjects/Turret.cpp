@@ -8,58 +8,65 @@
 #include <math.h>
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Headers/Camera.h"
+#include "../Headers/Game.h"
 using std::sqrt;
 
 
 
 void CTurret::Update(float fDt)
 {
-	if(m_bStop == false)
+	Camera* C=Camera::GetInstance();
+
+	Camera* pCam =Camera::GetInstance();
+	
+	CGame *pGame = CGame::GetInstance();
+
+	//TANK
+	if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr)
 	{
-		Camera* C=Camera::GetInstance();
-
-		//TANK
-		if(m_pOwner != nullptr && m_pOwner->GetType() != OBJ_PLAYER && m_pTarget != nullptr) // change target check to !=
+		if(m_bStop == false)
 		{
-  
-
-			float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
-			float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
-			xPos *= xPos;
-			yPos *= yPos;
-
-			float distance = sqrt(float(xPos+yPos));
-
-			if(distance <= m_fMaxDistance)
+			if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 			{
-				tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
+				Camera* C=Camera::GetInstance();
+
+				float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+				float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
+				xPos *= xPos;
+				yPos *= yPos;
+
+				float distance = sqrt(float(xPos+yPos));
+
+				if(distance <= m_fMaxDistance)
+				{
+					tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
   
-				tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
+					tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
    
 
-				m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
+					m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
 
-				if(Steering(m_vLookVec,Vec) < -1)
-				m_fRotation -= m_fRotationRate*fDt;
-				else if(Steering(m_vLookVec,Vec) > 1)
-				m_fRotation += m_fRotationRate*fDt;
+					if(Steering(m_vLookVec,Vec) < -1)
+					m_fRotation -= m_fRotationRate*fDt;
+					else if(Steering(m_vLookVec,Vec) > 1)
+					m_fRotation += m_fRotationRate*fDt;
 
-				if(m_fFireRate >= SHOT_DELAY)
-				{
-					m_fFireRate = 0.0f;
+					if(m_fFireRate >= SHOT_DELAY)
+					{
+						m_fFireRate = 0.0f;
 
-				CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+					}
+					else
+						m_fFireRate+=fDt;
 				}
-				else
-					m_fFireRate+=fDt;
 			}
 		}
-		else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)  //PLAYER
-		{
-
-   
+	}
+	else if(m_pOwner != nullptr && m_pOwner->GetType() == OBJ_PLAYER)  //PLAYER
+	{   
 			float xPos = GetPosX() - CSGD_DirectInput::GetInstance()->MouseGetPosX();
 			float yPos = GetPosY() - CSGD_DirectInput::GetInstance()->MouseGetPosY();
 			xPos *= xPos;
@@ -98,38 +105,44 @@ void CTurret::Update(float fDt)
 			float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
 			xPos *= xPos;
 			yPos *= yPos;
-
-			float distance = sqrt(float(xPos+yPos));
-
-			if(distance <= m_fMaxDistance)
+			if(m_bStop == false)
 			{
-				tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
+				if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+				{
+				float distance = sqrt(float(xPos+yPos));
+
+				if(distance <= m_fMaxDistance)
+				{
+					tVector2D target = {float(m_pTarget->GetPosX()-C->GetPosX()),float(m_pTarget->GetPosY()-C->GetPosY())};
    
   
-				tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
+					tVector2D Vec = {target.fX - GetPosX(),target.fY - GetPosY()};
   
 
-				m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
+					m_vLookVec=Vector2DRotate(m_vUpVec, m_fRotation);
 
-				if(Steering(m_vLookVec,Vec) < -1)
-					m_fRotation -= m_fRotationRate*fDt;
-				else if(Steering(m_vLookVec,Vec) > 1)
-					m_fRotation += m_fRotationRate*fDt;
+					if(Steering(m_vLookVec,Vec) < -1)
+						m_fRotation -= m_fRotationRate*fDt;
+					else if(Steering(m_vLookVec,Vec) > 1)
+						m_fRotation += m_fRotationRate*fDt;
 
-				if(m_fFireRate >= SHOT_DELAY)
-				{
-					m_fFireRate = 0.0f;
+					if(m_fFireRate >= SHOT_DELAY)
+					{
+						m_fFireRate = 0.0f;
 
-					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+						CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
+						CMessageSystem::GetInstance()->SndMessage(pMsg);
+						pMsg = nullptr;
+					}
+					else
+						m_fFireRate+=fDt;
+
 				}
-				else
-					m_fFireRate+=fDt;
-
+				}
 			}
-		}
- 
+	}
+	
+	
 		if(abs(m_fRotation)>=2.335)
 		{
 			m_fRotationHeight=128;
@@ -145,34 +158,40 @@ void CTurret::Update(float fDt)
 			m_fRotationHeight=128;
 			m_fRotationWidth=64;
 		}
-	}
-	else
-	{
+	
 		if(m_fStopTimer > 0.0f)
 		{
 			m_fStopTimer -= fDt;
 		}
 		else
 			m_bStop = false;
-	}
 }
+
 void CTurret::Render(void)
 {
 	Camera* C=Camera::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
 
+	
 	if(m_pOwner != nullptr)
 	{
 		this;
 		if(m_pOwner->GetType()!=OBJ_PLAYER)
-			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+		{
+			if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+				CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+		}
 		else
+		{
 			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)(GetPosX()-GetWidth()/2),(int)(GetPosY()-GetHeight()/2-32),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+		}
 	}
 	else if(m_pOwner == nullptr)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
+		if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
 	}
-
 		
 	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
@@ -256,7 +275,10 @@ void CTurret::TakeDamage(int nDamage)
 		SetHealth(GetHealth()-nDamage);
 	}
 
-	if(GetHealth() <= 0.0f)
+	int health = GetHealth() - nDamage;
+	SetHealth(health);
+
+	if(health <= 0.0f)
 	{
 		CDestroyTurretMessage* pMst = new CDestroyTurretMessage(this);
 		CMessageSystem::GetInstance()->SndMessage(pMst);

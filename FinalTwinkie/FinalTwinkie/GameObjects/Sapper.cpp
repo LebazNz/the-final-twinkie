@@ -5,6 +5,9 @@
 #include "../Event and Messages/MessageSystem.h"
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
+#include "../Headers/Game.h"
+
+
 CSapper::CSapper(void)
 {
 	m_nType=OBJ_ENEMY;
@@ -17,7 +20,12 @@ CSapper::~CSapper(void)
 void CSapper::Update(float fDt)
 {
 	if(m_bStop == false)
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
 	{
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+		{
 		Camera* C=Camera::GetInstance();
 		tVector2D Up={0,-1};
 		tVector2D toTarget;
@@ -78,12 +86,18 @@ void CSapper::Update(float fDt)
 			m_bStop = false;
 	}
 	m_pOnFire->UpdateEmitterPos(GetPosX(), GetPosY());
+	}
 }
 void CSapper::Render(void)
 {
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
-	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+	}//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
 }
 bool CSapper::CheckCollision(IEntity* pBase)
 {
