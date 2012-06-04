@@ -8,6 +8,7 @@
 #include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../Event and Messages/DestroyTreeMessage.h"
 #include "../GameStates/OptionsState.h"
+#include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Headers/Camera.h"
 #include "Enemy.h"
 #include "Player.h"
@@ -30,6 +31,8 @@ CBullet::CBullet(void)
 	m_fDamage = 0.0f;
 	m_nType=0;
 	m_fFlameTimer=0.0f;
+	SetRect(&m_rTarget,0,0,0,0);
+	m_fMissileTimer = 0.0f;
 }
 
 CBullet::~CBullet(void)
@@ -43,7 +46,7 @@ void CBullet::Update(float fDT)
 	Camera* C=Camera::GetInstance();
 	RECT rSelf = GetRect();
 	CGame* pGame = CGame::GetInstance();
-	if(rSelf.bottom-C->GetPosY() < -C->GetPosY()|| rSelf.top-C->GetPosY() > pGame->GetHeight()-C->GetPosY() || rSelf.right-C->GetPosX() < -C->GetPosX() || rSelf.left-C->GetPosX() > pGame->GetWidth()-C->GetPosX() )
+	if((rSelf.bottom-C->GetPosY() < -C->GetPosY()|| rSelf.top-C->GetPosY() > pGame->GetHeight()-C->GetPosY() || rSelf.right-C->GetPosX() < -C->GetPosX() || rSelf.left-C->GetPosX() > pGame->GetWidth()-C->GetPosX() )&&m_nBulletType!=BUL_ROCKET)
 	{
 		CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -59,12 +62,57 @@ void CBullet::Update(float fDT)
 			pMsg = nullptr;
 		}
 	}
+	if(m_nBulletType == BUL_ROCKET)
+	{
+		/*tVector2D Up={0,-1};
+		tVector2D toTarget;
+		toTarget.fX=((m_v2TargetPos.fX-C->GetPosX()));
+		toTarget.fY=((m_v2TargetPos.fY-C->GetPosY()));
+		m_fRotation=AngleBetweenVectors(toTarget, Up);
+
+		if(m_v2TargetPos.fX<(GetPosX()+C->GetPosX()))
+			m_fRotation=AngleBetweenVectors(toTarget, Up);
+		else
+			m_fRotation=-AngleBetweenVectors(toTarget, Up);
+
+		tVector2D Look=Vector2DRotate(Up, m_fRotation);
+		if(Vector2DLength(toTarget)>0)
+		{
+			float DY=(Look.fY*GetVelY()*fDT);
+			float DX=(Look.fX*GetVelX()*fDT);
+			SetPosX(GetPosX()+DX);
+			SetPosY(GetPosY()+DY);
+		}*/
+
+		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom-C->GetPosY() && rSelf.top-C->GetPosY() > m_rTarget.top-C->GetPosY() 
+			&& rSelf.right-C->GetPosX() < m_rTarget.right-C->GetPosX() && rSelf.left-C->GetPosX() > m_rTarget.left-C->GetPosX() )
+		{
+			CObjectManager::GetInstance()->AreaEffect(m_v2TargetPos.fX,m_v2TargetPos.fY,50,(int)m_fDamage);
+			CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+	}
+	if(m_nBulletType == BUL_ARTILLERY)
+	{
+		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom-C->GetPosY() && rSelf.top-C->GetPosY() > m_rTarget.top-C->GetPosY() 
+			&& rSelf.right-C->GetPosX() < m_rTarget.right-C->GetPosX() && rSelf.left-C->GetPosX() > m_rTarget.left-C->GetPosX() )
+		{
+			CObjectManager::GetInstance()->AreaEffect(m_v2TargetPos.fX,m_v2TargetPos.fY,100,(int)m_fDamage);
+			CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+	}
 }
 
 bool CBullet::CheckCollision(IEntity* pBase)
 {
 	if(CEntity::CheckCollision(pBase) == true)
 	{
+		if(m_nBulletType == BUL_ARTILLERY)
+			return false;
+
 		switch(pBase->GetType())
 		{
 		case OBJ_BASE:
@@ -203,6 +251,7 @@ void CBullet::Render(void)
 	if(GetImageID() != -1)
 	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 1.0f, 1.0f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
-		//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
+		CSGD_Direct3D::GetInstance()->DrawRect(m_rTarget, 255,0,0);
 	}
 }
