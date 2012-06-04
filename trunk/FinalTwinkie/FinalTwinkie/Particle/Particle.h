@@ -22,6 +22,8 @@ private:
 	int m_nParticleID;
 	float m_fTotalLife;
 
+	float m_fRotation;
+
 public:
 
 	float GetScale(void){return m_fScale;}
@@ -46,6 +48,8 @@ public:
 	void SetPosY(float PY) {m_fCurPosY=PY;}
 
 	float GetTotalLife(void) {return m_fTotalLife;}
+
+	void SetRot(float Rot){m_fRotation=Rot;}
 
 };
 

@@ -203,6 +203,32 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 							}
 						}
 						break;
+						case OBJ_TANK:
+						{
+							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
+							pEnemy->TakeDamage(damage);
+							if(damage > 0)
+								pEnemy->TakeDamage((int)damage);
+							else
+							{
+								pEnemy->SetStopTimer(10.0f);
+								pEnemy->SetStop(true);								
+							}
+							if(pEnemy->GetHealth() <= 0.0f)
+							{
+								if(pEnemy->GetHasATuert())
+								{
+									CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+									CMessageSystem::GetInstance()->SndMessage(pMst);
+									pMst = nullptr;
+								}
+								CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+								CMessageSystem::GetInstance()->SndMessage(pMse);
+								pMse = nullptr;
+							}
+						}
+						break;
 					case OBJ_TURRET:
 						{
 							CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);

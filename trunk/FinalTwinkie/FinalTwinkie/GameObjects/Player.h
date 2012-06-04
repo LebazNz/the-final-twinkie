@@ -61,8 +61,8 @@ public:
 	void SetInfAmmo(bool bAmmo) {m_bInfAmmo = bAmmo;}
 	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
 	float GetNoReload(){return m_fNoReloadTimer;}
-	void SetSpecial(CSpecial* pSpecial){ m_apSpec = pSpecial; }
-
+	void SetSpecial1(CSpecial* pSpecial){ m_pSpec1 = pSpecial; m_pSelectedSpec=m_pSpec1; m_pSelectedSpecAmmo=0;}
+	void SetSpecial2(CSpecial* pSpecial){ m_pSpec2 = pSpecial; }
 
 	float	GetDamageMod() const { return m_fDamageMod; }
 	void	SetDamageMod(float val) { m_fDamageMod = val; }
@@ -109,7 +109,8 @@ public:
 	bool	GetSmokeBombAccess() { return  m_bSmokeBombAccess; }
 	void	SetSmokeBombAccess(bool rhs) { m_bSmokeBombAccess = rhs; } 
 
-	CSpecial* GetSpecial(void) {return m_apSpec;} 
+	CSpecial* GetSpecial1(void) {return m_pSpec1;}
+	CSpecial* GetSpecial2(void) {return m_pSpec2;}
 	int GetSpecial1Ammo(void) {return  m_anSpecialammo[0];}
 	int GetSpecial2Ammo(void) {return  m_anSpecialammo[1];}
 	void SetSpecial1Ammo(int ammo) {m_anSpecialammo[0]=ammo;}
@@ -117,6 +118,9 @@ public:
 
 	void SetSecondType(int nType){m_nSecondType=nType;}
 	int GetSecondType(void){return m_nSecondType;}
+
+	void SetEmitterRight(CEmitter* EM){m_pTracksRight=EM;}
+	void SetEmitterLeft(CEmitter* EM){m_pTracksLeft=EM;}
 
 private:
 
@@ -126,11 +130,15 @@ private:
 	CPlayer(CPlayer&);
 	int m_nMoney;
 	std::string m_szName;
-	CSpecial* m_apSpec;
+	CSpecial* m_pSpec1;
+	CSpecial* m_pSpec2;
+	CSpecial* m_pSelectedSpec;
+	int m_pSelectedSpecAmmo;
 	int m_anWeaponAmmo[3];
 	int m_anMaxWeaponAmmo[3];
 	int m_anSpecialammo[2];
-	CEmitter* m_pTracks;
+	CEmitter* m_pTracksLeft;
+	CEmitter* m_pTracksRight;
 	CTurret* m_pTurret;
 	float m_fRotation;
 	float m_fRotationRate;

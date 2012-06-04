@@ -25,6 +25,7 @@ void CPlayer::DeleteInstance(void)
 		delete m_pInstance;
 	m_pInstance=nullptr;
 }
+
 void CPlayer::Update(float fDt)
 {
 	tVector2D Up={0,-1};
@@ -181,10 +182,29 @@ void CPlayer::Update(float fDt)
 			GetTurret()->GetFlamer()->DeactivateEmitter();
 		}
 	}
-	if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[0]>0)
+	if(m_pDI->KeyPressed(DIK_1))
 	{
-		m_apSpec->ActivateSpecial();
-		m_anSpecialammo[0]--;
+		if(m_pSpec1!=nullptr)
+		{
+			m_pSelectedSpec=m_pSpec1;
+			m_pSelectedSpecAmmo=0;
+		}
+	}
+	if(m_pDI->KeyPressed(DIK_2))
+	{
+		if(m_pSpec2!=nullptr)
+		{
+			m_pSelectedSpec=m_pSpec2;
+			m_pSelectedSpecAmmo=1;
+		}
+	}
+	if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
+	{
+		if(m_pSelectedSpec!=nullptr)
+		{
+			m_pSelectedSpec->ActivateSpecial();
+			m_anSpecialammo[m_pSelectedSpecAmmo]--;
+		}
 	}
 
 
@@ -259,6 +279,14 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			SetInvul(false);
+
+	//m_pTracksRight->UpdateEmitterPos((GetPosX()*Up.fX)-32-C->GetPosX(), (GetPosY()*Up.fY)+64-C->GetPosY());
+	//m_pTracksRight->UpdateRotation(m_fRotation);
+	//m_pTracksRight->ActivateEmitter();
+
+	//m_pTracksLeft->UpdateEmitterPos((GetPosX()*Up.fX)+32*Up.fX-C->GetPosX(), (GetPosY()*Up.fY)+64-C->GetPosY());
+	//m_pTracksLeft->UpdateRotation(m_fRotation);
+	//m_pTracksLeft->ActivateEmitter();
 }
 void CPlayer::Render(void)
 {
@@ -380,6 +408,9 @@ CPlayer::CPlayer(void)
 	m_bAirStrikeAccess	= false;
 	m_bSmokeBombAccess	= false;
 	SlowFlame			= false;
+
+	m_pSelectedSpec=m_pSpec1;
+	m_pSelectedSpecAmmo=0;
 }
 CPlayer::~CPlayer(void)
 {

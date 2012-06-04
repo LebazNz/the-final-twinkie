@@ -76,7 +76,7 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 66, 476, 1,1,&rect);
 
 		char buffer[10];
-		_itoa_s(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
+		_itoa_s(m_pPlayer->GetWeaponAmmoMissile(), buffer, 10);
 		m_pFont->Print(buffer, 68, 506, .5f, D3DCOLOR_XRGB(255,255,255));
 	}
 	
@@ -87,7 +87,7 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 105, 476, 1,1,&rect);
 
 		char buffer[10];
-		_itoa_s(m_pPlayer->GetWeaponAmmoShell(), buffer, 10);
+		_itoa_s(m_pPlayer->GetWeaponAmmoArtillery(), buffer, 10);
 		m_pFont->Print(buffer, 106, 506, .5f, D3DCOLOR_XRGB(255,255,255));
 	}
 
@@ -118,7 +118,7 @@ void CGUI::Render(void)
 	}
 
 	//Special 1
-	CSpecial* spec= m_pPlayer->GetSpecial();
+	CSpecial* spec= m_pPlayer->GetSpecial1();
 	if(spec)
 	{
 		switch(spec->GetType())
@@ -157,7 +157,11 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 172, 548, 1,1,&rect);
 		_itoa_s(m_pPlayer->GetSpecial1Ammo(), buffer, 10);
 		m_pFont->Print(buffer, 188, 575, .5f, D3DCOLOR_XRGB(255,255,255));
+	}
 
+	spec= m_pPlayer->GetSpecial2();
+	if(spec)
+	{
 		switch(spec->GetType())
 		{
 		case SPECIAL:
@@ -194,10 +198,7 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 228, 548, 1,1,&rect);
 		_itoa_s(m_pPlayer->GetSpecial2Ammo(), buffer, 10);
 		m_pFont->Print(buffer, 243, 575, .5f, D3DCOLOR_XRGB(255,255,255));
-
 	}
-
-
 }
 
 void CGUI::Update(float fDt)

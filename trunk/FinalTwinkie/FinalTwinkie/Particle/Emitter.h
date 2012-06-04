@@ -20,6 +20,7 @@ public:
 	void RenderParticles(void);
 	void UpdateEmitterPos(float fPosX, float fPosY);
 	void UpdateEmitterDirecton(tVector2D vDir);
+	void UpdateRotation(float fRot) {m_fRotation=fRot;}
 
 	void ActivateEmitter(void){m_bActive=true;}
 	void DeactivateEmitter(void){m_bActive=false;}
@@ -28,6 +29,8 @@ public:
 
 	float GetAngle(void){return m_fAngle;}
 	tVector2D GetDir(void) {return m_vDirection;}
+
+	void SetRotation(float Rot){m_fRotation=Rot;}
 
 private:
 
@@ -56,6 +59,8 @@ private:
 	float m_fRadius;
 	float m_fAngle;
 	bool m_bActive;
+
+	float m_fRotation;
 
 	tVector2D m_vDirection;
 	D3DBLEND m_nSource;

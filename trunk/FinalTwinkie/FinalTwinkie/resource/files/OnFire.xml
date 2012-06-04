@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Effect>
+    <Picture>Cloud.png</Picture>
+    <Number Number="5" />
+    <Looping Looping="1" />
+    <Explosion Explosion="0" />
+    <Life>
+      <Max M="1" />
+      <Min M="1" />
+    </Life>
+    <SpawnTime SpawnTime="0.36" />
+    <EmitterType Type="0" />
+    <Radius R="0" />
+    <Angle A="30" />
+    <Source S="3" />
+    <Dest D="7" />
+    <SpeedX>
+      <MinX M="0.34" />
+      <MaxX M="0.34" />
+    </SpeedX>
+    <SpeedY>
+      <MinY M="0.34" />
+      <MaxY M="0.34" />
+    </SpeedY>
+    <Scale>
+      <Min M="0.4" />
+      <Max M="0.4" />
+    </Scale>
+    <Color>
+      <Start>
+        <Alpha A="255" />
+        <Red R="255" />
+        <Green G="128" />
+        <Blue B="0" />
+      </Start>
+      <End>
+        <Alpha A="255" />
+        <Red R="255" />
+        <Green G="0" />
+        <Blue B="0" />
+      </End>
+    </Color>
+  </Effect>
+</Root>

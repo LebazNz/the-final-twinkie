@@ -10,7 +10,7 @@ void CParticle::Render(void)
 {
 	CSGD_TextureManager* Tm= CSGD_TextureManager::GetInstance();
 	Camera* C=Camera::GetInstance();
-	Tm->Draw(m_nParticleID, (int)(m_fCurPosX+C->GetPosX())-16, (int)(m_fCurPosY+C->GetPosY())-16, m_fScale, m_fScale, NULL, 16,16,0, m_dwColor);
+	Tm->Draw(m_nParticleID, (int)(m_fCurPosX+C->GetPosX())-16, (int)(m_fCurPosY+C->GetPosY())-16, m_fScale, m_fScale, NULL, 16,16,m_fRotation, m_dwColor);
 }
 
 void CParticle::CreateParticle(float fLife, float fVelocityX, float fVelocityY, float fScale, float nPosX, float nPosY, DWORD dwColor, int nImage)
