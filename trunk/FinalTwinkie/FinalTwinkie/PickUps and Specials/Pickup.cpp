@@ -120,6 +120,7 @@ bool CPickup::CheckCollision(IEntity* pBase)
 						int nMoney = m_pPlayer->GetMoney();
 						nMoney+=m_nGiven;
 						m_pPlayer->SetMoney(nMoney);
+						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
 					}
 					break;
 				}

@@ -21,6 +21,8 @@ public:
 	void Purchase();
 	void SelectThis(bool * bRhs);
 	void Clicked();
+	void RenderStats();
+	void RenderAchievements();
 	float	GetHeat() const { return m_nHeat; }
 	void	SetHeat(float val) { m_nHeat = val; }
 	void	Highlight(DWORD* dwIndex);

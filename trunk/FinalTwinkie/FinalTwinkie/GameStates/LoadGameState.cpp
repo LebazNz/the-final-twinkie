@@ -708,6 +708,15 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 		{
 			info.fSpeedMod = 1 + CShopState::GetInstance()->GetSpeedUp()*info.nSpeedLevel;
 		}
+		if(gameData->Attribute("Score"		, &info.nScore)==nullptr)
+		{
+			info.nScore = 0;
+		}
+		else
+		{
+			CPlayer::GetInstance()->SetScore(info.nScore);
+		}
+
 		/*if(gameData->Attribute("RocketAccess"	, &info.bRocketAccess)==nullptr)
 		info.bRocketAccess = 0;
 		if(gameData->Attribute("LaserAccess"	, &info.bLaserAccess)==nullptr)

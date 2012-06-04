@@ -8,7 +8,10 @@
     <ClCompile Include="Event and Messages\DestroyTurretMessage.cpp" />
     <ClCompile Include="Event and Messages\SoldierFireMessage.cpp" />
     <ClCompile Include="GameObjects\Mine.cpp" />
+    <ClCompile Include="GameObjects\Sapper.cpp" />
+    <ClCompile Include="GameStates\GetNameState.cpp" />
     <ClCompile Include="GameStates\LoadGameState.cpp" />
+    <ClCompile Include="GameStates\StatState.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_Direct3D.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_DirectInput.cpp" />
     <ClCompile Include="SGD Wrappers\CSGD_TextureManager.cpp" />
@@ -53,20 +56,20 @@
     <ClCompile Include="PickUps and Specials\Pickup.cpp" />
     <ClCompile Include="GameObjects\Player.cpp" />
     <ClCompile Include="PickUps and Specials\Reinforcements.cpp" />
-    <ClCompile Include="GameObjects\Sapper.cpp" />
     <ClCompile Include="GameStates\ShopState.cpp" />
     <ClCompile Include="PickUps and Specials\Smoke.cpp" />
     <ClCompile Include="PickUps and Specials\Special.cpp" />
     <ClCompile Include="GameObjects\Tank.cpp" />
     <ClCompile Include="World and Tile\Tile.cpp" />
     <ClCompile Include="World and Tile\TileManager.cpp" />
-    <ClCompile Include="GameObjects\Turret.cpp" />
     <ClCompile Include="source\WinMain.cpp" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
     <ClCompile Include="tinyxml\tinyxml.cpp" />
     <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
-    <ClCompile Include="GameStates\GetNameState.cpp" />
+    <ClCompile Include="GameObjects\Turret.cpp" />
+    <ClCompile Include="GameStates\SurvivalState.cpp" />
+    <ClCompile Include="GameStates\LoadOutState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event and Messages\CreateBuildingMessage.h" />
@@ -76,7 +79,9 @@
     <ClInclude Include="Event and Messages\DestroyTurretMessage.h" />
     <ClInclude Include="Event and Messages\SoldierFireMessage.h" />
     <ClInclude Include="gameobjects\mine.h" />
+    <ClInclude Include="gamestates\getnamestate.h" />
     <ClInclude Include="GameStates\LoadGameState.h" />
+    <ClInclude Include="GameStates\StatState.h" />
     <ClInclude Include="SGD Wrappers\CSGD_Direct3D.h" />
     <ClInclude Include="SGD Wrappers\CSGD_DirectInput.h" />
     <ClInclude Include="SGD Wrappers\CSGD_TextureManager.h" />
@@ -137,7 +142,8 @@
     <ClInclude Include="GameObjects\Turret.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />
-    <ClInclude Include="gamestates\getnamestate.h" />
+    <ClInclude Include="GameStates\SurvivalState.h" />
+    <ClInclude Include="GameStates\LoadOutState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fmodex.dll" />

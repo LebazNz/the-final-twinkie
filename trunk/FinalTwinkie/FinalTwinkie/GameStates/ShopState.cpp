@@ -101,6 +101,10 @@ void CShopState::Exit(void)
 	m_pD3D	= nullptr;
 	m_pTM	= nullptr;
 	m_pFont = nullptr;
+
+	/*m_pTM->UnloadTexture(m_nBGImageID);
+	m_pTM->UnloadTexture(m_nButtonImageID);
+	m_pTM->UnloadTexture(m_nCursor);*/
 }
 bool CShopState::Input(void)
 {
@@ -109,9 +113,6 @@ bool CShopState::Input(void)
 		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
 		return true;
 	}
-
-	if(m_pDI->KeyPressed(DIK_RETURN))
-		m_nHeat = 0.5;
 
 	if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 	{
@@ -184,9 +185,9 @@ void CShopState::Render(void)
 	m_pFont->Print("COST",CGame::GetInstance()->GetWidth()/4*3,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	RenderPrices(y2);
 	m_pTM->Draw(m_nButtonImageID,0,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBuy);
-	m_pFont->Print("BUY",40,CGame::GetInstance()->GetHeight()-20,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("BUY",40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
-	m_pFont->Print("CONTINUE",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+60,CGame::GetInstance()->GetHeight()-20,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("CONTINUE",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+90,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	//m_pFont->Print("Rocket",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
@@ -611,6 +612,7 @@ void CShopState::Purchase()
 					{
 						m_pPlayer->SetMoney(m_pPlayer->GetMoney()-m_nSelectedCost);
 						m_pPlayer->SetArtilleryAccess(true);
+						
 					}
 			}
 		}
@@ -654,7 +656,7 @@ void CShopState::Purchase()
 				if(m_pPlayer->GetMoney()-m_nSelectedCost >= 0)
 				{
 					m_pPlayer->SetMoney(m_pPlayer->GetMoney()-m_nSelectedCost);
-					m_pPlayer->SetHealthLevel(m_pPlayer->GetHeatLevel()+1);
+					m_pPlayer->SetHeatLevel(m_pPlayer->GetHeatLevel()+1);
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetHeatModifier(m_pPlayer->GetHeatModifier()+m_fHeatUp);
@@ -684,7 +686,7 @@ void CShopState::Purchase()
 				if(m_pPlayer->GetMoney()-m_nSelectedCost >= 0)
 				{
 					m_pPlayer->SetMoney(m_pPlayer->GetMoney()-m_nSelectedCost);
-					m_pPlayer->SetAmmoLevel(m_pPlayer->GetAmmoLevel()+m_fAmmoUp);
+					m_pPlayer->SetAmmoLevel(int(m_pPlayer->GetAmmoLevel()+m_fAmmoUp));
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetAmmoMod(m_pPlayer->GetAmmoMod()+0.2f);
@@ -738,6 +740,15 @@ void CShopState::Purchase()
 			}
 		}
 	}
+
+
+	int tempArt = -1;
+	int tempRoc = -1;
+	if(m_pPlayer->GetArtilleryAccess())
+		tempArt = 40;
+	if(m_pPlayer->GetRocketAccess())
+		tempRoc = 40;
+
+	m_pPlayer->SetMaxWeaponAmmo(40,tempArt,tempRoc);
 	
 }
-

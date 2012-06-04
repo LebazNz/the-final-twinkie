@@ -36,7 +36,7 @@ public:
 	int GetSpawn(void) { return m_bHasSpawn; }
 	int GetTrigger(void) { return m_bHasTrigger; }
 	void ClearTrigger(void) { m_bHasTrigger = 0;}
-	 void HandleEvent(CEvent *pEvent);
+	void HandleEvent(CEvent *pEvent);
 	
 
 };
