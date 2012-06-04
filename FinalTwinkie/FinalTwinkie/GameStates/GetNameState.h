@@ -38,5 +38,6 @@ private:
 
 	char szName[32];
 	int m_nCount;
+	int m_nPos;
 };
 

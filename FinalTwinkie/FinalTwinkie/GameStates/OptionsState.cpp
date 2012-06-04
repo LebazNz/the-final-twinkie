@@ -459,56 +459,54 @@ void COptionsState::Render(void)
 	
 	
 	m_pD3D->GetSprite()->Flush();
-	font->Print("SFX Volume:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2-50,	1.0f,	fScale1);
+	font->Print("SFX Volume:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2-50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	
-	font->Print("Music Volume:",(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2,	1.0f,	fScale2);
+	font->Print("Music Volume:",(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	
-	font->Print("Full Screen:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2+50,	1.0f,	fScale3);
+	font->Print("Full Screen:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2+50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	if(!m_bWindowed)																													  	
-		font->Print("On",(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	fScale3);
+		font->Print("On",(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	else																																  	
-		font->Print("Off",(CGame::GetInstance()->GetWidth()/2)+165,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	fScale3);
-	font->Print("Language:",(CGame::GetInstance()->GetWidth()/2)-275,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	fScale4);
+		font->Print("Off",(CGame::GetInstance()->GetWidth()/2)+165,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Language:",(CGame::GetInstance()->GetWidth()/2)-275,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	switch(m_nLang)																														  	
 	{																																	  	
 	case 0:																																  	
-		font->Print("English",(CGame::GetInstance()->GetWidth()/2)+139,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	fScale4);
+		font->Print("English",(CGame::GetInstance()->GetWidth()/2)+139,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	case 1:																																  	
-		font->Print("German",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	fScale4);
+		font->Print("German",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	case 2:																																  	
-		font->Print("Pirate",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	fScale4);
+		font->Print("Pirate",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	}																																	  	
-	font->Print("Back",(CGame::GetInstance()->GetWidth()/2)-250,CGame::GetInstance()->GetHeight()/2+150,		1.0f,	fScale5);
+	font->Print("Back",(CGame::GetInstance()->GetWidth()/2)-250,CGame::GetInstance()->GetHeight()/2+150,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 
 
 	font->Init(1);
-	font->Print(nSFXVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2-45,		1.0f,	fScale1);
-	font->Print(nVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2+5,			1.0f,	fScale2);
+	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2-45,			2.0f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("+",655,230,			2.5f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+5,				2.0f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("+",655,280,				2.5f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+55,			2.0f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("+",655,330,			2.5f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+105,			2.0f,	D3DCOLOR_XRGB(0,0,0));
+	font->Print("+",655,380,			2.5f,	D3DCOLOR_XRGB(0,0,0));
 
-	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2-40,			1.0f,	fScale1);
-	font->Print("+",(CGame::GetInstance()->GetWidth()/2)+275,CGame::GetInstance()->GetHeight()/2-55,			1.5f,	fScale1);
-
-	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+10,				1.0f,	fScale2);
-	font->Print("+",(CGame::GetInstance()->GetWidth()/2)+275,CGame::GetInstance()->GetHeight()/2-5,			1.5f,	fScale2);
-
-	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+60,			1.0f,	fScale3);
-	font->Print("+",(CGame::GetInstance()->GetWidth()/2)+275,CGame::GetInstance()->GetHeight()/2+45,			1.5f,	fScale3);
-
-	font->Print("-",(CGame::GetInstance()->GetWidth()/2)+100,CGame::GetInstance()->GetHeight()/2+110,			1.0f,	fScale4);
-	font->Print("+",(CGame::GetInstance()->GetWidth()/2)+275,CGame::GetInstance()->GetHeight()/2+95,			1.5f,	fScale4);
+	font->Init(0);
+	font->Print(nSFXVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2-50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(nVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2,			1.0f,	D3DCOLOR_XRGB(177,132,0));
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
-	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
-	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);

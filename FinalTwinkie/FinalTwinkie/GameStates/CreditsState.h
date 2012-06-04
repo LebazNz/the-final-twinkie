@@ -29,7 +29,14 @@ private:
 
 	static CCreditsState*	m_pSelf;
 
-	int								m_nBGImageID;	
+	int								m_nBGImageID;
+	int m_nButtonID;
+
+	int m_nMouseX;
+	int m_nMouseY;
+
+	int m_nCursor;
+	DWORD m_dColor;
 };
 
 
