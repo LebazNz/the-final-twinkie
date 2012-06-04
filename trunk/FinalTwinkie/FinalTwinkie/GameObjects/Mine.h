@@ -11,6 +11,14 @@ public:
 	virtual bool CheckCollision(IEntity* pObject);
 	CMine(void);
 	~CMine(void);
+
+
+	int GetDamage(void) { return m_nDamage;}
+	void SetDamage(int d) { m_nDamage = d;}
+
+
+private:
+	int m_nDamage;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../World and Tile/TileManager.h"
 #include "../Headers/Camera.h"
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 
 CEntity::CEntity(void)
 {
@@ -51,17 +52,20 @@ void CEntity::Update(float fDt)
 
 void CEntity::Render(void)
 {
+	Camera* C = Camera::GetInstance();
 	if(m_nImageID != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(m_nImageID, (int)m_fPosX, (int)m_fPosY, 1.0f, 1.0f, nullptr, 0.0f, 0.0f, 0.0f, DWORD(m_nColor)); 
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2);
 	}
+	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 
 bool CEntity::CheckCollision(IEntity* pObject)
 {
 	RECT rOverLap = {}, rSelf = GetRect(), rOther = pObject->GetRect();
 
-	m_pTM->CheckCollision(pObject);
+	//m_pTM->CheckCollision(pObject);
 
 	BOOL bIsColliding = IntersectRect(&rOverLap, &rSelf, & rOther);
 
@@ -94,19 +98,19 @@ void CEntity::Release(void)
 
 void CEntity::TakeDamage(int nDamage)
 {
-	if(m_bInvul == false)
-	{
-		if(m_fArmor>0)
-		{
-			m_fArmor-=nDamage/3;
-			if( m_fArmor<0)
-				m_fArmor=0;
-		}
-		else
-		{
-			m_fHealth -= nDamage;
-			if(m_fHealth<0)
-				m_fHealth=0;
-		}
-	}
+ if(m_bInvul == false)
+ {
+  if(m_fArmor>0)
+  {
+   m_fArmor-=nDamage/3;
+   if( m_fArmor<0)
+    m_fArmor=0;
+  }
+  else
+  {
+   m_fHealth -= nDamage;
+   if(m_fHealth<0)
+    m_fHealth=0;
+  }
+ }
 }

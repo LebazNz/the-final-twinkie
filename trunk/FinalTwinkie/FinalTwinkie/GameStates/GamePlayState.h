@@ -32,10 +32,14 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 	bool GetPaused(void)const {return m_bPaused;}
+
+	void SetGameOver(bool g) { m_bGameOver = g;}
+	void SetWinner(bool w) { m_bWinner = w;}
 	
 	static void MessageProc(CMessage* pMsg);
 
 	void SetSavedGame(Data gameData);
+	int m_nEnemyCount;
 
 private:
 	CGamePlayState(void);
@@ -66,6 +70,8 @@ private:
 	CEntity*				m_pEnemy;
 	CEntity*				m_pTurret;
 
+
+	//IMAGE IDS
 	int m_anBulletImageIDs[4];
 	int m_anEnemyIDs[16];
 	int m_nPlayerID;
@@ -73,14 +79,20 @@ private:
 	int m_nBackGround;
 	int m_nPosition;
 	bool m_bPaused;
-
+	bool m_bGameOver;
+	bool m_bWinner;
+	float gameEndTimer;
+	int WinnerID;
+	int GameOverID;
 	int FXEnemy_Tails;
 	int FXSapper_Explosion;
 	int FXFlame;
 	int FXBuildingFlame;
 	int FXNuke;
 	int FXTreads;
+	int m_nMine;
 	int FXSmoke;
+	int m_nTree;
 	int FXEnemyOnFire;
 
 	int m_nCursor;

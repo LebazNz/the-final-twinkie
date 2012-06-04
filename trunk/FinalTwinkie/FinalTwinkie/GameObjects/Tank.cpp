@@ -14,6 +14,19 @@ CTank::~CTank(void)
 void CTank::Update(float fDt)
 {
 	if(m_bStop == false)
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
+	Camera* C=Camera::GetInstance();
+	tVector2D Up={0,-1};
+	tVector2D Look=Vector2DRotate(Up,m_fRotation);
+	tVector2D toTarget;
+	toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+	toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+	float length=Vector2DLength(toTarget);
+	if(length<=m_fSight)
 	{
 		Camera* C=Camera::GetInstance();
 		tVector2D Up={0,-1};
@@ -70,11 +83,18 @@ void CTank::Update(float fDt)
 		else
 			m_bStop = false;
 	}
+	}
 }
 void CTank::Render(void)
 {
+	CGame *pGame = CGame::GetInstance();
+	Camera* pCam =Camera::GetInstance();
+
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
+	}
 	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 0,255,0);
 }
 bool CTank::CheckCollision(IEntity* pBase)
@@ -84,7 +104,11 @@ bool CTank::CheckCollision(IEntity* pBase)
 
 	if(pBase == this)
 		return false;
+	Camera* pCam =Camera::GetInstance();
+	CGame *pGame = CGame::GetInstance();
 
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	{
 	if(CEntity::CheckCollision(pBase) == true)
 	{
 		switch(pBase->GetType())
@@ -147,6 +171,9 @@ bool CTank::CheckCollision(IEntity* pBase)
 			break;
 		};
 		return true;
+	}
+	else
+		return false;
 	}
 	else
 		return false;
