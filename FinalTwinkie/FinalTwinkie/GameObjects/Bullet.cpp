@@ -23,7 +23,7 @@ CBullet::CBullet(void)
 	m_nType = OBJ_BULLET;
 	// bool for who fired the bullet
 	// true		= player fired
-	// flase	= enemy fired
+	// false	= enemy fired
 	m_bWhoFired = false;
 	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
 	m_fRotation = 0.0f;
@@ -78,6 +78,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
+					CPlayer::GetInstance()->SetDamageTaken((int)CPlayer::GetInstance()->GetDamageTaken()+m_fDamage);
 				}
 			}
 			break;
@@ -101,10 +102,14 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
 						CMessageSystem::GetInstance()->SndMessage(pMse);
 						pMse = nullptr;
+						CPlayer::GetInstance()->SetUnitsKilled(CPlayer::GetInstance()->GetUnitsKilled()+1);
+						CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+100);
 					}
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
+
+					
 				}
 			}
 			break;
@@ -147,6 +152,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
 					CMessageSystem::GetInstance()->SndMessage(pMse);
 					pMse = nullptr;
+					CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+50);
 				}
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);

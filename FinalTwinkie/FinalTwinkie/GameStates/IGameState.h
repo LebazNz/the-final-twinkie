@@ -47,6 +47,8 @@ struct Data
 
 	float	fPurchaseLevel;
 
+
+	int		nScore;
 	//int		bRocketAccess;
 	//int		bLaserAccess;
 	//int		bNukeAccess;

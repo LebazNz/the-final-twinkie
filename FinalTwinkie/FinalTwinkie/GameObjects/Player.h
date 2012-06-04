@@ -20,25 +20,25 @@ public:
 
 
 	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
-	bool	GetMoveRight() const { return m_bMoveRight; }
-	void	SetMoveRight(bool val) { m_bMoveRight = val; }
-	bool	GetMoveLeft() const { return m_bMoveLeft; }
-	void	SetMoveLeft(bool val) { m_bMoveLeft = val; }
-	bool	GetMoveUp() const { return m_bMoveUp; }
-	void	SetMoveUp(bool val) { m_bMoveUp = val; }
-	bool	GetMoveDown() const { return m_bMoveDown; }
-	void	SetMoveDown(bool val) { m_bMoveDown = val; }
-	bool	GetIsMoving() const { return m_bIsMoving; }
-	void	SetIsMoving(bool val) { m_bIsMoving = val; }
+	bool		GetMoveRight() const { return m_bMoveRight; }
+	void		SetMoveRight(bool val) { m_bMoveRight = val; }
+	bool		GetMoveLeft() const { return m_bMoveLeft; }
+	void		SetMoveLeft(bool val) { m_bMoveLeft = val; }
+	bool		GetMoveUp() const { return m_bMoveUp; }
+	void		SetMoveUp(bool val) { m_bMoveUp = val; }
+	bool		GetMoveDown() const { return m_bMoveDown; }
+	void		SetMoveDown(bool val) { m_bMoveDown = val; }
+	bool		GetIsMoving() const { return m_bIsMoving; }
+	void		SetIsMoving(bool val) { m_bIsMoving = val; }
 
-	void	SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
-	void	SetRotation(float fRotate) {m_fRotation=fRotate;}
-	float	GetRotation() const { return m_fRotation;}
-	CTurret* GetTurret(){return m_pTurret;}
-	float	GetHeat(){return m_fHeat;}
+	void		SetTurret(CTurret* pTurret){m_pTurret=pTurret;}
+	void		SetRotation(float fRotate) {m_fRotation=fRotate;}
+	float		GetRotation() const { return m_fRotation;}
+	CTurret*	GetTurret(){return m_pTurret;}
+	float		GetHeat(){return m_fHeat;}
 
-	static CPlayer* GetInstance(void);
-	static void DeleteInstance(void);
+	static CPlayer*		GetInstance(void);
+	static void			DeleteInstance(void);
 
 	void SetWeaponAmmo(int nShell, int nArtillery, int nMissile){ m_anWeaponAmmo[0] = nShell; m_anWeaponAmmo[1] = nArtillery; m_anWeaponAmmo[2] = nMissile; }
 	void SetMaxWeaponAmmo(int nShell, int nArtillery, int nMissile){ m_anMaxWeaponAmmo[0] = nShell; m_anMaxWeaponAmmo[1] = nArtillery; m_anMaxWeaponAmmo[2] = nMissile; }
@@ -63,6 +63,8 @@ public:
 	float GetNoReload(){return m_fNoReloadTimer;}
 	void SetSpecial1(CSpecial* pSpecial){ m_pSpec1 = pSpecial; m_pSelectedSpec=m_pSpec1; m_pSelectedSpecAmmo=0;}
 	void SetSpecial2(CSpecial* pSpecial){ m_pSpec2 = pSpecial; }
+
+	
 
 	float	GetDamageMod() const { return m_fDamageMod; }
 	void	SetDamageMod(float val) { m_fDamageMod = val; }
@@ -116,14 +118,45 @@ public:
 	void SetSpecial1Ammo(int ammo) {m_anSpecialammo[0]=ammo;}
 	void SetSpecial2Ammo(int ammo) {m_anSpecialammo[1]=ammo;}
 
+	int		GetShotsFired() const { return m_nShotsFired; }
+	void	SetShotsFired(int val) { m_nShotsFired = val; }
+	int		GetDamageTaken() const { return m_nDamageTaken; }
+	void	SetDamageTaken(int val) { m_nDamageTaken = val; }
+	int		GetTotalMoneyEarned() const { return m_nTotalMoneyEarned; }
+	void	SetTotalMoneyEarned(int val) { m_nTotalMoneyEarned = val; }
+	int		GetUnitsKilled() const { return m_nUnitsKilled; }
+	void	SetUnitsKilled(int val) { m_nUnitsKilled = val; }
+	int		GetSappersExploded() const { return m_nSappersExploded; }
+	void	SetSappersExploded(int val) { m_nSappersExploded = val; }
+	int		GetNukesBlasted() const { return m_nNukesBlasted; }
+	void	SetNukesBlasted(int val) { m_nNukesBlasted = val; }
+	int		GetScore() const { return m_nScore; }
+	void	SetScore(int val) { m_nScore = val; }
+
+	bool	GetNaziBoss() const { return m_bNaziBoss; }
+	void	SetNaziBoss(bool val) { m_bNaziBoss = val; }
+	bool	GetAlienBoss() const { return m_bAlienBoss; }
+	void	SetAlienBoss(bool val) { m_bAlienBoss = val; }
+	bool	GetRobotBoss() const { return m_bRobotBoss; }
+	void	SetRobotBoss(bool val) { m_bRobotBoss = val; }
+	bool	GetSparta() const { return m_bSparta; }
+	void	SetSparta(bool val) { m_bSparta = val; }
+	bool	GetSapperAbsorb() const { return m_bSapperAbsorb; }
+	void	SetSapperAbsorb(bool val) { m_bSapperAbsorb = val; }
+	bool	GetNukem() const { return m_bNukem; }
+	void	SetNukem(bool val) { m_bNukem = val; }
+	bool	GetIamBoss() const { return m_bIamBoss; }
+	void	SetIamBoss(bool val) { m_bIamBoss = val; }
+	bool	GetAllUpgrades() const { return m_bAllUpgrades; }
+	void	SetAllUpgrades(bool val) { m_bAllUpgrades = val; }
+
+
 	void SetSecondType(int nType){m_nSecondType=nType;}
 	int GetSecondType(void){return m_nSecondType;}
-
 	void SetEmitterRight(CEmitter* EM){m_pTracksRight=EM;}
 	void SetEmitterLeft(CEmitter* EM){m_pTracksLeft=EM;}
 
 private:
-
 	CPlayer(void);
 	~CPlayer(void);
 	CPlayer& operator=(CPlayer&);
@@ -148,7 +181,8 @@ private:
 
 	tVector2D m_v2OldPos;
 
-	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
+	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE 
+	// PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
 	bool m_bIsMoving;
 	bool m_bMoveRight;
 	bool m_bMoveLeft;
@@ -168,6 +202,7 @@ private:
 	// PEOPLE WILL SUFFER
 	// PEOPLE WILL CRY
 	// BECAUSE KITTENS WILL ATTACK YOU
+	// and eat your cookies >.>
 	float	m_fHeatModifier;
 	int		m_nHeatLevel;
 	float	m_fDamageMod;
@@ -205,6 +240,35 @@ private:
 	float m_fInfAmmoTimer;
 
 	int m_nSecondType;
+	// Player stat tracks
+
+	int m_nNukesBlasted;
+	int m_nScore;
+	int m_nShotsFired;
+	int m_nDamageTaken;
+	int m_nTotalMoneyEarned;
+	int m_nUnitsKilled;
+	int m_nSappersExploded; 
+	
+	// Achievable
+	// Defeat the Nazi Boss
+	bool m_bNaziBoss;	// Dat Reich
+	// Defeat the Alien Boss
+	bool m_bAlienBoss;	// All your base are belong to me
+	// Defeat Anthony's mom
+	bool m_bRobotBoss;	// Greased
+	// Kill 300 enemies;
+	bool m_bSparta;	// This is not Sparta!
+	// Absorb 50 sappers
+	bool m_bSapperAbsorb;	// WTF is damage?
+	// Kill 10 enemies with one Nuke
+	bool m_bNukem;	// Nuke Dukem;
+	// Purchase a level 5 upgrade
+	bool m_bIamBoss;	// Max Pain;
+	// Purchase all Upgrades
+	bool m_bAllUpgrades;	// God mode
+	
+
 
 };
 #endif

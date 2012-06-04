@@ -41,11 +41,12 @@
 #include "../Event and Messages/DestroyPickupMessage.h"
 #include "../tinyxml/tinyxml.h"
 #include "ShopState.h"
+
 #include "../Headers/GUI.h"
 #include "../PickUps and Specials/Special.h"
 #include "../PickUps and Specials/Nuke.h"
 #include "../PickUps and Specials/Smoke.h"
-
+#include "StatState.h"
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -248,7 +249,7 @@ void CGamePlayState::Enter(void)
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
 		m_pOM->AddObject(player);
 
-	
+
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
 		player->SetTurret(PlayerTurret);
@@ -694,11 +695,17 @@ bool CGamePlayState::Input(void)
 #pragma endregion
 	}
 	// Enter ShopState
-	/*if(m_pDI->KeyPressed(DIK_1))
+	if(m_pDI->KeyPressed(DIK_NUMPAD0))
 	{
 		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 		return true;
-	}*/
+	}
+	// Enter ShopState
+	if(m_pDI->KeyPressed(DIK_NUMPAD1))
+	{
+		CGame::GetInstance()->ChangeState(StatState::GetInstance());
+		return true;
+	}
 	return true;
 	}
 }
@@ -892,6 +899,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoShell()> 0)
 							{
+								
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 								if(player->GetDoubleDamage())
@@ -937,6 +945,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetWhoFired(false);
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
+
 						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
 						tVector2D Up={0,-1};
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
@@ -1416,13 +1425,15 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	data->SetAttribute("machinegun",	1);
 	data->SetAttribute("filename",		m_dGameData.szFileName);
 
-	data->SetAttribute("HeatLevel",		pPlayer->GetHealthLevel());
-	data->SetAttribute("DamageLevel",	pPlayer->GetDamageLevel());
-	data->SetAttribute("AmmoLevel",		pPlayer->GetAmmoLevel());
-	data->SetAttribute("HealthLevel",	pPlayer->GetHealthLevel());
-	data->SetAttribute("ArmorLevel",	pPlayer->GetArmorLevel());
-	data->SetAttribute("SpeedLevel",	pPlayer->GetSpeedLevel());
+
+	data->SetAttribute("HeatLevel",			pPlayer->GetHeatLevel());
+	data->SetAttribute("DamageLevel",		pPlayer->GetDamageLevel());
+	data->SetAttribute("AmmoLevel",			pPlayer->GetAmmoLevel());
+	data->SetAttribute("HealthLevel",		pPlayer->GetHealthLevel());
+	data->SetAttribute("ArmorLevel",		pPlayer->GetArmorLevel());
+	data->SetAttribute("SpeedLevel",		pPlayer->GetSpeedLevel());
 	
+	data->SetAttribute("Score",				pPlayer->GetScore());
 	//data->SetAttribute("RocketAccess",		m_dGameData.bRocketAccess);
 	//data->SetAttribute("LaserAccess",		m_dGameData.bLaserAccess);
 	//data->SetAttribute("NukeAccess",		m_dGameData.bNukeAccess);

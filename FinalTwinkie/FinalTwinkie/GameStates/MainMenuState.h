@@ -16,6 +16,7 @@ public:
 	bool LoadOptions(const char* szFileName);
 	int GetMusicVolume(void)const{return m_nCurVolume;}
 	bool GetWindowed(void)const { return m_bWindowed;}
+	void PlayHighlight(DWORD dwPlayColor);
 
 private:
 	CMainMenuState(void);
@@ -41,7 +42,7 @@ private:
 	int								m_nCurVolume;
 	int								m_nLang;
 	bool							m_bWindowed;
-
+	int								m_nPos2;
 	int m_nMouseX;
 	int m_nMouseY;
 

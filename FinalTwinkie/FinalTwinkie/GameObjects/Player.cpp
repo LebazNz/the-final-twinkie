@@ -98,12 +98,14 @@ void CPlayer::Update(float fDt)
 					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 					CMessageSystem::GetInstance()->SndMessage(msg);
 					m_fFireTimer = 0.0f;
+					CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 			}
 			else
 			{
 				CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 				CMessageSystem::GetInstance()->SndMessage(msg);
 				m_fFireTimer = 0.0f;
+				CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 			}
 		}
 	}
@@ -411,7 +413,22 @@ CPlayer::CPlayer(void)
 
 	m_pSelectedSpec=m_pSpec1;
 	m_pSelectedSpecAmmo=0;
-}
+	m_nNukesBlasted		= 0;
+	m_nScore			= 0;
+	m_nShotsFired		= 0;
+	m_nDamageTaken		= 0;
+	m_nTotalMoneyEarned	= 0;
+	m_nUnitsKilled		= 0;
+	m_nSappersExploded	= 0; 
+
+	m_bNaziBoss			= false;	
+	m_bAlienBoss		= false;
+	m_bRobotBoss		= false;
+	m_bSparta			= false;
+	m_bSapperAbsorb		= false;
+	m_bNukem			= false;
+	m_bIamBoss			= false;
+	m_bAllUpgrades		= false;}
 CPlayer::~CPlayer(void)
 {
 }

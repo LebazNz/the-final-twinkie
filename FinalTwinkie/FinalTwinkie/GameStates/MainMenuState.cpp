@@ -7,6 +7,7 @@
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 #include <fstream>
+#include "SurvivalState.h"
 using namespace std;
 bool CMainMenuState::playing=false;
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
@@ -152,15 +153,26 @@ bool CMainMenuState::Input(void)
 	{
 		if(m_nPosition == 0)
 		{
-			CGame::GetInstance()->my_channel->stop();
-			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
-			playing=false;
-			return true;
+			if(m_nPos2 == 4)
+			{
+				CGame::GetInstance()->my_channel->stop();
+				CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+				playing=false;
+				return true;
+			}
+			else if (m_nPos2 == 5)
+			{
+				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
+				return true;
+			}
 		}
 		else if(m_nPosition == 1)
 		{
-			CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
-			return true;
+			
+				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				return true;
+			
+			
 		}
 		else if(m_nPosition == 2)
 		{
@@ -171,6 +183,7 @@ bool CMainMenuState::Input(void)
 		{
 			return false;
 		}
+	
 	}
 	/*else if(m_pDI->MouseButtonPressed(0))
 	{
@@ -329,9 +342,13 @@ void CMainMenuState::Render(void)
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
 	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
-
+	PlayHighlight(fScale1);
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+
+	
+
+
 }
 
 bool CMainMenuState::LoadOptions(const char* szFileName)
@@ -358,4 +375,51 @@ bool CMainMenuState::LoadOptions(const char* szFileName)
 	}
 	else
 		return false;	
+}
+
+void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
+{
+	if( dwPlayColor == D3DCOLOR_XRGB(177,132,0))
+	{
+		
+		if(m_nMouseX >= 250 && m_nMouseX <= 417
+			&& m_nMouseY >= 295 && m_nMouseY <= 335)
+		{
+			m_nPos2 = 4;
+		}
+		else if(m_nMouseX >= 425 && m_nMouseX <= 597
+			&& m_nMouseY >= 295 && m_nMouseY <= 335)
+		{
+			m_nPos2 = 5;
+		}
+		else 
+			m_nPos2 = 0;
+		DWORD fScale1, fScale2;
+		switch(m_nPos2)
+		{
+		case 4:
+			fScale1 = D3DCOLOR_XRGB(177,132,0);
+			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			break;
+		case 5:
+			fScale1 = D3DCOLOR_XRGB(255,255,255);
+			fScale2 = D3DCOLOR_XRGB(177,132,0);
+			break;
+		default:
+			fScale1 = D3DCOLOR_XRGB(255,255,255);
+			fScale2 = D3DCOLOR_XRGB(255,255,255);
+		}
+
+
+		m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
+		CBitmapFont::GetInstance()->Print("Campaign",265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
+		CBitmapFont::GetInstance()->Print("Survival",440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+	}
+
+
+
+
+
+
 }
