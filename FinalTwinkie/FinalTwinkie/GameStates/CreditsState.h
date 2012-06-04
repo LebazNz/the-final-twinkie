@@ -14,7 +14,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
-	
+	void LoadText(void);
 
 private:
 	CCreditsState(void);
@@ -37,6 +37,12 @@ private:
 
 	int m_nCursor;
 	DWORD m_dColor;
+
+	string m_sDAP;
+	string m_sEP;
+	string m_sAP;
+	string m_sAL;
+	string m_sBack;
 };
 
 

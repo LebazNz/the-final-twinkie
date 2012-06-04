@@ -4,6 +4,7 @@
 #include "../Headers/BitmapFont.h"
 #include "../GameObjects/Enemy.h"
 #include "../PickUps and Specials/Special.h"
+#include "../GameStates/OptionsState.h"
 
 CGUI* CGUI::m_pSelf = nullptr;
 
@@ -25,6 +26,7 @@ void CGUI::DeleteInstance(void)
 
 void CGUI::Render(void)
 {
+	m_pFont->Init(0);
 	RECT rect; rect.top=(LONG)0; rect.left=(LONG)0; rect.right=(LONG)800; rect.bottom=(LONG)227;
 	m_pTM->Draw(m_nHudID, 0, CGame::GetInstance()->GetHeight()-227, 1,1,&rect);
 
@@ -157,6 +159,10 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 172, 548, 1,1,&rect);
 		_itoa_s(m_pPlayer->GetSpecial1Ammo(), buffer, 10);
 		m_pFont->Print(buffer, 188, 575, .5f, D3DCOLOR_XRGB(255,255,255));
+		if(m_pPlayer->GetSpecial1()==m_pPlayer->GetSelSpec())
+		{
+			m_pTM->Draw(m_nSpecialSel, 168, 546, .75, .75, NULL, 0, 0, 0, D3DCOLOR_XRGB(177,132,0));
+		}
 	}
 
 	spec= m_pPlayer->GetSpecial2();
@@ -198,7 +204,12 @@ void CGUI::Render(void)
 		m_pTM->Draw(m_nHudID, 228, 548, 1,1,&rect);
 		_itoa_s(m_pPlayer->GetSpecial2Ammo(), buffer, 10);
 		m_pFont->Print(buffer, 243, 575, .5f, D3DCOLOR_XRGB(255,255,255));
+		if(m_pPlayer->GetSpecial2()==m_pPlayer->GetSelSpec())
+		{
+			m_pTM->Draw(m_nSpecialSel, 224, 546, .75, .75, NULL, 0, 0, 0, D3DCOLOR_XRGB(177,132,0));
+		}
 	}
+	m_pFont->Init(COptionsState::GetInstance()->GetLang());
 }
 
 void CGUI::Update(float fDt)

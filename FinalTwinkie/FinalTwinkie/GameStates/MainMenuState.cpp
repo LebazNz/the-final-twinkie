@@ -6,6 +6,8 @@
 #include "ShopState.h"
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 #include <fstream>
 #include "SurvivalState.h"
 using namespace std;
@@ -80,6 +82,7 @@ void CMainMenuState::Enter(void)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 	StartPlay=0;
+	LoadText();
 }
 
 void CMainMenuState::Exit(void)
@@ -147,7 +150,6 @@ bool CMainMenuState::Input(void)
 			m_nPosition += 1;
 		}
 	}
-	
 	// Make selection
 	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
 	{
@@ -185,38 +187,6 @@ bool CMainMenuState::Input(void)
 		}
 	
 	}
-	/*else if(m_pDI->MouseButtonPressed(0))
-	{
-		if(m_nPosition == 0)
-		{
-			CGame::GetInstance()->my_channel->stop();
-			CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
-			playing=false;
-			return true;
-		}
-		else if(m_nPosition == 1)
-		{
-			CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 2)
-		{
-			CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 3)
-		{
-			return false;
-		}
-	}*/
-	// Exit the game when the user presses esc
-	/*else if(m_pDI->KeyPressed(DIK_ESCAPE))
-	{
-		return false;
-	}*/
-
-	
-
 	return true;
 }
 
@@ -328,10 +298,10 @@ void CMainMenuState::Render(void)
 	
 	m_pD3D->GetSprite()->Flush();
 
-	font->Print("Play",125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
-	font->Print("Options",110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Credits",110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Exit",125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sPlay.c_str(),125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sOptions.c_str(),110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sCredits.c_str(),110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sExit.c_str(),125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
@@ -422,4 +392,74 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 
 
 
+}
+void CMainMenuState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("MenuState");
+				TiXmlNode* pButton = pState->FirstChild("Play");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton = pState->FirstChild("Credits");
+				pText = pButton->FirstChild()->ToText();
+				m_sCredits=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("MenuState");
+				TiXmlNode* pButton = pState->FirstChild("Play");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton = pState->FirstChild("Credits");
+				pText = pButton->FirstChild()->ToText();
+				m_sCredits=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("MenuState");
+				TiXmlNode* pButton = pState->FirstChild("Play");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton = pState->FirstChild("Credits");
+				pText = pButton->FirstChild()->ToText();
+				m_sCredits=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 3:
+			{
+			}
+			break;
+		}
+	}
 }

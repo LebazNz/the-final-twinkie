@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Effect>
+    <Picture>Predtreads2.png</Picture>
+    <Number Number="15" />
+    <Looping Looping="1" />
+    <Explosion Explosion="0" />
+    <Life>
+      <Max M="2" />
+      <Min M="2" />
+    </Life>
+    <SpawnTime SpawnTime="0.18" />
+    <EmitterType Type="0" />
+    <Radius R="0" />
+    <Angle A="30" />
+    <Source S="4" />
+    <Dest D="8" />
+    <SpeedX>
+      <MinX M="0" />
+      <MaxX M="0" />
+    </SpeedX>
+    <SpeedY>
+      <MinY M="0" />
+      <MaxY M="0" />
+    </SpeedY>
+    <Scale>
+      <Min M="0.28" />
+      <Max M="0.28" />
+    </Scale>
+    <Color>
+      <Start>
+        <Alpha A="255" />
+        <Red R="128" />
+        <Green G="128" />
+        <Blue B="128" />
+      </Start>
+      <End>
+        <Alpha A="255" />
+        <Red R="255" />
+        <Green G="255" />
+        <Blue B="255" />
+      </End>
+    </Color>
+  </Effect>
+</Root>

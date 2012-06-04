@@ -13,6 +13,7 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 
+
 private:
 	CGetNameState(void);
 	virtual ~CGetNameState(void);

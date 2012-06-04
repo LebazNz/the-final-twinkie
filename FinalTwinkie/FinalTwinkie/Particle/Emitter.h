@@ -26,6 +26,7 @@ public:
 	void DeactivateEmitter(void){m_bActive=false;}
 
 	int NumActiveParticles(void){return m_nNumberParticles;}
+	void ResetEmitter(void);
 
 	float GetAngle(void){return m_fAngle;}
 	tVector2D GetDir(void) {return m_vDirection;}

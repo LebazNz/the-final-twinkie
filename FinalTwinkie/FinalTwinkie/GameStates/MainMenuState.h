@@ -13,6 +13,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	void LoadText(void);
 	bool LoadOptions(const char* szFileName);
 	int GetMusicVolume(void)const{return m_nCurVolume;}
 	bool GetWindowed(void)const { return m_bWindowed;}
@@ -50,6 +51,10 @@ private:
 
 	static bool playing;
 	float StartPlay;
+	string m_sPlay;
+	string m_sOptions;
+	string m_sCredits;
+	string m_sExit;
 	
 };
 

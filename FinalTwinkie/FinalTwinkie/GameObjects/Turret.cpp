@@ -137,7 +137,7 @@ void CTurret::Update(float fDt)
 					else
 						m_fFireRate+=fDt;
 
-				}
+					}
 				}
 			}
 	}

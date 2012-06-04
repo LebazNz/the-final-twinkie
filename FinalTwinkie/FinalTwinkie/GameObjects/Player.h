@@ -113,6 +113,7 @@ public:
 
 	CSpecial* GetSpecial1(void) {return m_pSpec1;}
 	CSpecial* GetSpecial2(void) {return m_pSpec2;}
+	CSpecial* GetSelSpec(void)	{return m_pSelectedSpec;}
 	int GetSpecial1Ammo(void) {return  m_anSpecialammo[0];}
 	int GetSpecial2Ammo(void) {return  m_anSpecialammo[1];}
 	void SetSpecial1Ammo(int ammo) {m_anSpecialammo[0]=ammo;}

@@ -356,3 +356,7 @@ void  CEmitter::UpdateEmitterDirecton(tVector2D vDir)
 {
 	m_vDirection=vDir;
 }
+void CEmitter::ResetEmitter(void)
+{
+	m_nNumberParticles=0;
+}

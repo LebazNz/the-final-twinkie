@@ -1,0 +1,52 @@
+<Root>
+	<English>
+		<MenuState>
+			<Play>Play</Play>
+			<Options>Options</Options>
+			<Credits>Credits</Credits>
+			<Exit>Exit</Exit>
+		</MenuState>
+		<OptionsState>
+			<Options>Options</Options>
+			<SFX>SFX Volume:</SFX>
+			<Music>Music Volume:</Music>
+			<FullScreen>Full Screen:</FullScreen>
+			<On>On</On>
+			<Off>Off</Off>
+			<Language>Language:</Language>
+			<Selected>English</Selected>
+			<Back>Back</Back>
+		</OptionsState>
+		<CreditsState>
+			<DAP>Designed and Programmed by:</DAP>
+			<EP>Executive Producer:</EP>
+			<AP>Associate Producer:</AP>
+			<AL>Art Lead:</AL>
+			<Back>Back</Back>
+		</CreditsState>
+	</English>
+	<Pirate>
+		<MenuState>
+			<Play>Begin Ye Adventure</Play>
+			<Options>Custimizations</Options>
+			<Credits>Acknowledgments</Credits>
+			<Exit>Abandon Ship</Exit>
+		</MenuState>
+		<OptionsState>
+		</OptionsState>
+		<CreditsState>
+		</CreditsState>
+	</Pirate>
+	<German>
+		<MenuState>
+			<Play>Spielen</Play>
+			<Options>Optionen</Options>
+			<Credits>Gutschriften</Credits>
+			<Exit>Ausgang</Exit>
+		</MenuState>
+		<OptionsState>
+		</OptionsState>
+		<CreditsState>
+		</CreditsState>
+	</German>
+</Root>

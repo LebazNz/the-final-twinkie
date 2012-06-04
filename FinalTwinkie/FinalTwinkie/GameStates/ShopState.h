@@ -14,6 +14,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+
 	void RenderPrices(int y2);
 	void DetermineSelection();
 	void SelectButtons();

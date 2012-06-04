@@ -19,6 +19,7 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 
+
 	bool LoadSavedGame(const char* szFileName, int nGameData);
 
 private:

@@ -105,19 +105,17 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						CPlayer::GetInstance()->SetUnitsKilled(CPlayer::GetInstance()->GetUnitsKilled()+1);
 						CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+100);
 					}
-					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
 
 					
 				}
+				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+				CMessageSystem::GetInstance()->SndMessage(pMsg);
+				pMsg = nullptr;
 			}
 			break;
 		case OBJ_TURRET:
 			{
 				CTurret* pEnemy = dynamic_cast<CTurret*>(pBase);
-
-
 				if(pEnemy->GetOwner() != nullptr)
 					break;
 
@@ -126,9 +124,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
-				
-				
-				
+
 			}
 			break;
 			case OBJ_BUILDING:
@@ -137,31 +133,33 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				{
 					CBuilding* pBuilding = dynamic_cast<CBuilding*>(pBase);
 					pBuilding->TakeDamage((int)this->m_fDamage);
-					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
-				}
-			}
-			break;
-			case OBJ_ENEMY:
-			{
-				CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
-				pEnemy->TakeDamage((int)this->m_fDamage);
-				if(pEnemy->GetHealth() <= 0.0f)
-				{
-					CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
-					CMessageSystem::GetInstance()->SndMessage(pMse);
-					pMse = nullptr;
-					CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+50);
 				}
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
-				if(m_nBulletType==BUL_FLAME)
+			}
+			break;
+			case OBJ_ENEMY:
+			{
+				if(GetWhoFired()==true)
 				{
-					pEnemy->SetOnFire();
+					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
+					pEnemy->TakeDamage((int)this->m_fDamage);
+					if(pEnemy->GetHealth() <= 0.0f)
+					{
+						CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+						CMessageSystem::GetInstance()->SndMessage(pMse);
+						pMse = nullptr;
+						CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+50);
+					}
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+					if(m_nBulletType==BUL_FLAME)
+					{
+						pEnemy->SetOnFire();
+					}
 				}
-				
 			}
 			break;
 
