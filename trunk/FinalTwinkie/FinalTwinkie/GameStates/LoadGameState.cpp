@@ -472,7 +472,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,65,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",80,480,1.0f,fScale1);
+		font->Print("New Game",80,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -483,8 +483,8 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
 		m_pTM->Draw(m_nButtonImageID,63,520,0.75f,0.75f,nullptr,0,0,0,fScale4);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 1",100,480,1.0f,fScale1);
-		font->Print("Delete",100,525,1.0f,fScale4);
+		font->Print("Save 1",100,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("Delete",100,525,1.0f,D3DCOLOR_XRGB(177,132,0));
 		font->Print("Name:",80,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Level:",80,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Money:",80,440,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -505,7 +505,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,317,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",332,480,1.0f,fScale2);
+		font->Print("New Game",332,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -516,8 +516,8 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
 		m_pTM->Draw(m_nButtonImageID,315,520,0.75f,0.75f,nullptr,0,0,0,fScale5);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 2",352,480,1.0f,fScale2);
-		font->Print("Delete",352,525,1.0f,fScale5);
+		font->Print("Save 2",352,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("Delete",352,525,1.0f,D3DCOLOR_XRGB(177,132,0));
 		font->Print("Name:",332,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Level:",332,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Money:",332,440,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -537,7 +537,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,570,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",585,480,1.0f,fScale3);
+		font->Print("New Game",585,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -548,8 +548,8 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
 		m_pTM->Draw(m_nButtonImageID,568,520,0.75f,0.75f,nullptr,0,0,0,fScale6);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 3",605,480,1.0f,fScale3);
-		font->Print("Delete",605,525,1.0f,fScale6);
+		font->Print("Save 3",605,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("Delete",605,525,1.0f,D3DCOLOR_XRGB(177,132,0));
 		font->Print("Name:",585,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Level:",585,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print("Money:",585,440,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -563,13 +563,13 @@ void CLoadGameState::Render(void)
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
-	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
-	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 

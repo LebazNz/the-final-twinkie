@@ -315,10 +315,10 @@ void CMainMenuState::Render(void)
 	
 	m_pD3D->GetSprite()->Flush();
 
-	font->Print("Play",125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(255,255,255));
-	font->Print("Options",110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(255,255,255));
-	font->Print("Credits",110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(255,255,255));
-	font->Print("Exit",125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(255,255,255));
+	font->Print("Play",125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+	font->Print("Options",110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Credits",110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Exit",125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);

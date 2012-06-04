@@ -41,6 +41,7 @@ CGetNameState::CGetNameState(void)
 
 	m_bLowCase = false;
 	m_nCount = 0;
+	m_nPos = 0;
 }
 
 CGetNameState::~CGetNameState(void)
@@ -61,6 +62,8 @@ void CGetNameState::Enter(void)
 	m_nCount = 0;
 	for(int i = 0; i < 32; ++i)
 		szName[i] = 0;
+
+	m_nPos = 0;
 }
 
 void CGetNameState::Exit(void)
@@ -92,6 +95,8 @@ void CGetNameState::Exit(void)
 
 	for(int i = 0; i < 32; ++i)
 		szName[i] = 0;
+
+	m_nPos = 0;
 }
 
 bool CGetNameState::Input(void)
@@ -102,7 +107,7 @@ bool CGetNameState::Input(void)
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
 	}
-	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || (m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
 		szName[m_nCount] = 0;
 		if(m_nCount == 0)
@@ -112,7 +117,7 @@ bool CGetNameState::Input(void)
 		return true;
 	}
 
-	if(m_pDI->KeyPressed(DIK_A))
+	if(m_pDI->KeyPressed(DIK_A) || (m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(65);
@@ -121,7 +126,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_B))
+	if(m_pDI->KeyPressed(DIK_B) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(66);
@@ -130,7 +135,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_C))
+	if(m_pDI->KeyPressed(DIK_C) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(67);
@@ -139,7 +144,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_D))
+	if(m_pDI->KeyPressed(DIK_D) || (m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(68);
@@ -148,7 +153,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_E))
+	if(m_pDI->KeyPressed(DIK_E) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonDown(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(69);
@@ -157,7 +162,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_F))
+	if(m_pDI->KeyPressed(DIK_F) || (m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(70);
@@ -166,7 +171,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_G))
+	if(m_pDI->KeyPressed(DIK_G) || (m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(71);
@@ -175,7 +180,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_H))
+	if(m_pDI->KeyPressed(DIK_H) || (m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(72);
@@ -184,7 +189,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_I))
+	if(m_pDI->KeyPressed(DIK_I) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(73);
@@ -193,7 +198,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_J))
+	if(m_pDI->KeyPressed(DIK_J) || (m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(74);
@@ -202,7 +207,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_K))
+	if(m_pDI->KeyPressed(DIK_K) || (m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(75);
@@ -211,7 +216,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_L))
+	if(m_pDI->KeyPressed(DIK_L) || (m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(76);
@@ -220,7 +225,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_M))
+	if(m_pDI->KeyPressed(DIK_M) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(77);
@@ -229,7 +234,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_N))
+	if(m_pDI->KeyPressed(DIK_N)  || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(78);
@@ -238,7 +243,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_O))
+	if(m_pDI->KeyPressed(DIK_O) || (m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(79);
@@ -247,7 +252,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_P))
+	if(m_pDI->KeyPressed(DIK_P) || (m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(80);
@@ -256,7 +261,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_Q))
+	if(m_pDI->KeyPressed(DIK_Q) || (m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(81);
@@ -265,7 +270,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_R))
+	if(m_pDI->KeyPressed(DIK_R) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(82);
@@ -274,7 +279,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_S))
+	if(m_pDI->KeyPressed(DIK_S) || (m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(83);
@@ -283,7 +288,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_T))
+	if(m_pDI->KeyPressed(DIK_T) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(84);
@@ -292,7 +297,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_U))
+	if(m_pDI->KeyPressed(DIK_U) || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(85);
@@ -301,7 +306,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_V))
+	if(m_pDI->KeyPressed(DIK_V) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(86);
@@ -310,7 +315,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_W))
+	if(m_pDI->KeyPressed(DIK_W) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(87);
@@ -319,7 +324,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_X))
+	if(m_pDI->KeyPressed(DIK_X) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(88);
@@ -328,7 +333,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_Y))
+	if(m_pDI->KeyPressed(DIK_Y) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(89);
@@ -337,7 +342,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_Z))
+	if(m_pDI->KeyPressed(DIK_Z) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(90);
@@ -346,7 +351,7 @@ bool CGetNameState::Input(void)
 		m_nCount++;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_LSHIFT) || m_pDI->KeyPressed(DIK_RSHIFT))
+	if(m_pDI->KeyPressed(DIK_LSHIFT) || m_pDI->KeyPressed(DIK_RSHIFT) || (m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
 		m_bLowCase = !m_bLowCase;
 	}
@@ -354,7 +359,7 @@ bool CGetNameState::Input(void)
 	{
 		m_bLowCase = !m_bLowCase;
 	}
-	if(m_pDI->KeyPressed(DIK_BACK))
+	if(m_pDI->KeyPressed(DIK_BACK) || (m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
 		m_nCount--;
 		if(m_nCount <= 0)
@@ -363,7 +368,7 @@ bool CGetNameState::Input(void)
 		if(m_nCount == 0)
 			m_bLowCase = false;
 	}
-	if(m_pDI->KeyPressed(DIK_SPACE))
+	if(m_pDI->KeyPressed(DIK_SPACE) || (m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
 		szName[m_nCount] = char(32);
 		m_nCount++;
@@ -386,6 +391,69 @@ void CGetNameState::Update(float fDt)
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
+
+	if(m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565)	
+		m_nPos = 30; // enter
+	else if(m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos = 11;
+	else if(m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 24;
+	else if(m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 22;
+	else if(m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos=13;
+	else if(m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos=3;
+	else if(m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos=14;
+	else if(m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos=15;
+	else if(m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos=16;
+	else if(m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos=8;
+	else if(m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos=17;
+	else if(m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos = 18;
+	else if(m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos = 19;
+	else if(m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 26;
+	else if(m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 25;
+	else if(m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 9;
+	else if(m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 10;
+	else if(m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 1;
+	else if(m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 4;
+	else if(m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465)
+		m_nPos = 12;
+	else if(m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 5;
+	else if(m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 7;
+	else if(m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 23;
+	else if(m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 2;
+	else if(m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 21;
+	else if(m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415)
+		m_nPos = 6;
+	else if(m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515)
+		m_nPos = 20;
+	else if(m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565)
+		m_nPos = 27;
+	else if(m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565)
+		m_nPos = 29;
+	else if(m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565)
+		m_nPos = 28;
+	else
+		m_nPos = 0;
 }
 
 void CGetNameState::Render(void)
@@ -395,123 +463,1213 @@ void CGetNameState::Render(void)
 	RECT rSelf = { };
 	SetRect(&rSelf, 0, 0, 800, 600);
 	m_pTM->Draw(m_nBGImageID,0,0,1.0f,1.0f,&rSelf,0,0,0);
+
+	SetRect(&rSelf, 467, 638, 631, 760);
+	m_pTM->Draw(m_nBGImageID,238,215,2.0,0.5f,&rSelf,0,0,0);
 		
+
+	DWORD dColor0,dColor1,dColor2,dColor3,dColor4,dColor5,dColor6,dColor7,dColor8,dColor9,
+		  dColor10,dColor11,dColor12,dColor13,dColor14,dColor15,dColor16,dColor17,dColor18,dColor19,
+		  dColor20,dColor21,dColor22,dColor23,dColor24,dColor25,dColor26,dColor27,dColor28,dColor29,
+		  dColor30;
+	switch(m_nPos)
+	{
+	case 0:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 1:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(177,132,0);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 2:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(177,132,0);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 3:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(177,132,0);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 4:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(177,132,0);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 5:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(177,132,0);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 6:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(177,132,0);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 7:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(177,132,0);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 8:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(177,132,0);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 9:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(177,132,0);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 10:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(177,132,0);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 11:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(177,132,0);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 12:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(177,132,0);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 13:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(177,132,0);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 14:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(177,132,0);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 15:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(177,132,0);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 16:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(177,132,0);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 17:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(177,132,0);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 18:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(177,132,0);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 19:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(177,132,0);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 20:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(177,132,0);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 21:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(177,132,0);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 22:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(177,132,0);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 23:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(177,132,0);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 24:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(177,132,0);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 25:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(177,132,0);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 26:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(177,132,0);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 27:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(177,132,0);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 28:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(177,132,0);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 29:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(177,132,0);
+			dColor30 = D3DCOLOR_XRGB(255,255,255);
+		}
+		break;
+	case 30:
+		{
+			 dColor0 = D3DCOLOR_XRGB(255,255,255);
+			 dColor1 = D3DCOLOR_XRGB(255,255,255);
+			 dColor2 = D3DCOLOR_XRGB(255,255,255);
+			 dColor3 = D3DCOLOR_XRGB(255,255,255);
+			 dColor4 = D3DCOLOR_XRGB(255,255,255);
+			 dColor5 = D3DCOLOR_XRGB(255,255,255);
+			 dColor6 = D3DCOLOR_XRGB(255,255,255);
+			 dColor7 = D3DCOLOR_XRGB(255,255,255);
+			 dColor8 = D3DCOLOR_XRGB(255,255,255);
+			 dColor9 = D3DCOLOR_XRGB(255,255,255);
+			dColor10 = D3DCOLOR_XRGB(255,255,255);
+			dColor11 = D3DCOLOR_XRGB(255,255,255);
+			dColor12 = D3DCOLOR_XRGB(255,255,255);
+			dColor13 = D3DCOLOR_XRGB(255,255,255);
+			dColor14 = D3DCOLOR_XRGB(255,255,255);
+			dColor15 = D3DCOLOR_XRGB(255,255,255);
+			dColor16 = D3DCOLOR_XRGB(255,255,255);
+			dColor17 = D3DCOLOR_XRGB(255,255,255);
+			dColor18 = D3DCOLOR_XRGB(255,255,255);
+			dColor19 = D3DCOLOR_XRGB(255,255,255);
+			dColor20 = D3DCOLOR_XRGB(255,255,255);
+			dColor21 = D3DCOLOR_XRGB(255,255,255);
+			dColor22 = D3DCOLOR_XRGB(255,255,255);
+			dColor23 = D3DCOLOR_XRGB(255,255,255);
+			dColor24 = D3DCOLOR_XRGB(255,255,255);
+			dColor25 = D3DCOLOR_XRGB(255,255,255);
+			dColor26 = D3DCOLOR_XRGB(255,255,255);
+			dColor27 = D3DCOLOR_XRGB(255,255,255);
+			dColor28 = D3DCOLOR_XRGB(255,255,255);
+			dColor29 = D3DCOLOR_XRGB(255,255,255);
+			dColor30 = D3DCOLOR_XRGB(177,132,0);
+		}
+		break;
+	}
 	
 
-	m_pTM->Draw(m_nButtonImageID,150,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,200,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,250,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,300,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,350,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,400,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,450,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,500,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,550,375,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,600,375,0.20f,0.75f,nullptr,0,0,0);
-
-	m_pTM->Draw(m_nButtonImageID,175,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,225,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,275,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,325,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,375,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,425,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,475,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,525,425,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,575,425,0.20f,0.75f,nullptr,0,0,0);
-
-	m_pTM->Draw(m_nButtonImageID,200,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,250,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,300,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,350,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,400,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,450,475,0.20f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,500,475,0.20f,0.75f,nullptr,0,0,0);
-
-	m_pTM->Draw(m_nButtonImageID,155,525,0.45f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,260,525,0.45f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,365,525,0.75f,0.75f,nullptr,0,0,0);
-	m_pTM->Draw(m_nButtonImageID,538,525,0.45f,0.75f,nullptr,0,0,0);
+	m_pTM->Draw(m_nButtonImageID,150,375,0.20f,0.75f,nullptr,0,0,0, dColor1);
+	m_pTM->Draw(m_nButtonImageID,200,375,0.20f,0.75f,nullptr,0,0,0, dColor2);
+	m_pTM->Draw(m_nButtonImageID,250,375,0.20f,0.75f,nullptr,0,0,0, dColor3);
+	m_pTM->Draw(m_nButtonImageID,300,375,0.20f,0.75f,nullptr,0,0,0, dColor4);
+	m_pTM->Draw(m_nButtonImageID,350,375,0.20f,0.75f,nullptr,0,0,0, dColor5);
+	m_pTM->Draw(m_nButtonImageID,400,375,0.20f,0.75f,nullptr,0,0,0, dColor6);
+	m_pTM->Draw(m_nButtonImageID,450,375,0.20f,0.75f,nullptr,0,0,0, dColor7);
+	m_pTM->Draw(m_nButtonImageID,500,375,0.20f,0.75f,nullptr,0,0,0, dColor8);
+	m_pTM->Draw(m_nButtonImageID,550,375,0.20f,0.75f,nullptr,0,0,0, dColor9);
+	m_pTM->Draw(m_nButtonImageID,600,375,0.20f,0.75f,nullptr,0,0,0,dColor10);
+	m_pTM->Draw(m_nButtonImageID,175,425,0.20f,0.75f,nullptr,0,0,0,dColor11);
+	m_pTM->Draw(m_nButtonImageID,225,425,0.20f,0.75f,nullptr,0,0,0,dColor12);
+	m_pTM->Draw(m_nButtonImageID,275,425,0.20f,0.75f,nullptr,0,0,0,dColor13);
+	m_pTM->Draw(m_nButtonImageID,325,425,0.20f,0.75f,nullptr,0,0,0,dColor14);
+	m_pTM->Draw(m_nButtonImageID,375,425,0.20f,0.75f,nullptr,0,0,0,dColor15);
+	m_pTM->Draw(m_nButtonImageID,425,425,0.20f,0.75f,nullptr,0,0,0,dColor16);
+	m_pTM->Draw(m_nButtonImageID,475,425,0.20f,0.75f,nullptr,0,0,0,dColor17);
+	m_pTM->Draw(m_nButtonImageID,525,425,0.20f,0.75f,nullptr,0,0,0,dColor18);
+	m_pTM->Draw(m_nButtonImageID,575,425,0.20f,0.75f,nullptr,0,0,0,dColor19);
+	m_pTM->Draw(m_nButtonImageID,200,475,0.20f,0.75f,nullptr,0,0,0,dColor20);
+	m_pTM->Draw(m_nButtonImageID,250,475,0.20f,0.75f,nullptr,0,0,0,dColor21);
+	m_pTM->Draw(m_nButtonImageID,300,475,0.20f,0.75f,nullptr,0,0,0,dColor22);
+	m_pTM->Draw(m_nButtonImageID,350,475,0.20f,0.75f,nullptr,0,0,0,dColor23);
+	m_pTM->Draw(m_nButtonImageID,400,475,0.20f,0.75f,nullptr,0,0,0,dColor24);
+	m_pTM->Draw(m_nButtonImageID,450,475,0.20f,0.75f,nullptr,0,0,0,dColor25);
+	m_pTM->Draw(m_nButtonImageID,500,475,0.20f,0.75f,nullptr,0,0,0,dColor26);
+	m_pTM->Draw(m_nButtonImageID,155,525,0.45f,0.75f,nullptr,0,0,0,dColor27);
+	m_pTM->Draw(m_nButtonImageID,260,525,0.45f,0.75f,nullptr,0,0,0,dColor28);
+	m_pTM->Draw(m_nButtonImageID,365,525,0.75f,0.75f,nullptr,0,0,0,dColor29);
+	m_pTM->Draw(m_nButtonImageID,538,525,0.45f,0.75f,nullptr,0,0,0,dColor30);
 
 	m_pD3D->GetSprite()->Flush();
 	if(m_bLowCase == false)
 	{
-		font->Print("Q",165,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("W",207,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("E",262,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("R",312,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("T",362,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("Y",412,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("U",462,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("I",518,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("O",565,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("P",615,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-
-		font->Print("A",190,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("S",240,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("D",290,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("F",340,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("G",390,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("H",437,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("J",490,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("K",537,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("L",590,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-
-		font->Print("Z",215,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("X",262,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("C",313,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("V",362,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("B",412,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("N",462,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("M",512,480,1.0f,D3DCOLOR_XRGB(255,255,255));
+		font->Print("Q",165,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("W",207,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("E",262,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("R",312,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("T",362,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("Y",412,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("U",462,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("I",518,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("O",565,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("P",615,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("A",190,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("S",240,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("D",290,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("F",340,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("G",390,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("H",437,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("J",490,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("K",537,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("L",590,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("Z",215,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("X",262,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("C",313,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("V",362,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("B",412,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("N",462,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("M",512,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
-		font->Print("q",165,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("w",215,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("e",265,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("r",315,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("t",365,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("y",415,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("u",465,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("i",518,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("o",565,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("p",615,380,1.0f,D3DCOLOR_XRGB(255,255,255));
-
-		font->Print("a",190,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("s",240,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("d",290,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("f",340,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("g",390,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("h",440,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("j",490,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("k",540,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("l",590,430,1.0f,D3DCOLOR_XRGB(255,255,255));
-
-		font->Print("z",215,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("x",265,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("c",315,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("v",365,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("b",415,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("n",465,480,1.0f,D3DCOLOR_XRGB(255,255,255));
-		font->Print("m",515,480,1.0f,D3DCOLOR_XRGB(255,255,255));
+		font->Print("q",165,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("w",215,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("e",265,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("r",315,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("t",365,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("y",415,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("u",465,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("i",518,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("o",565,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("p",615,380,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("a",190,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("s",240,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("d",290,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("f",340,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("g",390,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("h",440,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("j",490,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("k",540,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("l",590,430,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("z",215,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("x",265,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("c",315,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("v",365,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("b",415,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("n",465,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print("m",515,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 
-	font->Print("Shift",168,530,1.0f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("Space",272,530,1.0f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("Backspace",380,530,1.0f,D3DCOLOR_XRGB(255,255,255));
-	font->Print("Enter",548,530,1.0f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("Shift",168,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Space",272,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Backspace",380,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Enter",548,530,1.0f,D3DCOLOR_XRGB(177,132,0));
 
-	font->Print(szName,200,200,1.0f,D3DCOLOR_XRGB(255,255,255));
+	font->Print("Enter your name: ",145,100,2.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print(szName,263,225,1.25f,D3DCOLOR_XRGB(177,132,0));
 
 	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
-	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
-	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }

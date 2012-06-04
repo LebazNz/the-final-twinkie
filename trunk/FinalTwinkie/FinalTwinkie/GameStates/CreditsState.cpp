@@ -29,6 +29,12 @@ CCreditsState::CCreditsState(void)
 	m_pFont = nullptr;
 	
 	m_nBGImageID = -1;
+	m_nButtonID = -1;
+	m_nMouseX = 0;
+	m_nMouseY = 0;
+	
+	m_nCursor = -1;
+	m_dColor = D3DCOLOR_XRGB(255,255,255);
 }
 
 CCreditsState::~CCreditsState(void)
@@ -42,6 +48,8 @@ void CCreditsState::Enter(void)
 	m_pTM = CSGD_TextureManager::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
+	m_nButtonID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"),D3DCOLOR_XRGB(255,255,255));
+	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 }
 
 void CCreditsState::Exit(void)
@@ -50,6 +58,18 @@ void CCreditsState::Exit(void)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);
 		m_nBGImageID = -1;
+	}
+
+	if(m_nButtonID != -1)
+	{
+		m_pTM->UnloadTexture(m_nButtonID);
+		m_nButtonID = -1;
+	}
+
+	if(m_nCursor != -1)
+	{
+		m_pTM->UnloadTexture(m_nCursor);
+		m_nCursor = -1;
 	}
 
 	m_pD3D = nullptr;
@@ -61,7 +81,7 @@ void CCreditsState::Exit(void)
 bool CCreditsState::Input(void)
 {
 	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1) || (m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585 && m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonDown(0)))
 	{
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
@@ -71,7 +91,22 @@ bool CCreditsState::Input(void)
 
 void CCreditsState::Update(float fDt)
 {
+	if(m_pDI->JoystickGetLStickXAmount() > 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+	if(m_pDI->JoystickGetLStickXAmount() < 0)
+		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+	if(m_pDI->JoystickGetLStickYAmount() > 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+	if(m_pDI->JoystickGetLStickYAmount() < 0)
+		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
 
+	m_nMouseX = m_pDI->MouseGetPosX();
+	m_nMouseY = m_pDI->MouseGetPosY();
+
+	if(m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585)
+		m_dColor = D3DCOLOR_XRGB(177,132,0);
+	else
+		m_dColor = D3DCOLOR_XRGB(255,255,255);
 }
 
 void CCreditsState::Render(void)
@@ -81,6 +116,7 @@ void CCreditsState::Render(void)
 	RECT rSelf = { };
 	SetRect(&rSelf, 0, 0, 800, 600);
 	m_pTM->Draw(m_nBGImageID,0,0,1.0f,1.0f,&rSelf,0,0,0);
+	m_pTM->Draw(m_nButtonID,25,545,0.75f,0.75f,nullptr,0,0,0,m_dColor);
 	m_pD3D->GetSprite()->Flush();
 	/*m_pD3D->DrawText(_T("Designed and Programmed by:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)-75,255,255,255);
 	m_pD3D->DrawText(_T("Anthony Cintron"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-45,255,255,255);
@@ -94,16 +130,20 @@ void CCreditsState::Render(void)
 	m_pD3D->DrawText(_T("Art Lead:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+205,255,255,255);
 	m_pD3D->DrawText(_T("Chris Jahosky"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+235,255,255,255);*/
 
-	font->Print("Designed and Programmed by:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)-75,0.75f,	D3DCOLOR_XRGB(255,0,0));
-	font->Print("Anthony Cintron",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-45,0.75f,				D3DCOLOR_XRGB(255,0,0));
-	font->Print("Nate Zabel",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-20,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Ryan Hofeling",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+5,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Joshua Franey",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+30,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Executive Producer:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+75,0.75f,			D3DCOLOR_XRGB(255,0,0));
-	font->Print("John O'Leske",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+105,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Associate Producer:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+150,0.75f,			D3DCOLOR_XRGB(255,0,0));
-	font->Print("Shawn Paris",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+180,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Art Lead:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+205,0.75f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Chris Jahosky",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+235,0.75f,				D3DCOLOR_XRGB(255,0,0));
+	font->Print("Designed and Programmed by:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)-75,1.0f,	D3DCOLOR_XRGB(255,0,0));
+	font->Print("Anthony Cintron",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-45,				1.0f,				D3DCOLOR_XRGB(255,0,0));
+	font->Print("Nate Zabel",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-20,					1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Ryan Hofeling",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+5,				1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Joshua Franey",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+30,				1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Executive Producer:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+75,		1.0f,			D3DCOLOR_XRGB(255,0,0));
+	font->Print("John O'Leske",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+105,				1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Associate Producer:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+150,		1.0f,			D3DCOLOR_XRGB(255,0,0));
+	font->Print("Shawn Paris",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+180,				1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Art Lead:",(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+205,					1.0f,					D3DCOLOR_XRGB(255,0,0));
+	font->Print("Chris Jahosky",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+235,				1.0f,				D3DCOLOR_XRGB(255,0,0));
 
+	font->Print("Back",75,550,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+
+	m_pD3D->GetSprite()->Flush();
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }
