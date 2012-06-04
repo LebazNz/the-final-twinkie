@@ -12,6 +12,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+
 private:
 	CStartState(void);
 	virtual ~CStartState(void);

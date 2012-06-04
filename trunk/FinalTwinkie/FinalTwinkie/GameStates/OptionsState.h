@@ -12,7 +12,9 @@ public:
 	virtual void Exit(void);
 	virtual bool Input(void);
 	virtual void Update(float fDt);
-	virtual void Render(void);	
+	virtual void Render(void);
+	void LoadText(void);
+
 	float GetSFXVolume(void)const {return m_fSFXVolume;}
 	float GetMusicVolume(void)const {return m_fMusicVolume;}
 	int GetLang(void)const{return m_nLang;}
@@ -50,6 +52,15 @@ private:
 	int m_nMouseY;
 
 	int m_nCursor;
+	string m_sOptions;
+	string m_sSFX;
+	string m_sMusic;
+	string m_sFullScreen;
+	string m_sOn;
+	string m_sOff;
+	string m_sLanguage;
+	string m_sSelected;
+	string m_sBack;
 };
 
 #endif

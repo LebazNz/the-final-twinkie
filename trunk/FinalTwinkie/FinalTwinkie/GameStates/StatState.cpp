@@ -136,6 +136,7 @@ void StatState::Render( void )
 
 
 }
+
 void StatState::Highlight( DWORD* dwIndex )
 {
 	m_dwBack		 = D3DCOLOR_ARGB(255,255,255,255);

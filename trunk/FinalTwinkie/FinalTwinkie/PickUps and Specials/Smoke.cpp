@@ -25,6 +25,7 @@ void CSmoke::ActivateSpecial(void)
 {
 	if(m_nAmmo != 0)
 	{
+		m_pEmitter->ResetEmitter();
 		Camera* c = Camera::GetInstance();
  		m_pEmitter->UpdateEmitterPos(CPlayer::GetInstance()->GetPosX()-c->GetPosX(),CPlayer::GetInstance()->GetPosY()-c->GetPosY());
 		m_pEmitter->ActivateEmitter();

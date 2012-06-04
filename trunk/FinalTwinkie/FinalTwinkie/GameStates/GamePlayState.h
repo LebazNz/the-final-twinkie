@@ -31,6 +31,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+
 	bool GetPaused(void)const {return m_bPaused;}
 
 	void SetGameOver(bool g) { m_bGameOver = g;}

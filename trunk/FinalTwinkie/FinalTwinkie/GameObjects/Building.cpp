@@ -138,7 +138,7 @@ void CBuilding::TakeDamage(int nDamage)
 
 	int m_fHealth = GetHealth();
 	m_fHealth -= nDamage;
-	SetHealth(m_fHealth);
+	//SetHealth(m_fHealth);
 	if(m_fHealth<0)
 	{
 		m_fHealth=0;

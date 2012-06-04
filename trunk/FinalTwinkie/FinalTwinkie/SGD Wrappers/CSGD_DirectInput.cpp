@@ -1917,7 +1917,6 @@ bool CSGD_DIMouse::ButtonPressedEx(unsigned char ucButton)
 bool CSGD_DIMouse::ButtonUp(unsigned char ucButton)
 {
 	//	if the high bit is off, it isn't pressed.
-
 	return !ButtonDown(ucButton);
 }
 

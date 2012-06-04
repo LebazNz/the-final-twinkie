@@ -95,6 +95,7 @@ void CShopState::Enter(void)
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
 }
+
 void CShopState::Exit(void)
 {
 	m_pDI	= nullptr;
@@ -106,6 +107,7 @@ void CShopState::Exit(void)
 	m_pTM->UnloadTexture(m_nButtonImageID);
 	m_pTM->UnloadTexture(m_nCursor);*/
 }
+
 bool CShopState::Input(void)
 {
 	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
@@ -121,12 +123,14 @@ bool CShopState::Input(void)
 
 	return true;
 }
+
 void CShopState::Update(float fDt)
 {
 	SelectButtons();
 	DetermineSelection();
 	ColorSelected();
 }
+
 void CShopState::Render(void)
 {
 

@@ -74,6 +74,7 @@ public:
 	virtual void Update(float fDt) = 0;
 	virtual void Render(void) = 0;
 
+
 };
 
 

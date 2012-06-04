@@ -2,6 +2,8 @@
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
 #include "GamePlayState.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 #include <fstream>
 using namespace std;
 
@@ -65,6 +67,7 @@ void COptionsState::Enter(void)
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
+	LoadText();
 }
 
 void COptionsState::Exit(void)
@@ -167,6 +170,7 @@ bool COptionsState::Input(void)
 			m_nLang -= 1;
 			if(m_nLang < 0)
 				m_nLang = 2;
+			LoadText();
 		}
 	}
 	else if(m_pDI->KeyPressed(DIK_RIGHTARROW) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
@@ -204,7 +208,8 @@ bool COptionsState::Input(void)
 		{
 			m_nLang += 1;
 			if(m_nLang > 2)
-				m_nLang = 0;		
+				m_nLang = 0;
+			LoadText();
 		}
 	}
 	else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
@@ -247,6 +252,7 @@ bool COptionsState::Input(void)
 			m_nLang -= 1;
 			if(m_nLang < 0)
 				m_nLang = 2;
+			LoadText();
 		}
 		else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
 		&& m_nMouseY >= 240 && m_nMouseY <= 280))
@@ -285,7 +291,8 @@ bool COptionsState::Input(void)
 		{
 			m_nLang += 1;
 			if(m_nLang > 2)
-				m_nLang = 0;		
+				m_nLang = 0;
+			LoadText();
 		}
 		else if(m_nPosition == 4)
 		{
@@ -459,29 +466,29 @@ void COptionsState::Render(void)
 	
 	
 	m_pD3D->GetSprite()->Flush();
-	font->Print("SFX Volume:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2-50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sSFX.c_str(),(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2-50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	
-	font->Print("Music Volume:",(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sMusic.c_str(),(CGame::GetInstance()->GetWidth()/2)-300,CGame::GetInstance()->GetHeight()/2,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	
-	font->Print("Full Screen:",(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2+50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sFullScreen.c_str(),(CGame::GetInstance()->GetWidth()/2)-295,CGame::GetInstance()->GetHeight()/2+50,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	if(!m_bWindowed)																													  	
-		font->Print("On",(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOn.c_str(),(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	else																																  	
-		font->Print("Off",(CGame::GetInstance()->GetWidth()/2)+165,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Language:",(CGame::GetInstance()->GetWidth()/2)-275,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOff.c_str(),(CGame::GetInstance()->GetWidth()/2)+165,CGame::GetInstance()->GetHeight()/2+50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sLanguage.c_str(),(CGame::GetInstance()->GetWidth()/2)-275,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 	switch(m_nLang)																														  	
 	{																																	  	
 	case 0:																																  	
-		font->Print("English",(CGame::GetInstance()->GetWidth()/2)+139,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sSelected.c_str(),(CGame::GetInstance()->GetWidth()/2)+139,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	case 1:																																  	
-		font->Print("German",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sSelected.c_str(),(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	case 2:																																  	
-		font->Print("Pirate",(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sSelected.c_str(),(CGame::GetInstance()->GetWidth()/2)+158,CGame::GetInstance()->GetHeight()/2+100,	1.0f,	D3DCOLOR_XRGB(177,132,0));
 		break;																															  	
 	}																																	  	
-	font->Print("Back",(CGame::GetInstance()->GetWidth()/2)-250,CGame::GetInstance()->GetHeight()/2+150,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sBack.c_str(),(CGame::GetInstance()->GetWidth()/2)-250,CGame::GetInstance()->GetHeight()/2+150,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 
 
 	font->Init(1);
@@ -524,4 +531,120 @@ void COptionsState::SaveOptions(const char* szFileName)
 		fileOut << m_nLang << '\n';
 	}
 	fileOut.close();
+}
+
+void COptionsState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("OptionsState");
+				TiXmlNode* pButton = pState->FirstChild("Options");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("SFX");
+				pText = pButton->FirstChild()->ToText();
+				m_sSFX=pText->Value();
+				pButton = pState->FirstChild("Music");
+				pText = pButton->FirstChild()->ToText();
+				m_sMusic=pText->Value();
+				pButton=pState->FirstChild("FullScreen");
+				pText = pButton->FirstChild()->ToText();
+				m_sFullScreen=pText->Value();
+				pButton=pState->FirstChild("On");
+				pText = pButton->FirstChild()->ToText();
+				m_sOn=pText->Value();
+				pButton=pState->FirstChild("Off");
+				pText = pButton->FirstChild()->ToText();
+				m_sOff=pText->Value();
+				pButton=pState->FirstChild("Language");
+				pText = pButton->FirstChild()->ToText();
+				m_sLanguage=pText->Value();
+				pButton=pState->FirstChild("Selected");
+				pText = pButton->FirstChild()->ToText();
+				m_sSelected=pText->Value();
+				pButton=pState->FirstChild("Back");
+				pText = pButton->FirstChild()->ToText();
+				m_sBack=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("OptionsState");
+				TiXmlNode* pButton = pState->FirstChild("Options");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("SFX");
+				pText = pButton->FirstChild()->ToText();
+				m_sSFX=pText->Value();
+				pButton = pState->FirstChild("Music");
+				pText = pButton->FirstChild()->ToText();
+				m_sMusic=pText->Value();
+				pButton=pState->FirstChild("FullScreen");
+				pText = pButton->FirstChild()->ToText();
+				m_sFullScreen=pText->Value();
+				pButton=pState->FirstChild("On");
+				pText = pButton->FirstChild()->ToText();
+				m_sOn=pText->Value();
+				pButton=pState->FirstChild("Off");
+				pText = pButton->FirstChild()->ToText();
+				m_sOff=pText->Value();
+				pButton=pState->FirstChild("Language");
+				pText = pButton->FirstChild()->ToText();
+				m_sLanguage=pText->Value();
+				pButton=pState->FirstChild("Selected");
+				pText = pButton->FirstChild()->ToText();
+				m_sSelected=pText->Value();
+				pButton=pState->FirstChild("Back");
+				pText = pButton->FirstChild()->ToText();
+				m_sBack=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("OptionsState");
+				TiXmlNode* pButton = pState->FirstChild("Options");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("SFX");
+				pText = pButton->FirstChild()->ToText();
+				m_sSFX=pText->Value();
+				pButton = pState->FirstChild("Music");
+				pText = pButton->FirstChild()->ToText();
+				m_sMusic=pText->Value();
+				pButton=pState->FirstChild("FullScreen");
+				pText = pButton->FirstChild()->ToText();
+				m_sFullScreen=pText->Value();
+				pButton=pState->FirstChild("On");
+				pText = pButton->FirstChild()->ToText();
+				m_sOn=pText->Value();
+				pButton=pState->FirstChild("Off");
+				pText = pButton->FirstChild()->ToText();
+				m_sOff=pText->Value();
+				pButton=pState->FirstChild("Language");
+				pText = pButton->FirstChild()->ToText();
+				m_sLanguage=pText->Value();
+				pButton=pState->FirstChild("Selected");
+				pText = pButton->FirstChild()->ToText();
+				m_sSelected=pText->Value();
+				pButton=pState->FirstChild("Back");
+				pText = pButton->FirstChild()->ToText();
+				m_sBack=pText->Value();
+			}
+			break;
+		case 3:
+			{
+			}
+			break;
+		}
+	}
 }
