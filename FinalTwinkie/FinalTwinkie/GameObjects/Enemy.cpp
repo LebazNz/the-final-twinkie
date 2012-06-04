@@ -20,10 +20,11 @@ CEnemy::CEnemy(void)
 	SetHealth(35);
 	m_bHasATurret = false;
 	m_fRotation=0;
-	m_pTail=nullptr;
+	m_pOnFire=nullptr;
 	m_fTimer=0;
 	m_fStopTimer = 0.0f;
 	m_bStop = false;
+	m_bOnFire=false;
 }
 
 CEnemy::~CEnemy(void)
@@ -36,8 +37,8 @@ void CEnemy::Update(float fDt)
 	if(m_bStop == false)
 	{
 		Camera* C=Camera::GetInstance();
-		if(m_pTail!=nullptr)
-			m_pTail->UpdateEmitterPos(GetPosX(), GetPosY());
+		if(m_pOnFire!=nullptr)
+			m_pOnFire->UpdateEmitterPos(GetPosX(), GetPosY());
 		if(m_nEType==RIFLE||m_nEType==ROCKET)
 		{
 			tVector2D Up={0,-1};
@@ -76,6 +77,26 @@ void CEnemy::Update(float fDt)
 			else if(m_nEType==ROCKET)
 			{
 			}
+			if(m_bOnFire)
+			{
+				m_fFireTimer-=fDt;
+				if(m_fFireTimer<=0)
+				{
+					TakeDamage(3);
+					m_bOnFire=false;
+					m_pOnFire->DeactivateEmitter();
+				}
+				if(m_fFireTimer<=2&&!m_bHurt2)
+				{
+					TakeDamage(3);
+					m_bHurt2=true;
+				}
+				if(m_fFireTimer<=4&&!m_bHurt1)
+				{
+					TakeDamage(3);
+					m_bHurt1=true;
+				}
+			}
 		}
 	}
 	else
@@ -85,27 +106,12 @@ void CEnemy::Update(float fDt)
 			m_fStopTimer -= fDt;
 		}
 		else
-			m_bStop = false;
-		if(m_bOnFire)
 		{
-			m_fFireTimer-=fDt;
-			if(m_fFireTimer<=0)
-			{
-				TakeDamage(3);
-				m_bOnFire=false;
-			}
-			if(m_fFireTimer<=2&&!m_bHurt2)
-			{
-				TakeDamage(3);
-				m_bHurt2=true;
-			}
-			if(m_fFireTimer<=4&&!m_bHurt1)
-			{
-				TakeDamage(3);
-				m_bHurt1=true;
-			}
+			m_bStop = false;
+		
 		}
 	}
+	m_pOnFire->UpdateEmitterPos(GetPosX(), GetPosY());
 }
 
 void CEnemy::Render(void)
@@ -175,4 +181,5 @@ void CEnemy::SetOnFire()
 	m_fFireTimer=6.0f;
 	m_bHurt1=false;
 	m_bHurt2=false;
+	m_pOnFire->ActivateEmitter();
 }

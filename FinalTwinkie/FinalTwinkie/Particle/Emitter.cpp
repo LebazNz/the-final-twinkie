@@ -25,6 +25,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					if(m_nNumberParticles>=m_nMaxParticles)
@@ -43,6 +44,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					m_fTimer=0;
@@ -71,6 +73,7 @@ void CEmitter::CreateParticle(float fDt=0)
 				life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 				CParticle* newPart=new CParticle();
 				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
+				newPart->SetRot(m_fRotation);
 				m_vParticles.push_back(newPart);
 				m_nNumberParticles++;
 				m_fTimer=0;
@@ -94,6 +97,7 @@ void CEmitter::CreateParticle(float fDt=0)
 				life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 				CParticle* newPart=new CParticle();
 				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
+				newPart->SetRot(m_fRotation);
 				m_vParticles.push_back(newPart);
 				m_nNumberParticles++;
 				m_fTimer=0;
@@ -125,6 +129,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					if(m_nNumberParticles>=m_nMaxParticles)
@@ -151,6 +156,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					life=(life*(m_fMaxLife-m_fMinLife))+m_fMinLife;
 					CParticle* newPart=new CParticle();
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
+					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
 					m_nNumberParticles++;
 					m_fTimer=0;
@@ -242,6 +248,7 @@ void CEmitter::InitEmmitter(string szFile)
 		blue=pThird->ToElement()->FirstAttribute()->IntValue();
 		m_dwEndColor=D3DCOLOR_ARGB(alpha, red, green, blue);
 	}
+	m_fRotation=0;
 	m_fTimer=0;
 	m_nNumberParticles=0;
 	m_bActive=false;

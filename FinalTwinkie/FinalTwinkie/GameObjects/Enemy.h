@@ -35,8 +35,8 @@ public:
 	bool GetHasATuert(void)const{return m_bHasATurret;}
 	void SetHasATurret(bool bTurret){m_bHasATurret = bTurret;}
 
-	void SetTail(CEmitter* Tail){m_pTail=Tail;}
-	CEmitter* GetTail(void){return m_pTail;}
+	void SetFire(CEmitter* Fire){m_pOnFire=Fire;}
+	CEmitter* GetTail(void){return m_pOnFire;}
 
 	virtual void HandleEvent(CEvent* pEvent);
 
@@ -50,6 +50,12 @@ public:
 	virtual float GetStopTimer(void){return m_fStopTimer;}
 	virtual void SetStop(bool bStop){m_bStop = bStop;}
 	virtual bool GetStop(void){return m_bStop;}
+protected:
+	bool m_bOnFire;
+	bool m_bHurt1;
+	bool m_bHurt2;
+	float m_fFireTimer;
+	CEmitter* m_pOnFire;
 
 private:
 	float	m_fMaxDist;
@@ -61,8 +67,6 @@ private:
 	
 	tVector2D m_v2OldPos;
 
-	CEmitter* m_pTail;
-
 	ENEMYTYPE m_nEType;
 	CPlayer* m_pPlayer;
 
@@ -70,9 +74,6 @@ private:
 	float m_fTimer;
 	float m_fShotTimer;
 
-	bool m_bOnFire;
-	bool m_bHurt1;
-	bool m_bHurt2;
-	float m_fFireTimer;
+	
 };
 #endif

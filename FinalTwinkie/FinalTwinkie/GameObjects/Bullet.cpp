@@ -122,6 +122,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				pEnemy->TakeDamage((int)this->m_fDamage);
 				
 				
+				
 			}
 			break;
 			case OBJ_BUILDING:
@@ -149,6 +150,10 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
+				if(m_nBulletType==BUL_FLAME)
+				{
+					pEnemy->SetOnFire();
+				}
 				
 			}
 			break;

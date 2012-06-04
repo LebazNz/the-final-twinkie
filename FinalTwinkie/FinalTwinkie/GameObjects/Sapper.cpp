@@ -47,6 +47,26 @@ void CSapper::Update(float fDt)
 			CDestroyEnemyMessage* msg=new CDestroyEnemyMessage(this);
 			CMessageSystem::GetInstance()->SndMessage(msg);
 		}
+		if(m_bOnFire)
+		{
+			m_fFireTimer-=fDt;
+			if(m_fFireTimer<=0)
+			{
+				TakeDamage(3);
+				m_bOnFire=false;
+				m_pOnFire->DeactivateEmitter();
+			}
+			if(m_fFireTimer<=2&&!m_bHurt2)
+			{
+				TakeDamage(3);
+				m_bHurt2=true;
+			}
+			if(m_fFireTimer<=4&&!m_bHurt1)
+			{
+				TakeDamage(3);
+				m_bHurt1=true;
+			}
+		}
 	}
 	else
 	{
@@ -57,6 +77,7 @@ void CSapper::Update(float fDt)
 		else
 			m_bStop = false;
 	}
+	m_pOnFire->UpdateEmitterPos(GetPosX(), GetPosY());
 }
 void CSapper::Render(void)
 {
