@@ -73,7 +73,7 @@ private:
 
 
 	//IMAGE IDS
-	int m_anBulletImageIDs[4];
+	int m_anBulletImageIDs[5];
 	int m_anEnemyIDs[16];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;

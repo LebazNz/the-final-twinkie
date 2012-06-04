@@ -30,13 +30,13 @@ void CPlayer::Update(float fDt)
 {
 	tVector2D Up={0,-1};
 
-	if(m_pDI->KeyDown(DIK_W) || m_pDI->KeyDown(DIK_S))
+	if(m_pDI->KeyDown(DIK_W) || m_pDI->KeyDown(DIK_S) || m_pDI->JoystickGetRStickYAmount() < 0 || m_pDI->JoystickGetRStickYAmount() > 0)
 	{
 		m_bIsMoving = true;
 	}
 	else m_bIsMoving = false;
 
-	if(!m_pDI->KeyDown(DIK_W) && !m_pDI->KeyDown(DIK_S))
+	if(!m_pDI->KeyDown(DIK_W) && !m_pDI->KeyDown(DIK_S) && m_pDI->JoystickGetRStickYAmount() == 0)
 	{
 		SetMoveUp(false);
 		SetMoveDown(false);
@@ -44,7 +44,7 @@ void CPlayer::Update(float fDt)
 
 	if(Camera::GetInstance()->GetPlayerCannotMove() == false)
 	{
-		if(m_pDI->KeyDown(DIK_W) || m_pDI->JoystickDPadDown(DIR_UP) /*|| m_pDI->JoystickGetLStickYAmount() < 0*/)
+		if(m_pDI->KeyDown(DIK_W) || m_pDI->JoystickDPadDown(DIR_UP) || m_pDI->JoystickGetRStickYAmount() < 0)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
@@ -56,7 +56,7 @@ void CPlayer::Update(float fDt)
 			SetMoveUp(true);
 			SetMoveDown(false);
 		}
-		else if(m_pDI->KeyDown(DIK_S) || m_pDI->JoystickDPadDown(DIR_DOWN) /*|| m_pDI->JoystickGetLStickYAmount() > 0*/)
+		else if(m_pDI->KeyDown(DIK_S) || m_pDI->JoystickDPadDown(DIR_DOWN) || m_pDI->JoystickGetRStickYAmount() > 0)
 		{
 			Up=Vector2DRotate(Up, m_fRotation);
 			float DX=(Up.fX*GetVelX()*fDt);
@@ -74,14 +74,14 @@ void CPlayer::Update(float fDt)
 			SetMoveDown(false);
 		}
 	}
-	if(m_pDI->KeyDown(DIK_D) || m_pDI->JoystickDPadDown(DIR_RIGHT) /*|| m_pDI->JoystickGetLStickXAmount() > 0*/)
+	if(m_pDI->KeyDown(DIK_D) || m_pDI->JoystickDPadDown(DIR_RIGHT) || m_pDI->JoystickGetRStickXAmount() > 0)
 	{
 		m_fRotation+=m_fRotationRate*fDt;
 
 		SetMoveRight(true);
 		SetMoveLeft(false);
 	}
-	else if(m_pDI->KeyDown(DIK_A) || m_pDI->JoystickDPadDown(DIR_LEFT) /*|| m_pDI->JoystickGetLStickXAmount() < 0*/)
+	else if(m_pDI->KeyDown(DIK_A) || m_pDI->JoystickDPadDown(DIR_LEFT) || m_pDI->JoystickGetRStickXAmount() < 0)
 	{
 		m_fRotation-=m_fRotationRate*fDt;
 
@@ -89,7 +89,7 @@ void CPlayer::Update(float fDt)
 		SetMoveLeft(true);
 	}
 
-	if((m_pDI->MouseButtonDown(0) || m_pDI->JoystickGetRStickXAmount() > 0) && m_fFireTimer >= m_fTime)
+	if((m_pDI->MouseButtonDown(0) || m_pDI->JoystickGetLTriggerAmount() > 0) && m_fFireTimer >= m_fTime)
 	{
 		if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
 		{
@@ -120,7 +120,7 @@ void CPlayer::Update(float fDt)
 	else
 		m_fTime = 1.0;
 
-	if(m_pDI->MouseButtonDown(1) || m_pDI->JoystickGetRStickXAmount() < 0)
+	if(m_pDI->MouseButtonDown(1) || m_pDI->JoystickGetRTriggerAmount() > 0)
 	{
 		switch(m_nSecondType)
 		{
@@ -140,6 +140,16 @@ void CPlayer::Update(float fDt)
 			 break;
 		case LAZER:
 			{
+				if(m_fFireRate >= 0.02f&&m_fHeat<100&&!m_bOverheat)
+				{
+					m_fFireRate = 0.0f;
+					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
+					CMessageSystem::GetInstance()->SndMessage(msg);
+					if(m_bInfAmmo == false)
+					m_fHeat+=0.8f*m_fHeatModifier;
+				}
+				else
+					m_fFireRate += fDt;
 			}
 			break;
 		case FLAME:
@@ -177,7 +187,7 @@ void CPlayer::Update(float fDt)
 			m_fOverheatTimer+=fDt;
 		}
 	}
-	if(m_pDI->MouseButtonReleased(1))
+	if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
 	{
 		if(m_nSecondType==FLAME)
 		{
