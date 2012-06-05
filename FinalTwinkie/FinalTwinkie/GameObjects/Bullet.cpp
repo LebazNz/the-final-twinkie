@@ -64,7 +64,7 @@ void CBullet::Update(float fDT)
 	}
 	if(m_nBulletType == BUL_ROCKET)
 	{
-		/*tVector2D Up={0,-1};
+		tVector2D Up={0,-1};
 		tVector2D toTarget;
 		toTarget.fX=((m_v2TargetPos.fX-C->GetPosX()));
 		toTarget.fY=((m_v2TargetPos.fY-C->GetPosY()));
@@ -82,7 +82,8 @@ void CBullet::Update(float fDT)
 			float DX=(Look.fX*GetVelX()*fDT);
 			SetPosX(GetPosX()+DX);
 			SetPosY(GetPosY()+DY);
-		}*/
+		}
+
 
 		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom-C->GetPosY() && rSelf.top-C->GetPosY() > m_rTarget.top-C->GetPosY() 
 			&& rSelf.right-C->GetPosX() < m_rTarget.right-C->GetPosX() && rSelf.left-C->GetPosX() > m_rTarget.left-C->GetPosX() )

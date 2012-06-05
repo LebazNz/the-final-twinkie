@@ -1,6 +1,8 @@
 #ifndef FLYTEXT_H
 #define FLYTEXT_H
 #include "../GameObjects/Entity.h"
+#include "../GameObjects/Player.h"
+#include "BitmapFont.h"
 #include <string>
 class CFlyText:public CEntity
 {
@@ -11,9 +13,11 @@ public:
 	CFlyText(void);
 	~CFlyText(void);
 
+	void SetFlyText(int nType, float fTimer, DWORD dColor, float fX, float fY);
+
 private:
 	std::string m_szType;
-	float m_fTimer;
-	DWORD m_DWColor;
+	float		m_fTimer;
+	DWORD		m_DWColor;
 };
 #endif

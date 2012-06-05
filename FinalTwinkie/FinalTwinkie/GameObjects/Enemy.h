@@ -50,6 +50,7 @@ public:
 	virtual float GetStopTimer(void){return m_fStopTimer;}
 	virtual void SetStop(bool bStop){m_bStop = bStop;}
 	virtual bool GetStop(void){return m_bStop;}
+
 protected:
 	bool m_bOnFire;
 	bool m_bHurt1;
@@ -72,8 +73,6 @@ private:
 
 	float m_fRotation;
 	float m_fTimer;
-	float m_fShotTimer;
-
-	
+	float m_fShotTimer;	
 };
 #endif
