@@ -146,7 +146,7 @@ void CPlayer::Update(float fDt)
 					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
 					CMessageSystem::GetInstance()->SndMessage(msg);
 					if(m_bInfAmmo == false)
-					m_fHeat+=0.8f*m_fHeatModifier;
+					m_fHeat+=1.0f*m_fHeatModifier;
 				}
 				else
 					m_fFireRate += fDt;

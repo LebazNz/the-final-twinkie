@@ -262,7 +262,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetPosX(player->GetPosX());
 		PlayerTurret->SetPosY(player->GetPosY());
 		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(BUL_SHELL);
+		PlayerTurret->SetBullet(BUL_ARTILLERY);
 		PlayerTurret->SetWidth(64);
 		PlayerTurret->SetHeight(128);
 		PlayerTurret->SetRotationPositon(32,98);
@@ -341,27 +341,26 @@ void CGamePlayState::Enter(void)
 		//pTank->SetHealth(300);
 		//pTank->SetHasATurret(true);
 		//m_pOM->AddObject(pTank);
-
-		CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		pTurret->SetImageID(m_anEnemyIDs[7]);
-		//pTank->SetTurret(pTurret);
-		pTurret->SetPosX(200);
-		pTurret->SetPosY(200);
-		pTurret->SetOwner(nullptr);
-		pTurret->SetBullet(BUL_SHELL);
-		pTurret->SetWidth(64);
-		pTurret->SetHeight(128);
-		pTurret->SetRotationPositon(32,98);
-		pTurret->SetUpVec(0,-1);
-		pTurret->SetDistance(300);
-		pTurret->SetHealth(200);
-		pTurret->SetMaxHealth(200);
-		//pTurret->SetFireRate(2.5f);
-		pTurret->SetTarget(player);
-		pTurret->SetRotationRate(1.0f);
-		m_pOM->AddObject(pTurret);
-		pTurret->Release();
-		//pTank->Release();
+		//CTurret* pTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+		//pTurret->SetImageID(m_anEnemyIDs[7]);
+		////pTank->SetTurret(pTurret);
+		//pTurret->SetPosX(200);
+		//pTurret->SetPosY(200);
+		//pTurret->SetOwner(nullptr);
+		//pTurret->SetBullet(BUL_SHELL);
+		//pTurret->SetWidth(64);
+		//pTurret->SetHeight(128);
+		//pTurret->SetRotationPositon(32,98);
+		//pTurret->SetUpVec(0,-1);
+		//pTurret->SetDistance(300);
+		//pTurret->SetHealth(200);
+		//pTurret->SetMaxHealth(200);
+		////pTurret->SetFireRate(2.5f);
+		//pTurret->SetTarget(player);
+		//pTurret->SetRotationRate(1.0f);
+		//m_pOM->AddObject(pTurret);
+		//pTurret->Release();
+		////pTank->Release();
 
 		CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
 		building->SetPosX(450);
@@ -1081,10 +1080,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
-						tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
+						//tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
 						tVector2D Up={0,-1};
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
-						norVec = Vector2DNormalize(norVec);
+						//norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
@@ -1098,12 +1097,12 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									Bullet->SetDamage(45.0f);
 								if(player->GetInfAmmo() == false)
 								{
-									//int ammoChange=player->GetWeaponAmmoMissile();
-									//player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
+									int ammoChange=player->GetWeaponAmmoMissile();
+									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
+									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { (pSelf->m_nMouseX-16),(pSelf->m_nMouseY-16)};
+									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
 									Bullet->SetMissileTimer(0.25f);
 								}
@@ -1115,8 +1114,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
 							Bullet->SetDamage(45.0f);
 						}
-						Bullet->SetVelX(norVec.fX*300);
-						Bullet->SetVelY(norVec.fY*300);
+						Bullet->SetVelX(/*norVec.fX**/300);
+						Bullet->SetVelY(/*norVec.fY**/300);
 					}
 					Bullet->SetBulletType(BUL_ROCKET);
 					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);

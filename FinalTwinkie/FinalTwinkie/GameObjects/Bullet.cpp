@@ -42,7 +42,6 @@ CBullet::~CBullet(void)
 
 void CBullet::Update(float fDT)
 {
-	CEntity::Update(fDT);
 	Camera* C=Camera::GetInstance();
 	RECT rSelf = GetRect();
 	CGame* pGame = CGame::GetInstance();
@@ -66,27 +65,29 @@ void CBullet::Update(float fDT)
 	{
 		tVector2D Up={0,-1};
 		tVector2D toTarget;
-		toTarget.fX=((m_v2TargetPos.fX-C->GetPosX()));
-		toTarget.fY=((m_v2TargetPos.fY-C->GetPosY()));
-		m_fRotation=AngleBetweenVectors(toTarget, Up);
-
-		if(m_v2TargetPos.fX<(GetPosX()+C->GetPosX()))
-			m_fRotation=AngleBetweenVectors(toTarget, Up);
-		else
-			m_fRotation=-AngleBetweenVectors(toTarget, Up);
-
+		this;
+		toTarget.fX=((m_v2TargetPos.fX/*-C->GetPosX())*/-GetPosX()));
+		toTarget.fY=((m_v2TargetPos.fY/*-C->GetPosY())*/-GetPosY()));
 		tVector2D Look=Vector2DRotate(Up, m_fRotation);
-		if(Vector2DLength(toTarget)>0)
+		float Steer=Steering(toTarget, Look);
+		if(Steer>0)
 		{
-			float DY=(Look.fY*GetVelY()*fDT);
-			float DX=(Look.fX*GetVelX()*fDT);
-			SetPosX(GetPosX()+DX);
-			SetPosY(GetPosY()+DY);
+			m_fRotation-=7.0f*fDT;
 		}
+		else if(Steer<0)
+		{
+			m_fRotation+=7.0f*fDT;
+		}
+		float vely=GetVelY();
+		float DY=(Look.fY*GetVelY()*fDT);
+		float DX=(Look.fX*GetVelX()*fDT);
+		SetPosX(GetPosX()+DX);
+		SetPosY(GetPosY()+DY);
+		
 
 
-		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom-C->GetPosY() && rSelf.top-C->GetPosY() > m_rTarget.top-C->GetPosY() 
-			&& rSelf.right-C->GetPosX() < m_rTarget.right-C->GetPosX() && rSelf.left-C->GetPosX() > m_rTarget.left-C->GetPosX() )
+		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom && rSelf.top-C->GetPosY() > m_rTarget.top 
+			&& rSelf.right-C->GetPosX() < m_rTarget.right && rSelf.left-C->GetPosX() > m_rTarget.left )
 		{
 			CObjectManager::GetInstance()->AreaEffect(m_v2TargetPos.fX,m_v2TargetPos.fY,50,(int)m_fDamage);
 			CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
@@ -104,6 +105,10 @@ void CBullet::Update(float fDT)
 			CMessageSystem::GetInstance()->SndMessage(pMsg);
 			pMsg = nullptr;
 		}
+	}
+	if(m_nBulletType != BUL_ROCKET)
+	{
+		CEntity::Update(fDT);
 	}
 }
 

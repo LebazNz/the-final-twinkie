@@ -100,13 +100,13 @@ void CTurret::Update(float fDt)
 		}
 		else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
 		{
-
-			float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
-			float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
-			xPos *= xPos;
-			yPos *= yPos;
 			if(m_bStop == false)
 			{
+				float xPos = GetPosX() - (m_pTarget->GetPosX()-C->GetPosX());
+				float yPos = GetPosY() - (m_pTarget->GetPosY()-C->GetPosY());
+				xPos *= xPos;
+				yPos *= yPos;
+			
 				if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 				{
 				float distance = sqrt(float(xPos+yPos));

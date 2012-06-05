@@ -240,8 +240,11 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 							}
 							else
 							{
-								pTurret->SetStopTimer(10.0f);
-								pTurret->SetStop(true);
+								if(pTurret->GetOwner() != CPlayer::GetInstance())
+								{
+									pTurret->SetStopTimer(10.0f);
+									pTurret->SetStop(true);
+								}
 							}
 						}
 						break;
