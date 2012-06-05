@@ -2,6 +2,7 @@
 #include "../GameStates/OptionsState.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/DestroyFlyTextMessage.h"
+#include "../Headers/Camera.h"
 
 void CFlyText::Update(float fDt)
 {
@@ -20,9 +21,10 @@ void CFlyText::Update(float fDt)
 
 void CFlyText::Render(void)
 {
+	Camera* C = Camera::GetInstance();
 	CBitmapFont* font = CBitmapFont::GetInstance();
 	font->Init(COptionsState::GetInstance()->GetLang());
-	font->Print(m_szType.c_str(),GetPosX(),GetPosY(),0.75f,m_DWColor);
+	font->Print(m_szType.c_str(),GetPosX()+C->GetPosX(),GetPosY()+C->GetPosY(),0.75f,m_DWColor);
 }
 
 CFlyText::CFlyText(void)
