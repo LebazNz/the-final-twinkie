@@ -7,6 +7,7 @@
 CTank::CTank(void)
 {
 	m_nType = OBJ_TANK;
+	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
 CTank::~CTank(void)
 {
@@ -89,6 +90,18 @@ void CTank::Render(void)
 {
 	CGame *pGame = CGame::GetInstance();
 	Camera* pCam =Camera::GetInstance();
+
+	if(GetHealth() < GetMaxHealth())
+	{
+		//Health
+		RECT rect;
+		rect.top=(LONG)360; rect.left=(LONG)11; rect.right=(LONG)177; rect.bottom=(LONG)381;
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+pCam->GetPosX(), (GetPosY()-75)+pCam->GetPosY(), 0.5f,0.5f,&rect);
+		rect.top=(LONG)364; rect.left=(LONG)194; rect.right=(LONG)(194+((353-194)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)378;
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+pCam->GetPosX(), (GetPosY()-75)+pCam->GetPosY(), 0.5f,0.5f,&rect);
+		rect.top=(LONG)391; rect.left=(LONG)351; rect.right=(LONG)(351+((509-351)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)403;
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+pCam->GetPosX(), (GetPosY()-75)+pCam->GetPosY(), 0.5f,0.5f,&rect);
+	}
 
 	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 	{

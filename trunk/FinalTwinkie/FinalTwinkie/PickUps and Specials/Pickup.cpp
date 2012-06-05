@@ -3,6 +3,7 @@
 #include "../Headers/Camera.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/DestroyPickupMessage.h"
+#include "../Event and Messages/CreateFlyTextMessage.h"
 
 
 
@@ -124,6 +125,9 @@ bool CPickup::CheckCollision(IEntity* pBase)
 					}
 					break;
 				}
+				CCreateFlyTextMessage* pMsge = new CCreateFlyTextMessage(MSG_CREATEFLYTEXT,m_nPickUpType,this);
+				CMessageSystem::GetInstance()->SndMessage(pMsge);
+				pMsge = nullptr;
 				CDestroyPickupMessage* pMsg = new CDestroyPickupMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;

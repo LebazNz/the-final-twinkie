@@ -18,6 +18,7 @@ public:
 	void SetAliveTime(float fTimer) { m_fAliveTime = fTimer; }
 	void SetGiven(int nGiven) {m_nGiven = nGiven;}
 	void SetPickUpType(int nPickUpType) { m_nPickUpType = nPickUpType; }
+	int GetPickUpType(void) {return m_nPickUpType;}
 
 private:
 	float m_fAliveTime;

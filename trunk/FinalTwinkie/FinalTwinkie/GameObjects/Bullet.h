@@ -32,6 +32,7 @@ public:
 	void SetTargetRect(RECT rTarget){m_rTarget = rTarget; }
 	RECT GetTargetRect(void) {return m_rTarget;}
 	void SetTargetPos(tVector2D vTarget){m_v2TargetPos = vTarget;}
+	void SetMissileTimer(float fMissileTimer){m_fMissileTimer = fMissileTimer;}
 
 private:
 	// bool for who fired the bullet
