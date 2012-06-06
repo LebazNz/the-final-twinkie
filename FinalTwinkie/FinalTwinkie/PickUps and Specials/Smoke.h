@@ -9,7 +9,6 @@ class CSmoke : public CSpecial
 public:
 	CSmoke(void);
 	~CSmoke(void);
-	virtual void Update(float fDt);
 	virtual void ActivateSpecial(void);
 
 	virtual void SetEmitter(CEmitter* pEmitter){m_pEmitter = pEmitter;}

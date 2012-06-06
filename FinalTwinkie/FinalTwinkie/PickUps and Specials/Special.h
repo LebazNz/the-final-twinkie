@@ -11,8 +11,6 @@ public:
 	CSpecial(void);
 	~CSpecial(void);
 
-	virtual void Update(float fDt);
-	virtual void Render(void);
 	virtual void ActivateSpecial(void);
 	virtual void SetAmmoCount(int nAmmo) {m_nAmmo = nAmmo;}
 	virtual int GetAmmoCount(void){return m_nAmmo;}

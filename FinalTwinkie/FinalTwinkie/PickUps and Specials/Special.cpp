@@ -13,16 +13,6 @@ CSpecial::~CSpecial(void)
 
 }
 
-void CSpecial::Update(float fDt)
-{
-
-}
-
-void CSpecial::Render(void)
-{
-
-}
-
 void CSpecial::ActivateSpecial(void)
 {
 }

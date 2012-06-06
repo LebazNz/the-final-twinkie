@@ -48,6 +48,8 @@
 #include "../PickUps and Specials/Special.h"
 #include "../PickUps and Specials/Nuke.h"
 #include "../PickUps and Specials/Smoke.h"
+#include "../PickUps and Specials/EMP.h"
+#include "../PickUps and Specials/Reinforcements.h"
 #include "StatState.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
@@ -229,6 +231,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CMine>("CMine");
 		m_pOF->RegisterClassType<CTree>("CTree");
 		m_pOF->RegisterClassType<CFlyText>("CFlyText");
+		m_pOF->RegisterClassType<CEMP>("CEMP");
 
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -252,8 +255,9 @@ void CGamePlayState::Enter(void)
 		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
 		CSmoke* pSmoke=new CSmoke();
 		pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
+		CReinforcements* pRF = new CReinforcements;
 		player->SetSpecial1(pNuke);
-		player->SetSpecial2(pSmoke);
+		player->SetSpecial2(pRF);
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(2);
 		player->SetOldPos(v2Pos);
@@ -875,6 +879,20 @@ bool CGamePlayState::Input(void)
 		}*/
 #pragma endregion
 	}
+	if(m_pDI->KeyPressed(DIK_7))
+	{
+			CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TANK,200,200);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+			
+	}
+	if(m_pDI->KeyPressed(DIK_8))
+	{
+			CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TURRET,100,100);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+			
+	}
 	// Enter ShopState
 	if(m_pDI->KeyPressed(DIK_NUMPAD0))
 	{
@@ -1208,9 +1226,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
+									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { (pSelf->m_nMouseX-16),(pSelf->m_nMouseY-16)};
+									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
 								}
 							}
@@ -1400,16 +1418,22 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case TANK:
 				{
 					// TO DO: SET UP MESSAGES TO GET POSITIONS
-					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
+					/*pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
 					pSelf->m_pEnemy->SetImageID(pSelf->m_nPlayerID);
 					pSelf->m_pEnemy->SetPosX(pMessage->GetPosX());
 					pSelf->m_pEnemy->SetPosY(pMessage->GetPosY());	
 					pSelf->m_pEnemy->SetWidth(64);
-					pSelf->m_pEnemy->SetHeight(128);
+					pSelf->m_pEnemy->SetHeight(128);*/
 
 					CPlayer* player = CPlayer::GetInstance();
-					CTank* tank = dynamic_cast<CTank*>(pSelf->m_pEnemy);
+					//CTank* tank = dynamic_cast<CTank*>(pSelf->m_pEnemy);
 					
+					CTank* tank = (CTank*)pSelf->m_pOF->CreateObject("CTank");
+					tank->SetImageID(pSelf->m_nPlayerID);
+					tank->SetPosX(pMessage->GetPosX());
+					tank->SetPosY(pMessage->GetPosY());	
+					tank->SetWidth(64);
+					tank->SetHeight(128);
 					tank->SetPlayer(player);
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
@@ -1421,35 +1445,58 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 
-					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
-					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
-					pSelf->m_pTurret->SetPosX(pSelf->m_pEnemy->GetPosX());
-					pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
-					pSelf->m_pTurret->SetWidth(64);
-					pSelf->m_pTurret->SetHeight(128);
+					//pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
+					//pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
+					//pSelf->m_pTurret->SetPosX(pSelf->m_pEnemy->GetPosX());
+					//pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
+					//pSelf->m_pTurret->SetWidth(64);
+					//pSelf->m_pTurret->SetHeight(128);
 
-					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
+					//CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
+					//tank->SetTurret(turret);
+					//turret->SetOwner(pSelf->m_pEnemy);
+					//turret->SetBullet(BUL_SHELL);	
+					//turret->SetRotationPositon(32,98);
+					//turret->SetUpVec(0,-1);
+					//turret->SetDistance(300);
+				 // //pTurret->SetFireRate(2.5f);
+					//turret->SetTarget(player);
+					//turret->SetRotationRate(1.0f);
+					//pSelf->m_pOM->AddObject(pSelf->m_pTurret);
+					//pSelf->m_pTurret->Release();
+					//pSelf->m_pEnemy->Release();
+					//pSelf->m_pEnemy = nullptr;
+					//pSelf->m_pTurret = nullptr;
+					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
+					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetPosX(tank->GetPosX());
+					turret->SetPosY(tank->GetPosY());
+					turret->SetWidth(64);
+					turret->SetHeight(128);
 					tank->SetTurret(turret);
-					turret->SetOwner(pSelf->m_pEnemy);
-					turret->SetBullet(BUL_SHELL);	
+					turret->SetOwner(tank);
+					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
-				  //pTurret->SetFireRate(2.5f);
-					turret->SetTarget(player);
+					turret->SetHealth(200);
+					turret->SetMaxHealth(200);
+				  //turret->SetFireRate(2.5f);
+					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
-					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
-					pSelf->m_pTurret->Release();
-					pSelf->m_pEnemy->Release();
-					pSelf->m_pEnemy = nullptr;
-					pSelf->m_pTurret = nullptr;
+					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
+					pSelf->m_pOM->AddObject(turret);
+					turret->Release();
+					turret = nullptr;
+					tank->Release();
+					tank = nullptr;
 					
 				}
 				break;
 			case TURRET:
 				{
 					// TO DO: SET UP MESSAGE TO GET POSITIONS
-					CPlayer* player = CPlayer::GetInstance();
+					/*CPlayer* player = CPlayer::GetInstance();
 
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
 					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
@@ -1458,21 +1505,28 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pTurret->SetWidth(64);
 					pSelf->m_pTurret->SetHeight(128);
 
-					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
-					
+					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);*/
+					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
+					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetPosX(pMessage->GetPosX());
+					turret->SetPosY(pMessage->GetPosY());
+					turret->SetWidth(64);
+					turret->SetHeight(128);
+
 					turret->SetOwner(nullptr);
-					turret->SetBullet(BUL_SHELL);	
+					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
 				  //turret->SetFireRate(2.5f);
-					turret->SetTarget(player);
+					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
+					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
-					pSelf->m_pTurret->Release();
-					pSelf->m_pTurret = nullptr;
+					turret->Release();
+					turret = nullptr;
 				
 				}
 				break;
@@ -1522,6 +1576,89 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy = nullptr;
 				}
 				break;
+			case HELP:
+				{
+					int randNum = rand()%2;
+					switch(randNum)
+					{
+					case 0:
+						{
+							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
+							sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+							sapper->SetType(OBJ_HELP);
+							sapper->SetPosX(pMessage->GetPosX()/*-C->GetPosX()*/);
+							sapper->SetPosY(pMessage->GetPosY()/*-C->GetPosY()*/);
+							sapper->SetHeight(32);
+							sapper->SetWidth(32);
+							/*CPlayer* player = CPlayer::GetInstance();
+							sapper->SetPlayer((CPlayer*)pSelf->m_pOM->GetTarget(sapper));*/
+							sapper->SetHelpTarget(pSelf->m_pOM->GetTarget(sapper));
+							sapper->SetSight(400);
+							sapper->SetVelX(45);
+							sapper->SetVelY(45);
+							sapper->SetHealth(35);
+							sapper->SetMaxHealth(35);
+							sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
+							sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(sapper);
+							sapper->Release();
+							sapper = nullptr;
+						}
+						break;
+					case 1:
+						{
+							//CPlayer* player = CPlayer::GetInstance();
+							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+							enemy->SetEType(RIFLE);
+							enemy->SetType(OBJ_HELP);
+							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetPosX(pMessage->GetPosX()/*-C->GetPosX()*/);
+							enemy->SetPosY(pMessage->GetPosY()/*-C->GetPosY()*/);
+							enemy->SetHeight(32);
+							enemy->SetWidth(32);
+							//enemy->SetPlayer((CPlayer*)pSelf->m_pOM->GetTarget(enemy));
+							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
+							enemy->SetHealth(50);
+							enemy->SetMaxHealth(50);
+							enemy->SetVelX(30);
+							enemy->SetVelY(30);
+							enemy->SetMinDistance(200);
+							enemy->SetMaxDistance(600);
+							enemy->SetShotTimer(0.1f);
+							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(enemy);
+							enemy->Release();
+							enemy = nullptr;
+						}
+						break;
+					case 2:
+						{
+							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+							enemy->SetEType(ROCKET);
+							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetType(OBJ_HELP);
+							enemy->SetPosX(pMessage->GetPosX()/*-C->GetPosX()*/);
+							enemy->SetPosY(pMessage->GetPosY()/*-C->GetPosY()*/);	
+							enemy->SetHeight(32);
+							enemy->SetWidth(32);
+							//enemy->SetPlayer(CPlayer::GetInstance());
+							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
+							enemy->SetHealth(50);
+							enemy->SetMaxHealth(50);
+							enemy->SetVelX(30);
+							enemy->SetVelY(30);
+							enemy->SetMinDistance(200);
+							enemy->SetMaxDistance(600);
+							enemy->SetShotTimer(3.0f);
+							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(enemy);
+							enemy->Release();
+							enemy = nullptr;
+						}
+						break;
+					}
+				}
+				break;
 			default:
 				{
 				}
@@ -1561,76 +1698,80 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_CREATEPICKUP:
 		{
-			CEntity* pEntity = pSelf->m_pOF->CreateObject("CPickup");
-			CPickup* pPickup = dynamic_cast<CPickup*>(pEntity);
-			CCreatePickupMessage* pMessage = dynamic_cast<CCreatePickupMessage*>(pMsg);
-			pPickup->SetWidth(32);
-			pPickup->SetHeight(32);
-			switch(pMessage->GetPickUpType())
+			CCreatePickupMessage* pMessage = dynamic_cast<CCreatePickupMessage*>(pMsg);	
+			
+			if(pMessage->GetEntity()->GetType() != OBJ_HELP)
 			{
-			case 0:
+				CEntity* pEntity = pSelf->m_pOF->CreateObject("CPickup");
+				CPickup* pPickup = dynamic_cast<CPickup*>(pEntity);
+				pPickup->SetWidth(32);
+				pPickup->SetHeight(32);
+				switch(pMessage->GetPickUpType())
 				{
-					pPickup->SetImageID(pSelf->m_nPickupHealthID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				case 0:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupHealthID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 1:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupAmmoID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 2:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupArmorID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 3:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupDoubleDID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 4:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupNoReloadID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 5:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupInvuID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 6:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupInfAmmoID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 7:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
 				}
-				break;
-			case 1:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupAmmoID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 2:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupArmorID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 3:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupDoubleDID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 4:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupNoReloadID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 5:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupInvuID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 6:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupInfAmmoID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 7:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupMoneyID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
+
+				pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
+				pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
+
+				pPickup->SetAliveTime(150.0f);
+
+				pSelf->m_pOM->AddObject(pPickup);
+
+				pPickup->Release();
+				pPickup = nullptr;
 			}
-
-			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
-			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
-
-			pPickup->SetAliveTime(150.0f);
-
-			pSelf->m_pOM->AddObject(pPickup);
-
-			pPickup->Release();
-			pPickup = nullptr;
 		}
 		break;
 	case MSG_DESTROYPICKUP:
@@ -1710,7 +1851,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetDamage(1);
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-					pBullet->SetBulletType(BUL_SHELL);
+					if(pMessage->GetFiringEntity()->GetType() == OBJ_HELP)
+						pBullet->SetWhoFired(true);
 					pSelf->m_pOM->AddObject(pBullet);
 					pBullet->Release();
 					pBullet = nullptr;
@@ -1727,9 +1869,19 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetVelY(300);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 					pBullet->SetDamage(15.0f);
-					pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());
-					tVector2D vPos = {pSelf->m_pPlayer->GetPosX()-C->GetPosX(), pSelf->m_pPlayer->GetPosY()-C->GetPosY()};
-					pBullet->SetTargetPos(vPos);
+					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
+					{
+						pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());					
+						tVector2D vPos = {pSelf->m_pPlayer->GetPosX()-C->GetPosX(), pSelf->m_pPlayer->GetPosY()-C->GetPosY()};
+						pBullet->SetTargetPos(vPos);
+					}
+					else if(pMessage->GetFiringEntity()->GetType() == OBJ_HELP)
+					{
+						pBullet->SetTargetRect(pMessage->GetFiringEntity()->GetHelpTarget()->GetRect());					
+						tVector2D vPos = {pMessage->GetFiringEntity()->GetHelpTarget()->GetPosX()-C->GetPosX(), pMessage->GetFiringEntity()->GetHelpTarget()->GetPosY()-C->GetPosY()};
+						pBullet->SetTargetPos(vPos);
+						pBullet->SetWhoFired(true);
+					}
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
 					pBullet->SetBulletType(BUL_ROCKET);
 					pSelf->m_pOM->AddObject(pBullet);

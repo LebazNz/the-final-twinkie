@@ -9,7 +9,7 @@ class CNuke : public CSpecial
 public:
 	CNuke(void);
 	~CNuke(void);
-	virtual void Update(float fDt);
+
 	virtual void ActivateSpecial(void);
 
 	virtual void SetEmitter(CEmitter* pEmitter){m_pEmitter = pEmitter;}

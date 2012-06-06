@@ -102,10 +102,10 @@ void CBullet::Update(float fDT)
 	}
 	if(m_nBulletType == BUL_ARTILLERY)
 	{
-		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom-C->GetPosY() && rSelf.top-C->GetPosY() > m_rTarget.top-C->GetPosY() 
-			&& rSelf.right-C->GetPosX() < m_rTarget.right-C->GetPosX() && rSelf.left-C->GetPosX() > m_rTarget.left-C->GetPosX() )
+		if(rSelf.bottom-C->GetPosY() < m_rTarget.bottom && rSelf.top-C->GetPosY() > m_rTarget.top 
+			&& rSelf.right-C->GetPosX() < m_rTarget.right && rSelf.left-C->GetPosX() > m_rTarget.left )
 		{
-			CObjectManager::GetInstance()->AreaEffect(m_v2TargetPos.fX,m_v2TargetPos.fY,100,(int)m_fDamage);
+			CObjectManager::GetInstance()->AreaEffect(m_v2TargetPos.fX+C->GetPosX(),m_v2TargetPos.fY+C->GetPosY(),100,(int)m_fDamage);
 			CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 			CMessageSystem::GetInstance()->SndMessage(pMsg);
 			pMsg = nullptr;
@@ -133,7 +133,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				if(GetWhoFired() == false)
 				{
 					CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
-					pPlayer->TakeDamage((int)this->m_fDamage);
+					//pPlayer->TakeDamage((int)this->m_fDamage);
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
@@ -239,6 +239,29 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					pmsg = nullptr;
 				}
 				break;
+			case OBJ_HELP:
+			{
+				if(GetWhoFired()==false)
+				{
+					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pBase);
+					pEnemy->TakeDamage((int)this->m_fDamage);
+					if(pEnemy->GetHealth() <= 0.0f)
+					{
+						CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+						CMessageSystem::GetInstance()->SndMessage(pMse);
+						pMse = nullptr;
+						CPlayer::GetInstance()->SetScore(CPlayer::GetInstance()->GetScore()+50);
+					}
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+					if(m_nBulletType==BUL_FLAME)
+					{
+						pEnemy->SetOnFire();
+					}
+				}
+			}
+			break;
 		};
 		return true;
 	}

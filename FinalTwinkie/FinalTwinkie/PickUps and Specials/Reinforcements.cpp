@@ -1,40 +1,45 @@
 #include "Reinforcements.h"
 #include "../GameStates/GamePlayState.h"
-#include "../ObjectManager and Factory/ObjectFactory.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Entity.h"
 #include "../GameObjects/Sapper.h"
+#include "../Event and Messages/CreateEnemyMessage.h"
+#include "../Headers/Camera.h"
+#include "../Event and Messages/MessageSystem.h"
 
-typedef CObjectFactory< std::string , CEntity> CFactory;
 
 CReinforcements::CReinforcements(void)
 {
-	CSapper* pSapper = (CSapper*)CFactory::GetInstance()->CreateObject("CSapper");
+	m_nAmmo = 5;
 }
 
 CReinforcements::~CReinforcements(void)
 {
 }
 
-CEntity* CReinforcements::GetTarget(void)
-{
-	CSapper* blah;
-	return blah;
-}
-
-void CReinforcements::Update(float fDt)
-{
-}
-
 void CReinforcements::ActivateSpecial(void)
 {
-	/*if(m_nAmmo != 0)
+	if(m_nAmmo != 0)
 	{
 		Camera* c = Camera::GetInstance();
-		m_pEmitter->UpdateEmitterPos(CPlayer::GetInstance()->GetPosX()-c->GetPosX(),CPlayer::GetInstance()->GetPosY()-c->GetPosY());
-		m_pEmitter->ActivateEmitter();
-		CObjectManager::GetInstance()->AreaEffect(CPlayer::GetInstance()->GetPosX(),CPlayer::GetInstance()->GetPosY(),m_nRadius,m_nDamage);
+		
+		CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,300,650);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,250,650);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,350,650);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,275,675);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,325,675);
+		CMessageSystem::GetInstance()->SndMessage(pMsg);
+		pMsg = nullptr;
+
 		m_nAmmo--;
-	}	*/
+	}	
 }
