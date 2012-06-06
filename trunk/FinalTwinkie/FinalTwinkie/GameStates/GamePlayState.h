@@ -94,6 +94,9 @@ private:
 	int m_nMine;
 	int FXSmoke;
 	int m_nTree;
+	int m_nDeadTree;
+	int m_nBarricade;
+	int m_nDeadBarr;
 	int FXEnemyOnFire;
 
 	int m_nCursor;

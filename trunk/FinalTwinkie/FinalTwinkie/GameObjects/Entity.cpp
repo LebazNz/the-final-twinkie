@@ -2,7 +2,7 @@
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../World and Tile/TileManager.h"
 #include "../Headers/Camera.h"
-#include "../SGD Wrappers/CSGD_Direct3D.h"
+//#include "../SGD Wrappers/CSGD_Direct3D.h"
 
 CEntity::CEntity(void)
 {
@@ -57,8 +57,8 @@ void CEntity::Render(void)
 	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2);
 	}
-	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
+	/*CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);*/
 }
 
 bool CEntity::CheckCollision(IEntity* pObject)

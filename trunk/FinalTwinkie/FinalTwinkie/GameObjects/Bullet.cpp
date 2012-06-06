@@ -219,11 +219,13 @@ bool CBullet::CheckCollision(IEntity* pBase)
 
 			case OBJ_TREE:
 				{
+
 					CTree* pTree = dynamic_cast<CTree*>(pBase);
-					//destroy tree
-					CDestroyTreeMessage* pMsg = new CDestroyTreeMessage(pTree);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+
+					if(pTree->GetHit() == true)
+						break;
+					else
+						pTree->SetHit(true);
 
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);
