@@ -13,15 +13,8 @@ class CReinforcements :
 public:
 	CReinforcements(void);
 	~CReinforcements(void);
-	CEntity* GetTarget(void);
-	virtual void Update(float fDt);
-	virtual void ActivateSpecial(void);
 
-	virtual void SetEmitter(CEmitter* pEmitter){m_pEmitter = pEmitter;}
-
-private:
-	int m_nAmmount;
-	vector<CEnemy*> m_vUnits;
+	virtual void ActivateSpecial(void);	
 };
 
 #endif

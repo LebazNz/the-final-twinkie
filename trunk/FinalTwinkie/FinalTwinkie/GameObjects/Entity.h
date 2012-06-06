@@ -6,7 +6,7 @@
 class CTileManager;
 
 #include <vector>
-enum OBJECT_TYPE { OBJ_BASE, OBJ_PLAYER, OBJ_BULLET, OBJ_ENEMY, OBJ_TURRET, OBJ_PICKUP, OBJ_BUILDING, OBJ_MINE, OBJ_TANK, OBJ_TREE, OBJ_FLYTEXT };
+enum OBJECT_TYPE { OBJ_BASE, OBJ_PLAYER, OBJ_BULLET, OBJ_ENEMY, OBJ_TURRET, OBJ_PICKUP, OBJ_BUILDING, OBJ_MINE, OBJ_TANK, OBJ_TREE, OBJ_FLYTEXT, OBJ_HELP };
 enum BULLETYPE { BUL_SHELL, BUL_ROCKET, BUL_ARTILLERY, BUL_MACHINEGUN, BUL_LASER, BUL_FLAME };
 
 
@@ -21,6 +21,8 @@ public:
 	virtual int GetImageID(void) { return m_nImageID; }
 
 	virtual void SetImageID(int nImageID) { m_nImageID = nImageID; }
+
+	virtual void SetType(int nType) {m_nType = nType;}
 
 	virtual void AddRef(void);
 	virtual void Release(void);

@@ -17,6 +17,7 @@ public:
 
 	void SetSight(float fSight) {m_fSight=fSight;}
 	void SetPlayer(CPlayer* pPlayer) {m_pPlayer=pPlayer;}
+	void SetHelpTarget(CEntity* pTarget){m_pTarget=pTarget;}
 	void SetExplosion(CEmitter* pEmitter) {m_pExplosion=pEmitter;}
 	void SetRadius(float fRad){m_fRadius=fRad;}
 	void SetDamage(float fDam){m_fDamage=fDam;}
@@ -33,7 +34,7 @@ private:
 
 	CEmitter* m_pExplosion;
 	CPlayer* m_pPlayer;
-
+	CEntity* m_pTarget;
 	tVector2D m_v2OldPos;
 };
 #endif

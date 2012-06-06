@@ -17,10 +17,6 @@ CNuke::~CNuke(void)
 	//m_pPM->RemoveAttachedEmitter(m_pEmmiter);
 }
 
-void CNuke::Update(float fDt)
-{
-}
-
 void CNuke::ActivateSpecial(void)
 {
 	if(m_nAmmo != 0)

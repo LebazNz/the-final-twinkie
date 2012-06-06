@@ -202,14 +202,16 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 						break;
 						case OBJ_TANK:
 						{
-							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
+							CTank* pEnemy = dynamic_cast<CTank*>(m_pTarget);
 
 							if(damage > 0)
 								pEnemy->TakeDamage((int)damage);
 							else
 							{
 								pEnemy->SetStopTimer(10.0f);
-								pEnemy->SetStop(true);								
+								pEnemy->SetStop(true);	
+								pEnemy->GetTurret()->SetStopTimer(10.0f);
+								pEnemy->GetTurret()->SetStop(true);
 							}
 							if(pEnemy->GetHealth() <= 0.0f)
 							{
@@ -228,7 +230,7 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 						break;
 					case OBJ_TURRET:
 						{
-							CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);
+							/*CTurret* pTurret = dynamic_cast<CTurret*>(m_pTarget);
 							if(damage > 0)
 							{
 								if(pTurret->GetOwner() == nullptr)
@@ -242,6 +244,24 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 								{
 									pTurret->SetStopTimer(10.0f);
 									pTurret->SetStop(true);
+								}
+							}*/
+							CTurret* pEnemy = dynamic_cast<CTurret*>(m_pTarget);
+							if(pEnemy->GetOwner() == nullptr)
+							{
+								pEnemy->TakeDamage(damage);
+								if(damage > 0)
+									pEnemy->TakeDamage((int)damage);
+								else
+								{
+									pEnemy->SetStopTimer(10.0f);
+									pEnemy->SetStop(true);								
+								}
+								if(pEnemy->GetHealth() <= 0.0f)
+								{
+									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pEnemy);
+									CMessageSystem::GetInstance()->SndMessage(pMst);
+									pMst = nullptr;
 								}
 							}
 						}
@@ -259,8 +279,77 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 
 					}
 				}
-		}
-	
+		}	
 	}
+}
 
+CEntity* CObjectManager::GetTarget(CEntity* pEntity)
+{
+	Camera* C = Camera::GetInstance();
+	CEntity* pReturn = nullptr;
+	CEntity* pTarget = nullptr;
+	tVector2D vPos = { pEntity->GetPosX(), pEntity->GetPosY() };
+	tVector2D vOther = {};
+	tVector2D toTarget = {};
+	float shortest = 100000.0f;
+	float length = 0.0f;
+
+	vector< IEntity* >::iterator iter;
+
+	for(iter = m_vObjectList.begin(); iter != m_vObjectList.end(); iter++)
+	{
+		if((*iter)->GetType() == OBJ_ENEMY)
+		{
+			CEnemy* m_pTarget = dynamic_cast<CEnemy*>(*iter);
+			vOther.fX = m_pTarget->GetPosX();
+			vOther.fY = m_pTarget->GetPosY();
+			pTarget = m_pTarget;
+		}
+		else if((*iter)->GetType() == OBJ_TANK)
+		{
+			CTank* m_pTarget = dynamic_cast<CTank*>(*iter);
+			vOther.fX = m_pTarget->GetPosX();
+			vOther.fY = m_pTarget->GetPosY();
+			pTarget = m_pTarget;
+		}
+		else if((*iter)->GetType() == OBJ_TURRET)
+		{
+			CTurret* m_pTarget = dynamic_cast<CTurret*>(*iter);
+			if(m_pTarget->GetOwner() == nullptr)
+			{
+				vOther.fX = m_pTarget->GetPosX();
+				vOther.fY = m_pTarget->GetPosY();
+				pTarget = m_pTarget;
+			}
+			else
+				continue;
+		}
+		/*else if((*iter)->GetType() == OBJ_PLAYER)
+		{
+			CPlayer* m_pTarget = dynamic_cast<CPlayer*>(*iter);
+			vOther.fX = m_pTarget->GetPosX();
+			vOther.fY = m_pTarget->GetPosY();
+			pTarget = m_pTarget;
+		}*/
+		else
+			continue;
+
+		toTarget.fX=((vOther.fX-C->GetPosX()) - vPos.fX);
+		toTarget.fY=((vOther.fY-C->GetPosY()) - vPos.fY);
+		length=Vector2DLength(toTarget);
+		if(abs(length) < shortest)
+		{
+			if(pTarget->GetType() == OBJ_TURRET)
+				continue;
+			else
+			{
+				pReturn = pTarget;
+				shortest = length;
+			}
+		}
+	}
+	if(pReturn != nullptr)
+		return pReturn;
+	else
+		return nullptr;
 }

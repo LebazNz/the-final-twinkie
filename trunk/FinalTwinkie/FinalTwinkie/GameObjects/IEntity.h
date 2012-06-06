@@ -15,5 +15,6 @@ public:
 	virtual void AddRef(void) = 0;
 	virtual void Render(void) = 0;
 	virtual void Release(void) = 0;
+	virtual void SetType(int nType) = 0;
 };
 #endif

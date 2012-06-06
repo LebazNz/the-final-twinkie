@@ -17,10 +17,6 @@ CSmoke::~CSmoke(void)
 {
 }
 
-void CSmoke::Update(float fDt)
-{
-}
-
 void CSmoke::ActivateSpecial(void)
 {
 	if(m_nAmmo != 0)

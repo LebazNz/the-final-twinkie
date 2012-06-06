@@ -56,7 +56,9 @@ private:
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 	CObjectManager*			m_pOM;
+public:
 	CFactory*				m_pOF;
+private:
 	CParticleManager*		m_PM;
 	CMessageSystem*			m_pMS;
 	CTileManager*			m_pTile;

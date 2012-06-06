@@ -10,6 +10,10 @@
 #include "../SGD Wrappers/SGD_Math.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Headers/Game.h"
+#include "../ObjectManager and Factory/ObjectManager.h"
+#include "../GameObjects/Tank.h"
+#include "../GameObjects/Turret.h"
+#include "../GameObjects/Sapper.h"
 
 CEnemy::CEnemy(void)
 {
@@ -41,79 +45,174 @@ void CEnemy::Update(float fDt)
 	Camera* pCam =Camera::GetInstance();
 
 	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
-	if(m_bStop == false)
 	{
-		Camera* C=Camera::GetInstance();
-		tVector2D Up = {0,-1};
-		tVector2D toTarget;
-		toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
-		toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
-
-
-		if(m_nEType==RIFLE||m_nEType==ROCKET)
+		if(GetType() == OBJ_HELP)
 		{
-			tVector2D Up={0,-1};
+			m_pTarget = CObjectManager::GetInstance()->GetTarget(this);
+
+			CEntity* pTarget;
+			if(m_pTarget!=nullptr)
+			{
+				if(m_pTarget->GetType() == OBJ_TANK)
+					pTarget = dynamic_cast<CTank*>(m_pTarget);
+				else if(m_pTarget->GetType() == OBJ_TURRET)
+					pTarget = dynamic_cast<CTurret*>(m_pTarget);
+				else if(m_pTarget->GetType() == OBJ_ENEMY)
+					pTarget = dynamic_cast<CEnemy*>(m_pTarget);
+				else if(m_pTarget->GetType() == OBJ_PLAYER)
+					pTarget = dynamic_cast<CPlayer*>(m_pTarget);
+				
+
+				Camera* C=Camera::GetInstance();
+				tVector2D Up = {0,-1};
+				tVector2D toTarget;
+				toTarget.fX=((pTarget->GetPosX())/*-C->GetPosX())*/-(GetPosX()));
+				toTarget.fY=((pTarget->GetPosY())/*-C->GetPosY())*/-(GetPosY()));
+
+
+				if(m_nEType==RIFLE||m_nEType==ROCKET)
+				{
+					tVector2D Up={0,-1};
+					tVector2D toTarget;
+					toTarget.fX=((pTarget->GetPosX())/*-C->GetPosX())*/-(GetPosX()));
+					toTarget.fY=((pTarget->GetPosY())/*-C->GetPosY())*/-(GetPosY()));
+					m_fRotation=AngleBetweenVectors(toTarget, Up);
+					if(pTarget->GetPosX()<(GetPosX()+C->GetPosX()))
+					{
+						m_fRotation=-m_fRotation;
+					}
+					tVector2D Look=Vector2DRotate(Up, m_fRotation);
+					if(Vector2DLength(toTarget)>m_fMinDist)
+					{
+						float DY=(Look.fY*GetVelY()*fDt);
+						float DX=(Look.fX*GetVelX()*fDt);
+						m_v2OldPos.fX = GetPosX();
+						m_v2OldPos.fY = GetPosY();
+						SetPosX(GetPosX()+DX);
+						SetPosY(GetPosY()+DY);
+					}
+					if(m_nEType==RIFLE)
+					{
+						if(Vector2DLength(toTarget)<=m_fMaxDist)
+						{
+							if(m_fTimer>=m_fShotTimer)
+							{
+								SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
+								CMessageSystem::GetInstance()->SndMessage(msg);
+								m_fTimer=0;
+							}
+							else
+								m_fTimer+=fDt;
+						}
+					}
+					else if(m_nEType==ROCKET)
+					{
+						if(m_fTimer>=m_fShotTimer)
+						{
+							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							m_fTimer=0;
+						}
+						else
+							m_fTimer+=fDt;
+					}
+					if(m_bOnFire)
+					{
+						m_fFireTimer-=fDt;
+						if(m_fFireTimer<=0)
+						{
+							TakeDamage(3);
+							m_bOnFire=false;
+							m_pOnFire->DeactivateEmitter();
+						}
+						if(m_fFireTimer<=2&&!m_bHurt2)
+						{
+							TakeDamage(3);
+							m_bHurt2=true;
+						}
+						if(m_fFireTimer<=4&&!m_bHurt1)
+						{
+							TakeDamage(3);
+							m_bHurt1=true;
+						}
+					}
+				}
+			}
+		}		
+		else if(GetType() != OBJ_HELP && m_bStop == false)
+		{
+			Camera* C=Camera::GetInstance();
+			tVector2D Up = {0,-1};
 			tVector2D toTarget;
 			toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
 			toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
-			m_fRotation=AngleBetweenVectors(toTarget, Up);
-			if(m_pPlayer->GetPosX()<(GetPosX()+C->GetPosX()))
+
+
+			if(m_nEType==RIFLE||m_nEType==ROCKET)
 			{
-				m_fRotation=-m_fRotation;
-			}
-			tVector2D Look=Vector2DRotate(Up, m_fRotation);
-			if(Vector2DLength(toTarget)>m_fMinDist)
-			{
-				float DY=(Look.fY*GetVelY()*fDt);
-				float DX=(Look.fX*GetVelX()*fDt);
-				m_v2OldPos.fX = GetPosX();
-				m_v2OldPos.fY = GetPosY();
-				SetPosX(GetPosX()+DX);
-				SetPosY(GetPosY()+DY);
-			}
-			if(m_nEType==RIFLE)
-			{
-				if(Vector2DLength(toTarget)<=m_fMaxDist)
+				tVector2D Up={0,-1};
+				tVector2D toTarget;
+				toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
+				toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
+				m_fRotation=AngleBetweenVectors(toTarget, Up);
+				if(m_pPlayer->GetPosX()<(GetPosX()+C->GetPosX()))
+				{
+					m_fRotation=-m_fRotation;
+				}
+				tVector2D Look=Vector2DRotate(Up, m_fRotation);
+				if(Vector2DLength(toTarget)>m_fMinDist)
+				{
+					float DY=(Look.fY*GetVelY()*fDt);
+					float DX=(Look.fX*GetVelX()*fDt);
+					m_v2OldPos.fX = GetPosX();
+					m_v2OldPos.fY = GetPosY();
+					SetPosX(GetPosX()+DX);
+					SetPosY(GetPosY()+DY);
+				}
+				if(m_nEType==RIFLE)
+				{
+					if(Vector2DLength(toTarget)<=m_fMaxDist)
+					{
+						if(m_fTimer>=m_fShotTimer)
+						{
+							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							m_fTimer=0;
+						}
+						else
+							m_fTimer+=fDt;
+					}
+				}
+				else if(m_nEType==ROCKET)
 				{
 					if(m_fTimer>=m_fShotTimer)
+						{
+							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							m_fTimer=0;
+						}
+						else
+							m_fTimer+=fDt;
+				}
+				if(m_bOnFire)
+				{
+					m_fFireTimer-=fDt;
+					if(m_fFireTimer<=0)
 					{
-						SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
-						CMessageSystem::GetInstance()->SndMessage(msg);
-						m_fTimer=0;
+						TakeDamage(3);
+						m_bOnFire=false;
+						m_pOnFire->DeactivateEmitter();
 					}
-					else
-						m_fTimer+=fDt;
-				}
-			}
-			else if(m_nEType==ROCKET)
-			{
-				if(m_fTimer>=m_fShotTimer)
-				{
-					SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
-					CMessageSystem::GetInstance()->SndMessage(msg);
-					m_fTimer=0;
-				}
-				else
-						m_fTimer+=fDt;
-			}
-			if(m_bOnFire)
-			{
-				m_fFireTimer-=fDt;
-				if(m_fFireTimer<=0)
-				{
-					TakeDamage(3);
-					m_bOnFire=false;
-					m_pOnFire->DeactivateEmitter();
-				}
-				if(m_fFireTimer<=2&&!m_bHurt2)
-				{
-					TakeDamage(3);
-					m_bHurt2=true;
-				}
-				if(m_fFireTimer<=4&&!m_bHurt1)
-				{
-					TakeDamage(3);
-					m_bHurt1=true;
+					if(m_fFireTimer<=2&&!m_bHurt2)
+					{
+						TakeDamage(3);
+						m_bHurt2=true;
+					}
+					if(m_fFireTimer<=4&&!m_bHurt1)
+					{
+						TakeDamage(3);
+						m_bHurt1=true;
+					}
 				}
 			}
 		}

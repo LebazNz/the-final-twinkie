@@ -6,7 +6,7 @@
 #include "../Particle/Emitter.h"
 #include "../GameObjects/Player.h"
 
-enum ENEMYTYPE { SAPPER, TANK, TURRET, RIFLE, ROCKET };
+enum ENEMYTYPE { SAPPER, TANK, TURRET, RIFLE, ROCKET, HELP };
 
 class CEnemy:public CEntity, public IListener
 {
@@ -41,6 +41,8 @@ public:
 	virtual void HandleEvent(CEvent* pEvent);
 
 	void SetPlayer(CPlayer* pPlayer){m_pPlayer=pPlayer;}
+	void SetHelpTarget(CEntity* pTarget){m_pTarget=pTarget;}
+	CEntity* GetHelpTarget(void){return m_pTarget;}
 	void SetEType(ENEMYTYPE eType){m_nEType=eType;}
 	float GetRotation(void){return m_fRotation;}
 
@@ -70,6 +72,7 @@ private:
 
 	ENEMYTYPE m_nEType;
 	CPlayer* m_pPlayer;
+	CEntity* m_pTarget;
 
 	float m_fRotation;
 	float m_fTimer;

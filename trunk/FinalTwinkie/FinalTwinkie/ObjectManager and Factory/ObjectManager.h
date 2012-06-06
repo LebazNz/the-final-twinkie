@@ -5,6 +5,8 @@ class IEntity;
 #include <vector>
 using std::vector;
 class CTileManager;
+class CEntity;
+
 class CObjectManager
 {
 public:
@@ -18,6 +20,7 @@ public:
 	void RenderAllObjects(void);
 
 	void AreaEffect(float x, float y, int radius, int damage);
+	CEntity* GetTarget(CEntity* pEntity);
 
 private:
 	CObjectManager(void);
