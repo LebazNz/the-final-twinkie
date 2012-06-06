@@ -22,6 +22,8 @@ public:
 
 	CTurret* GetTurret(void)const{return m_pTurret;}
 
+	void SlowVel(float time, float vel);
+
 private:
 	CTurret* m_pTurret;
 	float m_fRotationRate;
@@ -34,5 +36,8 @@ private:
 	CPlayer* m_pPlayer;
 
 	tVector2D m_v2OldPos;
+
+	bool m_bSlowDown;
+	float m_fSlowTimer;
 };
 #endif

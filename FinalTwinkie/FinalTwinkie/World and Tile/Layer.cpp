@@ -105,8 +105,8 @@ void CLayer::Fill(void)
 	{
 		for(int j = 0; j < m_nMapWidth; j++)
 		{
-			float x = (float)m_vTiles[i][j].GetPosX();
-			float y = (float)m_vTiles[i][j].GetPosY();
+			float x = (float)m_vTiles[i][j].GetPosX() + m_vTiles[i][j].GetWidth()/2;
+			float y = (float)m_vTiles[i][j].GetPosY() + m_vTiles[i][j].GetHeight()/2;
 
 			switch(m_vTiles[i][j].GetSpawn())
 			{
@@ -136,6 +136,9 @@ void CLayer::Fill(void)
 			case 3:
 				{
 					/*  BARRICADE   */
+					CCreateTreeMessage* pMsg = new CCreateTreeMessage(MSG_CREATETREE,x,y,true);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 4:

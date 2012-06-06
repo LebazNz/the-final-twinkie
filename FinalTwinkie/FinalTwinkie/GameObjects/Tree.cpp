@@ -5,7 +5,7 @@
 #include "../Event and Messages/DestroyTreeMessage.h"
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
-
+#include "../GameObjects/Tank.h"
 CTree::CTree(void)
 {
 	m_nType = OBJ_TREE;
@@ -22,9 +22,7 @@ CTree::~CTree(void)
 
 bool CTree::CheckCollision(IEntity* pObject)
 {
-	if(m_bHit == true)
-		return false;
-
+	
 	if(CEntity::CheckCollision(pObject) == true)
 	{
 		switch(pObject->GetType())
@@ -35,7 +33,10 @@ bool CTree::CheckCollision(IEntity* pObject)
 			{	
 				CPlayer* pPlayer = CPlayer::GetInstance();
 				// MAKE PLAYER SLOW DOWN
-			
+				if(m_bHit == true)
+					pPlayer->SlowVel(0.5f,70);
+				else
+					pPlayer->SlowVel(0.5f,45);
 
 				m_bHit = true;
 			}
@@ -45,14 +46,22 @@ bool CTree::CheckCollision(IEntity* pObject)
 				if(pObject->GetType() == OBJ_TANK)
 				{
 					// MAKE ENEMY SLOW DOWN
+					CTank* pTank = dynamic_cast<CTank*>(pObject);
+				if(m_bHit == true)
+					pTank->SlowVel(0.5f,70);
+				else
+					pTank->SlowVel(0.5f,45);
 
 					m_bHit = true;
 				}
 				else
 				{
-					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
-					pEnemy->SetPosX(pEnemy->GetOldPos().fX);
-					pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+					if(m_bHit == true)
+					{
+						CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
+						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+					}
 				}
 			}
 			break;

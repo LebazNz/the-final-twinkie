@@ -114,6 +114,9 @@ CGamePlayState::CGamePlayState(void)
 	GameOverID = -1;
 	m_nMine = -1;
 	m_nTree = -1;
+	m_nDeadTree = -1;
+	m_nBarricade = -1;
+	m_nDeadBarr = -1;
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
 	m_bWinner = false;
@@ -207,7 +210,9 @@ void CGamePlayState::Enter(void)
 
 		m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
 		m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
-
+		m_nDeadTree = m_pTM->LoadTexture(_T("resource/graphics/stump.png"));
+		m_nBarricade =m_pTM->LoadTexture(_T("resource/graphics/barr2.png"));
+		m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
 		m_pMS->InitMessageSystem(&MessageProc);
 
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -253,7 +258,6 @@ void CGamePlayState::Enter(void)
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-		m_pOM->AddObject(player);
 
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
@@ -270,6 +274,9 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetDistance(800);
 		PlayerTurret->SetRotationRate(1.0f);
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
+		m_pTile->Load("resource/files/graphic_layer.xml");
+		m_pMS->ProcessMessages();
+		m_pOM->AddObject(player);
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
 
@@ -530,7 +537,7 @@ void CGamePlayState::Enter(void)
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
-		m_pTile->Load("resource/files/graphic_layer.xml");
+		
 
 		player->SetMoney(m_dGameData.nMoney);
 	}
@@ -554,25 +561,45 @@ void CGamePlayState::Exit(void)
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
-		if(WinnerID == -1)
+		if(WinnerID != -1)
 		{
 			m_pTM->UnloadTexture(WinnerID);
 			WinnerID = -1;
 		}
-	
-		if(GameOverID == -1)
+
+		if(m_nDeadTree != -1)
+		{
+			m_pTM->UnloadTexture(m_nDeadTree);
+			m_nDeadTree = -1;
+		}
+
+		if(GameOverID != -1)
 		{
 			m_pTM->UnloadTexture(GameOverID);
 			GameOverID = -1;
 		}
 
-		if(m_nMine == -1)
+		if(m_nMine != -1)
 		{
 			m_pTM->UnloadTexture(m_nMine);
 			m_nMine = -1;
 		}
 
-		if(m_nTree == -1)
+		if(m_nBarricade != -1)
+		{
+			m_pTM->UnloadTexture(m_nBarricade);
+			m_nBarricade = -1;
+		}
+
+		if(m_nDeadBarr != -1)
+		{
+			m_pTM->UnloadTexture(m_nDeadBarr);
+			m_nDeadBarr = -1;
+		}
+		
+		
+
+		if(m_nTree != -1)
 		{
 			m_pTM->UnloadTexture(m_nTree);
 			m_nTree = -1;
@@ -1668,7 +1695,17 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pTree->SetHeight(32);
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
-			pTree->SetImageID(pSelf->m_nTree);
+			if(pMessage->GetBarr() == true)
+			{
+				pTree->SetImageID(pSelf->m_nBarricade);
+				pTree->SetDestroyedImage(pSelf->m_nDeadBarr);
+			}
+			else
+			{
+				pTree->SetImageID(pSelf->m_nTree);
+				pTree->SetDestroyedImage(pSelf->m_nDeadTree);
+			}
+			pTree->SetHit(false);
 			pSelf->m_pOM->AddObject(pTree);
 			pTree->Release();
 		}

@@ -299,6 +299,18 @@ void CPlayer::Update(float fDt)
 	//m_pTracksLeft->UpdateEmitterPos((GetPosX()*Up.fX)+32*Up.fX-C->GetPosX(), (GetPosY()*Up.fY)+64-C->GetPosY());
 	//m_pTracksLeft->UpdateRotation(m_fRotation);
 	//m_pTracksLeft->ActivateEmitter();
+	if(m_bSlowDown == true)
+	{
+		if(m_fSlowTimer > 0.0f)
+			m_fSlowTimer -= fDt;
+		else 
+		{
+			m_fSlowTimer = 0.0f;
+			m_bSlowDown = false;
+			SetVelX(90);
+			SetVelY(90);
+		}
+	}
 }
 void CPlayer::Render(void)
 {
@@ -382,6 +394,9 @@ CPlayer::CPlayer(void)
 	m_bMoveDown		= false;
 	m_bOverheat		= false;
 
+	m_bSlowDown		= false;
+	m_fSlowTimer = 0.0f;
+
 	m_fHeatModifier	= 1;
 	m_nHeatLevel	= 1;
 	m_fDamageMod	= 1;
@@ -439,4 +454,12 @@ CPlayer::CPlayer(void)
 	m_bAllUpgrades		= false;}
 CPlayer::~CPlayer(void)
 {
+}
+
+void CPlayer::SlowVel(float time, float vel)
+{
+	m_bSlowDown = true;
+	m_fSlowTimer = time;
+	SetVelX(vel);
+	SetVelY(vel);
 }

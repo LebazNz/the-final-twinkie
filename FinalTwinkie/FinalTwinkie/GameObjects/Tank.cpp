@@ -85,6 +85,19 @@ void CTank::Update(float fDt)
 			m_bStop = false;
 	}
 	}
+
+	if(m_bSlowDown == true)
+	{
+		if(m_fSlowTimer > 0.0f)
+			m_fSlowTimer -= fDt;
+		else 
+		{
+			m_fSlowTimer = 0.0f;
+			m_bSlowDown = false;
+			SetVelX(35);
+			SetVelY(35);
+		}
+	}
 }
 void CTank::Render(void)
 {
@@ -201,4 +214,13 @@ RECT CTank::GetRect(void)
 	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2);
 	rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
 	return rect;
+}
+
+
+void CTank::SlowVel(float time, float vel)
+{
+	m_bSlowDown = true;
+	m_fSlowTimer = time;
+	SetVelX(vel);
+	SetVelY(vel);
 }

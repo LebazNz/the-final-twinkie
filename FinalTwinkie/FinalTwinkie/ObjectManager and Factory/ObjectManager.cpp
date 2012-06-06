@@ -141,8 +141,6 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 {
 	CPlayer *pPlayer = CPlayer::GetInstance();
 	
-	// For arc we will need to take turret rotation into effect 
-	
 	Camera  *pCam = Camera::GetInstance();
 	//x += pCam->GetPosX();
 	//y += pCam->GetPosY();
@@ -205,7 +203,7 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 						case OBJ_TANK:
 						{
 							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
-							pEnemy->TakeDamage(damage);
+
 							if(damage > 0)
 								pEnemy->TakeDamage((int)damage);
 							else

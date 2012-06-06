@@ -157,6 +157,8 @@ public:
 	void SetEmitterRight(CEmitter* EM){m_pTracksRight=EM;}
 	void SetEmitterLeft(CEmitter* EM){m_pTracksLeft=EM;}
 
+	void SlowVel(float time, float vel);
+
 private:
 	CPlayer(void);
 	~CPlayer(void);
@@ -191,6 +193,9 @@ private:
 	bool m_bMoveDown;
 	bool m_bOverheat;
 	float m_fOverheatTimer;
+
+	bool m_bSlowDown;
+	float m_fSlowTimer;
 
 	float m_fFireRate;
 
