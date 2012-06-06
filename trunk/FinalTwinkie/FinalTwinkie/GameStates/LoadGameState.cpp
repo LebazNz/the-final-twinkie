@@ -7,6 +7,8 @@
 #include "ShopState.h"
 #include "GetNameState.h"
 #include "../GameObjects/Player.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 #include <iostream>
 using namespace std;
 
@@ -78,6 +80,8 @@ void CLoadGameState::Enter(void)
 
 	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
 	CGame::GetInstance()->my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
+
+	LoadText();
 }
 
 void CLoadGameState::Exit(void)
@@ -472,7 +476,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,65,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",80,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sNewGame.c_str(),80,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -483,11 +487,11 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,63,475,0.75f,0.75f,nullptr,0,0,0,fScale1);
 		m_pTM->Draw(m_nButtonImageID,63,520,0.75f,0.75f,nullptr,0,0,0,fScale4);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 1",100,480,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Delete",100,525,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Name:",80,360,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Level:",80,400,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Money:",80,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLoad.c_str(),100,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sDelete.c_str(),100,525,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sName.c_str(),80,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLevel.c_str(),80,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sMoney.c_str(),80,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(vSavedData[0].szName,150,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[0].nLevel,buffer,10);
@@ -505,7 +509,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,317,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",332,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sNewGame.c_str(),332,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -516,11 +520,11 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,315,475,0.75f,0.75f,nullptr,0,0,0,fScale2);
 		m_pTM->Draw(m_nButtonImageID,315,520,0.75f,0.75f,nullptr,0,0,0,fScale5);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 2",352,480,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Delete",352,525,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Name:",332,360,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Level:",332,400,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Money:",332,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLoad.c_str(),352,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sDelete.c_str(),352,525,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sName.c_str(),332,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLevel.c_str(),332,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sMoney.c_str(),332,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(vSavedData[1].szName,402,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[1].nLevel,buffer,10);
@@ -537,7 +541,7 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nBGImageID,570,350,1.0f,1.0f,&rSelf,0,0,0);
 		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("New Game",585,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sNewGame.c_str(),585,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 	else
 	{
@@ -548,11 +552,11 @@ void CLoadGameState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,568,475,0.75f,0.75f,nullptr,0,0,0,fScale3);
 		m_pTM->Draw(m_nButtonImageID,568,520,0.75f,0.75f,nullptr,0,0,0,fScale6);
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Save 3",605,480,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Delete",605,525,1.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Name:",585,360,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Level:",585,400,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print("Money:",585,440,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLoad.c_str(),605,480,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sDelete.c_str(),605,525,1.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sName.c_str(),585,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sLevel.c_str(),585,400,0.75f,D3DCOLOR_XRGB(255,0,0));
+		font->Print(m_sMoney.c_str(),585,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(vSavedData[2].szName,655,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[2].nLevel,buffer,10);
@@ -745,4 +749,92 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 		
 
 	return true;
+}
+void CLoadGameState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("LoadGameState");
+				TiXmlNode* pButton = pState->FirstChild("NewGame");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sNewGame=pText->Value();
+				pButton=pState->FirstChild("Load");
+				pText = pButton->FirstChild()->ToText();
+				m_sLoad=pText->Value();
+				pButton = pState->FirstChild("Delete");
+				pText = pButton->FirstChild()->ToText();
+				m_sDelete=pText->Value();
+				pButton=pState->FirstChild("Name");
+				pText = pButton->FirstChild()->ToText();
+				m_sName=pText->Value();
+				pButton=pState->FirstChild("Level");
+				pText = pButton->FirstChild()->ToText();
+				m_sLevel=pText->Value();
+				pButton=pState->FirstChild("Money");
+				pText = pButton->FirstChild()->ToText();
+				m_sMoney=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("LoadGameState");
+				TiXmlNode* pButton = pState->FirstChild("NewGame");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sNewGame=pText->Value();
+				pButton=pState->FirstChild("Load");
+				pText = pButton->FirstChild()->ToText();
+				m_sLoad=pText->Value();
+				pButton = pState->FirstChild("Delete");
+				pText = pButton->FirstChild()->ToText();
+				m_sDelete=pText->Value();
+				pButton=pState->FirstChild("Name");
+				pText = pButton->FirstChild()->ToText();
+				m_sName=pText->Value();
+				pButton=pState->FirstChild("Level");
+				pText = pButton->FirstChild()->ToText();
+				m_sLevel=pText->Value();
+				pButton=pState->FirstChild("Money");
+				pText = pButton->FirstChild()->ToText();
+				m_sMoney=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("LoadGameState");
+				TiXmlNode* pButton = pState->FirstChild("NewGame");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sNewGame=pText->Value();
+				pButton=pState->FirstChild("Load");
+				pText = pButton->FirstChild()->ToText();
+				m_sLoad=pText->Value();
+				pButton = pState->FirstChild("Delete");
+				pText = pButton->FirstChild()->ToText();
+				m_sDelete=pText->Value();
+				pButton=pState->FirstChild("Name");
+				pText = pButton->FirstChild()->ToText();
+				m_sName=pText->Value();
+				pButton=pState->FirstChild("Level");
+				pText = pButton->FirstChild()->ToText();
+				m_sLevel=pText->Value();
+				pButton=pState->FirstChild("Money");
+				pText = pButton->FirstChild()->ToText();
+				m_sMoney=pText->Value();
+			}
+			break;
+		case 3:
+			{
+			}
+			break;
+		}
+	}
 }

@@ -12,7 +12,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
-
+	void LoadText(void);
 
 private:
 	CGetNameState(void);
@@ -40,5 +40,10 @@ private:
 	char szName[32];
 	int m_nCount;
 	int m_nPos;
+	string m_sShift;
+	string m_sSpace;
+	string m_sBackspace;
+	string m_sEnter;
+	string m_sName;
 };
 

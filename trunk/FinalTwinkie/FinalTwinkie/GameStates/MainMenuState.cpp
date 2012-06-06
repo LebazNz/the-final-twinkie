@@ -382,9 +382,9 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 
 
 		m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
-		CBitmapFont::GetInstance()->Print("Campaign",265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
 		m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
-		CBitmapFont::GetInstance()->Print("Survival",440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
 	}
 
 
@@ -409,6 +409,12 @@ void CMainMenuState::LoadText(void)
 				TiXmlNode* pButton = pState->FirstChild("Play");
 				TiXmlText* pText = pButton->FirstChild()->ToText();
 				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Campaign");
+				pText = pButton->FirstChild()->ToText();
+				m_sCampaign=pText->Value();
+				pButton=pState->FirstChild("Survival");
+				pText = pButton->FirstChild()->ToText();
+				m_sSurvival=pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();
@@ -427,6 +433,12 @@ void CMainMenuState::LoadText(void)
 				TiXmlNode* pButton = pState->FirstChild("Play");
 				TiXmlText* pText = pButton->FirstChild()->ToText();
 				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Campaign");
+				pText = pButton->FirstChild()->ToText();
+				m_sCampaign=pText->Value();
+				pButton=pState->FirstChild("Survival");
+				pText = pButton->FirstChild()->ToText();
+				m_sSurvival=pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();
@@ -445,6 +457,12 @@ void CMainMenuState::LoadText(void)
 				TiXmlNode* pButton = pState->FirstChild("Play");
 				TiXmlText* pText = pButton->FirstChild()->ToText();
 				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Campaign");
+				pText = pButton->FirstChild()->ToText();
+				m_sCampaign=pText->Value();
+				pButton=pState->FirstChild("Survival");
+				pText = pButton->FirstChild()->ToText();
+				m_sSurvival=pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();

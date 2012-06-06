@@ -31,6 +31,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	void LoadText(void);
 
 	bool GetPaused(void)const {return m_bPaused;}
 
@@ -119,6 +120,11 @@ private:
 	IDirect3DTexture9* MiniMap;
 
 	int m_nLevel;
+
+	string m_sPaused;
+	string m_sResume;
+	string m_sOptions;
+	string m_sExit;
 };
 
 #endif

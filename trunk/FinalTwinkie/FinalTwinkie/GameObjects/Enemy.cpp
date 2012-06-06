@@ -87,6 +87,14 @@ void CEnemy::Update(float fDt)
 			}
 			else if(m_nEType==ROCKET)
 			{
+				if(m_fTimer>=m_fShotTimer)
+				{
+					SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
+					CMessageSystem::GetInstance()->SndMessage(msg);
+					m_fTimer=0;
+				}
+				else
+						m_fTimer+=fDt;
 			}
 			if(m_bOnFire)
 			{

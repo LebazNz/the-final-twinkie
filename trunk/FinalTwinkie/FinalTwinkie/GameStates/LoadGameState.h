@@ -18,7 +18,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
-
+	void LoadText(void);
 
 	bool LoadSavedGame(const char* szFileName, int nGameData);
 
@@ -46,5 +46,11 @@ private:
 	int m_nMouseY;
 
 	int m_nCursor;
+	string m_sNewGame;
+	string m_sLoad;
+	string m_sDelete;
+	string m_sName;
+	string m_sLevel;
+	string m_sMoney;
 };
 
