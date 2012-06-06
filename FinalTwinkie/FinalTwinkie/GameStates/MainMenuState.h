@@ -55,6 +55,8 @@ private:
 	string m_sOptions;
 	string m_sCredits;
 	string m_sExit;
+	string m_sCampaign;
+	string m_sSurvival;
 	
 };
 

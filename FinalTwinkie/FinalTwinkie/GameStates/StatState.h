@@ -13,6 +13,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	void LoadText(void);
 	void Highlight( DWORD* dwIndex );
 	void SelectButtons();
 	void Clicked();
@@ -53,4 +54,22 @@ private:
 	DWORD m_dwNukem;	
 	DWORD m_dwIamBoss;	
 	DWORD m_dwAllUpgrades;
+
+	string m_sStats;
+	string m_sScore;
+	string m_sShots;
+	string m_sNukes;
+	string m_sDamage;
+	string m_sMonies;
+	string m_sEnemies;
+	string m_sSappers;
+	string m_sAchievements;
+	string m_sNaziBoss;
+	string m_sAlienBoss;
+	string m_sRobotBoss;
+	string m_sSparta;
+	string m_sWTFDamage;
+	string m_sNukem;
+	string m_sPain;
+	string m_sOwnAll;
 };

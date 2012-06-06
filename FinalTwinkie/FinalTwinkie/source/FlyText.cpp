@@ -3,6 +3,8 @@
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/DestroyFlyTextMessage.h"
 #include "../Headers/Camera.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 
 void CFlyText::Update(float fDt)
 {
@@ -41,6 +43,26 @@ CFlyText::~CFlyText(void)
 
 void CFlyText::SetFlyText(int nType, float fTimer, DWORD dColor, float fX, float fY)
 {  
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	doc.LoadFile();
+	TiXmlNode* pParent = doc.RootElement();
+	TiXmlNode* pLanguage;
+	switch(LangSel)
+	{
+	case 0:
+		pLanguage = pParent->FirstChild("English");
+		break;
+	case 1:
+		pLanguage = pParent->FirstChild("English");
+		break;
+	case 2:
+		pLanguage = pParent->FirstChild("Pirate");
+		break;
+	case 3:
+		break;
+	}
+	TiXmlNode* pState = pLanguage->FirstChild("FlyText");
 	m_fTimer = fTimer; 
 	m_DWColor = dColor;  
 	SetPosX(fX);
@@ -48,28 +70,60 @@ void CFlyText::SetFlyText(int nType, float fTimer, DWORD dColor, float fX, float
 	switch(nType)
 	{
 	case 0:
-		m_szType = "HEALTH";
+		{
+			TiXmlNode* pButton = pState->FirstChild("Health");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 1:
-		m_szType = "AMMO";
+		{
+			TiXmlNode* pButton = pState->FirstChild("Ammo");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 2:
-		m_szType = "ARMOR";
+		{
+			TiXmlNode* pButton = pState->FirstChild("Armor");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 3:
-		m_szType = "DOUBLE DAMAGE";
+		{
+			TiXmlNode* pButton = pState->FirstChild("DDamage");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 4:
-		m_szType = "NO RELOAD";
+		{
+			TiXmlNode* pButton = pState->FirstChild("NoReload");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 5:
-		m_szType = "INVULNERABILITY";
+		{
+			TiXmlNode* pButton = pState->FirstChild("Invulnerability");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 6:
-		m_szType = "INFINITE AMMO";
+		{
+			TiXmlNode* pButton = pState->FirstChild("InfiniteAmmo");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	case 7:
-		m_szType = "MONEY";
+		{
+			TiXmlNode* pButton = pState->FirstChild("Money");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
 		break;
 	}
 }

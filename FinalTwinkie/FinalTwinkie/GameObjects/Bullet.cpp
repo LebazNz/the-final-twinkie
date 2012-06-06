@@ -63,6 +63,11 @@ void CBullet::Update(float fDT)
 	}
 	if(m_nBulletType == BUL_ROCKET)
 	{
+		if(!GetWhoFired())
+		{
+			m_v2TargetPos.fX=CPlayer::GetInstance()->GetPosX()-C->GetPosX();
+			m_v2TargetPos.fY=CPlayer::GetInstance()->GetPosY()-C->GetPosY();
+		}
 		tVector2D Up={0,-1};
 		tVector2D toTarget;
 		this;
@@ -172,12 +177,14 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				CTurret* pEnemy = dynamic_cast<CTurret*>(pBase);
 				if(pEnemy->GetOwner() != nullptr)
 					break;
-
-				pEnemy->TakeDamage((int)this->m_fDamage);
-
-				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+				if(GetWhoFired()==true)
+				{
+					pEnemy->TakeDamage((int)this->m_fDamage);
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
+				
 
 			}
 			break;

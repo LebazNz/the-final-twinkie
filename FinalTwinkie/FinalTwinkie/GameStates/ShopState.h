@@ -14,6 +14,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	void LoadText(void);
 
 	void RenderPrices(int y2);
 	void DetermineSelection();
@@ -137,7 +138,25 @@ private:
 	float m_fArmorUp;
 	float m_fSpeedUp;
 
-	
+	string m_sTitle;
+	string m_sRocket;
+	string m_sLaser;
+	string m_sNuke;
+	string m_sEmp;
+	string m_sArtillery;
+	string m_sFlamer;
+	string m_sAirStrike;
+	string m_sSmokeBomb;
+	string m_sHeat;
+	string m_sDamage; 
+	string m_sAmmo;
+	string m_sHealth;
+	string m_sArmor;
+	string m_sSpeed;
+	string m_sMonies;
+	string m_sCost;
+	string m_sBuy;
+	string m_sContinue;
 };
 
 #endif

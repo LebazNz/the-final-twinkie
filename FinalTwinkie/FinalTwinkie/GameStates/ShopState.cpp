@@ -4,6 +4,8 @@
 #include "MainMenuState.h"
 #include "GamePlayState.h"
 #include "../GameObjects/Player.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 
 CShopState* CShopState::m_pSelf = nullptr;
 
@@ -93,7 +95,7 @@ void CShopState::Enter(void)
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-
+	LoadText();
 }
 
 void CShopState::Exit(void)
@@ -140,7 +142,7 @@ void CShopState::Render(void)
 	m_pTM->Draw(m_nBGImageID,0,0,1.0f,1.0f,&rSelf,0,0,0);
 
 
-	m_pFont->Print("Mr Tim's Hardware",(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*14/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sTitle.c_str(),(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*14/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
 
 	// BlueBox
 	/*SetRect(&rSelf, 653, 638, 816, 760);
@@ -148,50 +150,50 @@ void CShopState::Render(void)
 	int y = 100;
 	int y2 = 80;
 	m_pTM->Draw(m_nButtonImageID,35,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwRocket);
-	m_pFont->Print("ROCKET",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sRocket.c_str(),75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,220,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwLaser);
-	m_pFont->Print("LASER",265,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sLaser.c_str(),265,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,405,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwNuke);
-	m_pFont->Print("NUKE",455,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sNuke.c_str(),455,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,590,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwEMP);
-	m_pFont->Print("EMP",655,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sEmp.c_str(),655,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,35, 100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwArillery);
-	m_pFont->Print("ARTILLERY",55,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sArtillery.c_str(),55,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,220,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwFlamer);
-	m_pFont->Print("FLAMER",255,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sFlamer.c_str(),255,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,405,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwAirStrike);
-	m_pFont->Print("AIR STRIKE",425,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sAirStrike.c_str(),425,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,590,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwSmokeBomb);
-	m_pFont->Print("SMOKE BOMB",605,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sSmokeBomb.c_str(),605,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	// GreyBox
 	SetRect(&rSelf, 467, 638, 631, 760);
 	y = y/2;
 	m_pTM->Draw(m_nBGImageID,35 ,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwHeat);
-	m_pFont->Print("HEAT   ",75 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sHeat.c_str(),75 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nBGImageID,295,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwDamage);
-	m_pFont->Print("DAMAGE ",335,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sDamage.c_str(),335,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nBGImageID,555,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwAmmo);
-	m_pFont->Print("AMMO   ",595,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sAmmo.c_str(),595,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	
 	y2 = 45;
 	m_pTM->Draw(m_nBGImageID,35 ,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwHealth);
-	m_pFont->Print("HEALTH ",75, 320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sHealth.c_str(),75, 320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nBGImageID,295,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwArmor);
-	m_pFont->Print("ARMOR  ",335,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sArmor.c_str(),335,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nBGImageID,555,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwSpeed);
-	m_pFont->Print("SPEED  ",595,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sSpeed.c_str(),595,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 
 	// Description bar
 
 	m_pTM->Draw(m_nBGImageID,-5 ,400+ y2,5,0.75f,&rSelf,0,0,0);
 
-	m_pFont->Print("MONIES",CGame::GetInstance()->GetWidth()/6,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print("COST",CGame::GetInstance()->GetWidth()/4*3,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sMonies.c_str(),CGame::GetInstance()->GetWidth()/6,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sCost.c_str(),CGame::GetInstance()->GetWidth()/4*3,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	RenderPrices(y2);
 	m_pTM->Draw(m_nButtonImageID,0,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBuy);
-	m_pFont->Print("BUY",40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sBuy.c_str(),40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
-	m_pFont->Print("CONTINUE",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+90,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sContinue.c_str(),CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+90,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	//m_pFont->Print("Rocket",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
@@ -755,4 +757,210 @@ void CShopState::Purchase()
 
 	m_pPlayer->SetMaxWeaponAmmo(40,tempArt,tempRoc);
 	
+}
+
+void CShopState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("ShopState");
+				TiXmlNode* pButton = pState->FirstChild("Title");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sTitle=pText->Value();
+				pButton = pState->FirstChild("Rocket");
+				pText = pButton->FirstChild()->ToText();
+				m_sRocket=pText->Value();
+				pButton=pState->FirstChild("Laser");
+				pText = pButton->FirstChild()->ToText();
+				m_sLaser=pText->Value();
+				pButton = pState->FirstChild("Nuke");
+				pText = pButton->FirstChild()->ToText();
+				m_sNuke=pText->Value();
+				pButton=pState->FirstChild("Emp");
+				pText = pButton->FirstChild()->ToText();
+				m_sEmp=pText->Value();
+				pButton=pState->FirstChild("Artillery");
+				pText = pButton->FirstChild()->ToText();
+				m_sArtillery=pText->Value();
+				pButton=pState->FirstChild("Flamer");
+				pText = pButton->FirstChild()->ToText();
+				m_sFlamer=pText->Value();
+				pButton=pState->FirstChild("AirStrike");
+				pText = pButton->FirstChild()->ToText();
+				m_sAirStrike=pText->Value();
+				pButton=pState->FirstChild("SmokeBomb");
+				pText = pButton->FirstChild()->ToText();
+				m_sSmokeBomb=pText->Value();
+				pButton=pState->FirstChild("Heat");
+				pText = pButton->FirstChild()->ToText();
+				m_sHeat=pText->Value();
+				pButton=pState->FirstChild("Damage");
+				pText = pButton->FirstChild()->ToText();
+				m_sDamage=pText->Value();
+				pButton=pState->FirstChild("Ammo");
+				pText = pButton->FirstChild()->ToText();
+				m_sAmmo=pText->Value();
+				pButton=pState->FirstChild("Health");
+				pText = pButton->FirstChild()->ToText();
+				m_sHealth=pText->Value();
+				pButton=pState->FirstChild("Armor");
+				pText = pButton->FirstChild()->ToText();
+				m_sArmor=pText->Value();
+				pButton=pState->FirstChild("Speed");
+				pText = pButton->FirstChild()->ToText();
+				m_sSpeed=pText->Value();
+				pButton=pState->FirstChild("Monies");
+				pText = pButton->FirstChild()->ToText();
+				m_sMonies=pText->Value();
+				pButton=pState->FirstChild("Cost");
+				pText = pButton->FirstChild()->ToText();
+				m_sCost=pText->Value();
+				pButton=pState->FirstChild("Buy");
+				pText = pButton->FirstChild()->ToText();
+				m_sBuy=pText->Value();
+				pButton=pState->FirstChild("Continue");
+				pText = pButton->FirstChild()->ToText();
+				m_sContinue=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("ShopState");
+				TiXmlNode* pButton = pState->FirstChild("Title");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sTitle=pText->Value();
+				pButton = pState->FirstChild("Rocket");
+				pText = pButton->FirstChild()->ToText();
+				m_sRocket=pText->Value();
+				pButton=pState->FirstChild("Laser");
+				pText = pButton->FirstChild()->ToText();
+				m_sLaser=pText->Value();
+				pButton = pState->FirstChild("Nuke");
+				pText = pButton->FirstChild()->ToText();
+				m_sNuke=pText->Value();
+				pButton=pState->FirstChild("Emp");
+				pText = pButton->FirstChild()->ToText();
+				m_sEmp=pText->Value();
+				pButton=pState->FirstChild("Artillery");
+				pText = pButton->FirstChild()->ToText();
+				m_sArtillery=pText->Value();
+				pButton=pState->FirstChild("Flamer");
+				pText = pButton->FirstChild()->ToText();
+				m_sFlamer=pText->Value();
+				pButton=pState->FirstChild("AirStrike");
+				pText = pButton->FirstChild()->ToText();
+				m_sAirStrike=pText->Value();
+				pButton=pState->FirstChild("SmokeBomb");
+				pText = pButton->FirstChild()->ToText();
+				m_sSmokeBomb=pText->Value();
+				pButton=pState->FirstChild("Heat");
+				pText = pButton->FirstChild()->ToText();
+				m_sHeat=pText->Value();
+				pButton=pState->FirstChild("Damage");
+				pText = pButton->FirstChild()->ToText();
+				m_sDamage=pText->Value();
+				pButton=pState->FirstChild("Ammo");
+				pText = pButton->FirstChild()->ToText();
+				m_sAmmo=pText->Value();
+				pButton=pState->FirstChild("Health");
+				pText = pButton->FirstChild()->ToText();
+				m_sHealth=pText->Value();
+				pButton=pState->FirstChild("Armor");
+				pText = pButton->FirstChild()->ToText();
+				m_sArmor=pText->Value();
+				pButton=pState->FirstChild("Speed");
+				pText = pButton->FirstChild()->ToText();
+				m_sSpeed=pText->Value();
+				pButton=pState->FirstChild("Monies");
+				pText = pButton->FirstChild()->ToText();
+				m_sMonies=pText->Value();
+				pButton=pState->FirstChild("Cost");
+				pText = pButton->FirstChild()->ToText();
+				m_sCost=pText->Value();
+				pButton=pState->FirstChild("Buy");
+				pText = pButton->FirstChild()->ToText();
+				m_sBuy=pText->Value();
+				pButton=pState->FirstChild("Continue");
+				pText = pButton->FirstChild()->ToText();
+				m_sContinue=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("ShopState");
+				TiXmlNode* pButton = pState->FirstChild("Title");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sTitle=pText->Value();
+				pButton = pState->FirstChild("Rocket");
+				pText = pButton->FirstChild()->ToText();
+				m_sRocket=pText->Value();
+				pButton=pState->FirstChild("Laser");
+				pText = pButton->FirstChild()->ToText();
+				m_sLaser=pText->Value();
+				pButton = pState->FirstChild("Nuke");
+				pText = pButton->FirstChild()->ToText();
+				m_sNuke=pText->Value();
+				pButton=pState->FirstChild("Emp");
+				pText = pButton->FirstChild()->ToText();
+				m_sEmp=pText->Value();
+				pButton=pState->FirstChild("Artillery");
+				pText = pButton->FirstChild()->ToText();
+				m_sArtillery=pText->Value();
+				pButton=pState->FirstChild("Flamer");
+				pText = pButton->FirstChild()->ToText();
+				m_sFlamer=pText->Value();
+				pButton=pState->FirstChild("AirStrike");
+				pText = pButton->FirstChild()->ToText();
+				m_sAirStrike=pText->Value();
+				pButton=pState->FirstChild("SmokeBomb");
+				pText = pButton->FirstChild()->ToText();
+				m_sSmokeBomb=pText->Value();
+				pButton=pState->FirstChild("Heat");
+				pText = pButton->FirstChild()->ToText();
+				m_sHeat=pText->Value();
+				pButton=pState->FirstChild("Damage");
+				pText = pButton->FirstChild()->ToText();
+				m_sDamage=pText->Value();
+				pButton=pState->FirstChild("Ammo");
+				pText = pButton->FirstChild()->ToText();
+				m_sAmmo=pText->Value();
+				pButton=pState->FirstChild("Health");
+				pText = pButton->FirstChild()->ToText();
+				m_sHealth=pText->Value();
+				pButton=pState->FirstChild("Armor");
+				pText = pButton->FirstChild()->ToText();
+				m_sArmor=pText->Value();
+				pButton=pState->FirstChild("Speed");
+				pText = pButton->FirstChild()->ToText();
+				m_sSpeed=pText->Value();
+				pButton=pState->FirstChild("Monies");
+				pText = pButton->FirstChild()->ToText();
+				m_sMonies=pText->Value();
+				pButton=pState->FirstChild("Cost");
+				pText = pButton->FirstChild()->ToText();
+				m_sCost=pText->Value();
+				pButton=pState->FirstChild("Buy");
+				pText = pButton->FirstChild()->ToText();
+				m_sBuy=pText->Value();
+				pButton=pState->FirstChild("Continue");
+				pText = pButton->FirstChild()->ToText();
+				m_sContinue=pText->Value();
+			}
+			break;
+		case 3:
+			{
+			}
+			break;
+		}
+	}
 }

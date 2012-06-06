@@ -2,6 +2,8 @@
 	<English>
 		<MenuState>
 			<Play>Play</Play>
+			<Campaign>Campaign</Campaign>
+			<Survival>Survival</Survival>
 			<Options>Options</Options>
 			<Credits>Credits</Credits>
 			<Exit>Exit</Exit>
@@ -24,6 +26,77 @@
 			<AL>Art Lead:</AL>
 			<Back>Back</Back>
 		</CreditsState>
+		<StatState>
+			<Stats>Statistics</Stats>
+			<Score>Score</Score>
+			<Shots>Shots Fired</Shots>
+			<Nukes>Nukes Blasted</Nukes>
+			<Damage>Damage Tanked</Damage>
+			<Monies>Monies Collected</Monies>
+			<Enemies>Enemies Decimated</Enemies>
+			<Sappers>Sappers Absorbed</Sappers>
+			<Achievements>Achievements</Achievements>
+			<NaziBoss>All Your Reich Are Belong To Us</NaziBoss>
+			<AlienBoss>Oh No Alienz</AlienBoss>
+			<RobotBoss>Greased</RobotBoss>
+			<Sparta>We Are Not In Sparta Anymore</Sparta>
+			<WTFDamage>WTF Is Damage</WTFDamage>
+			<Nukem>Nuke Dukem</Nukem>
+			<Pain>Max Pain</Pain>
+			<OwnAll>I Own It All</OwnAll>
+		</StatState>
+		<ShopState>
+			<Title>Mr. Tim's Hardware</Title>
+			<Rocket>Rocket</Rocket>
+			<Laser>Laser</Laser>
+			<Nuke>Nuke</Nuke>
+			<Emp>Emp</Emp>
+			<Artillery>Artillery</Artillery>
+			<Flamer>Flamer</Flamer>
+			<AirStrike>Air Strike</AirStrike>
+			<SmokeBomb>Smoke Bomb</SmokeBomb>
+			<Heat>Heat  </Heat>
+			<Damage>Damage </Damage>
+			<Ammo>Ammo   </Ammo>
+			<Health>Health </Health>
+			<Armor>Armor  </Armor>
+			<Speed>Speed  </Speed>
+			<Monies>Monies</Monies>
+			<Cost>Cost</Cost>
+			<Buy>Buy</Buy>
+			<Continue>Continue</Continue>
+		</ShopState>
+		<LoadGameState>
+			<NewGame>New Game</NewGame>
+			<Load>Load</Load>
+			<Delete>Delete</Delete>
+			<Name>Name:</Name>
+			<Level>Level:</Level>
+			<Money>Money:</Money>
+		</LoadGameState>
+		<GetNameState>
+			<Shift>Shift</Shift>
+			<Space>Space</Space>
+			<Backspace>Backspace</Backspace>
+			<Enter>Enter</Enter>
+			<Name>Enter your Name:</Name>
+		</GetNameState>
+		<GameState>
+			<Paused>Paused</Paused>
+			<Resume>Resume</Resume>
+			<Options>Options</Options>
+			<Exit>Exit</Exit>
+		</GameState>
+		<FlyText>
+			<Health>Health</Health>
+			<Ammo>Ammo</Ammo>
+			<Armor>Armor</Armor>
+			<DDamage>Double Damage</DDamage>
+			<NoReload>No Reload</NoReload>
+			<Invulnerability>Invulnerability</Invulnerability>
+			<InfiniteAmmo>Infinite Ammo</InfiniteAmmo>
+			<Money>Money</Money>
+		</FlyText>
 	</English>
 	<Pirate>
 		<MenuState>

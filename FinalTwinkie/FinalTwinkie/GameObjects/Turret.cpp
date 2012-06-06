@@ -200,7 +200,6 @@ void CTurret::Render(void)
 			rect.top=(LONG)391; rect.left=(LONG)351; rect.right=(LONG)(351+((509-351)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)403;
 			CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+pCam->GetPosX(), (GetPosY()-40)+pCam->GetPosY(), 0.5f,0.5f,&rect);
 		}
-
 		if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 			CSGD_TextureManager::GetInstance()->Draw(GetImageID(),(int)((GetPosX()-GetWidth()/2)+C->GetPosX()),(int)((GetPosY()-GetHeight()/2-32)+C->GetPosY()),1.0f,1.0f,0,m_fRotPosX, m_fRotPosY,m_fRotation);
 	}
@@ -210,7 +209,7 @@ void CTurret::Render(void)
 
 CTurret::CTurret(void)
 {
-	CEntity::m_nType = OBJ_TURRET;
+	m_nType = OBJ_TURRET;
 	m_pOwner = nullptr;
 	m_pTarget = nullptr;
 	m_vLookVec.fX = 0.0f;
@@ -228,6 +227,7 @@ CTurret::CTurret(void)
 	m_bStop = false;
 	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
+
 CTurret::~CTurret(void)
 {
 }
@@ -240,53 +240,43 @@ void CTurret::SetUpVec(float x, float y)
 
 RECT CTurret::GetRect(void)
 {
+	Camera* C=Camera::GetInstance();
 	RECT rect={};
-	if(m_pOwner != nullptr)
+	if(abs(m_fRotation)>=2.335)
 	{
-	if(m_pOwner->GetType()==OBJ_PLAYER)
-	{
-		if(abs(m_fRotation)>=2.335)
-		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2+32);
-			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2+32);
-			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
-		}
-		else if(m_fRotation>0.785)
-		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
-			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2+32);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
-			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2+32);
-		}
-		else if(m_fRotation<-0.785)
-		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2);
-			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2-32);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2);
-			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2-32);
-		}
-		else if(abs(m_fRotation)<=0.785)
-		{
-			rect.top=(LONG)(GetPosY()-m_fRotationHeight/2-32);
-			rect.left=(LONG)(GetPosX()-m_fRotationWidth/2);
-			rect.bottom=(LONG)(GetPosY()+m_fRotationHeight/2-32);
-			rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
-		}
+		rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2+32);
+		rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2);
+		rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2+32);
+		rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
 	}
+	else if(m_fRotation>0.785)
+	{
+		rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2);
+		rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2+32);
+		rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2);
+		rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2+32);
+	}
+	else if(m_fRotation<-0.785)
+	{
+		rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2);
+		rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2-32);
+		rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2);
+		rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2-32);
+	}
+	else if(abs(m_fRotation)<=0.785)
+	{
+		rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2-32);
+		rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2);
+		rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2-32);
+		rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
 	}
 	return rect;
 }
-
 
 void CTurret::TakeDamage(int nDamage)
 {
 	if(GetOwner() != nullptr)
 		return;
-	else
-	{
-		SetHealth(GetHealth()-nDamage);
-	}
 
 	int health = GetHealth() - nDamage;
 	SetHealth(health);

@@ -49,6 +49,8 @@
 #include "../PickUps and Specials/Nuke.h"
 #include "../PickUps and Specials/Smoke.h"
 #include "StatState.h"
+#include "../tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -129,6 +131,7 @@ CGamePlayState::~CGamePlayState(void)
 
 void CGamePlayState::Enter(void)
 {
+	LoadText();
 	if(m_bPaused == false)
 	{
 		m_nEnemyCount = 0;
@@ -266,7 +269,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetPosX(player->GetPosX());
 		PlayerTurret->SetPosY(player->GetPosY());
 		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(BUL_ARTILLERY);
+		PlayerTurret->SetBullet(BUL_SHELL);
 		PlayerTurret->SetWidth(64);
 		PlayerTurret->SetHeight(128);
 		PlayerTurret->SetRotationPositon(32,98);
@@ -369,7 +372,7 @@ void CGamePlayState::Enter(void)
 		//pTurret->Release();
 		////pTank->Release();
 
-		CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
+		/*CBuilding* building=(CBuilding*)m_pOF->CreateObject("CBuilding");
 		building->SetPosX(450);
 		building->SetPosY(400);
 		building->SetHeight(128);
@@ -386,7 +389,7 @@ void CGamePlayState::Enter(void)
 		building->SetDead(false);
 		building->SetDeathImage(m_anEnemyIDs[5]);
 		m_pOM->AddObject(building);
-		building->Release();
+		building->Release();*/
 
 		/*CEnemy* enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
 		enemy->SetEType(RIFLE);
@@ -506,10 +509,10 @@ void CGamePlayState::Enter(void)
 		enemy->SetFire(m_PM->GetEmitter(FXEnemyOnFire));
 		m_pOM->AddObject(enemy);
 		enemy->Release();
-		enemy = nullptr;
+		enemy = nullptr;*/
 
-		enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
-		enemy->SetEType(RIFLE);
+		/*CEnemy* enemy=(CEnemy*)m_pOF->CreateObject("CEnemy");
+		enemy->SetEType(ROCKET);
 		enemy->SetImageID(m_anEnemyIDs[4]);
 		enemy->SetPosX(350);
 		enemy->SetPosY(325);
@@ -522,11 +525,28 @@ void CGamePlayState::Enter(void)
 		enemy->SetVelY(30);
 		enemy->SetMinDistance(200);
 		enemy->SetMaxDistance(600);
-		enemy->SetShotTimer(0.1f);
+		enemy->SetShotTimer(3.0f);
 		enemy->SetFire(m_PM->GetEmitter(FXEnemyOnFire));
 		m_pOM->AddObject(enemy);
 		enemy->Release();
 		enemy = nullptr;*/
+
+		CTurret* turret=(CTurret*)m_pOF->CreateObject("CTurret");
+		turret->SetImageID(m_anEnemyIDs[7]);
+		turret->SetPosX(350);
+		turret->SetPosY(325);
+		turret->SetHeight(128);
+		turret->SetWidth(64);
+		turret->SetBullet(BUL_SHELL);
+		turret->SetDistance(400);
+		turret->SetHealth(50);
+		turret->SetMaxHealth(50);
+		turret->SetRotationRate(2.0f);
+		turret->SetTarget(player);
+		turret->SetUpVec(0,-1);
+		turret->SetRotationPositon(32,98);
+		m_pOM->AddObject(turret);
+		turret->Release();
 
 		//m_nPosition = 0;
 		//m_bPaused = false;
@@ -995,10 +1015,10 @@ void CGamePlayState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2+90,0.75f,0.75f,nullptr,0,0,0,fScale3);
 
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
-		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
-		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sPaused.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sResume.c_str(),(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
@@ -1481,6 +1501,25 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case ROCKET:
 				{
+					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+					enemy->SetEType(ROCKET);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetPosX(350);
+					enemy->SetPosY(325);
+					enemy->SetHeight(32);
+					enemy->SetWidth(32);
+					enemy->SetPlayer(CPlayer::GetInstance());
+					enemy->SetHealth(50);
+					enemy->SetMaxHealth(50);
+					enemy->SetVelX(30);
+					enemy->SetVelY(30);
+					enemy->SetMinDistance(200);
+					enemy->SetMaxDistance(600);
+					enemy->SetShotTimer(3.0f);
+					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+					pSelf->m_pOM->AddObject(enemy);
+					enemy->Release();
+					enemy = nullptr;
 				}
 				break;
 			default:
@@ -1671,6 +1710,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetDamage(1);
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+					pBullet->SetBulletType(BUL_SHELL);
 					pSelf->m_pOM->AddObject(pBullet);
 					pBullet->Release();
 					pBullet = nullptr;
@@ -1678,6 +1718,23 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{
+					tVector2D norVec = Vector2DNormalize(Up);
+					pBullet->SetWidth(32);
+					pBullet->SetHeight(32);
+					pBullet->SetScale(0.35f);
+					pBullet->SetWhoFired(false);
+					pBullet->SetVelX(300);
+					pBullet->SetVelY(300);
+					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+					pBullet->SetDamage(15.0f);
+					pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());
+					tVector2D vPos = {pSelf->m_pPlayer->GetPosX()-C->GetPosX(), pSelf->m_pPlayer->GetPosY()-C->GetPosY()};
+					pBullet->SetTargetPos(vPos);
+					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
+					pBullet->SetBulletType(BUL_ROCKET);
+					pSelf->m_pOM->AddObject(pBullet);
+					pBullet->Release();
+					pBullet = nullptr;
 				}
 				break;
 			}
@@ -1814,4 +1871,75 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	doc.SaveFile(szFileName);
 
 	delete(pDec);
+}
+
+void CGamePlayState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("GameState");
+				TiXmlNode* pButton = pState->FirstChild("Paused");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("GameState");
+				TiXmlNode* pButton = pState->FirstChild("Paused");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("GameState");
+				TiXmlNode* pButton = pState->FirstChild("Paused");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 3:
+			{
+			}
+			break;
+		}
+	}
 }
