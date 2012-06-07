@@ -9,6 +9,7 @@ using namespace std;
 #include "../Event and Messages/EventSystem.h"
 
 #include "../GameStates/GamePlayState.h"
+#include "../GameStates/TutorState.h"
 #include "../GameObjects/Entity.h"
 #include "../GameObjects/Bullet.h"
 #include "../GameObjects/Enemy.h"
@@ -247,8 +248,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			float x = m_vTiles[i][j].GetPosX()+cam->GetPosX();
-			float y = m_vTiles[i][j].GetPosY()+cam->GetPosY();
+			float x = m_vTiles[i][j].GetPosX();
+			float y = m_vTiles[i][j].GetPosY();
 			
 			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
 			
@@ -258,6 +259,9 @@ void CTileManager::CheckCollision(IEntity* pBase)
 
 			if(m_vTiles[i][j].GetCollision() == false)
 				continue;
+
+			x = x+cam->GetPosX();
+			y = y+cam->GetPosY();
 
 			CEntity* pTarget =dynamic_cast<CEntity*>(pBase);
 	
@@ -285,10 +289,12 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					{
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
-							//RaiseWall();
+							RaiseWall();
 							CGamePlayState::GetInstance()->SetWinner(true);
+							if(CGame::GetInstance()->isTutor == true)
+								CTutorState::GetInstance()->IncrementBox();
 
-							//m_vTiles[i][j].SetCollision(false);
+							m_vTiles[i][j].SetCollision(false);
 							break;
 						}
 

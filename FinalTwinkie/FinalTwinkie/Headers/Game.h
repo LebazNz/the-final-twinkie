@@ -68,7 +68,7 @@ public:
 	FMOD::Sound* Game_theme;
 	FMOD::Channel* channel;
 	FMOD::Channel* my_channel;
-	bool mute, isPlaying;
+	bool mute, isPlaying,isTutor;
 
 	
 };
