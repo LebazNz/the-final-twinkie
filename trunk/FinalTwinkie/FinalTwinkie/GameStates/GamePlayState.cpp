@@ -1635,8 +1635,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
 			pTree->SetPosX(pMessage->GetPosX());
 			pTree->SetPosY(pMessage->GetPosY());
-			pTree->SetWidth(32);
-			pTree->SetHeight(32);
+			pTree->SetWidth(64);
+			pTree->SetHeight(64);
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
 			if(pMessage->GetBarr() == true)

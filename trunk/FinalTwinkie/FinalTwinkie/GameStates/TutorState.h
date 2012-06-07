@@ -103,7 +103,7 @@ private:
 
 
 	int m_nBox;
-	string m_asInfo[11];
+	string m_asInfo[12];
 	int m_nCursor;
 	bool m_bActivePad;
 	bool m_bWordBox;

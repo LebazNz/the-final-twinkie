@@ -232,7 +232,11 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					if(pTree->GetHit() == true)
 						break;
 					else
+					{
 						pTree->SetHit(true);
+						pTree->SetWidth(32);
+						pTree->SetHeight(32);
+					}
 
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);

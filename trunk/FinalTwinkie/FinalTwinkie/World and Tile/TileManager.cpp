@@ -180,7 +180,7 @@ bool CTileManager::Load(string fileName)
 			pChild = pChild->NextSiblingElement("tile_row");
 			
 		}
-		pChild = pRoot->FirstChildElement("file_name")->NextSiblingElement("enemy_row");
+		/*pChild = pRoot->FirstChildElement("file_name")->NextSiblingElement("enemy_row");
 
 		
 		if(pChild != nullptr)
@@ -204,7 +204,7 @@ bool CTileManager::Load(string fileName)
 				pEnemy = pEnemy->NextSiblingElement("enemy_spawn");
 			}
 
-		}
+		}*/
 	
 		
 
@@ -253,8 +253,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 			
 			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
 			
-			if(x >= -width && x <= pGame->GetWidth()+width && y >= -height && y <=  pGame->GetHeight()+height)
-				continue;
+			//if(x >= -width && x <= pGame->GetWidth()+width && y >= -height && y <=  pGame->GetHeight()+height)
+				//continue;
 			
 
 			if(m_vTiles[i][j].GetCollision() == false)
@@ -291,6 +291,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						{
 							RaiseWall();
 							CGamePlayState::GetInstance()->SetWinner(true);
+
 							if(CGame::GetInstance()->isTutor == true)
 								CTutorState::GetInstance()->IncrementBox();
 

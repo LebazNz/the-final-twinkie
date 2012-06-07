@@ -1,126 +1,126 @@
 <?xml version="1.0"?>
 <graphic_layer>
-  <file_name>tiles.png</file_name>
-  <map_info playerx="-16" playery="-16" mapwidth="10" mapheight="10" tilewidth="32" tileheight="32" setwidth="16" setheight="16" />
+  <file_name>summertiles.png</file_name>
+  <map_info playerx="-17" playery="-17" mapwidth="10" mapheight="10" tilewidth="33" tileheight="33" setwidth="19" setheight="19" />
   <tile_row>
-    <tile_info index="102" posy="0" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="0" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="0" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="0" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="32" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="32" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="32" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="32" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="349" posy="33" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="349" posy="33" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="33" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="64" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="64" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="64" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="64" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="349" posy="66" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="349" posy="66" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="66" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="96" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="96" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="96" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="96" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="99" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="99" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="99" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="128" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="128" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="128" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="128" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="132" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="132" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="132" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="132" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="132" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="132" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="362" posy="132" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="132" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="132" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="132" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="160" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="160" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="160" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="160" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="165" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="165" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="165" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="165" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="165" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="192" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="192" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="192" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="192" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="198" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="198" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="300" posy="198" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="198" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="198" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="224" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="224" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="224" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="224" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="231" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="209" posy="231" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="210" posy="231" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="211" posy="231" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="212" posy="231" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="212" posy="231" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="211" posy="231" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="210" posy="231" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="207" posy="231" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="231" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="256" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="256" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="102" posy="256" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="264" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <tile_row>
-    <tile_info index="-17" posy="288" posx="0" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="32" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="64" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="96" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="128" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="160" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="192" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="224" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="-17" posy="288" posx="288" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="33" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="66" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="99" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="132" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="165" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="198" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="231" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="264" collision="0" spawn="0" trigger="0" />
+    <tile_info index="180" posy="297" posx="297" collision="0" spawn="0" trigger="0" />
   </tile_row>
   <enemy_row />
 </graphic_layer>
