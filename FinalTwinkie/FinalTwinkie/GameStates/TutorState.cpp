@@ -132,31 +132,34 @@ CTutorState::~CTutorState(void)
 
 void CTutorState::LoadWords(void)
 {
-	m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive press W";
+	
 
 	if(m_bActivePad == false)
 	{	
-		m_asInfo[1] = "To reverse press S \nRotate the tank counter-clockwise with A \nTo rotate the tank clockwise use D";
-		m_asInfo[2] = "Left click the mouse to fire your main cannon \nRight click will fire your machine gun turret,\n use this to save ammo and quickly dispatch foot soldiers";
+		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive press W";
+		m_asInfo[1] = "To reverse press S\nRotate counter clockwise with A\nTo rotate clockwise use D";
+		m_asInfo[2] = "LEFT click the mouse\nTo fire your main cannon\nRIGHT click will fire\n your machine gun turret";
+		m_asInfo[3] = "Press 1 or 2 to\nswitch specials and\nSPACEBAR to activate";
 
 	}
 	else
 	{
+		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive push UP on LT";
 		m_asInfo[1] = "Push up on the left thumbstick to go forward\nPull down to reverse";
 		m_asInfo[2] = "To rotate the tank counter-clockwise\npush the left thumbstick to the left\nTo rotate the tank clockwise\npush it to the right";
 		m_asInfo[3] = "Left click the mouse to\nfire your main cannon at the reticule";
-		m_asInfo[4] = "Right click will fire your machine gun turret\n use this to save ammo and quickly dispatch foot soldiers";
+		m_asInfo[4] = "Right click will fire\n your machine gun turret";
 	}
 
-		m_asInfo[5] = "Mines\n These little bad boys pack quite a punch\n Try to avoid these at any cost, especially in a fire fight. Driving over one will cause your tank to temporarily be disables";
-		m_asInfo[4] = "Trees and Barricades\n Can be shot or driven over\n Helps stop foot soldiers but will also slow you down.";
-		m_asInfo[3] = "Buildings\n Most are abondoned but some have been rebuilt by the enemy./nThe enemy has turned the rebuilt buildings into their bases and enemies will funnel out until it is destroyed.";
+		m_asInfo[6] = "Mines\nThese little bad boys\npack quite a punch\nAvoid these at any cost";
+		m_asInfo[5] = "Trees and Barricades\nCan be shot or driven over\n Helps stop foot soldiers\nbut will also slow you down.";
+		m_asInfo[4] = "Buildings\n Most are abondoned but\nsome have been\n repurposed by the enemy";
 
-		m_asInfo[7] = "A wild sapper appears! \nThey will rush your tank and explode to cause heavy damage.";
-		m_asInfo[6] = "A puny rifleman appears!.\nWhile armored they can't truly harm you but lose that and these guys will start to hurt";
-		m_asInfo[8] = "A strong rocket soldier appears!\nThey shoot rpgs that will hurt you with or without armor.";	
-		m_asInfo[9] = "A lonely turret appears!\nThis thing is completely stationary but get to close and you will be too. Because you'll die.";
-		m_asInfo[10] = "A heavy enemy tank appears!\nThese guys are just as B.A. as you, maybe a little less. Dispatch them first or you'll be dead soon after";
+		m_asInfo[8] = "A wild sapper appears! \nThey will rush your tank \nand explode to cause heavy damage.";
+		m_asInfo[7] = "A puny rifleman appears!.\nWhile armored they can't truly\n harm you but lose that and\n these guys will start to hurt";
+		m_asInfo[9] = "A strong rocket soldier appears!\nThey shoot rpgs that\nwill hurt you with\n or without armor.";	
+		m_asInfo[10] = "A pair of turrets appear\nIt is is completely stationary\nbut get to close and\n you will be too.\n Because you'll die.";
+		m_asInfo[11] = "A heavy enemy tank appears\nThese guys are just\nas B.A. as you\n maybe a little less.";
 
 }
 
@@ -305,7 +308,7 @@ void CTutorState::Enter(void)
 		PlayerTurret->SetPosX(player->GetPosX());
 		PlayerTurret->SetPosY(player->GetPosY());
 		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(BUL_ARTILLERY);
+		PlayerTurret->SetBullet(BUL_SHELL);
 		PlayerTurret->SetWidth(64);
 		PlayerTurret->SetHeight(128);
 		PlayerTurret->SetRotationPositon(32,98);
@@ -315,7 +318,7 @@ void CTutorState::Enter(void)
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
 
 		// Create and add everything to the objectmanager first so player is always above
-		m_pTile->Load("resource/files/graphic_layer.xml");
+		m_pTile->Load("resource/files/tutorial.xml");
 		m_pMS->ProcessMessages();
 		m_pOM->AddObject(player);
 		m_pOM->AddObject(PlayerTurret);
@@ -609,20 +612,8 @@ bool CTutorState::Input(void)
 		}
 	}
 
-	// Enter ShopState
-	if(m_pDI->KeyPressed(DIK_NUMPAD0))
-	{
-		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
-		return true;
-	}
-	// Enter ShopState
-	if(m_pDI->KeyPressed(DIK_NUMPAD1))
-	{
-		CGame::GetInstance()->ChangeState(StatState::GetInstance());
-		return true;
-	}
 	return true;
-	}
+	}return true;
 }
 
 void CTutorState::Update(float fDt)
@@ -691,6 +682,13 @@ void CTutorState::IncrementBox(void)
 	m_nBoxIndex++;
 	m_bWordBox = true;
 	m_fWordTimer = 5.0f;
+
+	if(m_nBoxIndex >= 12)
+	{
+		
+		m_nEnemyCount = 0;
+		m_bWinner =true;
+	}
 }
 
 void CTutorState::Render(void)
@@ -740,7 +738,12 @@ void CTutorState::Render(void)
 
 	if(m_bWordBox == true && m_nBoxIndex < 12)
 	{
+		if(m_nBoxIndex < 6)
+		{
 		m_pTM->Draw(m_nBox,485,420,1.3f,1.3f);
+		}
+		else
+			m_pTM->Draw(m_nBox,5,5,1.3f,1.3f);
 		m_pD3D->GetSprite()->Flush();
 
 		switch(m_nBoxIndex)
@@ -784,40 +787,40 @@ void CTutorState::Render(void)
 
 				case 6:
 				{
-					m_pFont->Print(m_asInfo[6].c_str(),515,440,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[6].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 
 				case 7:
 				{
-					m_pFont->Print(m_asInfo[7].c_str(),515,440,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[7].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 
 				case 8:
 				{
-					m_pFont->Print(m_asInfo[8].c_str(),515,440,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[8].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 
 				case 9:
 				{
-					m_pFont->Print(m_asInfo[9].c_str(),515,440,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[9].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 
 				case 10:
 				{
-					m_pFont->Print(m_asInfo[10].c_str(),515,440,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[10].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 
-				/*case 11:
+				case 11:
 				{
-					m_pFont->Print(m_asInfo[11].c_str(),30,30,1.0f,0);
+					m_pFont->Print(m_asInfo[11].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
-
+				/*
 				case 12:
 				{
 					m_pFont->Print(m_asInfo[12].c_str(),30,30,1.0f,0);
@@ -826,7 +829,7 @@ void CTutorState::Render(void)
 
 			default:
 				{
-					m_nBoxIndex == 3;
+					
 				}
 				break;
 
@@ -1584,8 +1587,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
 			pTree->SetPosX(pMessage->GetPosX());
 			pTree->SetPosY(pMessage->GetPosY());
-			pTree->SetWidth(32);
-			pTree->SetHeight(32);
+			pTree->SetWidth(64);
+			pTree->SetHeight(64);
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
 			if(pMessage->GetBarr() == true)

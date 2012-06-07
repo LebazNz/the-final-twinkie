@@ -57,6 +57,7 @@ private:
 	string m_sExit;
 	string m_sCampaign;
 	string m_sSurvival;
+	string m_sTutor;
 	
 };
 

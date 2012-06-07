@@ -3,6 +3,7 @@
 #include "CreditsState.h"
 #include "OptionsState.h"
 #include "LoadGameState.h"
+#include "TutorState.h"
 #include "ShopState.h"
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
@@ -83,6 +84,7 @@ void CMainMenuState::Enter(void)
 	m_nMouseY = m_pDI->MouseGetPosY();
 	StartPlay=0;
 	LoadText();
+	m_sTutor = "Tutorial";
 }
 
 void CMainMenuState::Exit(void)
@@ -165,6 +167,12 @@ bool CMainMenuState::Input(void)
 			else if (m_nPos2 == 5)
 			{
 				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
+				return true;
+			}
+			else if(m_nPos2 == 6)
+			{
+				CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+				playing = false;
 				return true;
 			}
 		}
@@ -362,22 +370,34 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 		{
 			m_nPos2 = 5;
 		}
+		else if(m_nMouseX >= 600 && m_nMouseX <= 772 && m_nMouseY >= 295 && m_nMouseY <= 335)
+		{
+			m_nPos2 = 6;
+		}
 		else 
 			m_nPos2 = 0;
-		DWORD fScale1, fScale2;
+		DWORD fScale1, fScale2,fScale3;
 		switch(m_nPos2)
 		{
 		case 4:
 			fScale1 = D3DCOLOR_XRGB(177,132,0);
 			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			fScale3 = D3DCOLOR_XRGB(255,255,255);
 			break;
 		case 5:
 			fScale1 = D3DCOLOR_XRGB(255,255,255);
 			fScale2 = D3DCOLOR_XRGB(177,132,0);
+			fScale3 = D3DCOLOR_XRGB(255,255,255);
+			break;
+		case 6:
+			fScale1 = D3DCOLOR_XRGB(255,255,255);
+			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			fScale3 = D3DCOLOR_XRGB(177,132,0);
 			break;
 		default:
 			fScale1 = D3DCOLOR_XRGB(255,255,255);
 			fScale2 = D3DCOLOR_XRGB(255,255,255);
+			fScale3 = D3DCOLOR_XRGB(255,255,255);
 		}
 
 
@@ -385,6 +405,9 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 		CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
 		m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
 		CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		m_pTM->Draw(m_nButtonImageID,600,295,0.75f,0.75f,nullptr,0,0,0,fScale3);
+		CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		
 	}
 
 
