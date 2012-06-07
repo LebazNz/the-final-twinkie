@@ -160,11 +160,17 @@ void CLayer::Fill(void)
 			case 6:
 				{
 					/*  ROCKET   */
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,ROCKET,x,y);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 7:
 				{
 					/*  RIFLE   */
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,RIFLE,x,y);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 			case 8:

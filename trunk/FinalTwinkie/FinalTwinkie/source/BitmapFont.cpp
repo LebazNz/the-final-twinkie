@@ -29,7 +29,7 @@ CBitmapFont::~CBitmapFont(void)
 
 void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, DWORD dwColor)
 {	
-	m_nX = nPosY;
+	//m_nX = nPosY;
 	m_fScale = fScale;
 	int ColStart = nPosX;
 	int nLen = strlen(szText);
@@ -57,12 +57,12 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 
 		RECT rTile = CellAlgorithm(id);
 
-		CSGD_TextureManager::GetInstance()->Draw(m_nFontID,nPosX,m_nX,m_fScale,m_fScale, &rTile,0,0,0,dwColor);
+		CSGD_TextureManager::GetInstance()->Draw(m_nFontID,nPosX,nPosY+m_nX,m_fScale,m_fScale, &rTile,0,0,0,dwColor);
 	
 		nPosX += int((m_nCharWidth*m_fScale)-(m_fOffset*m_fScale));
 
 		m_fScale = fScale;
-		m_nX = nPosY;
+		//m_nX = nPosY;
 	}
 }
 
@@ -128,6 +128,7 @@ void CBitmapFont::SetOffset(int ch)
 {
 	float fScale = 0.25f;//0.25f
 	int nY = 6;//6
+	m_nX = 0;
 	switch(m_nType)
 	{
 	case 0:
