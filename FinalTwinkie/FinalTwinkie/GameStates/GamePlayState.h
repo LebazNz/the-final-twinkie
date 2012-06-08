@@ -101,6 +101,7 @@ private:
 	int m_nBarricade;
 	int m_nDeadBarr;
 	int FXEnemyOnFire;
+	int FXAirStrike;
 
 	int m_nCursor;
 
