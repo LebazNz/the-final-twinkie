@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "../PickUps and Specials/Special.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
+#include "../Boss/NaziBoss.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
@@ -244,7 +245,20 @@ void CPlayer::Update(float fDt)
 		m_v2OldPos.fY = GetPosY();
 		SetPosY(float(game->GetHeight()-GetHeight()/2));
 	}
-	if(abs(m_fRotation)>=2.335)
+
+	if(abs(m_fRotation)>=6.28)
+		m_fRotation=0;
+	if(abs(m_fRotation)>=5.495)
+	{
+		m_fRotationHeight=128;
+		m_fRotationWidth=64;
+	}
+	else if(abs(m_fRotation)>=3.925)
+	{
+		m_fRotationHeight=64;
+		m_fRotationWidth=128;
+	}
+	else if(abs(m_fRotation)>=2.335)
 	{
 		m_fRotationHeight=128;
 		m_fRotationWidth=64;
@@ -259,6 +273,7 @@ void CPlayer::Update(float fDt)
 		m_fRotationHeight=128;
 		m_fRotationWidth=64;
 	}
+
 	if(m_fHeat>0&&!m_bOverheat)
 	{
 		m_fHeat-=0.1f;
@@ -291,14 +306,29 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			SetInvul(false);
+	tVector2D Look={0,-1};
+	Look=Vector2DRotate(Look, m_fRotation);
 
-	//m_pTracksRight->UpdateEmitterPos((GetPosX()*Up.fX)-32-C->GetPosX(), (GetPosY()*Up.fY)+64-C->GetPosY());
-	//m_pTracksRight->UpdateRotation(m_fRotation);
-	//m_pTracksRight->ActivateEmitter();
+	if(Look.fY>=-1&&Look.fY<=0&&Look.fX>=0&&Look.fX<=1)
+	{
+		m_pTracksLeft->UpdateEmitterPos((GetPosX()+((-45)*Look.fX)+(15*(Look.fY)))-C->GetPosX(), (GetPosY()+((-64)*Look.fY)+(10*(-Look.fX)))-C->GetPosY());
+		m_pTracksLeft->UpdateRotation(m_fRotation);
+		m_pTracksLeft->ActivateEmitter();
 
-	//m_pTracksLeft->UpdateEmitterPos((GetPosX()*Up.fX)+32*Up.fX-C->GetPosX(), (GetPosY()*Up.fY)+64-C->GetPosY());
-	//m_pTracksLeft->UpdateRotation(m_fRotation);
-	//m_pTracksLeft->ActivateEmitter();
+		m_pTracksRight->UpdateEmitterPos((GetPosX()+((-45)*Look.fX)+(30*(-Look.fY)))-C->GetPosX(), (GetPosY()+((-64)*Look.fY)+(30*(Look.fX)))-C->GetPosY());
+		m_pTracksRight->UpdateRotation(m_fRotation);
+		m_pTracksRight->ActivateEmitter();	
+	}
+	else
+	{
+		m_pTracksLeft->UpdateEmitterPos((GetPosX()+((-70)*Look.fX)+(37*(Look.fY)))-C->GetPosX(), (GetPosY()+((-45)*Look.fY)+(37*(-Look.fX)))-C->GetPosY());
+		m_pTracksLeft->UpdateRotation(m_fRotation);
+		m_pTracksLeft->ActivateEmitter();
+
+		m_pTracksRight->UpdateEmitterPos((GetPosX()+((-70)*Look.fX)+(5*(-Look.fY)))-C->GetPosX(), (GetPosY()+((-45)*Look.fY)+(5*(Look.fX)))-C->GetPosY());
+		m_pTracksRight->UpdateRotation(m_fRotation);
+		m_pTracksRight->ActivateEmitter();
+	}
 	if(m_bSlowDown == true)
 	{
 		if(m_fSlowTimer > 0.0f)
@@ -315,8 +345,9 @@ void CPlayer::Update(float fDt)
 void CPlayer::Render(void)
 {
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2), (int)(GetPosY()-GetHeight()/2),1.0f,1.0f,0,GetWidth()/2.0f,GetHeight()/2.0f,m_fRotation);
-	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
+
 RECT CPlayer::GetRect(void)
 {
 	RECT rect;
@@ -326,6 +357,7 @@ RECT CPlayer::GetRect(void)
 	rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
 	return rect;
 }
+
 bool CPlayer::CheckCollision(IEntity* pBase)
 {
 	if(CEntity::CheckCollision(pBase) == true)
@@ -375,12 +407,46 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 				this->SetPosY(this->GetOldPos().fY);
 			}
 			break;
-		};
+		case OBJ_NAZIBOSS:
+			{
+				CNaziBoss* pEnemy =dynamic_cast<CNaziBoss*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+				if(pEnemy->GetState()==2)
+				{
+					if(pEnemy->GetCharging())
+					{
+						pEnemy->SetCollision();
+						this->TakeDamage(50);
+					}
+				}
+			}
+			break;
+		case OBJ_FACTORY:
+			{
+				Camera *cam = Camera::GetInstance();
+				CPlayer* pEnemy =dynamic_cast<CPlayer*>(pBase);
+
+				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+				cam->SetPosX(cam->GetOldPos().fX);
+				cam->SetPosY(cam->GetOldPos().fY);
+
+				this->SetPosX(this->GetOldPos().fX);
+				this->SetPosY(this->GetOldPos().fY);
+			}
+			break;
+		}
 		return true;
 	}
 	else
 		return false;
 }
+
 CPlayer::CPlayer(void)
 {
 	m_pDI=CSGD_DirectInput::GetInstance();
@@ -451,7 +517,9 @@ CPlayer::CPlayer(void)
 	m_bSapperAbsorb		= false;
 	m_bNukem			= false;
 	m_bIamBoss			= false;
-	m_bAllUpgrades		= false;}
+	m_bAllUpgrades		= false;
+}
+
 CPlayer::~CPlayer(void)
 {
 }

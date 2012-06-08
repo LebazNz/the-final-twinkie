@@ -7,15 +7,18 @@
 #include "../Event and Messages/DestroyTurretMessage.h"
 #include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../Event and Messages/DestroyTreeMessage.h"
+#include "../Event and Messages/DestroyNaziBoss.h"
 #include "../GameStates/OptionsState.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Headers/Camera.h"
+#include "../Boss/NaziBoss.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "Turret.h"
 #include "Tank.h"
 #include "Building.h"
 #include "Tree.h"
+#include "Factory.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -133,7 +136,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				if(GetWhoFired() == false)
 				{
 					CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
-					//pPlayer->TakeDamage((int)this->m_fDamage);
+					pPlayer->TakeDamage((int)this->m_fDamage);
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
@@ -266,6 +269,34 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				}
 			}
 			break;
+			case OBJ_NAZIBOSS:
+				{
+					if(GetWhoFired()==true)
+					{	
+						CNaziBoss* pBoss = dynamic_cast<CNaziBoss*>(pBase);
+						CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
+						CMessageSystem::GetInstance()->SndMessage(pmsg);
+						pmsg = nullptr;
+						pBoss->TakeDamage(this->m_fDamage);
+						if(pBoss->GetHealth()<=0)
+						{
+							CDestroyNaziBoss* pDest=new CDestroyNaziBoss(pBoss);
+							CMessageSystem::GetInstance()->SndMessage(pDest);
+						}
+					}
+				}
+				break;
+			case OBJ_FACTORY:
+				{
+					if(GetWhoFired()==true)
+					{	
+						Factory* fac=dynamic_cast<Factory*>(pBase);
+						fac->TakeDamage(this->m_fDamage);
+					}
+					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pmsg);
+				}
+				break;
 		};
 		return true;
 	}
