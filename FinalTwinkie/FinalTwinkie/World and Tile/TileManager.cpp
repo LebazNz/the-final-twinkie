@@ -17,6 +17,8 @@ using namespace std;
 #include "../Headers/Camera.h"
 #include "../GameStates/GamePlayState.h"
 #include "../Headers/Game.h"
+#include "../GameObjects/PirateBoss.h"
+#include "../Event and Messages/CreateBoss.h"
 
 
 CTileManager* CTileManager::m_pSelf = nullptr;
@@ -42,6 +44,7 @@ CTileManager::CTileManager(void)
 	m_pTM = CSGD_TextureManager::GetInstance();
 	m_nTileImageID = -1;
 	vector<vector<CTile>> tiles;
+	raised = false;
 	//m_pGraphics.CreateLayer(0,0,0,0,0,0,0,tiles);
 }
 
@@ -54,7 +57,7 @@ CTileManager::~CTileManager(void)
 
 bool CTileManager::Load(string fileName)
 {
-	
+	raised = false;
 	
 	TiXmlDocument doc(fileName.c_str());
 	if(doc.LoadFile())
@@ -290,7 +293,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
 							RaiseWall();
-							CGamePlayState::GetInstance()->SetWinner(true);
+							
 
 							if(CGame::GetInstance()->isTutor == true)
 								CTutorState::GetInstance()->IncrementBox();
@@ -369,10 +372,20 @@ void CTileManager::CheckCollision(IEntity* pBase)
 
 void CTileManager::RaiseWall(void)
 {
+	if(raised == true)
+		return;
+	else
+		raised = true;
+
 	int size = wallTiles.size();
+
 	for(int i = 0; i < size; i++)
 	{
 		CEventSystem::GetInstance()->SendEvent("wall_raise",wallTiles[i]);
 	}
+
+	CCreateBoss* pMsg = new CCreateBoss(PIRATE,0,0);
+	CMessageSystem::GetInstance()->SndMessage(pMsg);
+	pMsg = nullptr;
 
 }

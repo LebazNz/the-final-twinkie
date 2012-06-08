@@ -202,7 +202,7 @@ void CTutorState::Enter(void)
 		m_pD3D->DeviceBegin();
 		m_pD3D->SpriteBegin();	
 
-		m_pTM->Draw(m_nBackGround,0,0,0.8f,0.8f);
+		m_pTM->Draw(m_nBackGround,0,0,0.8f,0.6f);
 	
 		m_pD3D->GetSprite()->Flush();	
 		m_pD3D->SpriteEnd();
@@ -681,7 +681,7 @@ void CTutorState::IncrementBox(void)
 {
 	m_nBoxIndex++;
 	m_bWordBox = true;
-	m_fWordTimer = 5.0f;
+	m_fWordTimer = 8.0f;
 
 	if(m_nBoxIndex >= 12)
 	{
