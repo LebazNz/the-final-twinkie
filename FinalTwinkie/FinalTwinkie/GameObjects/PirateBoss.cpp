@@ -199,20 +199,20 @@ RECT CPirateBoss::GetRect(void)
 	Camera* cam = Camera::GetInstance();
 
 	RECT rect = {};
-	rect.left = GetPosX() + cam->GetPosX();
-	rect.top = GetPosY() + cam->GetPosY();
-	rect.right = (GetPosX()+cam->GetPosX()) + GetWidth();
-	rect.bottom = (GetPosY()+cam->GetPosY()) + GetHeight();
+	rect.left = (LONG)(GetPosX() + cam->GetPosX());
+	rect.top = (LONG)(GetPosY() + cam->GetPosY());
+	rect.right = (LONG)((GetPosX()+cam->GetPosX()) + GetWidth());
+	rect.bottom = (LONG)((GetPosY()+cam->GetPosY()) + GetHeight());
 
 	return rect;
 }
 
 void CPirateBoss::TakeDamage(int nDamage)
 {
-	int health = GetHealth();
+	float health = GetHealth();
 
 	 health -= nDamage;
-	 SetHealth( health );
+	 SetHealth((float) health );
 
    if(health < 0)
     health = 0;
@@ -246,7 +246,7 @@ void CPirateBoss::Rebound(float time)
 		if(GetPosX() < m_nStartX)
 		{
 			SetVelX(0);
-			SetPosX(m_nStartX);
+			SetPosX((float)m_nStartX);
 			tFour->SetPosX((GetPosX())+440);
 			tFour->SetPosY((GetPosY())+101);
 

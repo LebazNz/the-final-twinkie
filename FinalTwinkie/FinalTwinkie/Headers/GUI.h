@@ -15,7 +15,9 @@ public:
 
 	void SetHudID(int ID){m_nHudID=ID;}
 	void SetSelect(int ID) {m_nSpecialSel=ID;}
+	void SetGunSel(int ID) {m_nGunSel=ID;}
 	void SetPlayer(CPlayer* pPlayer){m_pPlayer=pPlayer;}
+	void SetGunSelected(int Sel) {m_nGunSelected=Sel;}
 	
 private:
 	CGUI(void);
@@ -28,6 +30,8 @@ private:
 	CSGD_TextureManager* m_pTM;
 	int					m_nHudID;
 	int					m_nSpecialSel;
+	int					m_nGunSel;
+	int					m_nGunSelected;
 	CPlayer*			m_pPlayer;
 };
 

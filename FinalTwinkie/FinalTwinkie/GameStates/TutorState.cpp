@@ -138,17 +138,16 @@ void CTutorState::LoadWords(void)
 	{	
 		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive press W";
 		m_asInfo[1] = "To reverse press S\nRotate counter clockwise with A\nTo rotate clockwise use D";
-		m_asInfo[2] = "LEFT click the mouse\nTo fire your main cannon\nRIGHT click will fire\n your machine gun turret";
+		m_asInfo[2] = "LEFT click the mouse\nTo fire your main cannon\nRIGHT click will fire\n your secondary turret";
 		m_asInfo[3] = "Press 1 or 2 to\nswitch specials and\nSPACEBAR to activate";
 
 	}
 	else
 	{
-		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive push UP on LT";
-		m_asInfo[1] = "Push up on the left thumbstick to go forward\nPull down to reverse";
-		m_asInfo[2] = "To rotate the tank counter-clockwise\npush the left thumbstick to the left\nTo rotate the tank clockwise\npush it to the right";
-		m_asInfo[3] = "Left click the mouse to\nfire your main cannon at the reticule";
-		m_asInfo[4] = "Right click will fire\n your machine gun turret";
+		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive push UP on LS";
+		m_asInfo[1] = "Pull down on LS to reverse\nLEFT to rotate counter clockwise\nRIGHT to rotate clockwise";
+		m_asInfo[2] = "To rotate the tank counter clockwise\npush the left thumbstick to the left\nTo rotate the tank clockwise\npush it to the right";
+		m_asInfo[3] = "Press Left and Right Bumper\nTo select specials\nand X to activate";
 	}
 
 		m_asInfo[6] = "Mines\nThese little bad boys\npack quite a punch\nAvoid these at any cost";
@@ -240,6 +239,8 @@ void CTutorState::Enter(void)
 		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
 
+		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
+
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
 		m_nPickupArmorID = m_pTM->LoadTexture(_T("resource/graphics/ArmorPickUp.png"));
@@ -300,7 +301,9 @@ void CTutorState::Enter(void)
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-
+		player->SetRocketAccess(true);
+		player->SetArtilleryAccess(true);
+		player->SetGunSel(1);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -331,6 +334,8 @@ void CTutorState::Enter(void)
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
 		m_pGUI->SetSelect(m_anEnemyIDs[8]);
+		m_pGUI->SetGunSel(m_anEnemyIDs[13]);
+		m_pGUI->SetGunSelected(1);
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
@@ -956,7 +961,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(35.0f);
+							Bullet->SetDamage(25.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -1005,7 +1010,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoMissile();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
+									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
 									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
@@ -1068,7 +1073,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 									RECT rSelf;
 									SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
 									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { (pSelf->m_nMouseX-16),(pSelf->m_nMouseY-16)};
+									tVector2D vPos = { (float)(pSelf->m_nMouseX-16),(float)(pSelf->m_nMouseY-16)};
 									Bullet->SetTargetPos(vPos);
 								}
 							}
@@ -1577,6 +1582,33 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{
+					tVector2D norVec = Vector2DNormalize(Up);
+					pBullet->SetWidth(32);
+					pBullet->SetHeight(32);
+					pBullet->SetScale(0.35f);
+					pBullet->SetWhoFired(false);
+					pBullet->SetVelX(300);
+					pBullet->SetVelY(300);
+					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+					pBullet->SetDamage(15.0f);
+					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
+					{
+						pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());					
+						tVector2D vPos = {pSelf->m_pPlayer->GetPosX()-C->GetPosX(), pSelf->m_pPlayer->GetPosY()-C->GetPosY()};
+						pBullet->SetTargetPos(vPos);
+					}
+					else if(pMessage->GetFiringEntity()->GetType() == OBJ_HELP)
+					{
+						pBullet->SetTargetRect(pMessage->GetFiringEntity()->GetHelpTarget()->GetRect());					
+						tVector2D vPos = {pMessage->GetFiringEntity()->GetHelpTarget()->GetPosX()-C->GetPosX(), pMessage->GetFiringEntity()->GetHelpTarget()->GetPosY()-C->GetPosY()};
+						pBullet->SetTargetPos(vPos);
+						pBullet->SetWhoFired(true);
+					}
+					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
+					pBullet->SetBulletType(BUL_ROCKET);
+					pSelf->m_pOM->AddObject(pBullet);
+					pBullet->Release();
+					pBullet = nullptr;
 				}
 				break;
 			}

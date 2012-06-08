@@ -163,7 +163,8 @@ void CGamePlayState::Enter(void)
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
 		m_pGUI = CGUI::GetInstance();
-
+		m_pFont = CBitmapFont::GetInstance();
+		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
@@ -226,6 +227,8 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[11]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip1.png"));
 		m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
 
+		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
+
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
 		m_nPickupArmorID = m_pTM->LoadTexture(_T("resource/graphics/ArmorPickUp.png"));
@@ -283,16 +286,18 @@ void CGamePlayState::Enter(void)
 		pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
 		CReinforcements* pRF = new CReinforcements;
 		CAirStrike* pAS = new CAirStrike;
-		player->SetSpecial1(pSmoke);
-		player->SetSpecial2(pAS);
-		player->SetSpecial1Ammo(2);
-		player->SetSpecial2Ammo(2);
+		player->SetSpecial1(pNuke);
+		player->SetSpecial2(pSmoke);
+		player->SetSpecial1Ammo(1);
+		player->SetSpecial2Ammo(5);
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-
+		player->SetRocketAccess(true);
+		player->SetArtilleryAccess(true);
+		player->SetGunSel(1);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -318,6 +323,8 @@ void CGamePlayState::Enter(void)
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
 		m_pGUI->SetSelect(m_anEnemyIDs[8]);
+		m_pGUI->SetGunSel(m_anEnemyIDs[13]);
+		m_pGUI->SetGunSelected(1);
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
@@ -603,7 +610,7 @@ bool CGamePlayState::Input(void)
 		// Enter ShopState
 		if(m_pDI->KeyPressed(DIK_NUMPAD0))
 		{
-			CGame::GetInstance()->ChangeState(StatState::GetInstance());
+			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 			return true;
 		}
 		// Enter ShopState
@@ -703,8 +710,12 @@ void CGamePlayState::Render(void)
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
+		m_pD3D->GetSprite()->Flush();
+		m_pFont->Print("Destroy the Pirate Boss", 539,547,.67f,UINT_MAX);
 		CPlayer::GetInstance()->Render();
 		CPlayer::GetInstance()->GetTurret()->Render();
+		
+		
 	}
 
 	m_pD3D->GetSprite()->Flush();	
@@ -873,7 +884,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoMissile();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
+									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
 									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
@@ -934,7 +945,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
+									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
 									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
@@ -1610,7 +1621,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CCreateJetMessage* pMessage = dynamic_cast<CCreateJetMessage*>(pMsg);
 			CJet* pJet = (CJet*)pSelf->m_pOF->CreateObject("CJet");
 			RECT rSelf;
-			SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-8),(pSelf->m_nMouseY-C->GetPosY()-8),(pSelf->m_nMouseX-C->GetPosX()+8),(pSelf->m_nMouseY-C->GetPosY()+8));
+			SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-8),(int)(pSelf->m_nMouseY-C->GetPosY()-8),(int)(pSelf->m_nMouseX-C->GetPosX()+8),(int)(pSelf->m_nMouseY-C->GetPosY()+8));
 			pJet->SetTargetRect(rSelf);
 			tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 			pJet->SetTargetPos(vPos);
@@ -1825,8 +1836,8 @@ void CGamePlayState::SaveGame(const char* szFileName)
 
 	data->SetAttribute("level",			m_nLevel);
 	data->SetAttribute("money",			pPlayer->GetMoney());
-	data->SetAttribute("hp",			pPlayer->GetMaxHealth());
-	data->SetAttribute("armor",			pPlayer->GetMaxArmor());
+	data->SetAttribute("hp",			(int)pPlayer->GetMaxHealth());
+	data->SetAttribute("armor",			(int)pPlayer->GetMaxArmor());
 	data->SetAttribute("ammo",			m_dGameData.nAmmo);
 	data->SetAttribute("speed",			m_dGameData.nSpeed);
 	data->SetAttribute("shellammo",		pPlayer->GetMaxWeaponAmmoShell());

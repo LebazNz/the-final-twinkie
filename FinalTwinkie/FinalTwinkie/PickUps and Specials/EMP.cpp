@@ -22,7 +22,7 @@ CEMP::~CEMP(void)
 
 void CEMP::Render(void)
 {
-	CSGD_TextureManager::GetInstance()->Draw(m_nEMPID,CPlayer::GetInstance()->GetPosX(),CPlayer::GetInstance()->GetPosY(),m_fScale,m_fScale,nullptr,0.0f,0.0f,0.0f);
+	CSGD_TextureManager::GetInstance()->Draw(m_nEMPID,(int)(CPlayer::GetInstance()->GetPosX()),(int)(CPlayer::GetInstance()->GetPosY()),m_fScale,m_fScale,nullptr,0.0f,0.0f,0.0f);
 }
 
 void CEMP::Update(float fDt)

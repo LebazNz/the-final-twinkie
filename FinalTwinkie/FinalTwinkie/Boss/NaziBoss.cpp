@@ -66,7 +66,7 @@ void CNaziBoss::Update(float fDt)
 		Look=Vector2DRotate(Up,m_fRotation);
 		toTarget.fX=((m_pPlayer->GetPosX()-C->GetPosX())-(GetPosX()));
 		toTarget.fY=((m_pPlayer->GetPosY()-C->GetPosY())-(GetPosY()));
-		toTarget=Vector2DRotate(toTarget, 1.57);
+		toTarget=Vector2DRotate(toTarget, 1.57f);
 		float Steer=Steering(toTarget, Look);
 		if(abs(Steer)>1.0)
 		{
@@ -138,10 +138,10 @@ void CNaziBoss::Update(float fDt)
 		}
 		else if(Charging)
 		{
-			StopRect.top=(PlayerPos.fY+C->GetPosY())-m_pPlayer->GetWidth()/2;
-			StopRect.bottom=(PlayerPos.fY+C->GetPosY())+m_pPlayer->GetWidth()/2;
-			StopRect.left=(PlayerPos.fX+C->GetPosX())-m_pPlayer->GetHeight()/2;
-			StopRect.right=(PlayerPos.fX+C->GetPosX())+m_pPlayer->GetHeight()/2;
+			StopRect.top=(LONG)((PlayerPos.fY+C->GetPosY())-m_pPlayer->GetWidth()/2);
+			StopRect.bottom=(LONG)((PlayerPos.fY+C->GetPosY())+m_pPlayer->GetWidth()/2);
+			StopRect.left=(LONG)((PlayerPos.fX+C->GetPosX())-m_pPlayer->GetHeight()/2);
+			StopRect.right=(LONG)((PlayerPos.fX+C->GetPosX())+m_pPlayer->GetHeight()/2);
 			tVector2D Up={0,-1};
 			Look=Vector2DRotate(Up,m_fRotation);
 			SetPosX(GetPosX()+(300*Look.fX)*fDt);
@@ -165,28 +165,28 @@ void CNaziBoss::Update(float fDt)
 		m_fRotation=0;
 	if(abs(m_fRotation)>=5.495)
 	{
-		m_fRotationHeight=GetHeight();
-		m_fRotationWidth=GetWidth();
+		m_fRotationHeight=(float)GetHeight();
+		m_fRotationWidth=(float)GetWidth();
 	}
 	else if(abs(m_fRotation)>=3.925)
 	{
-		m_fRotationHeight=GetWidth();
-		m_fRotationWidth=GetHeight();
+		m_fRotationHeight=(float)GetWidth();
+		m_fRotationWidth=(float)GetHeight();
 	}
 	else if(abs(m_fRotation)>=2.335)
 	{
-		m_fRotationHeight=GetHeight();
-		m_fRotationWidth=GetWidth();
+		m_fRotationHeight=(float)GetHeight();
+		m_fRotationWidth=(float)GetWidth();
 	}
 	else if(abs(m_fRotation)>0.785)
 	{
-		m_fRotationHeight=GetWidth();
-		m_fRotationWidth=GetHeight();
+		m_fRotationHeight=(float)GetWidth();
+		m_fRotationWidth=(float)GetHeight();
 	}
 	else if(abs(m_fRotation)<=0.785)
 	{
-		m_fRotationHeight=GetHeight();
-		m_fRotationWidth=GetWidth();
+		m_fRotationHeight=(float)GetHeight();
+		m_fRotationWidth=(float)GetWidth();
 	}
 	m_pCannon->Update(fDt);
 	m_pCannon->UpdatePos(GetPosX()+100*Look.fX,(GetPosY()-32)+105*Look.fY);
@@ -226,13 +226,13 @@ void CNaziBoss::Render(void)
 	Camera* C=Camera::GetInstance();
 	RECT rect;
 	rect.top=10; rect.left=10; rect.right=158; rect.bottom=270;
-	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (GetPosX()+C->GetPosX())-GetWidth()/2, (GetPosY()+C->GetPosY())-GetHeight()/2, 1.0,1.0, &rect,GetWidth()/2, GetHeight()/2, m_fRotation);
+	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-GetWidth()/2), (int)((GetPosY()+C->GetPosY())-GetHeight()/2), 1.0f,1.0f, &rect,(float)(GetWidth()/2), (float)(GetHeight()/2), m_fRotation);
 
 	m_pCannon->Render();
 	m_pLMG->Render();
 	m_pRMG->Render();
 
-	rect.top=348; rect.left=6; rect.right=6+((127-6)*(GetHealth()/GetMaxHealth())); rect.bottom=363;
+	rect.top=(LONG)348; rect.left=(LONG)6; rect.right=(LONG)(6+((127-6)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)363;
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), 145, 10, 4.25,2.0, &rect);
 }
 
@@ -240,10 +240,10 @@ RECT CNaziBoss::GetRect(void)
 {
 	Camera* C=Camera::GetInstance();
 	RECT rect={0,0,0,0};
-	rect.top=(GetPosY()+C->GetPosY())-m_fRotationHeight/2;
-	rect.left=(GetPosX()+C->GetPosX())-m_fRotationWidth/2;
-	rect.right=(GetPosX()+C->GetPosX())+m_fRotationWidth/2;
-	rect.bottom=(GetPosY()+C->GetPosY())+m_fRotationHeight/2;
+	rect.top=(LONG)((GetPosY()+C->GetPosY())-m_fRotationHeight/2);
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-m_fRotationWidth/2);
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+m_fRotationHeight/2);
 	return rect;
 }
 

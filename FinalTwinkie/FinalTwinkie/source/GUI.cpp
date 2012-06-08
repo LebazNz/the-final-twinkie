@@ -210,6 +210,18 @@ void CGUI::Render(void)
 		}
 	}
 	m_pFont->Init(COptionsState::GetInstance()->GetLang());
+	switch(m_nGunSelected)
+	{
+	case 1:
+		m_pTM->Draw(m_nGunSel, 22, 472, 1.1f, .85f, NULL, 0, 0, 0, D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 2:
+		m_pTM->Draw(m_nGunSel, 62, 472, 1.1f, .85f, NULL, 0, 0, 0, D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 3:
+		m_pTM->Draw(m_nGunSel, 99, 472, 1.1f, .85f, NULL, 0, 0, 0, D3DCOLOR_XRGB(177,132,0));
+		break;
+	}
 }
 
 void CGUI::Update(float fDt)
