@@ -179,7 +179,7 @@ void CGamePlayState::Enter(void)
 
 		m_pD3D->Present();
 
-		m_pTile->Load("resource/files/level123.xml");
+		m_pTile->Load("resource/files/NateLevel.xml");
 		//m_pTile->Load("resource/files/graphic_layer.xml");
 
 		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
