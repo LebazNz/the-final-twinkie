@@ -16,6 +16,7 @@ class CTileManager
 	vector<ENEMY_INFO> m_vEnemies;
 	vector<vector<CTile>> m_vTiles;
 	vector<CTile*> wallTiles;
+	bool raised;
 
 	void RaiseWall(void);
 	void CreateObjects(void);

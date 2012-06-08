@@ -12,6 +12,7 @@
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Headers/Camera.h"
 #include "../Boss/NaziBoss.h"
+#include "PirateBoss.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "Turret.h"
@@ -295,6 +296,15 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					}
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);
+				}
+				break;
+			case OBJ_PIRATEBOSS:
+				{
+					CPirateBoss* pBoss = dynamic_cast<CPirateBoss*>(pBase);
+					pBoss->TakeDamage((int)this->m_fDamage);
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 				}
 				break;
 		};
