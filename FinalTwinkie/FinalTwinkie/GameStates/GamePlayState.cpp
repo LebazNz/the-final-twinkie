@@ -63,6 +63,7 @@
 #include "../PickUps and Specials/EMP.h"
 #include "../PickUps and Specials/Reinforcements.h"
 #include "../PickUps and Specials/AirStrike.h"
+#include "LoadOutState.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
 #include "../GameObjects/PirateBoss.h"
@@ -189,8 +190,9 @@ void CGamePlayState::Enter(void)
 
 		m_pD3D->Present();
 
+		//m_pTile->Load("resource/files/level123.xml");
 		//m_pTile->Load("resource/files/NateLevel.xml");
-		//m_pTile->Load("resource/files/graphic_layer.xml");
+		m_pTile->Load("resource/files/graphic_layer.xml");
 
 		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
 		WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
@@ -679,6 +681,12 @@ bool CGamePlayState::Input(void)
 		}
 		return true;
 	}
+	if(m_pDI->KeyPressed(DIK_NUMPAD2))
+	{
+		CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
+		return true;
+	}
+	return true;
 	return true;
 }
 

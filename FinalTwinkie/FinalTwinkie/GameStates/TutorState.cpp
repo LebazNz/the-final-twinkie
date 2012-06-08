@@ -1071,7 +1071,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
 									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
+									SetRect(&rSelf,(int)(pSelf->m_nMouseX-32),(int)(pSelf->m_nMouseY-32),(int)(pSelf->m_nMouseX+32),(int)(pSelf->m_nMouseY+32));
 									Bullet->SetTargetRect(rSelf);
 									tVector2D vPos = { (float)(pSelf->m_nMouseX-16),(float)(pSelf->m_nMouseY-16)};
 									Bullet->SetTargetPos(vPos);
