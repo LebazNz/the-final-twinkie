@@ -98,19 +98,19 @@ void CEntity::Release(void)
 
 void CEntity::TakeDamage(int nDamage)
 {
- if(m_bInvul == false)
- {
-  if(m_fArmor>0)
-  {
-   m_fArmor-=nDamage/3;
-   if( m_fArmor<0)
-    m_fArmor=0;
-  }
-  else
-  {
-   m_fHealth -= nDamage;
-   if(m_fHealth<0)
-    m_fHealth=0;
-  }
- }
+	if(m_bInvul == false)
+	{
+		if(m_fArmor>0)
+		{
+			m_fArmor-=nDamage/3;
+			if( m_fArmor<0)
+			m_fArmor=0;
+		}
+		else
+		{
+			m_fHealth -= nDamage;
+			if(m_fHealth<0)
+			m_fHealth=0;
+		}
+	}
 }

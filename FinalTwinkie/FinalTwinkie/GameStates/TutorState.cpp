@@ -732,6 +732,9 @@ void CTutorState::Render(void)
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
+		m_pFont->Print("Follow the Tutorial", 539,547,.67f,UINT_MAX);
+		CPlayer::GetInstance()->Render();
+		CPlayer::GetInstance()->GetTurret()->Render();
 	}
 
 	m_pD3D->GetSprite()->Flush();	

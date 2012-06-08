@@ -12,9 +12,11 @@ CTank::CTank(void)
 	m_nType = OBJ_TANK;
 	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
+
 CTank::~CTank(void)
 {
 }
+
 void CTank::Update(float fDt)
 {
 	if(m_bStop == false)
