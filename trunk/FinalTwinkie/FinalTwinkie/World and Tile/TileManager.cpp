@@ -251,8 +251,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			float x = m_vTiles[i][j].GetPosX();
-			float y = m_vTiles[i][j].GetPosY();
+			int x = m_vTiles[i][j].GetPosX();
+			int y = m_vTiles[i][j].GetPosY();
 			
 			int width = m_vTiles[i][j].GetWidth(), height = m_vTiles[i][j].GetHeight();
 			
@@ -263,8 +263,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 			if(m_vTiles[i][j].GetCollision() == false)
 				continue;
 
-			x = x+cam->GetPosX();
-			y = y+cam->GetPosY();
+			x = (int)(x+cam->GetPosX());
+			y = (int)(y+cam->GetPosY());
 
 			CEntity* pTarget =dynamic_cast<CEntity*>(pBase);
 	

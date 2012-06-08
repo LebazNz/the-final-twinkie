@@ -38,14 +38,14 @@ void CBossTurret::Update(float fDt)
 			tVector2D m_vLookVec=Vector2DRotate(Up, m_fRotation+m_fBossRot);
 
 			if(Steering(m_vLookVec,Vec) < -1)
-			m_fRotation -= 0.3*fDt;
+			m_fRotation -= 0.3f*fDt;
 			else if(Steering(m_vLookVec,Vec) > 1)
-			m_fRotation += 0.3*fDt;
+			m_fRotation += 0.3f*fDt;
 
 			if(m_fRotation>(0.785f))
-				m_fRotation=.785;
+				m_fRotation=.785f;
 			if(m_fRotation<(-0.785f))
-				m_fRotation=-.785;
+				m_fRotation=-.785f;
 			if(m_fFireRate >= 5.0)
 			{
 				m_fFireRate = 0.0f;
@@ -84,9 +84,9 @@ void CBossTurret::Update(float fDt)
 			tVector2D m_vLookVec=Vector2DRotate(Up, m_fRotation+m_fBossRot);
 
 			if(Steering(m_vLookVec,Vec) < -1)
-			m_fRotation -= 1.0*fDt;
+			m_fRotation -= 1.0f*fDt;
 			else if(Steering(m_vLookVec,Vec) > 1)
-			m_fRotation += 1.0*fDt;
+			m_fRotation += 1.0f*fDt;
 
 			if(m_fFireRate >= 0.25)
 			{
@@ -114,9 +114,9 @@ void CBossTurret::Update(float fDt)
 			tVector2D Up={0,-1};
 			tVector2D m_vLookVec=Vector2DRotate(Up, m_fRotation+m_fBossRot);
 			if(Steering(m_vLookVec,Up) < -1)
-			m_fRotation -= 1.0*fDt;
+			m_fRotation -= 1.0f*fDt;
 			else if(Steering(m_vLookVec,Up) > 1)
-			m_fRotation += 1.0*fDt;
+			m_fRotation += 1.0f*fDt;
 		}
 #pragma endregion
 	}
@@ -128,12 +128,12 @@ void CBossTurret::Update(float fDt)
 		{
 			if(m_nTurretType==MG1)
 			{
-				m_fRotation-=5.0*fDt;
+				m_fRotation-=5.0f*fDt;
 			}
 
 			else if(m_nTurretType==MG2)
 			{
-				m_fRotation+=5.0*fDt;
+				m_fRotation+=5.0f*fDt;
 			}
 			if(m_fFireRate >= 0.06125)
 			{
@@ -159,21 +159,21 @@ void CBossTurret::Render(void)
 	if(m_nTurretType==CANNON)
 	{
 		rect.top=36; rect.bottom=139; rect.left=224; rect.right=267;
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (GetPosX()+C->GetPosX())-GetWidth()/2, (GetPosY()+C->GetPosY())-GetHeight()/2, 1.0, 1.0, &rect, GetWidth()/2,82, m_fRotation+m_fBossRot);
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-GetWidth()/2), (int)((GetPosY()+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, &rect, (float)(GetWidth()/2),82.0f, m_fRotation+m_fBossRot);
 	}
 	if(m_nTurretType==MG1)
 	{
 		rect.top=113; rect.bottom=158; rect.left=427; rect.right=472;
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (PlatePosX+C->GetPosX())-GetWidth()/2, (PlatePosY+C->GetPosY())-GetHeight()/2, 1.0, 1.0, &rect, GetWidth()/2, GetHeight()/2, m_fBossRot);
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((PlatePosX+C->GetPosX())-GetWidth()/2), (int)((PlatePosY+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, &rect, (float)(GetWidth()/2), (float)(GetHeight()/2), m_fBossRot);
 		rect.top=88; rect.bottom=145; rect.left=333; rect.right=375;
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (GetPosX()+C->GetPosX())-9, (GetPosY()+C->GetPosY())-48, 1.0, 1.0, &rect, 9, 48, m_fRotation+m_fBossRot);
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-9), (int)((GetPosY()+C->GetPosY())-48), 1.0f, 1.0f, &rect, 9, 48, m_fRotation+m_fBossRot);
 	}
 	if(m_nTurretType==MG2)
 	{
 		rect.top=113; rect.bottom=158; rect.left=427; rect.right=472;
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (PlatePosX+C->GetPosX())-GetWidth()/2, (PlatePosY+C->GetPosY())-GetHeight()/2, 1.0, 1.0, &rect, GetWidth()/2, GetHeight()/2, m_fBossRot);
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((PlatePosX+C->GetPosX())-GetWidth()/2), (int)((PlatePosY+C->GetPosY())-GetHeight()/2), 1.0f, 1.0f, &rect, (float)(GetWidth()/2), (float)(GetHeight()/2), m_fBossRot);
 		rect.top=88; rect.bottom=145; rect.left=333; rect.right=375;
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (GetPosX()+C->GetPosX())-9, (GetPosY()+C->GetPosY())-48, 1.0, 1.0, &rect, 9, 48, m_fRotation+m_fBossRot);
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)((GetPosX()+C->GetPosX())-9), (int)((GetPosY()+C->GetPosY())-48), 1.0, 1.0, &rect, 9, 48, m_fRotation+m_fBossRot);
 	}
 }
 

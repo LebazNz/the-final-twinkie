@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Headers/GUI.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/SGD_Math.h"
 #include "../Event and Messages/MessageSystem.h"
@@ -29,6 +30,7 @@ void CPlayer::DeleteInstance(void)
 
 void CPlayer::Update(float fDt)
 {
+	this;
 	tVector2D Up={0,-1};
 
 	if(m_pDI->KeyDown(DIK_W) || m_pDI->KeyDown(DIK_S) || m_pDI->JoystickGetRStickYAmount() < 0 || m_pDI->JoystickGetRStickYAmount() > 0)
@@ -158,7 +160,7 @@ void CPlayer::Update(float fDt)
 				if(!m_bOverheat)
 				{
 					GetTurret()->GetFlamer()->ActivateEmitter();
-					m_fHeat+=.4*m_fHeatModifier;
+					m_fHeat+=.4f*m_fHeatModifier;
 					if(!SlowFlame)
 					{
 						CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
@@ -195,6 +197,7 @@ void CPlayer::Update(float fDt)
 			GetTurret()->GetFlamer()->DeactivateEmitter();
 		}
 	}
+	this;
 	if(m_pDI->KeyPressed(DIK_1))
 	{
 		if(m_pSpec1!=nullptr)
@@ -219,7 +222,64 @@ void CPlayer::Update(float fDt)
 			m_anSpecialammo[m_pSelectedSpecAmmo]--;
 		}
 	}
-
+	if(m_pDI->MouseWheelMovement()>0)
+	{
+		if(m_nGunSel==1&&m_bRocketAccess)
+		{
+			m_nGunSel=2;
+			GetTurret()->SetBullet(BUL_ROCKET);
+		}
+		else if(m_nGunSel==1&&!m_bRocketAccess&&m_bArtilleryAccess)
+		{
+			m_nGunSel=3;
+			GetTurret()->SetBullet(BUL_ARTILLERY);
+		}
+		else if(m_nGunSel==2&&m_bArtilleryAccess)
+		{
+			m_nGunSel=3;
+			GetTurret()->SetBullet(BUL_ARTILLERY);
+		}
+		else if(m_nGunSel==2&&!m_bArtilleryAccess)
+		{
+			m_nGunSel=1;
+			GetTurret()->SetBullet(BUL_SHELL);
+		}
+		else if(m_nGunSel==3)
+		{
+			m_nGunSel=1;
+			GetTurret()->SetBullet(BUL_SHELL);
+		}
+		CGUI::GetInstance()->SetGunSelected(m_nGunSel);
+	}
+	else if(m_pDI->MouseWheelMovement()<0)
+	{
+		if(m_nGunSel==1&&m_bArtilleryAccess)
+		{
+			m_nGunSel=3;
+			GetTurret()->SetBullet(BUL_ARTILLERY);
+		}
+		else if(m_nGunSel==1&&m_bRocketAccess&&!m_bArtilleryAccess)
+		{
+			m_nGunSel=2;
+			GetTurret()->SetBullet(BUL_ROCKET);
+		}
+		else if(m_nGunSel==3&&m_bRocketAccess)
+		{
+			m_nGunSel=2;
+			GetTurret()->SetBullet(BUL_ROCKET);
+		}
+		else if(m_nGunSel==3&&!m_bRocketAccess)
+		{
+			m_nGunSel=1;
+			GetTurret()->SetBullet(BUL_SHELL);
+		}
+		else if(m_nGunSel==2)
+		{
+			m_nGunSel=1;
+			GetTurret()->SetBullet(BUL_SHELL);
+		}
+		CGUI::GetInstance()->SetGunSelected(m_nGunSel);
+	}
 
 	Camera* C=Camera::GetInstance();
 	m_pTurret->SetPosX(GetPosX());
@@ -345,7 +405,6 @@ void CPlayer::Update(float fDt)
 void CPlayer::Render(void)
 {
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2), (int)(GetPosY()-GetHeight()/2),1.0f,1.0f,0,GetWidth()/2.0f,GetHeight()/2.0f,m_fRotation);
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 }
 
 RECT CPlayer::GetRect(void)
@@ -518,6 +577,8 @@ CPlayer::CPlayer(void)
 	m_bNukem			= false;
 	m_bIamBoss			= false;
 	m_bAllUpgrades		= false;
+
+	m_nGunSel=1;
 }
 
 CPlayer::~CPlayer(void)

@@ -26,7 +26,7 @@ void CFlyText::Render(void)
 	Camera* C = Camera::GetInstance();
 	CBitmapFont* font = CBitmapFont::GetInstance();
 	font->Init(COptionsState::GetInstance()->GetLang());
-	font->Print(m_szType.c_str(),GetPosX()+C->GetPosX(),GetPosY()+C->GetPosY(),0.75f,m_DWColor);
+	font->Print(m_szType.c_str(),(int)(GetPosX()+C->GetPosX()),(int)(GetPosY()+C->GetPosY()),0.75f,m_DWColor);
 }
 
 CFlyText::CFlyText(void)

@@ -141,7 +141,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
-					CPlayer::GetInstance()->SetDamageTaken((int)CPlayer::GetInstance()->GetDamageTaken()+m_fDamage);
+					CPlayer::GetInstance()->SetDamageTaken((int)(CPlayer::GetInstance()->GetDamageTaken()+m_fDamage));
 				}
 			}
 			break;
@@ -278,7 +278,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 						CMessageSystem::GetInstance()->SndMessage(pmsg);
 						pmsg = nullptr;
-						pBoss->TakeDamage(this->m_fDamage);
+						pBoss->TakeDamage((int)(this->m_fDamage));
 						if(pBoss->GetHealth()<=0)
 						{
 							CDestroyNaziBoss* pDest=new CDestroyNaziBoss(pBoss);
@@ -292,7 +292,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					if(GetWhoFired()==true)
 					{	
 						Factory* fac=dynamic_cast<Factory*>(pBase);
-						fac->TakeDamage(this->m_fDamage);
+						fac->TakeDamage((int)(this->m_fDamage));
 					}
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);
@@ -334,7 +334,5 @@ void CBullet::Render(void)
 	if(GetImageID() != -1)
 	{
 		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 1.0f, 1.0f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
-		CSGD_Direct3D::GetInstance()->DrawRect(GetRect(), 255,0,0);
-		CSGD_Direct3D::GetInstance()->DrawRect(m_rTarget, 255,0,0);
 	}
 }

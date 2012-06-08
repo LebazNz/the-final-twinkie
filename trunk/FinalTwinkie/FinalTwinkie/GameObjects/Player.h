@@ -156,6 +156,7 @@ public:
 	int GetSecondType(void){return m_nSecondType;}
 	void SetEmitterRight(CEmitter* EM){m_pTracksRight=EM;}
 	void SetEmitterLeft(CEmitter* EM){m_pTracksLeft=EM;}
+	void SetGunSel(int Sel) {m_nGunSel=Sel;}
 
 	void SlowVel(float time, float vel);
 
@@ -221,6 +222,7 @@ private:
 	int		m_nArmorLevel;
 	float	m_fSpeedMod;
 	int		m_nSpeedLevel;
+	int		m_nGunSel;
 	
 	float m_fPurchaseLevel;
 

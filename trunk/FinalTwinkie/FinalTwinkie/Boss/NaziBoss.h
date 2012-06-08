@@ -20,7 +20,7 @@ public:
 
 	void SetPlayer(CPlayer* pPlayer) {m_pPlayer=pPlayer;}
 
-	float GetState(void){ return m_nCurrentState;}
+	int GetState(void){ return m_nCurrentState;}
 	void SetCollision(void) {Charging=false; Rotating=true;}
 	bool GetCharging(void) {return Charging;}
 
