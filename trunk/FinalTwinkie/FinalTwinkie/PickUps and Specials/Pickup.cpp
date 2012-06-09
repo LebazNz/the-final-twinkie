@@ -53,74 +53,78 @@ bool CPickup::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_PLAYER:
 			{
+				CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
+
 				switch(m_nPickUpType)
 				{
 				case PU_HEALTH:
 					{
-						float fHealth = m_pPlayer->GetHealth();
-						float fMaxHealth = m_pPlayer->GetMaxHealth();
+						float fHealth = pPlayer->GetHealth();
+						float fMaxHealth = pPlayer->GetMaxHealth();
 						fHealth += (float)m_nGiven;
 						if(fHealth >= fMaxHealth)
 							fHealth = fMaxHealth;
-						m_pPlayer->SetHealth(fHealth);
+						pPlayer->SetHealth(fHealth);
 					}
 					break;
 				case PU_AMMO:
 					{
-						int nAmmo[3];
-						nAmmo[0] = m_pPlayer->GetWeaponAmmoShell();
-						nAmmo[1] = m_pPlayer->GetWeaponAmmoArtillery();
-						nAmmo[2] = m_pPlayer->GetWeaponAmmoMissile();
-						int nMaxAmmo[3];
-						nMaxAmmo[0] = m_pPlayer->GetMaxWeaponAmmoShell();
-						nMaxAmmo[1] = m_pPlayer->GetMaxWeaponAmmoArtillery();
-						nMaxAmmo[2] = m_pPlayer->GetMaxWeaponAmmoMissile();
+						int nAmmo[3] = {};
+						nAmmo[0] = pPlayer->GetWeaponAmmoShell();
+						nAmmo[1] = pPlayer->GetWeaponAmmoArtillery();
+						nAmmo[2] = pPlayer->GetWeaponAmmoMissile();
+						int nMaxAmmo[3] = {};
+						nMaxAmmo[0] = pPlayer->GetMaxWeaponAmmoShell();
+						nMaxAmmo[1] = pPlayer->GetMaxWeaponAmmoArtillery();
+						nMaxAmmo[2] = pPlayer->GetMaxWeaponAmmoMissile();
 						for(int i = 0; i < 3; ++i)
 						{
 							if(nAmmo[i] != -1)
-								nAmmo[i] = nMaxAmmo[i];
+								nAmmo[i] += nMaxAmmo[i]*0.25f;
+								if(nAmmo[i] > nMaxAmmo[i])
+									nAmmo[i] = nMaxAmmo[i];
 						}
-						m_pPlayer->SetWeaponAmmo(nAmmo[0],nAmmo[1],nAmmo[3]);
+						pPlayer->SetWeaponAmmo(nAmmo[0],nAmmo[1],nAmmo[2]);
 					}
 					break;
 				case PU_ARMOR:
 					{
-						float fArmor = m_pPlayer->GetArmor();
-						float fMaxArmor = m_pPlayer->GetMaxArmor();
+						float fArmor = pPlayer->GetArmor();
+						float fMaxArmor = pPlayer->GetMaxArmor();
 						fArmor += (float)m_nGiven;
 						if(fArmor >= fMaxArmor)
 							fArmor = fMaxArmor;
-						m_pPlayer->SetArmor(fArmor);
+						pPlayer->SetArmor(fArmor);
 					}
 					break;
 				case PU_DD:
 					{
-						m_pPlayer->SetDamageTimer(15.0f);
-						m_pPlayer->SetDoubleDamage(true);
+						pPlayer->SetDamageTimer(15.0f);
+						pPlayer->SetDoubleDamage(true);
 					}
 					break;
 				case PU_NORELOAD:
 					{
-						m_pPlayer->SetNoReloadTimer(15.0f);
+						pPlayer->SetNoReloadTimer(15.0f);
 					}
 					break;
 				case PU_INVU:
 					{
-						m_pPlayer->SetInvul(true);
-						m_pPlayer->SetInvulTimer(15.0f);
+						pPlayer->SetInvul(true);
+						pPlayer->SetInvulTimer(15.0f);
 					}
 					break;
 				case PU_INFAMMO:
 					{
-						m_pPlayer->SetInfAmmo(true);
-						m_pPlayer->SetInfoAmmoTimer(15.0f);
+						pPlayer->SetInfAmmo(true);
+						pPlayer->SetInfoAmmoTimer(15.0f);
 					}
 					break;
 				case PU_MONEY:
 					{
-						int nMoney = m_pPlayer->GetMoney();
+						int nMoney = pPlayer->GetMoney();
 						nMoney+=m_nGiven;
-						m_pPlayer->SetMoney(nMoney);
+						pPlayer->SetMoney(nMoney);
 						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
 					}
 					break;

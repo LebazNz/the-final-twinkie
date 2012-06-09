@@ -302,6 +302,7 @@ void CGamePlayState::Enter(void)
 		player->SetRocketAccess(true);
 		player->SetArtilleryAccess(true);
 		player->SetGunSel(1);
+		player->SetMoney(m_dGameData.nMoney);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -390,7 +391,7 @@ void CGamePlayState::Enter(void)
 
 		
 
-		player->SetMoney(m_dGameData.nMoney);
+		
 	}
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();

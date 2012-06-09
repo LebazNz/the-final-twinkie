@@ -17,7 +17,7 @@ CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
 {
 	if(m_pInstance==nullptr)
-		m_pInstance=new CPlayer();
+		m_pInstance=new CPlayer;
 	return m_pInstance;
 }
 
