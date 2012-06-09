@@ -100,23 +100,35 @@ void CGUI::Render(void)
 	//Buffs
 	if(m_pPlayer->GetDoubleDamage())
 	{
+		char buffer[10];
+		_itoa_s((int)m_pPlayer->GetDoubleDamageTimer(), buffer, 10);
 		rect.top=(LONG)335; rect.left=(LONG)926; rect.right=(LONG)976; rect.bottom=(LONG)385;
 		m_pTM->Draw(m_nHudID, 400, 457, 1,1,&rect);
+		m_pFont->Print(buffer, 420, 440, .65f, D3DCOLOR_XRGB(255,255,255));
 	}
 	if(m_pPlayer->GetNoReload()>0)
 	{
+		char buffer[10];
+		_itoa_s((int)m_pPlayer->GetNoReload(), buffer, 10);
 		rect.top=(LONG)470; rect.left=(LONG)926; rect.right=(LONG)976; rect.bottom=(LONG)520;
 		m_pTM->Draw(m_nHudID, 297, 457, 1,1,&rect);
+		m_pFont->Print(buffer, 317, 440, .65f, D3DCOLOR_XRGB(255,255,255));
 	}
 	if(m_pPlayer->GetInfAmmo())
 	{
+		char buffer[10];
+		_itoa_s((int)m_pPlayer->GetInfAmmoTimer(), buffer, 10);
 		rect.top=(LONG)402; rect.left=(LONG)926; rect.right=(LONG)976; rect.bottom=(LONG)452;
 		m_pTM->Draw(m_nHudID, 348, 457, 1,1,&rect);
+		m_pFont->Print(buffer, 368, 440, .65f, D3DCOLOR_XRGB(255,255,255));
 	}
 	if(m_pPlayer->GetInvul())
 	{
+		char buffer[10];
+		_itoa_s((int)m_pPlayer->GetInvulTimer(), buffer, 10);
 		rect.top=(LONG)273; rect.left=(LONG)926; rect.right=(LONG)976; rect.bottom=(LONG)323;
 		m_pTM->Draw(m_nHudID, 453, 457, 1,1,&rect);
+		m_pFont->Print(buffer, 473, 440, .65f, D3DCOLOR_XRGB(255,255,255));
 	}
 
 	//Special 1

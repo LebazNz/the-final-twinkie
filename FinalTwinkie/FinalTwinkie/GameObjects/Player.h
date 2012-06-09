@@ -57,9 +57,11 @@ public:
 	bool GetDoubleDamage(void) {return m_bDoubleDamage; }
 	void SetDoubleDamage(bool bDD) { m_bDoubleDamage = bDD; }
 	void SetDamageTimer(float fTimer) { m_fDamageTime = fTimer; }
+	float GetDoubleDamageTimer(void){return m_fDamageTime;}
 	bool GetInfAmmo(void) {return m_bInfAmmo; }
 	void SetInfAmmo(bool bAmmo) {m_bInfAmmo = bAmmo;}
 	void SetInfoAmmoTimer(float fTimer){m_fInfAmmoTimer = fTimer; }
+	float GetInfAmmoTimer(void){return m_fInfAmmoTimer;}
 	float GetNoReload(){return m_fNoReloadTimer;}
 	void SetSpecial1(CSpecial* pSpecial){ m_pSpec1 = pSpecial; m_pSelectedSpec=m_pSpec1; m_pSelectedSpecAmmo=0;}
 	void SetSpecial2(CSpecial* pSpecial){ m_pSpec2 = pSpecial; }
