@@ -80,7 +80,7 @@ void CBitmapFont::Init(int nType)
 
 	switch(m_nType)
 	{
-	case 3:
+	case 0:
 		{
 			m_nCharWidth = 43;
 			m_nCharHeight = 43;
@@ -114,7 +114,7 @@ void CBitmapFont::Init(int nType)
 			m_cFirstChar = 32;
 		}
 		break;
-	case 0:
+	case 3:
 		{
 			m_nCharWidth = 43;
 			m_nCharHeight = 43;
@@ -147,7 +147,7 @@ void CBitmapFont::SetOffset(int ch)
 	m_nX = 0;
 	switch(m_nType)
 	{
-	case 3:
+	case 0:
 		{
 			switch(ch)
 			{
@@ -1045,7 +1045,7 @@ void CBitmapFont::SetOffset(int ch)
 			}
 			break;
 
-		case 0:
+		case 3:
 			{
 				int nY = 3;//6
 				m_nX = 0;

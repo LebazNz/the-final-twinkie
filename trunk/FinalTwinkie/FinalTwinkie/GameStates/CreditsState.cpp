@@ -37,6 +37,8 @@ CCreditsState::CCreditsState(void)
 	
 	m_nCursor = -1;
 	m_dColor = D3DCOLOR_XRGB(255,255,255);
+	m_nPosY = 0;
+	m_fTimer = 0.0f;
 }
 
 CCreditsState::~CCreditsState(void)
@@ -53,6 +55,8 @@ void CCreditsState::Enter(void)
 	m_nButtonID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	LoadText();
+	m_nPosY = 650;
+	m_fTimer = 0.0f;
 }
 
 void CCreditsState::Exit(void)
@@ -110,6 +114,14 @@ void CCreditsState::Update(float fDt)
 		m_dColor = D3DCOLOR_XRGB(177,132,0);
 	else
 		m_dColor = D3DCOLOR_XRGB(255,255,255);
+
+	if(m_fTimer > 0.0f)
+		m_fTimer-=fDt;
+	else
+		m_nPosY-=int(100*fDt);
+
+	if(m_nPosY < -600)
+		m_nPosY = 650;
 }
 
 void CCreditsState::Render(void)
@@ -121,31 +133,35 @@ void CCreditsState::Render(void)
 	m_pTM->Draw(m_nBGImageID,0,0,1.0f,1.0f,&rSelf,0,0,0);
 	m_pTM->Draw(m_nButtonID,25,545,0.75f,0.75f,nullptr,0,0,0,m_dColor);
 	m_pD3D->GetSprite()->Flush();
-	/*m_pD3D->DrawText(_T("Designed and Programmed by:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)-75,255,255,255);
-	m_pD3D->DrawText(_T("Anthony Cintron"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-45,255,255,255);
-	m_pD3D->DrawText(_T("Nate Zabel"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-20,255,255,255);
-	m_pD3D->DrawText(_T("Ryan Hofeling"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+5,255,255,255);
-	m_pD3D->DrawText(_T("Joshua Franey"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+30,255,255,255);
-	m_pD3D->DrawText(_T("Executive Producer:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+75,255,255,255);
-	m_pD3D->DrawText(_T("John O’Leske"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+105,255,255,255);
-	m_pD3D->DrawText(_T("Associate Producer:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+150,255,255,255);
-	m_pD3D->DrawText(_T("Shawn Paris"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+180,255,255,255);
-	m_pD3D->DrawText(_T("Art Lead:"),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+205,255,255,255);
-	m_pD3D->DrawText(_T("Chris Jahosky"),(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+235,255,255,255);*/
 
-	font->Print(m_sDAP.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)-75,1.0f,	D3DCOLOR_XRGB(255,0,0));
-	font->Print("Anthony Cintron",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-45,				1.0f,				D3DCOLOR_XRGB(255,0,0));
-	font->Print("Nate Zabel",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)-20,					1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Ryan Hofeling",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+5,				1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Joshua Franey",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+30,				1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print(m_sEP.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+75,		1.0f,			D3DCOLOR_XRGB(255,0,0));
-	font->Print("John O'Leske",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+105,				1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print(m_sAP.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+150,		1.0f,			D3DCOLOR_XRGB(255,0,0));
-	font->Print("Shawn Paris",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+180,				1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print(m_sAL.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,(CGame::GetInstance()->GetHeight()/2)+205,					1.0f,					D3DCOLOR_XRGB(255,0,0));
-	font->Print("Chris Jahosky",(CGame::GetInstance()->GetWidth()/2)-75,(CGame::GetInstance()->GetHeight()/2)+235,				1.0f,				D3DCOLOR_XRGB(255,0,0));
+	font->Print("Credits",			(CGame::GetInstance()->GetWidth()/2)-157,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-250,		2.5f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sDAP.c_str(),		(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-150,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Anthony Cintron",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-120,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Nate Zabel",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-90,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Ryan Hofeling",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-60,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Joshua Franey",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)-30,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sEP.c_str(),		(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+15,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("John O'Leske",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+45,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sAP.c_str(),		(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+80,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Shawn Paris",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+110,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sAL.c_str(),		(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+140,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Chris Jahosky",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+170,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Addition Art By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+200,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("James Brisnehan",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+230,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Addition Help By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+260,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Bryan Schotanes",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+290,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 
 	font->Print(m_sBack.c_str(),75,550,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+
+	char buffer[10];
+	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
+	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
+	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);

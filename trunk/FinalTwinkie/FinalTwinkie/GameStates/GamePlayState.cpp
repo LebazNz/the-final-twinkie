@@ -238,7 +238,7 @@ void CGamePlayState::Enter(void)
 		m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
 		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
-		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
+		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/MoneyPickUp.png"));
 
 		m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
 		m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
