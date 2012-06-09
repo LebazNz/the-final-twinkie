@@ -29,9 +29,10 @@ private:
 
 	static CCreditsState*	m_pSelf;
 
-	int								m_nBGImageID;
+	int	m_nBGImageID;
 	int m_nButtonID;
-
+	int m_nPosY;
+	float m_fTimer;
 	int m_nMouseX;
 	int m_nMouseY;
 
