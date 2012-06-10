@@ -20,6 +20,7 @@ public:
 	virtual void Render(void);
 	void LoadText(void);
 
+
 	bool LoadSavedGame(const char* szFileName, int nGameData);
 
 private:

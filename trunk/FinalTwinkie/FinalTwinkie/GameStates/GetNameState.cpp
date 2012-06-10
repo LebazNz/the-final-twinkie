@@ -4,10 +4,8 @@
 #include "GamePlayState.h"
 #include "MainMenuState.h"
 #include "OptionsState.h"
-#include "../tinyxml/tinystr.h"
-#include "../tinyxml/tinyxml.h"
 #include "../GameObjects/Player.h"
-
+#include "../GameStates/SurvivalState.h"
 CGetNameState* CGetNameState::m_pSelf = nullptr;
 
 CGetNameState* CGetNameState::GetInstance(void)
@@ -42,6 +40,7 @@ CGetNameState::CGetNameState(void)
 	m_nCursor = -1;
 
 	m_bLowCase = false;
+	m_bSurvival = false;
 	m_nCount = 0;
 	m_nPos = 0;
 }
@@ -66,7 +65,6 @@ void CGetNameState::Enter(void)
 		szName[i] = 0;
 
 	m_nPos = 0;
-	LoadText();
 }
 
 void CGetNameState::Exit(void)
@@ -116,7 +114,10 @@ bool CGetNameState::Input(void)
 		if(m_nCount == 0)
 			strcpy_s(szName,32,"Player\0");		
 		CPlayer::GetInstance()->SetName(szName);		
-		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+		if(!m_bSurvival)
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+		else
+			CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 		return true;
 	}
 
@@ -1710,12 +1711,12 @@ void CGetNameState::Render(void)
 		font->Print("m",515,480,1.0f,D3DCOLOR_XRGB(177,132,0));
 	}
 
-	font->Print(m_sShift.c_str(),168,530,1.0f,D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sSpace.c_str(),272,530,1.0f,D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sBackspace.c_str(),380,530,1.0f,D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sEnter.c_str(),548,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Shift",168,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Space",272,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Backspace",380,530,1.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Enter",548,530,1.0f,D3DCOLOR_XRGB(177,132,0));
 
-	font->Print(m_sName.c_str(),145,100,2.0f,D3DCOLOR_XRGB(177,132,0));
+	font->Print("Enter your name: ",145,100,2.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print(szName,263,225,1.25f,D3DCOLOR_XRGB(177,132,0));
 
 	char buffer[10];
@@ -1730,83 +1731,3 @@ void CGetNameState::Render(void)
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }
-void CGetNameState::LoadText(void)
-{
-	TiXmlDocument doc("resource/files/Text.xml");
-	int LangSel=COptionsState::GetInstance()->GetLang();
-	if(doc.LoadFile())
-	{
-		TiXmlNode* pParent = doc.RootElement();
-		switch(LangSel)
-		{
-		case 0:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("English");
-				TiXmlNode* pState = pLanguage->FirstChild("GetNameState");
-				TiXmlNode* pButton = pState->FirstChild("Shift");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sShift=pText->Value();
-				pButton=pState->FirstChild("Space");
-				pText = pButton->FirstChild()->ToText();
-				m_sSpace=pText->Value();
-				pButton = pState->FirstChild("Backspace");
-				pText = pButton->FirstChild()->ToText();
-				m_sBackspace=pText->Value();
-				pButton=pState->FirstChild("Enter");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnter=pText->Value();
-				pButton=pState->FirstChild("Name");
-				pText = pButton->FirstChild()->ToText();
-				m_sName=pText->Value();
-			}
-			break;
-		case 1:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("English");
-				TiXmlNode* pState = pLanguage->FirstChild("GetNameState");
-				TiXmlNode* pButton = pState->FirstChild("Shift");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sShift=pText->Value();
-				pButton=pState->FirstChild("Space");
-				pText = pButton->FirstChild()->ToText();
-				m_sSpace=pText->Value();
-				pButton = pState->FirstChild("Backspace");
-				pText = pButton->FirstChild()->ToText();
-				m_sBackspace=pText->Value();
-				pButton=pState->FirstChild("Enter");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnter=pText->Value();
-				pButton=pState->FirstChild("Name");
-				pText = pButton->FirstChild()->ToText();
-				m_sName=pText->Value();
-			}
-			break;
-		case 2:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
-				TiXmlNode* pState = pLanguage->FirstChild("GetNameState");
-				TiXmlNode* pButton = pState->FirstChild("Shift");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sShift=pText->Value();
-				pButton=pState->FirstChild("Space");
-				pText = pButton->FirstChild()->ToText();
-				m_sSpace=pText->Value();
-				pButton = pState->FirstChild("Backspace");
-				pText = pButton->FirstChild()->ToText();
-				m_sBackspace=pText->Value();
-				pButton=pState->FirstChild("Enter");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnter=pText->Value();
-				pButton=pState->FirstChild("Name");
-				pText = pButton->FirstChild()->ToText();
-				m_sName=pText->Value();
-			}
-			break;
-		case 3:
-			{
-			}
-			break;
-		}
-	}
-}
-

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root Number="1">
+  <Wave>
+    <Sappers>13</Sappers>
+    <FootSoldiers>16</FootSoldiers>
+    <Rocketeers>88</Rocketeers>
+    <Tanks>71</Tanks>
+  </Wave>
+</Root>
