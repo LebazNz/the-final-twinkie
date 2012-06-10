@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root Number="2">
+  <Wave>
+    <Sappers>10</Sappers>
+    <FootSoldiers>0</FootSoldiers>
+    <Rocketeers>0</Rocketeers>
+    <Tanks>1</Tanks>
+  </Wave>
+  <Wave>
+    <Sappers>10</Sappers>
+    <FootSoldiers>0</FootSoldiers>
+    <Rocketeers>0</Rocketeers>
+    <Tanks>0</Tanks>
+  </Wave>
+</Root>

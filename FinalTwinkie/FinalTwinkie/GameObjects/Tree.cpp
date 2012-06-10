@@ -36,12 +36,9 @@ bool CTree::CheckCollision(IEntity* pObject)
 				if(m_bHit == true)
 					pPlayer->SlowVel(0.5f,70);
 				else
-				{
 					pPlayer->SlowVel(0.5f,45);
-					m_bHit = true;
-					SetWidth(32);
-					SetHeight(32);
-				}
+
+				m_bHit = true;
 			}
 			break;
 		case OBJ_ENEMY:
@@ -50,19 +47,16 @@ bool CTree::CheckCollision(IEntity* pObject)
 				{
 					// MAKE ENEMY SLOW DOWN
 					CTank* pTank = dynamic_cast<CTank*>(pObject);
-					if(m_bHit == true)
-						pTank->SlowVel(0.5f,70);
-					else
-					{
-						pTank->SlowVel(0.5f,45);
-						m_bHit = true;
-						SetWidth(32);
-						SetHeight(32);
-					}
+				if(m_bHit == true)
+					pTank->SlowVel(0.5f,70);
+				else
+					pTank->SlowVel(0.5f,45);
+
+					m_bHit = true;
 				}
 				else
 				{
-					if(m_bHit == false)
+					if(m_bHit == true)
 					{
 						CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
 						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
@@ -94,11 +88,11 @@ void CTree::Render(void)
 		//Health
 		RECT rect;
 		rect.top=(LONG)360; rect.left=(LONG)11; rect.right=(LONG)177; rect.bottom=(LONG)381;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID,(int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
 		rect.top=(LONG)364; rect.left=(LONG)194; rect.right=(LONG)(194+((353-194)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)378;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
 		rect.top=(LONG)391; rect.left=(LONG)351; rect.right=(LONG)(351+((509-351)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)403;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
 	}
 
 	if(m_bHit == false)

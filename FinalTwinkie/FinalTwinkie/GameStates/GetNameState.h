@@ -12,7 +12,8 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
-	void LoadText(void);
+	bool GetSurvival() const { return m_bSurvival; }
+	void SetSurvival(bool val) { m_bSurvival = val; }
 
 private:
 	CGetNameState(void);
@@ -40,10 +41,7 @@ private:
 	char szName[32];
 	int m_nCount;
 	int m_nPos;
-	string m_sShift;
-	string m_sSpace;
-	string m_sBackspace;
-	string m_sEnter;
-	string m_sName;
+	bool m_bSurvival;
+	
 };
 

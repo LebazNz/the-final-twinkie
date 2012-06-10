@@ -11,6 +11,7 @@
 #include "../tinyxml/tinyxml.h"
 #include <fstream>
 #include "SurvivalState.h"
+#include "../GameStates/RobotBossState.h"
 using namespace std;
 bool CMainMenuState::playing=false;
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
@@ -194,6 +195,14 @@ bool CMainMenuState::Input(void)
 			return false;
 		}
 	
+	}
+
+	// robot boss state
+	if(m_pDI->KeyPressed(DIK_0))
+	{
+		CGame::GetInstance()->ChangeState(RobotBossState::GetInstance());
+		playing = false;
+		return true;
 	}
 	return true;
 }

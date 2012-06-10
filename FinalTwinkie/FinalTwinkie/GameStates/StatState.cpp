@@ -3,8 +3,6 @@
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
 #include "GamePlayState.h"
-#include "../tinyxml/tinystr.h"
-#include "../tinyxml/tinyxml.h"
 #include "../GameObjects/Player.h"
 
 StatState* StatState::m_pSelf = nullptr;
@@ -47,7 +45,6 @@ void StatState::Enter( void )
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-	LoadText();
 }
 
 void StatState::Exit( void )
@@ -186,7 +183,7 @@ void StatState::Clicked()
 void StatState::RenderStats()
 {
 
-	m_pFont->Print(m_sStats.c_str(),(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*10/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Statistics",(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*10/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
 
 	RECT rSelf = { };
 	SetRect(&rSelf, 653, 638, 816, 759);
@@ -195,13 +192,13 @@ void StatState::RenderStats()
 
 	
 	
-	m_pFont->Print(m_sScore.c_str()			,65,115,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sShots.c_str()		,65,165,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sNukes.c_str()		,65,215,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sDamage.c_str()		,65,265,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sMonies.c_str()	,65,315,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sEnemies.c_str()	,65,365,1.2f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sSappers.c_str()	,65,415,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Score"				,65,115,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Shots Fired"		,65,165,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Nukes Blasted"		,65,215,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Damage Tanked"		,65,265,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Monies Collected"	,65,315,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Enemies Decimated"	,65,365,1.2f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Sappers Absorbed"	,65,415,1.2f,D3DCOLOR_ARGB(255,255,255,255));
 
 
 	{
@@ -248,208 +245,20 @@ void StatState::RenderStats()
 
 void StatState::RenderAchievements()
 {
-	m_pFont->Print(m_sAchievements.c_str(),(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*10/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Achievements",(int)(CGame::GetInstance()->GetWidth()/2-(m_pFont->GetCharWidthW()*10/2)),25,(float)2.0f,D3DCOLOR_ARGB(255,255,255,255));
 
 	RECT rSelf = { };
 	SetRect(&rSelf, 653, 638, 816, 759);
 	m_pTM->Draw(m_nBGImageID,45,95,4.25f,3.5f,&rSelf,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 
 	
-	m_pFont->Print(m_sNaziBoss.c_str(),65,115,1,m_dwNaziBoss);	
-	m_pFont->Print(m_sAlienBoss.c_str()					,65,165,1,m_dwAlienBoss);	
-	m_pFont->Print(m_sRobotBoss.c_str()						,65,215,1,m_dwRobotBoss);	
-	m_pFont->Print(m_sSparta.c_str(),65,265,1,m_dwSparta);	
-	m_pFont->Print(m_sWTFDamage.c_str()				,65,315,1,m_dwSapperAbsorb);
-	m_pFont->Print(m_sNukem.c_str()					,65,365,1,m_dwNukem);	
-	m_pFont->Print(m_sPain.c_str()						,65,415,1,m_dwIamBoss);	
-	m_pFont->Print(m_sOwnAll.c_str()					,65,465,1,m_dwAllUpgrades);
+	m_pFont->Print("ALL YOUR REICH ARE BELONG TO ME",65,115,1,m_dwNaziBoss);	
+	m_pFont->Print("OH NO ALIENZ"					,65,165,1,m_dwAlienBoss);	
+	m_pFont->Print("GREASED"						,65,215,1,m_dwRobotBoss);	
+	m_pFont->Print("WE ARE NOT IN SPARTA ANYMORE"	,65,265,1,m_dwSparta);	
+	m_pFont->Print("WTF IS DAMAGE"					,65,315,1,m_dwSapperAbsorb);
+	m_pFont->Print("NUKE DUKEM"						,65,365,1,m_dwNukem);	
+	m_pFont->Print("MAX PAIN"						,65,415,1,m_dwIamBoss);	
+	m_pFont->Print("I OWN IT ALL"					,65,465,1,m_dwAllUpgrades);
 	
 }
-void StatState::LoadText(void)
-{
-	TiXmlDocument doc("resource/files/Text.xml");
-	int LangSel=COptionsState::GetInstance()->GetLang();
-	if(doc.LoadFile())
-	{
-		TiXmlNode* pParent = doc.RootElement();
-		switch(LangSel)
-		{
-		case 0:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("English");
-				TiXmlNode* pState = pLanguage->FirstChild("StatState");
-				TiXmlNode* pButton = pState->FirstChild("Stats");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sStats=pText->Value();
-				pButton=pState->FirstChild("Score");
-				pText = pButton->FirstChild()->ToText();
-				m_sScore=pText->Value();
-				pButton = pState->FirstChild("Shots");
-				pText = pButton->FirstChild()->ToText();
-				m_sShots=pText->Value();
-				pButton=pState->FirstChild("Nukes");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukes=pText->Value();
-				pButton=pState->FirstChild("Damage");
-				pText = pButton->FirstChild()->ToText();
-				m_sDamage=pText->Value();
-				pButton=pState->FirstChild("Monies");
-				pText = pButton->FirstChild()->ToText();
-				m_sMonies=pText->Value();
-				pButton=pState->FirstChild("Enemies");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnemies=pText->Value();
-				pButton=pState->FirstChild("Sappers");
-				pText = pButton->FirstChild()->ToText();
-				m_sSappers=pText->Value();
-				pButton=pState->FirstChild("Achievements");
-				pText = pButton->FirstChild()->ToText();
-				m_sAchievements=pText->Value();
-				pButton=pState->FirstChild("NaziBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sNaziBoss=pText->Value();
-				pButton=pState->FirstChild("AlienBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sAlienBoss=pText->Value();
-				pButton=pState->FirstChild("RobotBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sRobotBoss=pText->Value();
-				pButton=pState->FirstChild("Sparta");
-				pText = pButton->FirstChild()->ToText();
-				m_sSparta=pText->Value();
-				pButton=pState->FirstChild("WTFDamage");
-				pText = pButton->FirstChild()->ToText();
-				m_sWTFDamage=pText->Value();
-				pButton=pState->FirstChild("Nukem");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukem=pText->Value();
-				pButton=pState->FirstChild("Pain");
-				pText = pButton->FirstChild()->ToText();
-				m_sPain=pText->Value();
-				pButton=pState->FirstChild("OwnAll");
-				pText = pButton->FirstChild()->ToText();
-				m_sOwnAll=pText->Value();
-			}
-			break;
-		case 1:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("English");
-				TiXmlNode* pState = pLanguage->FirstChild("StatState");
-				TiXmlNode* pButton = pState->FirstChild("Stats");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sStats=pText->Value();
-				pButton=pState->FirstChild("Score");
-				pText = pButton->FirstChild()->ToText();
-				m_sScore=pText->Value();
-				pButton = pState->FirstChild("Shots");
-				pText = pButton->FirstChild()->ToText();
-				m_sShots=pText->Value();
-				pButton=pState->FirstChild("Nukes");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukes=pText->Value();
-				pButton=pState->FirstChild("Damage");
-				pText = pButton->FirstChild()->ToText();
-				m_sDamage=pText->Value();
-				pButton=pState->FirstChild("Monies");
-				pText = pButton->FirstChild()->ToText();
-				m_sMonies=pText->Value();
-				pButton=pState->FirstChild("Enemies");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnemies=pText->Value();
-				pButton=pState->FirstChild("Sappers");
-				pText = pButton->FirstChild()->ToText();
-				m_sSappers=pText->Value();
-				pButton=pState->FirstChild("Achievements");
-				pText = pButton->FirstChild()->ToText();
-				m_sAchievements=pText->Value();
-				pButton=pState->FirstChild("NaziBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sNaziBoss=pText->Value();
-				pButton=pState->FirstChild("AlienBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sAlienBoss=pText->Value();
-				pButton=pState->FirstChild("RobotBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sRobotBoss=pText->Value();
-				pButton=pState->FirstChild("Sparta");
-				pText = pButton->FirstChild()->ToText();
-				m_sSparta=pText->Value();
-				pButton=pState->FirstChild("WTFDamage");
-				pText = pButton->FirstChild()->ToText();
-				m_sWTFDamage=pText->Value();
-				pButton=pState->FirstChild("Nukem");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukem=pText->Value();
-				pButton=pState->FirstChild("Pain");
-				pText = pButton->FirstChild()->ToText();
-				m_sPain=pText->Value();
-				pButton=pState->FirstChild("OwnAll");
-				pText = pButton->FirstChild()->ToText();
-				m_sOwnAll=pText->Value();
-			}
-			break;
-		case 2:
-			{
-				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
-				TiXmlNode* pState = pLanguage->FirstChild("StatState");
-				TiXmlNode* pButton = pState->FirstChild("Stats");
-				TiXmlText* pText = pButton->FirstChild()->ToText();
-				m_sStats=pText->Value();
-				pButton=pState->FirstChild("Score");
-				pText = pButton->FirstChild()->ToText();
-				m_sScore=pText->Value();
-				pButton = pState->FirstChild("Shots");
-				pText = pButton->FirstChild()->ToText();
-				m_sShots=pText->Value();
-				pButton=pState->FirstChild("Nukes");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukes=pText->Value();
-				pButton=pState->FirstChild("Damage");
-				pText = pButton->FirstChild()->ToText();
-				m_sDamage=pText->Value();
-				pButton=pState->FirstChild("Monies");
-				pText = pButton->FirstChild()->ToText();
-				m_sMonies=pText->Value();
-				pButton=pState->FirstChild("Enemies");
-				pText = pButton->FirstChild()->ToText();
-				m_sEnemies=pText->Value();
-				pButton=pState->FirstChild("Sappers");
-				pText = pButton->FirstChild()->ToText();
-				m_sSappers=pText->Value();
-				pButton=pState->FirstChild("Achievements");
-				pText = pButton->FirstChild()->ToText();
-				m_sAchievements=pText->Value();
-				pButton=pState->FirstChild("NaziBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sNaziBoss=pText->Value();
-				pButton=pState->FirstChild("AlienBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sAlienBoss=pText->Value();
-				pButton=pState->FirstChild("RobotBoss");
-				pText = pButton->FirstChild()->ToText();
-				m_sRobotBoss=pText->Value();
-				pButton=pState->FirstChild("Sparta");
-				pText = pButton->FirstChild()->ToText();
-				m_sSparta=pText->Value();
-				pButton=pState->FirstChild("WTFDamage");
-				pText = pButton->FirstChild()->ToText();
-				m_sWTFDamage=pText->Value();
-				pButton=pState->FirstChild("Nukem");
-				pText = pButton->FirstChild()->ToText();
-				m_sNukem=pText->Value();
-				pButton=pState->FirstChild("Pain");
-				pText = pButton->FirstChild()->ToText();
-				m_sPain=pText->Value();
-				pButton=pState->FirstChild("OwnAll");
-				pText = pButton->FirstChild()->ToText();
-				m_sOwnAll=pText->Value();
-			}
-			break;
-		case 3:
-			{
-			}
-			break;
-		}
-	}
-}
-

@@ -155,6 +155,9 @@ public:
 
 
 	void SetSecondType(int nType){m_nSecondType=nType;}
+	bool	GetRobotBossState() const { return m_bRobotBossState; }
+	void	SetRobotBossState(bool val) { m_bRobotBossState = val; }
+	
 	int GetSecondType(void){return m_nSecondType;}
 	void SetEmitterRight(CEmitter* EM){m_pTracksRight=EM;}
 	void SetEmitterLeft(CEmitter* EM){m_pTracksLeft=EM;}
@@ -225,7 +228,7 @@ private:
 	float	m_fSpeedMod;
 	int		m_nSpeedLevel;
 	int		m_nGunSel;
-	
+	bool m_bRobotBossState;
 	float m_fPurchaseLevel;
 
 	bool m_bRocketAccess;

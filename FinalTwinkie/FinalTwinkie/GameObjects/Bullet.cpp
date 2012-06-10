@@ -188,10 +188,12 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
-				
-
+				//CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+				//CMessageSystem::GetInstance()->SndMessage(pMsg);
+				//pMsg = nullptr;
 			}
 			break;
+		
 			case OBJ_BUILDING:
 			{
 				if(GetWhoFired()==true)

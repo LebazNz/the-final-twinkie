@@ -3,7 +3,7 @@
 
 #include "../ObjectManager and Factory/ObjectFactory.h"
 #include "../Event and Messages/Message.h"
-
+#include "../source/Wave.h"
 #include <string>
 
 class CParticleManager;
@@ -30,11 +30,12 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 	bool GetPaused(void)const {return m_bPaused;}
-	void LoadWave();
+	bool LoadWave(const char* szFileName, int nGamedata);
 	static void MessageProc(CMessage* pMsg);
 
-	void SetSavedGame(Data gameData);
-
+	int		GetNumUnits() { return m_nNumUnits; }
+	void	SetNumUnits(int rhs) { m_nNumUnits = rhs; }
+	void	GenerateWave();
 private:
 	CSurvivalState(void);
 	virtual ~CSurvivalState(void);
@@ -55,7 +56,7 @@ private:
 	CGUI*					m_pGUI;
 
 	static CSurvivalState*	m_pSelf;
-
+	vector<CWave*>			m_vWave;
 	vector<CEmitter*>		m_pEmitters;
 	CEntity*				m_pPlayer;
 	CEntity*				m_pEnemy;
@@ -97,6 +98,11 @@ private:
 
 	IDirect3DTexture9* MiniMap;
 
-	int m_nLevel;
+	int m_nNumUnits;
+	int m_nWavesRemaining;
+	int m_nCurrWave;
+
+
+
 };
 
