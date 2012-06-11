@@ -253,7 +253,7 @@ bool CMainMenuState::Input(void)
 	if(m_pDI->KeyPressed(DIK_0))
 	{
 		CGame::GetInstance()->ChangeState(RobotBossState::GetInstance());
-		playing = false;
+		//playing = false;
 		return true;
 	}
 	return true;
