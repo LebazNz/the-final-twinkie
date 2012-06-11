@@ -433,7 +433,6 @@ void CSurvivalState::Exit( void )
 		}
 		m_AM	= nullptr;
 	
-		CGame::GetInstance()->my_channel->stop();
 		if(m_pGUI!=nullptr)
 		{
 			m_pGUI->DeleteInstance();

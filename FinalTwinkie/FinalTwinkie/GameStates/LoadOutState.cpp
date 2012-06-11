@@ -28,14 +28,14 @@ CLoadOutState::CLoadOutState(void)
 	m_nArtilleryMaxCount = 0;
 	m_nSecondAmmo = -1;
 
-	m_bMissile = false;
-	m_bArtillery = false;
-	m_bLaser = false;
-	m_bFlame = false;
-	m_bNuke = false;
-	m_bSmoke = false;
-	m_bEMP = false;
-	m_bAirStirke = false;
+	m_bMissile		= false;
+	m_bArtillery	= false;
+	m_bLaser		= false;
+	m_bFlame		= false;
+	m_bNuke			= false;
+	m_bSmoke		= false;
+	m_bEMP			= false;
+	m_bAirStirke	= false;
 }
 
 CLoadOutState::~CLoadOutState(void)
@@ -330,13 +330,13 @@ void CLoadOutState::Render( void )
 	m_pTM->Draw(m_nButtonImageID,88,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMin);
 	m_pTM->Draw(m_nButtonImageID,195,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMax);
 	// Missile
-	if(m_bMissile)
+	if(!m_bMissile)
 	{
 		m_pTM->Draw(m_nButtonImageID,268,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMin);
 		m_pTM->Draw(m_nButtonImageID,375,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMax);
 	}
 	// Artillery
-	if(m_bArtillery)
+	if(!m_bArtillery)
 	{
 		m_pTM->Draw(m_nButtonImageID,433,226,0.15f,0.5f,nullptr,0,0,0,m_dArtilleryMin);
 		m_pTM->Draw(m_nButtonImageID,538,226,0.15f,0.5f,nullptr,0,0,0, m_dArtilleryMax);
@@ -363,13 +363,13 @@ void CLoadOutState::Render( void )
 	font->Print(buffer,140,230,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 	font->Print("Rocket",300,190,0.9f,D3DCOLOR_XRGB(177,132,0));
-	if(m_bMissile)
+	if(!m_bMissile)
 	{
 		_itoa_s(m_nMissileCount,buffer,10);
 		font->Print(buffer,320,230,0.75f,D3DCOLOR_XRGB(255,255,255));
 	}
 	font->Print("Artillery",450,190,0.9f,D3DCOLOR_XRGB(177,132,0));
-	if(m_bArtillery)
+	if(!m_bArtillery)
 	{
 		_itoa_s(m_nArtilleryCount,buffer,10);
 		font->Print(buffer,485,230,0.75f,D3DCOLOR_XRGB(255,255,255));
