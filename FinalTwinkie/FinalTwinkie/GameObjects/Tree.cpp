@@ -88,11 +88,11 @@ void CTree::Render(void)
 		//Health
 		RECT rect;
 		rect.top=(LONG)360; rect.left=(LONG)11; rect.right=(LONG)177; rect.bottom=(LONG)381;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
 		rect.top=(LONG)364; rect.left=(LONG)194; rect.right=(LONG)(194+((353-194)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)378;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
 		rect.top=(LONG)391; rect.left=(LONG)351; rect.right=(LONG)(351+((509-351)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)403;
-		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (GetPosX()-41)+C->GetPosX(), (GetPosY()-40)+C->GetPosY(), 0.5f,0.5f,&rect);
+		CSGD_TextureManager::GetInstance()->Draw(m_nHPID, (int)((GetPosX()-41)+C->GetPosX()), (int)((GetPosY()-40)+C->GetPosY()), 0.5f,0.5f,&rect);
 	}
 
 	if(m_bHit == false)

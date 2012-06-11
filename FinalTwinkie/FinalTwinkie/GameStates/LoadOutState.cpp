@@ -36,6 +36,10 @@ CLoadOutState::CLoadOutState(void)
 	m_bSmoke		= false;
 	m_bEMP			= false;
 	m_bAirStirke	= false;
+
+	m_bUseMachineGun	= true;
+	m_bUseLaser			= false;
+	m_bUseFlame			= false;
 }
 
 CLoadOutState::~CLoadOutState(void)
@@ -90,6 +94,25 @@ void CLoadOutState::Enter( void )
 	m_nMissileMaxCount		= m_nMissileCount;
 	m_nArtilleryMaxCount	= m_nArtilleryCount;
 
+	if(m_nSecondAmmo == 0)
+	{
+		m_bUseMachineGun = true;
+		m_bUseLaser = false;
+		m_bUseFlame = false;
+	}
+	else if(m_nSecondAmmo == 1)
+	{
+		m_bUseMachineGun = false;
+		m_bUseLaser = true;
+		m_bUseFlame = false;
+	}
+	else if(m_nSecondAmmo == 2)
+	{
+		m_bUseMachineGun = false;
+		m_bUseLaser = false;
+		m_bUseFlame = true;
+	}
+
 	m_dShellMin = D3DCOLOR_XRGB(255,255,255);
 	m_dShellMax = D3DCOLOR_XRGB(255,255,255);
 	m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
@@ -143,13 +166,13 @@ bool CLoadOutState::Input( void )
 		return true;
 	}*/
 
-	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 25 && m_nMouseX <= 180
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 25 && m_nMouseX <= 193
 		&& m_nMouseY >= 550 && m_nMouseY <= 575))
 	{
 		CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 		return true;
 	}
-	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 600 && m_nMouseX <= 755
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 600 && m_nMouseX <= 768
 		&& m_nMouseY >= 550 && m_nMouseY <= 575))
 	{
 		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
@@ -158,8 +181,8 @@ bool CLoadOutState::Input( void )
 		return true;
 	}
 
-	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 88 && m_nMouseX <= 105
-		&& m_nMouseY >= 226 && m_nMouseY <= 245))
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 121
+		&& m_nMouseY >= 225 && m_nMouseY <= 253))
 	{
 		if(m_nShellCount > 0)
 			m_nShellCount--;
@@ -167,13 +190,109 @@ bool CLoadOutState::Input( void )
 			m_nShellCount = 0;
 	}
 
-	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 195 && m_nMouseX <= 235
-		&& m_nMouseY >= 226 && m_nMouseY <= 245))
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 195 && m_nMouseX <= 225
+		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
 		if(m_nShellCount < m_nShellMaxCount)
 			m_nShellCount++;
 		else
 			m_nShellCount = m_nShellMaxCount;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 267 && m_nMouseX <= 301
+		&& m_nMouseY >= 225 && m_nMouseY <= 253))
+	{
+		if(m_nMissileCount > 0)
+			m_nMissileCount--;
+		else
+			m_nMissileCount = 0;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 374 && m_nMouseX <= 409
+		&& m_nMouseY >= 228 && m_nMouseY <= 253))
+	{
+		if(m_nMissileCount < m_nMissileMaxCount)
+			m_nMissileCount++;
+		else
+			m_nMissileCount = m_nMissileMaxCount;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 432 && m_nMouseX <= 467
+		&& m_nMouseY >= 225 && m_nMouseY <= 253))
+	{
+		if(m_nArtilleryCount > 0)
+			m_nArtilleryCount--;
+		else
+			m_nArtilleryCount = 0;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 537 && m_nMouseX <= 570
+		&& m_nMouseY >= 228 && m_nMouseY <= 253))
+	{
+		if(m_nArtilleryCount < m_nArtilleryMaxCount)
+			m_nArtilleryCount++;
+		else
+			m_nArtilleryCount = m_nArtilleryMaxCount;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 143 && m_nMouseX <= 253
+		&& m_nMouseY >= 349 && m_nMouseY <= 378))
+	{
+		if(m_bUseMachineGun != true)
+		{
+			m_bUseMachineGun = true;
+			m_bUseLaser = false;
+			m_bUseFlame = false;
+		}
+		m_nSecondAmmo = 0;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 303 && m_nMouseX <= 415
+		&& m_nMouseY >= 349 && m_nMouseY <= 378))
+	{
+		if(m_bUseLaser != true)
+		{
+			m_bUseMachineGun = false;
+			m_bUseLaser = true;
+			m_bUseFlame = false;
+		}
+		m_nSecondAmmo = 1;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 479 && m_nMouseX <= 592
+		&& m_nMouseY >= 349 && m_nMouseY <= 378))
+	{
+		if(m_bUseFlame != true)
+		{
+			m_bUseMachineGun = false;
+			m_bUseLaser = false;
+			m_bUseFlame = true;
+		}
+		m_nSecondAmmo = 2;
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 118
+		&& m_nMouseY >= 446 && m_nMouseY <= 474))
+	{
+		
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 253 && m_nMouseX <= 287
+		&& m_nMouseY >= 446 && m_nMouseY <= 474))
+	{
+		
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 384 && m_nMouseX <= 419
+		&& m_nMouseY >= 446 && m_nMouseY <= 474))
+	{
+		
+	}
+
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 552 && m_nMouseX <= 587
+		&& m_nMouseY >= 446 && m_nMouseY <= 474))
+	{
+		
 	}
 
 
@@ -310,9 +429,9 @@ void CLoadOutState::Render( void )
 		break;
 	}
 	m_pTM->Draw(m_nButtonImageID,142,350,0.5f,0.5f,nullptr,0,0,0,dColor1);
-	if(m_bLaser)
+	//if(m_bLaser)
 		m_pTM->Draw(m_nButtonImageID,303,350,0.5f,0.5f,nullptr,0,0,0,dColor2);
-	if(m_bFlame)
+	//if(m_bFlame)
 		m_pTM->Draw(m_nButtonImageID,480,350,0.5f,0.5f,nullptr,0,0,0,dColor3);
 
 	SetRect(&rSelf, 467, 638, 631, 760);
@@ -330,17 +449,17 @@ void CLoadOutState::Render( void )
 	m_pTM->Draw(m_nButtonImageID,88,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMin);
 	m_pTM->Draw(m_nButtonImageID,195,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMax);
 	// Missile
-	if(!m_bMissile)
-	{
+	//if(m_bMissile)
+	//{
 		m_pTM->Draw(m_nButtonImageID,268,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMin);
 		m_pTM->Draw(m_nButtonImageID,375,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMax);
-	}
+	//}
 	// Artillery
-	if(!m_bArtillery)
-	{
+	//if(m_bArtillery)
+	//{
 		m_pTM->Draw(m_nButtonImageID,433,226,0.15f,0.5f,nullptr,0,0,0,m_dArtilleryMin);
 		m_pTM->Draw(m_nButtonImageID,538,226,0.15f,0.5f,nullptr,0,0,0, m_dArtilleryMax);
-	}
+	//}
 	// SP One
 	m_pTM->Draw(m_nButtonImageID,85,447,0.15f,0.5f,nullptr,0,0,0,m_dSPOneMin);
 	m_pTM->Draw(m_nButtonImageID,253,447,0.15f,0.5f,nullptr,0,0,0,m_dSPOneMax);
@@ -363,17 +482,17 @@ void CLoadOutState::Render( void )
 	font->Print(buffer,140,230,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 	font->Print("Rocket",300,190,0.9f,D3DCOLOR_XRGB(177,132,0));
-	if(!m_bMissile)
-	{
+	//if(m_bMissile)
+	//{
 		_itoa_s(m_nMissileCount,buffer,10);
 		font->Print(buffer,320,230,0.75f,D3DCOLOR_XRGB(255,255,255));
-	}
+	//}
 	font->Print("Artillery",450,190,0.9f,D3DCOLOR_XRGB(177,132,0));
-	if(!m_bArtillery)
-	{
+	if(m_bArtillery)
+	//{
 		_itoa_s(m_nArtilleryCount,buffer,10);
 		font->Print(buffer,485,230,0.75f,D3DCOLOR_XRGB(255,255,255));
-	}
+	//}
 
 	font->Print("Secondary Weapon Type",50,275,1.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print("Machine Gun",125,315,0.9f,D3DCOLOR_XRGB(177,132,0));
