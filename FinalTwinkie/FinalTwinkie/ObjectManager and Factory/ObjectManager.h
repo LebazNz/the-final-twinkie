@@ -19,7 +19,7 @@ public:
 	void CheckCollisions(void);
 	void RenderAllObjects(void);
 
-	void AreaEffect(float x, float y, int radius, int damage);
+	void AreaEffect(float x, float y, int radius, int damage, bool EMP = false);
 	CEntity* GetTarget(CEntity* pEntity);
 
 private:

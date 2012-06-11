@@ -80,7 +80,7 @@ bool CPickup::CheckCollision(IEntity* pBase)
 						for(int i = 0; i < 3; ++i)
 						{
 							if(nAmmo[i] != -1)
-								nAmmo[i] += nMaxAmmo[i]*0.25f;
+								nAmmo[i] += (int)nMaxAmmo[i]*0.25f;
 								if(nAmmo[i] > nMaxAmmo[i])
 									nAmmo[i] = nMaxAmmo[i];
 						}

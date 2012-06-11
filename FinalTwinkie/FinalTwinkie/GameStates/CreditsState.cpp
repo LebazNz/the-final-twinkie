@@ -120,7 +120,7 @@ void CCreditsState::Update(float fDt)
 	else
 		m_nPosY-=int(100*fDt);
 
-	if(m_nPosY < -600)
+	if(m_nPosY < -650)
 		m_nPosY = 650;
 }
 
@@ -148,8 +148,9 @@ void CCreditsState::Render(void)
 	font->Print("Chris Jahosky",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+170,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print("Addition Art By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+200,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print("James Brisnehan",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+230,		0.75f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Addition Help By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+260,		1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Bryan Schotanes",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+290,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Mark Simpson",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+260,		0.75f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Addition Help By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+290,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Bryan Schotanes",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+320,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 
 	font->Print(m_sBack.c_str(),75,550,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 
