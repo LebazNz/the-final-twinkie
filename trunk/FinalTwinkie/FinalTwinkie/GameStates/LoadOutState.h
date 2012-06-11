@@ -2,8 +2,6 @@
 #include "igamestate.h"
 #include "../GameObjects/Player.h"
 
-
-
 class CLoadOutState :
 	public IGameState
 {
@@ -54,6 +52,10 @@ private:
 	bool m_bEMP;
 	bool m_bAirStirke;
 	int m_nSecondAmmo;
+
+	bool m_bUseMachineGun;
+	bool m_bUseLaser;
+	bool m_bUseFlame;
 
 	DWORD m_dShellMin;
 	DWORD m_dShellMax;

@@ -325,6 +325,15 @@ void CGamePlayState::Enter(void)
 		player->SetGunSel(1);
 		player->SetMoney(m_dGameData.nMoney);
 
+		//buffs
+		player->SetDoubleDamage(true);
+		player->SetDamageTimer(15);
+		player->SetNoReloadTimer(15);
+		player->SetInvul(true);
+		player->SetInvulTimer(15);
+		player->SetInfAmmo(true);
+		player->SetInfoAmmoTimer(15);
+
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
 		player->SetTurret(PlayerTurret);
@@ -654,6 +663,12 @@ bool CGamePlayState::Input(void)
 			CGame::GetInstance()->ChangeState(StatState::GetInstance());
 			return true;
 		}
+		// LoadOut State
+		if(m_pDI->KeyPressed(DIK_NUMPAD2))
+		{
+			CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
+			return true;
+		}
 		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
 		{
 			if(m_pDI->KeyPressed(DIK_TAB))
@@ -663,12 +678,6 @@ bool CGamePlayState::Input(void)
 		}
 		return true;
 	}
-	if(m_pDI->KeyPressed(DIK_NUMPAD2))
-	{
-		CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
-		return true;
-	}
-	return true;
 	return true;
 }
 
@@ -980,7 +989,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							if(player->GetWeaponAmmoMissile()> 0)
+							if(player->GetWeaponAmmoArtillery()> 0)
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
@@ -1307,7 +1316,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(RIFLE);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);
@@ -1353,7 +1362,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[5]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);
