@@ -302,7 +302,7 @@ void CEnemy::HandleEvent(CEvent* pEvent)
 
 	if(pEvent->GetEventID() == "explode")
 	{
-		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
+		
 	}
 }
 

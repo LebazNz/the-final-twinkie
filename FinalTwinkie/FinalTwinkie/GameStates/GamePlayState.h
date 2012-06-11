@@ -56,6 +56,7 @@ private:
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 	CObjectManager*			m_pOM;
+	CSGD_XAudio2*			m_pAudio;
 public:
 	CFactory*				m_pOF;
 private:
@@ -123,6 +124,7 @@ private:
 	IDirect3DTexture9* MiniMap;
 
 	int m_nLevel;
+	int m_nGameMusic;
 
 	string m_sPaused;
 	string m_sResume;

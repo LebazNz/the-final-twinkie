@@ -16,8 +16,10 @@ public:
 	void LoadText(void);
 	bool LoadOptions(const char* szFileName);
 	int GetMusicVolume(void)const{return m_nCurVolume;}
+	int GetSFXVolume(void) const { return m_nSFXVolume;}
 	bool GetWindowed(void)const { return m_bWindowed;}
 	void PlayHighlight(DWORD dwPlayColor);
+	void SetSong(int s) { m_nMenuMusicID = s;}
 
 private:
 	CMainMenuState(void);
@@ -29,6 +31,7 @@ private:
 	CSGD_DirectInput*				m_pDI;
 	CSGD_TextureManager*			m_pTM;
 	CBitmapFont*					m_pFont;
+	CSGD_XAudio2*					m_pAudio;
 
 	static CMainMenuState*			m_pSelf;
 
@@ -44,13 +47,15 @@ private:
 	int								m_nLang;
 	bool							m_bWindowed;
 	int								m_nPos2;
-	int m_nMouseX;
-	int m_nMouseY;
+	int								m_nMouseX;
+	int								m_nMouseY;
+	int								m_nMenuMusicID;
+	int								m_nButton;
+	int								m_nClick;
+	bool							m_bPlayedSound;
 
 	int m_nCursor;
 
-	static bool playing;
-	float StartPlay;
 	string m_sPlay;
 	string m_sOptions;
 	string m_sCredits;

@@ -38,6 +38,7 @@ CLoadGameState::CLoadGameState(void)
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 	
 	m_nBGImageID = -1;
 	m_nPosition = 0;
@@ -46,6 +47,7 @@ CLoadGameState::CLoadGameState(void)
 	m_nMouseY = 0;
 	m_nCursor = -1;
 	m_nButtonImageID =-1;
+	m_nMusic = -1;
 }
 
 CLoadGameState::~CLoadGameState(void)
@@ -59,6 +61,7 @@ void CLoadGameState::Enter(void)
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
@@ -78,14 +81,21 @@ void CLoadGameState::Enter(void)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->Game_theme,false,&CGame::GetInstance()->my_channel);
-	CGame::GetInstance()->my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
 
 	LoadText();
 }
 
 void CLoadGameState::Exit(void)
 {
+	if(m_nMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nMusic))
+						m_pAudio->MusicStopSong(m_nMusic);
+
+		m_pAudio->MusicUnloadSong(m_nMusic);
+		m_nMusic = -1;
+		CMainMenuState::GetInstance()->SetSong(-1);
+	}
 	if(m_nBGImageID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);

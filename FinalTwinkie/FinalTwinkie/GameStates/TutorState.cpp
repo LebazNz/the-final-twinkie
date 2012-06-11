@@ -549,7 +549,7 @@ void CTutorState::Exit(void)
 		{
 			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
 		}*/
-		CGame::GetInstance()->my_channel->stop();
+		
 		if(m_pGUI!=nullptr)
 		{
 			m_pGUI->DeleteInstance();
@@ -1228,7 +1228,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		{
 			CBullet* pBullet = dynamic_cast<CDestroyBulletMessage*>(pMsg)->GetBullet();
 			pSelf->m_pOM->RemoveObject(pBullet);
-			CGame::GetInstance()->channel->stop();
+			
 		}
 		break;
 	case MSG_CREATEENEMY:

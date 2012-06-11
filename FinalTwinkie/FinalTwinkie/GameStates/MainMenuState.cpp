@@ -13,7 +13,7 @@
 #include "SurvivalState.h"
 #include "../GameStates/RobotBossState.h"
 using namespace std;
-bool CMainMenuState::playing=false;
+
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
 
 CMainMenuState* CMainMenuState::GetInstance(void)
@@ -46,10 +46,14 @@ CMainMenuState::CMainMenuState(void)
 	m_nButtonImageID = -1;
 	m_nPosition = 0;
 	m_nPointerID = -1;
+	m_nMenuMusicID = -1;
+	m_nButton = -1;
+	m_nClick = -1;
 	m_nSFXVolume = 50;
 	m_nCurVolume = 50;
 	m_nLang = 0;
 	m_bWindowed = false;
+	m_bPlayedSound = false;
 
 	LoadOptions("options.txt");
 
@@ -67,6 +71,7 @@ void CMainMenuState::Enter(void)
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/Menu_Screen.png"));
 	m_nNameImageID = m_pTM->LoadTexture(_T("resource/graphics/logo_game.png"));
@@ -74,6 +79,8 @@ void CMainMenuState::Enter(void)
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 	LoadOptions("options.txt");
 
 	COptionsState::GetInstance()->SetMusicVolume(m_nCurVolume);
@@ -83,13 +90,39 @@ void CMainMenuState::Enter(void)
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
-	StartPlay=0;
+
 	LoadText();
 	m_sTutor = "Tutorial";
+
+	if(m_nMenuMusicID == -1)
+	{
+		m_nMenuMusicID = m_pAudio->MusicLoadSong(_T("resource/sound/MenuMusic.xwm"));
+		m_pAudio->MusicPlaySong(m_nMenuMusicID, true);
+		m_bPlayedSound = false;
+	}
 }
 
 void CMainMenuState::Exit(void)
 {
+
+	if(m_nButton != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nButton))
+			m_pAudio->SFXStopSound(m_nButton);
+
+		m_pAudio->SFXUnloadSound(m_nButton);
+		m_nButton = -1;
+	}
+
+	if(m_nClick != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nClick))
+			m_pAudio->SFXStopSound(m_nClick);
+
+		m_pAudio->SFXUnloadSound(m_nClick);
+		m_nClick = -1;
+	}
+
 	if(m_nBGImageID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);
@@ -124,6 +157,7 @@ void CMainMenuState::Exit(void)
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 	
 	m_nSelected = 0;
 }
@@ -133,6 +167,8 @@ bool CMainMenuState::Input(void)
 	// Move the cursor position
 	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 	{
+		m_pAudio->SFXPlaySound(m_nButton,false);
+
 		if(m_nPosition == 0)
 		{
 			m_nPosition = 3;
@@ -144,6 +180,8 @@ bool CMainMenuState::Input(void)
 	}
 	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 	{
+		m_pAudio->SFXPlaySound(m_nButton,false);
+
 		if(m_nPosition == 3)
 		{
 			m_nPosition = 0;
@@ -156,24 +194,40 @@ bool CMainMenuState::Input(void)
 	// Make selection
 	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
+
 		if(m_nPosition == 0)
 		{
 			if(m_nPos2 == 4)
 			{
-				CGame::GetInstance()->my_channel->stop();
+				CLoadGameState::GetInstance()->SetSong(m_nMenuMusicID);
 				CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
-				playing=false;
 				return true;
 			}
 			else if (m_nPos2 == 5)
 			{
+				if(m_nMenuMusicID != -1)
+				{
+					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+						m_pAudio->MusicStopSong(m_nMenuMusicID);
+
+					m_pAudio->MusicUnloadSong(m_nMenuMusicID);
+					m_nMenuMusicID = -1;
+				}
 				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 				return true;
 			}
 			else if(m_nPos2 == 6)
 			{
+				if(m_nMenuMusicID != -1)
+				{
+					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+						m_pAudio->MusicStopSong(m_nMenuMusicID);
+
+					m_pAudio->MusicUnloadSong(m_nMenuMusicID);
+					m_nMenuMusicID = -1;
+				}
 				CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
-				playing = false;
 				return true;
 			}
 		}
@@ -182,8 +236,6 @@ bool CMainMenuState::Input(void)
 			
 				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
 				return true;
-			
-			
 		}
 		else if(m_nPosition == 2)
 		{
@@ -233,33 +285,40 @@ void CMainMenuState::Update(float fDt)
 	if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 295 && m_nMouseY <= 340)
 	{
-		m_nPosition = 0;
+		if(m_nPosition != 0)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 0;
+		}
 	}
-	if(m_nMouseX >= 75 && m_nMouseX <= 242
+	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 340 && m_nMouseY <= 390)
 	{
-		m_nPosition = 1;
+		if(m_nPosition != 1)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 1;
+		}
 	}
-	if(m_nMouseX >= 75 && m_nMouseX <= 242
+	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 390 && m_nMouseY <= 435)
 	{
-		m_nPosition = 2;
+		if(m_nPosition != 2)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 2;
+		}
 	}
-	if(m_nMouseX >= 75 && m_nMouseX <= 242
+	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 435 && m_nMouseY <= 480)
 	{
-		m_nPosition = 3;
+		if(m_nPosition != 3)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 3;
+		}
 	}
-	if(StartPlay<1)
-	{
-		StartPlay+=fDt;
-	}
-	else if(StartPlay>=1&&playing==false)
-	{
-		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE, CGame::GetInstance()->Menu_theme, false, &CGame::GetInstance()->my_channel);
-		CGame::GetInstance()->my_channel->setVolume(GetMusicVolume()/100.0f);
-		playing=true;
-	}
+	
 }
 
 void CMainMenuState::Render(void)
@@ -354,8 +413,20 @@ bool CMainMenuState::LoadOptions(const char* szFileName)
 		fileIn.ignore(INT_MAX, '\n');
 		fileIn >> nLang;
 		fileIn.close();	
+
 		m_nSFXVolume = nSFXVolume;
 		m_nCurVolume = nMVolume;
+
+		if(m_nSFXVolume > 100)
+			m_nSFXVolume = 100;
+		else if(m_nSFXVolume < 0)
+			m_nSFXVolume = 0;
+
+		if(m_nCurVolume > 100)
+			m_nCurVolume = 100;
+		else if(m_nCurVolume < 0)
+			m_nCurVolume = 0;
+
 		m_nLang = nLang;
 		m_bWindowed = bWindowed;
 		return true;
@@ -372,19 +443,32 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 		if(m_nMouseX >= 250 && m_nMouseX <= 417
 			&& m_nMouseY >= 295 && m_nMouseY <= 335)
 		{
-			m_nPos2 = 4;
+			if(m_nPos2 != 4)
+			{
+				m_pAudio->SFXPlaySound(m_nButton);
+				m_nPos2 = 4;
+			}
 		}
 		else if(m_nMouseX >= 425 && m_nMouseX <= 597
 			&& m_nMouseY >= 295 && m_nMouseY <= 335)
 		{
-			m_nPos2 = 5;
+			if(m_nPos2 != 5)
+			{
+				m_pAudio->SFXPlaySound(m_nButton);
+				m_nPos2 = 5;
+			}
 		}
 		else if(m_nMouseX >= 600 && m_nMouseX <= 772 && m_nMouseY >= 295 && m_nMouseY <= 335)
 		{
-			m_nPos2 = 6;
+			if(m_nPos2 != 6)
+			{
+				m_pAudio->SFXPlaySound(m_nButton);
+				m_nPos2 = 6;
+			}
 		}
 		else 
 			m_nPos2 = 0;
+
 		DWORD fScale1, fScale2,fScale3;
 		switch(m_nPos2)
 		{

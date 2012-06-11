@@ -3,15 +3,8 @@
 
 #include <Windows.h>
 
-#include <fmod.h>
-#include <fmod.hpp>
-#pragma comment(lib, "fmodex_vc.lib")
-
 #include "../GameStates/IGameState.h"
 
-#include "../SGD Wrappers/CSGD_Direct3D.h"
-#include "../SGD Wrappers/CSGD_DirectInput.h"
-#include "../SGD Wrappers/CSGD_TextureManager.h"
 
 
 class CGame
@@ -54,20 +47,16 @@ private:
 	CSGD_Direct3D*			 m_pD3D;
 	CSGD_DirectInput*		 m_pDI;
 	CSGD_TextureManager*	 m_pTM;
+	CSGD_XAudio2*			 m_pAudio;
 
 	// self
 	static CGame*			 m_pSelf;
 
+	// Sound
+	int m_nMusic;
+
 public:
-	// sound stuff
-	FMOD::System* system;
-	FMOD_RESULT result;
-	FMOD::Sound* sound;
-	FMOD::Sound* my_sound;
-	FMOD::Sound* Menu_theme;
-	FMOD::Sound* Game_theme;
-	FMOD::Channel* channel;
-	FMOD::Channel* my_channel;
+
 	bool mute, isPlaying,isTutor;
 
 	

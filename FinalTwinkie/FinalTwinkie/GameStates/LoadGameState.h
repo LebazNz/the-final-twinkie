@@ -19,7 +19,7 @@ public:
 	virtual void Update(float fDt);
 	virtual void Render(void);
 	void LoadText(void);
-
+	void SetSong(int s) { m_nMusic = s;}
 
 	bool LoadSavedGame(const char* szFileName, int nGameData);
 
@@ -33,6 +33,7 @@ private:
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
+	CSGD_XAudio2*				m_pAudio;
 
 	static CLoadGameState*	m_pSelf;
 
@@ -40,6 +41,7 @@ private:
 	int						m_nPosition;
 	int						m_nCount;
 	int						m_nButtonImageID;
+	int						m_nMusic;
 
 	Data vSavedData[3];
 
