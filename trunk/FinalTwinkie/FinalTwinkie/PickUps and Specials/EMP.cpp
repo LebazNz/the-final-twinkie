@@ -4,6 +4,7 @@
 
 CEMP::CEMP(void)
 {
+	m_nType = EMP;
 	m_nAmmo = 2;
 }
 

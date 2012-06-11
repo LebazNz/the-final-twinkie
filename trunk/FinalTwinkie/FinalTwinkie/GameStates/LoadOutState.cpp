@@ -36,10 +36,18 @@ CLoadOutState::CLoadOutState(void)
 	m_bSmoke		= false;
 	m_bEMP			= false;
 	m_bAirStirke	= false;
+	m_bRF			= false;
 
 	m_bUseMachineGun	= true;
 	m_bUseLaser			= false;
 	m_bUseFlame			= false;
+
+	m_pSpecialOne = nullptr;
+	m_pSpecialTwo = nullptr;
+
+	m_nSpecialCount = 0;
+	m_nSpecialPos1 = 0;
+	m_nSpecialPos2 = 0;
 }
 
 CLoadOutState::~CLoadOutState(void)
@@ -84,15 +92,19 @@ void CLoadOutState::Enter( void )
 	m_bArtillery = m_pPlayer->GetArtilleryAccess();;
 	m_bLaser = m_pPlayer->GetLaserAccess();
 	m_bFlame = m_pPlayer->GetFlamerAccess();
-	m_bNuke = m_pPlayer->GetNukeAccess();
-	m_bSmoke = m_pPlayer->GetSmokeBombAccess();
-	m_bEMP = m_pPlayer->GetEMPAccess();
-	m_bAirStirke = m_pPlayer->GetAirStrikeAccess();
+	m_bNuke			=	true;	//m_pPlayer->GetNukeAccess();
+	m_bSmoke		=	true;	//m_pPlayer->GetSmokeBombAccess();
+	m_bEMP			=	true;	//m_pPlayer->GetEMPAccess();
+	m_bAirStirke	=	true;	//m_pPlayer->GetAirStrikeAccess();
 	m_nSecondAmmo = m_pPlayer->GetSecondType();
+	m_bRF = true;
 
 	m_nShellMaxCount		= m_nShellCount;
 	m_nMissileMaxCount		= m_nMissileCount;
 	m_nArtilleryMaxCount	= m_nArtilleryCount;
+
+	m_pSpecialOne = m_pPlayer->GetSpecial1();
+	m_pSpecialTwo = m_pPlayer->GetSpecial2();
 
 	if(m_nSecondAmmo == 0)
 	{
@@ -125,6 +137,35 @@ void CLoadOutState::Enter( void )
 	m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 	m_dBack = D3DCOLOR_XRGB(255,255,255);
 	m_dContinue = D3DCOLOR_XRGB(255,255,255);
+
+	m_nSpecialCount = 0;
+	m_nSpecialPos1 = m_pSpecialOne->GetType();
+	m_nSpecialPos2 = m_pSpecialTwo->GetType();
+
+	if(m_bNuke)
+		m_nSpecialCount += 1;
+	if(m_bSmoke)
+		m_nSpecialCount += 1;
+	if(m_bEMP)
+		m_nSpecialCount += 1;
+	if(m_bAirStirke)
+		m_nSpecialCount += 1;
+	if(m_bRF)
+		m_nSpecialCount += 1;	
+
+	m_vSpCount.clear();
+	//m_vSpCount.resize(m_nSpecialCount);
+	m_vSpCount.push_back(SPECIAL);	
+	if(m_bSmoke)
+		m_vSpCount.push_back(SMOKE);
+	if(m_bEMP)
+		m_vSpCount.push_back(EMP);
+	if(m_bNuke)
+		m_vSpCount.push_back(NUKE);
+	if(m_bRF)
+		m_vSpCount.push_back(REINFORCE);
+	if(m_bAirStirke)
+		m_vSpCount.push_back(AIRSTRIKE);
 }
 
 void CLoadOutState::Exit( void )
@@ -154,8 +195,13 @@ void CLoadOutState::Exit( void )
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	
+	m_pSpecialOne = nullptr;
+	m_pSpecialTwo = nullptr;
 
 	m_nPosition = 0;
+
+	m_vSpCount.clear();
 }
 
 bool CLoadOutState::Input( void )
@@ -165,6 +211,7 @@ bool CLoadOutState::Input( void )
 		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
 		return true;
 	}*/
+	// Back/Continue
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 25 && m_nMouseX <= 193
 		&& m_nMouseY >= 550 && m_nMouseY <= 575))
@@ -178,8 +225,11 @@ bool CLoadOutState::Input( void )
 		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
 		m_pPlayer->SetWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
 		m_pPlayer->SetMaxWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
+		m_pPlayer->SetSecondType(m_nSecondAmmo);
 		return true;
 	}
+
+	// Ammo counts
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 121
 		&& m_nMouseY >= 225 && m_nMouseY <= 253))
@@ -226,6 +276,8 @@ bool CLoadOutState::Input( void )
 			m_nArtilleryCount = 0;
 	}
 
+	// Second Weapon type
+
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 537 && m_nMouseX <= 570
 		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
@@ -271,28 +323,71 @@ bool CLoadOutState::Input( void )
 		m_nSecondAmmo = 2;
 	}
 
+	//Specials
+
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 118
 		&& m_nMouseY >= 446 && m_nMouseY <= 474))
 	{
-		
+		m_nSpecialPos1 -= 1;
+
+		if(m_nSpecialPos1 < 0)
+			m_nSpecialPos1 = m_nSpecialCount;
+
+		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+		{
+			m_nSpecialPos1 -= 1;
+			if(m_nSpecialPos1 < 0)
+				m_nSpecialPos1 = m_nSpecialCount;
+		}
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 253 && m_nMouseX <= 287
 		&& m_nMouseY >= 446 && m_nMouseY <= 474))
 	{
-		
+		m_nSpecialPos1 += 1;
+
+		if(m_nSpecialPos1 > m_nSpecialCount)
+			m_nSpecialPos1 = 0;
+
+		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+		{
+			m_nSpecialPos1 += 1;
+			if(m_nSpecialPos1 > m_nSpecialCount)
+				m_nSpecialPos1 = 0;
+		}
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 384 && m_nMouseX <= 419
 		&& m_nMouseY >= 446 && m_nMouseY <= 474))
 	{
-		
+		m_nSpecialPos2 -= 1;
+
+		if(m_nSpecialPos2 < 0)
+			m_nSpecialPos2 = m_nSpecialCount;
+
+		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
+		{
+			m_nSpecialPos2 -= 1;
+			if(m_nSpecialPos2 < 0)
+				m_nSpecialPos2 = m_nSpecialCount;
+		}
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 552 && m_nMouseX <= 587
 		&& m_nMouseY >= 446 && m_nMouseY <= 474))
 	{
-		
+		m_nSpecialPos2 += 1;
+
+		if(m_nSpecialPos2 > m_nSpecialCount)
+			m_nSpecialPos2 = 0;
+
+		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
+		{
+			m_nSpecialPos2 += 1;
+			if(m_nSpecialPos2 > m_nSpecialCount)
+				m_nSpecialPos2 = 0;
+		}
+			
 	}
 
 
@@ -441,7 +536,7 @@ void CLoadOutState::Render( void )
 	m_pTM->Draw(m_nBGID,305,225,0.4f,0.25f,&rSelf,0,0,0);
 	// artillery
 	m_pTM->Draw(m_nBGID,470,225,0.4f,0.25f,&rSelf,0,0,0);
-
+	// Specials
 	m_pTM->Draw(m_nBGID,125,440,0.75f,0.35f,&rSelf,0,0,0);
 	m_pTM->Draw(m_nBGID,425,440,0.75f,0.35f,&rSelf,0,0,0);
 
@@ -501,7 +596,52 @@ void CLoadOutState::Render( void )
 
 	font->Print("Special Weapon One",50,400,1.0f,D3DCOLOR_XRGB(177,132,0));
 
+	switch(m_vSpCount[m_nSpecialPos1])
+	{
+	case 0:
+		font->Print("None",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 1:
+		font->Print("Smoke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 2:
+		font->Print("EMP",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 3:
+		font->Print("Nuke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 4:
+		font->Print("Reinforcements",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 5:
+		font->Print("Air Strike",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	}
+
+
 	font->Print("Special Weapon Two",350,400,1.0f,D3DCOLOR_XRGB(177,132,0));
+
+	switch(m_vSpCount[m_nSpecialPos2])
+	{
+	case 0:
+		font->Print("None",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 1:
+		font->Print("Smoke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 2:
+		font->Print("EMP",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 3:
+		font->Print("Nuke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 4:
+		font->Print("Reinforcements",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	case 5:
+		font->Print("Air Strike",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		break;
+	}
 
 	font->Print("Back",75,555,1.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print("Continue",625,555,1.0f,D3DCOLOR_XRGB(177,132,0));

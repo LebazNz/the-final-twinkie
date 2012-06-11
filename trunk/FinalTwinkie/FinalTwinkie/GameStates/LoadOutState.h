@@ -1,6 +1,10 @@
 #pragma once
 #include "igamestate.h"
 #include "../GameObjects/Player.h"
+#include "../PickUps and Specials/Special.h"
+
+#include <vector>
+using std::vector;
 
 class CLoadOutState :
 	public IGameState
@@ -51,8 +55,12 @@ private:
 	bool m_bSmoke;
 	bool m_bEMP;
 	bool m_bAirStirke;
+	bool m_bRF;
 	int m_nSecondAmmo;
-
+	int m_nSpecialCount;
+	int m_nSpecialPos1;
+	int m_nSpecialPos2;
+	vector<int> m_vSpCount;
 	bool m_bUseMachineGun;
 	bool m_bUseLaser;
 	bool m_bUseFlame;
@@ -69,5 +77,8 @@ private:
 	DWORD m_dSPTwoMax;
 	DWORD m_dBack;
 	DWORD m_dContinue;
+
+	CSpecial* m_pSpecialOne;
+	CSpecial* m_pSpecialTwo;
 };
 
