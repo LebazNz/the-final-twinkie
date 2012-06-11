@@ -69,7 +69,12 @@ public:
 	virtual void SetStop(bool bStop){m_bStop = bStop;}
 	virtual bool GetStop(void){return m_bStop;}
 
+	virtual void SetDamage(int nDamage){m_nDamage = nDamage;}
+	virtual int  GetDamage(void){return m_nDamage;}
+
 private:
+	// Damage 
+	int m_nDamage;
 	// Position
 	float m_fPosX;
 	float m_fPosY;
