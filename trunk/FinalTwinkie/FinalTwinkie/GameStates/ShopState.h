@@ -57,6 +57,7 @@ private:
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 	CPlayer*				m_pPlayer;
+	CSGD_XAudio2*			m_pAudio;
 
 	static CShopState*			m_pSelf;
 
@@ -94,6 +95,8 @@ private:
 
 	int m_nItemCost;
 	int m_nSelectedCost;
+
+	int m_nShopMusic;
 	// Button Colors
 	DWORD m_dwRocket;
 	DWORD m_dwLaser;

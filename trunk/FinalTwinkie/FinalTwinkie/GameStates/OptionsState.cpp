@@ -31,16 +31,16 @@ COptionsState::COptionsState(void)
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 	
 	m_nSelected = 0;
 	
 	m_nBGImageID = -1;
 	m_nPosition = 0;
 	m_nPointerID = -1;
+	m_nButton = -1;
+	m_nClick = -1;
 	m_nLang = 0;
-
-	CGame::GetInstance()->channel->getVolume(&m_fSFXVolume);
-	CGame::GetInstance()->my_channel->getVolume(&m_fMusicVolume);
 
 	m_bWindowed = CGame::GetInstance()->IsWindowed();
 
@@ -59,10 +59,14 @@ void COptionsState::Enter(void)
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -73,6 +77,24 @@ void COptionsState::Enter(void)
 void COptionsState::Exit(void)
 {
 	SaveOptions("options.txt");
+
+	if(m_nButton != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nButton))
+			m_pAudio->SFXStopSound(m_nButton);
+
+		m_pAudio->SFXUnloadSound(m_nButton);
+		m_nButton = -1;
+	}
+
+	if(m_nClick != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nClick))
+			m_pAudio->SFXStopSound(m_nClick);
+
+		m_pAudio->SFXUnloadSound(m_nClick);
+		m_nClick = -1;
+	}
 
 	if(m_nBGImageID != -1)
 	{
@@ -103,6 +125,7 @@ void COptionsState::Exit(void)
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 	
 	m_nPosition = 0;
 	m_nSelected = 0;
@@ -113,6 +136,8 @@ bool COptionsState::Input(void)
 	// Move the cursor position
 	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 	{
+		m_pAudio->SFXPlaySound(m_nButton);
+
 		if(m_nPosition == 0)
 		{
 			m_nPosition = 4;
@@ -124,6 +149,8 @@ bool COptionsState::Input(void)
 	}
 	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 	{
+		m_pAudio->SFXPlaySound(m_nButton);
+
 		if(m_nPosition == 4)
 		{
 			m_nPosition = 0;
@@ -136,13 +163,15 @@ bool COptionsState::Input(void)
 	// Make selection
 	else if(m_pDI->KeyPressed(DIK_LEFTARROW) || m_pDI->JoystickDPadPressed(DIR_LEFT))
 	{	
+		m_pAudio->SFXPlaySound(m_nClick);
+
 		if(m_nPosition == 0)
 		{	
 			m_fSFXVolume -= 0.05f;
 			if(m_fSFXVolume <= 0.0f)
 				m_fSFXVolume = 0.0f;
-						
-			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+		
+			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 		}
 		else if(m_nPosition == 1)
 		{
@@ -150,7 +179,7 @@ bool COptionsState::Input(void)
 			if(m_fMusicVolume <= 0.0f)
 				m_fMusicVolume = 0.0f;
 							
-			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 		}
 		else if(m_nPosition == 2)
 		{
@@ -175,13 +204,16 @@ bool COptionsState::Input(void)
 	}
 	else if(m_pDI->KeyPressed(DIK_RIGHTARROW) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
 	{	
+		m_pAudio->SFXPlaySound(m_nClick);
+
 		if(m_nPosition == 0)
 		{	
 			m_fSFXVolume += 0.05f;
 			if(m_fSFXVolume >= 1.0f)
 				m_fSFXVolume = 1.0f;
 			
-			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			
 		}
 		else if(m_nPosition == 1)
 		{
@@ -189,7 +221,7 @@ bool COptionsState::Input(void)
 			if(m_fMusicVolume >= 1.0f)
 				m_fMusicVolume = 1.0f;
 			
-			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 		}
 		else if(m_nPosition == 2)
 		{
@@ -214,6 +246,8 @@ bool COptionsState::Input(void)
 	}
 	else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
+
 		if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 240 && m_nMouseY <= 280))
 		{	
@@ -221,7 +255,7 @@ bool COptionsState::Input(void)
 			if(m_fSFXVolume <= 0.0f)
 				m_fSFXVolume = 0.0f;
 						
-			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 		}
 		else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 290 && m_nMouseY <= 330))
@@ -230,7 +264,7 @@ bool COptionsState::Input(void)
 			if(m_fMusicVolume <= 0.0f)
 				m_fMusicVolume = 0.0f;
 							
-			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 		}
 		else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 340 && m_nMouseY <= 375))
@@ -261,7 +295,7 @@ bool COptionsState::Input(void)
 			if(m_fSFXVolume >= 1.0f)
 				m_fSFXVolume = 1.0f;
 			
-			CGame::GetInstance()->channel->setVolume(m_fSFXVolume);
+			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 		}
 		else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
 		&& m_nMouseY >= 290 && m_nMouseY <= 330))
@@ -269,8 +303,8 @@ bool COptionsState::Input(void)
 			m_fMusicVolume += 0.05f;
 			if(m_fMusicVolume >= 1.0f)
 				m_fMusicVolume = 1.0f;
-			
-			CGame::GetInstance()->my_channel->setVolume(m_fMusicVolume);
+		
+			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 		}
 		else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
 		&& m_nMouseY >= 340 && m_nMouseY <= 375))
@@ -311,6 +345,8 @@ bool COptionsState::Input(void)
 		// Make selection
 	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
+
 		if(m_nPosition == 4)
 		{
 			if(CGamePlayState::GetInstance()->GetPaused() == false)

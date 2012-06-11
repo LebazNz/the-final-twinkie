@@ -24,6 +24,7 @@ CGame::CGame(void)
 {
 	m_nScreenWidth = -1;
 	m_nScreenHeight = -1;
+	m_nMusic = -1;
 	m_bWindowed = true;	
 	
 	m_dwTime = 0;	
@@ -33,11 +34,9 @@ CGame::CGame(void)
 	m_pD3D = nullptr;
 	m_pDI = nullptr;
 	m_pTM = nullptr;
+	m_pAudio = nullptr;
 
-	if(CMainMenuState::GetInstance()->LoadOptions("options.txt"))
-		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
-	else
-		m_bWindowed = true;
+	
 }
 
 CGame::~CGame(void)
@@ -73,11 +72,28 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
+
+	float mainVol, sfxVol;
+	if(CMainMenuState::GetInstance()->LoadOptions("options.txt"))
+	{
+		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
+		mainVol = CMainMenuState::GetInstance()->GetMusicVolume()/100.0f;
+		sfxVol = CMainMenuState::GetInstance()->GetSFXVolume()/100.0f;
+	}
+	else
+	{
+		m_bWindowed = true;
+		mainVol = 0.5;
+		sfxVol = 0.5;
+	}
+
 
 	// Init the wrappers
 	m_pD3D->InitDirect3D( hWnd, nScreenWidth, nScreenHeight, m_bWindowed, true );
 	m_pDI->InitDirectInput( hWnd, hInstance, DI_KEYBOARD | DI_MOUSE | DI_JOYSTICKS, DI_MOUSE);
 	m_pTM->InitTextureManager( m_pD3D->GetDirect3DDevice(), m_pD3D->GetSprite() );
+	m_pAudio->InitXAudio2();
 
 	// Set screen info
 	m_nScreenWidth	= nScreenWidth;
@@ -91,31 +107,31 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_dwTime = GetTickCount();
 
 	// Set up sound
-	CMainMenuState::GetInstance()->LoadOptions("options.txt");
-	mute = isPlaying = FALSE;
-	result = FMOD::System_Create(&system);
-	system->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
-	system->init(2000,FMOD_INIT_NORMAL,NULL);
-	result = system->createSound("resource/sound/Exciting Trailer2.wav",FMOD_LOOP_OFF,NULL,&my_sound);
-	result = system->createSound("resource/sound/explode.wav",FMOD_LOOP_OFF,NULL,&sound);
-	result = system->createSound("resource/sound/Junkyard Tribe.mp3", FMOD_LOOP_NORMAL, NULL, &Menu_theme);
-	result = system->createSound("resource/sound/Big Mojo.mp3", FMOD_LOOP_NORMAL, NULL, &Game_theme);
-	channel->setVolume(0.0f);
-	
-	channel = 0;
-	my_channel = 0;
+	m_pAudio->MusicSetMasterVolume(mainVol);
+	m_pAudio->SFXSetMasterVolume(sfxVol);
 
-	result = system->playSound(FMOD_CHANNEL_FREE,my_sound,false,&my_channel);
-	my_channel->setVolume(CMainMenuState::GetInstance()->GetMusicVolume()/100.0f);
-
-	
+	m_nMusic = m_pAudio->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
+	m_pAudio->MusicPlaySong(m_nMusic, false);
 	
 }
 
 void CGame::Shutdown(void)
 {
-	CGame::GetInstance()->channel->stop();
-	CGame::GetInstance()->my_channel->stop();
+	if(m_nMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nMusic))
+			m_pAudio->MusicStopSong(m_nMusic);
+
+		m_pAudio->MusicUnloadSong(m_nMusic);
+		m_nMusic = -1;
+	}
+
+	if(m_pAudio != nullptr)
+	{
+		m_pAudio->ShutdownXAudio2();
+		m_pAudio = nullptr;
+	}
+
 	CMainMenuState::GetInstance()->DeleteInstance();
 	CGamePlayState::GetInstance()->DeleteInstance();
 	COptionsState::GetInstance()->DeleteInstance();
@@ -179,8 +195,6 @@ void CGame::Update(void)
 
 	if(fElapsedTime > 0.125f)
 		fElapsedTime = 0.125f;
-
-	system->update();
 
 	// let current state handle the update
 	m_pCurState->Update(fElapsedTime);

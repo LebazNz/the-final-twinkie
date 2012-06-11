@@ -323,9 +323,6 @@ void CBullet::HandleEvent(CEvent* pEvent)
 
 	if(pEvent->GetEventID() == "play_explode")
 	{
-		
-		CGame::GetInstance()->system->playSound(FMOD_CHANNEL_FREE,CGame::GetInstance()->sound,false,&CGame::GetInstance()->channel);
-		CGame::GetInstance()->channel->setVolume(COptionsState::GetInstance()->GetSFXVolume());
 
 	}
 }

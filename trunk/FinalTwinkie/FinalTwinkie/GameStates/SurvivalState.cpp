@@ -961,7 +961,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 		{
 			CBullet* pBullet = dynamic_cast<CDestroyBulletMessage*>(pMsg)->GetBullet();
 			pSelf->m_pOM->RemoveObject(pBullet);
-			CGame::GetInstance()->channel->stop();
+			
 		}
 		break;
 	case MSG_CREATEENEMY:

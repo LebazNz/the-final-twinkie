@@ -99,6 +99,7 @@ CGamePlayState::CGamePlayState(void)
 	m_pTile = nullptr;
 	m_AM	= nullptr;
 	m_pES	= nullptr;
+	m_pAudio = nullptr;
 
 
 	for(int i = 0; i < 16; ++i)
@@ -136,6 +137,7 @@ CGamePlayState::CGamePlayState(void)
 	m_nDeadTree = -1;
 	m_nBarricade = -1;
 	m_nDeadBarr = -1;
+	m_nGameMusic = -1;
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
 	m_bWinner = false;
@@ -165,6 +167,7 @@ void CGamePlayState::Enter(void)
 		m_pES = CEventSystem::GetInstance();
 		m_pGUI = CGUI::GetInstance();
 		m_pFont = CBitmapFont::GetInstance();
+		m_pAudio = CSGD_XAudio2::GetInstance();
 		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
@@ -190,13 +193,9 @@ void CGamePlayState::Enter(void)
 
 		m_pD3D->Present();
 
-		//m_pTile->Load("resource/files/level123.xml");
-		//m_pTile->Load("resource/files/NateLevel.xml");
-		m_pTile->Load("resource/files/graphic_layer.xml");
-
-		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
-		WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
-		
+		// LOAD ALL XMLS HERE
+		//////////////////////////
+		m_pTile->Load("resource/files/graphic_layer.xml");	
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
@@ -208,6 +207,14 @@ void CGamePlayState::Enter(void)
 		FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
 		FXAirStrike = m_PM->AddEmitter("resource/files/AirStrike.xml");
 
+		////////////////////////////////////////
+		///////////////////////////////////////
+
+
+		// LOAD IMAGES HERE
+		//////////////////////////////////////
+		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
+		WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
 		m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
@@ -230,6 +237,8 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
 
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
+		m_anEnemyIDs[14] =m_pTM->LoadTexture(_T("resource/graphics/RPGPirate.jpg"));
+		m_anEnemyIDs[15] =m_pTM->LoadTexture(_T("resource/graphics/RiflePirate.jpg"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -245,8 +254,14 @@ void CGamePlayState::Enter(void)
 		m_nDeadTree = m_pTM->LoadTexture(_T("resource/graphics/stump.png"));
 		m_nBarricade =m_pTM->LoadTexture(_T("resource/graphics/barr2.png"));
 		m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
-		m_pMS->InitMessageSystem(&MessageProc);
+		///////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////
 
+		// LOAD MUSIC HERE
+		//////////////////////////////////////////////////////////
+		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		/////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////
 		m_pOF->RegisterClassType<CEntity>("CEntity");
 		m_pOF->RegisterClassType<CEnemy>("CEnemy");
 		m_pOF->RegisterClassType<CBullet>("CBullet");
@@ -263,6 +278,8 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CPirateBoss>("CPirateBoss");
 		m_pOF->RegisterClassType<Factory>("CFactory");
 		m_pOF->RegisterClassType<CJet>("CJet");
+
+		m_pMS->InitMessageSystem(&MessageProc);
 
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -401,6 +418,7 @@ void CGamePlayState::Enter(void)
 	m_bGameOver = false;
 	gameEndTimer = 0.0f;
 
+	m_pAudio->MusicPlaySong(m_nGameMusic, true);
 }
 
 void CGamePlayState::Exit(void)
@@ -412,6 +430,15 @@ void CGamePlayState::Exit(void)
 	{
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
+
+		if(m_nGameMusic != -1)
+		{
+			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic))
+				m_pAudio->MusicStopSong(m_nGameMusic);
+
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+		}
 
 		if(WinnerID != -1)
 		{
@@ -583,11 +610,7 @@ void CGamePlayState::Exit(void)
 			m_pTile = nullptr;
 		}
 		m_AM	= nullptr;
-	/*	if(m_pPlayer!=nullptr)
-		{
-			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
-		}*/
-		CGame::GetInstance()->my_channel->stop();
+	
 		if(m_pGUI!=nullptr)
 		{
 			m_pGUI->DeleteInstance();
@@ -1169,7 +1192,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			CBullet* pBullet = dynamic_cast<CDestroyBulletMessage*>(pMsg)->GetBullet();
 			pSelf->m_pOM->RemoveObject(pBullet);
-			CGame::GetInstance()->channel->stop();
 		}
 		break;
 	case MSG_CREATEENEMY:
@@ -1281,10 +1303,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(RIFLE);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
-					enemy->SetHeight(32);
+					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
 					enemy->SetHealth(50);
@@ -1302,7 +1324,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);

@@ -82,7 +82,7 @@ bool CStartState::Input(void)
 		else
 		{
 			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-			CGame::GetInstance()->my_channel->stop();
+			
 		}
 		return true;
 	}

@@ -34,6 +34,7 @@ private:
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
+	CSGD_XAudio2*			m_pAudio;
 
 	static COptionsState*	m_pSelf;
 
@@ -47,6 +48,8 @@ private:
 	float					m_fMusicVolume;
 	bool					m_bWindowed;
 	int						m_nButtonID;
+	int						m_nButton;
+	int						m_nClick;
 
 	int m_nMouseX;
 	int m_nMouseY;

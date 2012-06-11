@@ -31,6 +31,7 @@ CShopState::CShopState(void)
 	m_pD3D = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 	m_nItemCost = 0;
 	/*m_pPlayer = CPlayer::GetInstance();*/
 
@@ -79,6 +80,8 @@ CShopState::CShopState(void)
 	m_bPurchase     = false;
 	m_nHeat = 1;
 
+	m_nShopMusic = -1;
+
 }
 
 CShopState::~CShopState(void)
@@ -91,19 +94,36 @@ void CShopState::Enter(void)
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
 	m_pFont = CBitmapFont::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
 	m_pPlayer = CPlayer::GetInstance();
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+	m_nShopMusic = m_pAudio->MusicLoadSong(_T("resource/sound/ShopMusic.xwm"));
+
+	if(m_nShopMusic != -1)
+	{
+		m_pAudio->MusicPlaySong(m_nShopMusic,true);
+	}
 	LoadText();
 }
 
 void CShopState::Exit(void)
 {
+
+	if(m_nShopMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nShopMusic))
+			m_pAudio->MusicStopSong(m_nShopMusic);
+
+		m_pAudio->MusicUnloadSong(m_nShopMusic);
+		m_nShopMusic = -1;
+	}
 	m_pDI	= nullptr;
 	m_pD3D	= nullptr;
 	m_pTM	= nullptr;
 	m_pFont = nullptr;
+	m_pAudio = nullptr;
 
 	/*m_pTM->UnloadTexture(m_nBGImageID);
 	m_pTM->UnloadTexture(m_nButtonImageID);
