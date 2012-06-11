@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Igamestate.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 class CGetNameState : public IGameState
 {
@@ -25,6 +26,7 @@ private:
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
+	CSGD_XAudio2*			m_pAudio;
 
 	static CGetNameState* m_pSelf;
 
@@ -42,6 +44,14 @@ private:
 	int m_nCount;
 	int m_nPos;
 	bool m_bSurvival;
-	
+
+	int m_nButton;
+	int m_nClick;
+
+	string m_sShift;
+	string m_sSpace;
+	string m_sBackspace;
+	string m_sEnter;
+	string m_sName;
 };
 

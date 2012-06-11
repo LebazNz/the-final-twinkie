@@ -87,15 +87,6 @@ void COptionsState::Exit(void)
 		m_nButton = -1;
 	}
 
-	if(m_nClick != -1)
-	{
-		if(m_pAudio->SFXIsSoundPlaying(m_nClick))
-			m_pAudio->SFXStopSound(m_nClick);
-
-		m_pAudio->SFXUnloadSound(m_nClick);
-		m_nClick = -1;
-	}
-
 	if(m_nBGImageID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBGImageID);
@@ -400,7 +391,11 @@ void COptionsState::Update(float fDt)
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 240 && m_nMouseY <= 280))
 	{
-		m_nPosition = 0;
+		if(m_nPosition!=0)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 0;
+		}
 	}
 	if((m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 290 && m_nMouseY <= 330)||
@@ -409,7 +404,11 @@ void COptionsState::Update(float fDt)
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 290 && m_nMouseY <= 330))
 	{
-		m_nPosition = 1;
+		if(m_nPosition!=1)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 1;
+		}
 	}
 	if((m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 340 && m_nMouseY <= 375)||
@@ -418,7 +417,11 @@ void COptionsState::Update(float fDt)
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 340 && m_nMouseY <= 375))
 	{
-		m_nPosition = 2;
+		if(m_nPosition!=2)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 2;
+		}
 	}
 	if((m_nMouseX >= 490 && m_nMouseX <= 525
 		&& m_nMouseY >= 390 && m_nMouseY <= 425)||
@@ -427,12 +430,20 @@ void COptionsState::Update(float fDt)
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 390 && m_nMouseY <= 425))
 	{
-		m_nPosition = 3;
+		if(m_nPosition!=3)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 3;
+		}
 	}
 	if((m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 445 && m_nMouseY <= 480))
 	{
-		m_nPosition = 4;
+		if(m_nPosition!=4)
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+			m_nPosition = 4;
+		}
 	}
 }
 

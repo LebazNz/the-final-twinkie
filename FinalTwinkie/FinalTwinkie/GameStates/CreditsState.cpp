@@ -4,6 +4,7 @@
 #include "OptionsState.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 CCreditsState* CCreditsState::m_pSelf = nullptr;
 
@@ -39,6 +40,7 @@ CCreditsState::CCreditsState(void)
 	m_dColor = D3DCOLOR_XRGB(255,255,255);
 	m_nPosY = 0;
 	m_fTimer = 0.0f;
+	
 }
 
 CCreditsState::~CCreditsState(void)
@@ -57,6 +59,8 @@ void CCreditsState::Enter(void)
 	LoadText();
 	m_nPosY = 650;
 	m_fTimer = 0.0f;
+	m_nButton = CSGD_XAudio2::GetInstance()->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = CSGD_XAudio2::GetInstance()->SFXLoadSound(_T("resource/sound/click.wav"));
 }
 
 void CCreditsState::Exit(void)
@@ -91,6 +95,7 @@ bool CCreditsState::Input(void)
 	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1) || (m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585 && m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonDown(0)))
 	{
 		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+		CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick);
 		return true;
 	}
 	return true;
@@ -111,7 +116,13 @@ void CCreditsState::Update(float fDt)
 	m_nMouseY = m_pDI->MouseGetPosY();
 
 	if(m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585)
-		m_dColor = D3DCOLOR_XRGB(177,132,0);
+	{
+		if(m_dColor!=D3DCOLOR_XRGB(177,132,0))
+		{
+			m_dColor = D3DCOLOR_XRGB(177,132,0);
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nButton,false);
+		}
+	}
 	else
 		m_dColor = D3DCOLOR_XRGB(255,255,255);
 
@@ -146,10 +157,10 @@ void CCreditsState::Render(void)
 	font->Print("Shawn Paris",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+110,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print(m_sAL.c_str(),		(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+140,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print("Chris Jahosky",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+170,		0.75f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Addition Art By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+200,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sAddArt.c_str(),	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+200,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print("James Brisnehan",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+230,		0.75f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Mark Simpson",		(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+260,		0.75f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print("Addition Help By",	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+290,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print(m_sAddProg.c_str(),	(CGame::GetInstance()->GetWidth()/2)-187,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+260,		1.0f,	D3DCOLOR_XRGB(177,132,0));
+	font->Print("Bryan Schotanes",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+290,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print("Bryan Schotanes",	(CGame::GetInstance()->GetWidth()/2)-75,	m_nPosY+(CGame::GetInstance()->GetHeight()/2)+320,		0.75f,	D3DCOLOR_XRGB(177,132,0));
 
 	font->Print(m_sBack.c_str(),75,550,		1.0f,	D3DCOLOR_XRGB(177,132,0));
@@ -192,6 +203,12 @@ void CCreditsState::LoadText(void)
 				pButton=pState->FirstChild("AL");
 				pText = pButton->FirstChild()->ToText();
 				m_sAL=pText->Value();
+				pButton=pState->FirstChild("AddProg");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddProg=pText->Value();
+				pButton=pState->FirstChild("AddArt");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddArt=pText->Value();
 				pButton=pState->FirstChild("Back");
 				pText = pButton->FirstChild()->ToText();
 				m_sBack=pText->Value();
@@ -213,6 +230,12 @@ void CCreditsState::LoadText(void)
 				pButton=pState->FirstChild("AL");
 				pText = pButton->FirstChild()->ToText();
 				m_sAL=pText->Value();
+				pButton=pState->FirstChild("AddProg");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddProg=pText->Value();
+				pButton=pState->FirstChild("AddArt");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddArt=pText->Value();
 				pButton=pState->FirstChild("Back");
 				pText = pButton->FirstChild()->ToText();
 				m_sBack=pText->Value();
@@ -220,7 +243,7 @@ void CCreditsState::LoadText(void)
 			break;
 		case 2:
 			{
-				/*TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
 				TiXmlNode* pState = pLanguage->FirstChild("CreditsState");
 				TiXmlNode* pButton = pState->FirstChild("DAP");
 				TiXmlText* pText = pButton->FirstChild()->ToText();
@@ -234,13 +257,42 @@ void CCreditsState::LoadText(void)
 				pButton=pState->FirstChild("AL");
 				pText = pButton->FirstChild()->ToText();
 				m_sAL=pText->Value();
+				pButton=pState->FirstChild("AddProg");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddProg=pText->Value();
+				pButton=pState->FirstChild("AddArt");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddArt=pText->Value();
 				pButton=pState->FirstChild("Back");
 				pText = pButton->FirstChild()->ToText();
-				m_sBack=pText->Value();*/
+				m_sBack=pText->Value();
 			}
 			break;
 		case 3:
 			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("CreditsState");
+				TiXmlNode* pButton = pState->FirstChild("DAP");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sDAP=pText->Value();
+				pButton=pState->FirstChild("EP");
+				pText = pButton->FirstChild()->ToText();
+				m_sEP=pText->Value();
+				pButton = pState->FirstChild("AP");
+				pText = pButton->FirstChild()->ToText();
+				m_sAP=pText->Value();
+				pButton=pState->FirstChild("AL");
+				pText = pButton->FirstChild()->ToText();
+				m_sAL=pText->Value();
+				pButton=pState->FirstChild("AddProg");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddProg=pText->Value();
+				pButton=pState->FirstChild("AddArt");
+				pText = pButton->FirstChild()->ToText();
+				m_sAddArt=pText->Value();
+				pButton=pState->FirstChild("Back");
+				pText = pButton->FirstChild()->ToText();
+				m_sBack=pText->Value();
 			}
 			break;
 		}

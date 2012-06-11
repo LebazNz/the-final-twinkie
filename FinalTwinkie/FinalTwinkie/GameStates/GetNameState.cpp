@@ -1,5 +1,5 @@
 #include "GetNameState.h"
-
+#include "SurvivalState.h"
 #include "../Headers/Game.h"
 #include "GamePlayState.h"
 #include "MainMenuState.h"
@@ -54,10 +54,14 @@ void CGetNameState::Enter(void)
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
+	m_pAudio=CSGD_XAudio2::GetInstance();
 
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 	m_bLowCase = false;
 	m_nCount = 0;
@@ -123,6 +127,7 @@ bool CGetNameState::Input(void)
 
 	if(m_pDI->KeyPressed(DIK_A) || (m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(65);
 		else
@@ -134,6 +139,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_B) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(66);
 		else
@@ -145,6 +151,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_C) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(67);
 		else
@@ -156,6 +163,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_D) || (m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(68);
 		else
@@ -165,8 +173,9 @@ bool CGetNameState::Input(void)
 			m_nCount = 10;
 		m_bLowCase = true; 
 	}
-	if(m_pDI->KeyPressed(DIK_E) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonDown(0)))
+	if(m_pDI->KeyPressed(DIK_E) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(69);
 		else
@@ -178,6 +187,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_F) || (m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(70);
 		else
@@ -189,6 +199,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_G) || (m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(71);
 		else
@@ -200,6 +211,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_H) || (m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(72);
 		else
@@ -211,6 +223,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_I) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(73);
 		else
@@ -222,6 +235,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_J) || (m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(74);
 		else
@@ -233,6 +247,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_K) || (m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(75);
 		else
@@ -244,6 +259,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_L) || (m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(76);
 		else
@@ -255,6 +271,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_M) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(77);
 		else
@@ -266,6 +283,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_N)  || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(78);
 		else
@@ -277,6 +295,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_O) || (m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(79);
 		else
@@ -288,6 +307,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_P) || (m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(80);
 		else
@@ -299,6 +319,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_Q) || (m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(81);
 		else
@@ -310,6 +331,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_R) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(82);
 		else
@@ -321,6 +343,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_S) || (m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(83);
 		else
@@ -332,6 +355,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_T) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(84);
 		else
@@ -343,6 +367,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_U) || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(85);
 		else
@@ -354,6 +379,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_V) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(86);
 		else
@@ -365,6 +391,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_W) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(87);
 		else
@@ -376,6 +403,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_X) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(88);
 		else
@@ -387,6 +415,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_Y) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(89);
 		else
@@ -398,6 +427,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_Z) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		if(m_bLowCase == false)
 			szName[m_nCount] = char(90);
 		else
@@ -409,14 +439,17 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_LSHIFT) || m_pDI->KeyPressed(DIK_RSHIFT) || (m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		m_bLowCase = !m_bLowCase;
 	}
 	if(m_pDI->KeyReleased(DIK_LSHIFT) || m_pDI->KeyReleased(DIK_RSHIFT))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		m_bLowCase = !m_bLowCase;
 	}
 	if(m_pDI->KeyPressed(DIK_BACK) || (m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		szName[m_nCount] = char(32);
 		if(m_nCount == 0)
 			m_bLowCase = false;
@@ -426,6 +459,7 @@ bool CGetNameState::Input(void)
 	}
 	if(m_pDI->KeyPressed(DIK_SPACE) || (m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
 	{
+		m_pAudio->SFXPlaySound(m_nClick);
 		szName[m_nCount] = char(32);
 		m_nCount++;
 		if(m_nCount >= 10)
@@ -450,66 +484,186 @@ void CGetNameState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565)	
+	if(m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565)
+	{
+		if(m_nPos!=30)
+			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 30; // enter
+	}
 	else if(m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=11)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 11;
+	}
 	else if(m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=24)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 24;
+	}
 	else if(m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=22)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 22;
+	}
 	else if(m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=13)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=13;
+	}
 	else if(m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=3)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=3;
+	}
 	else if(m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=14)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=14;
+	}
 	else if(m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=15)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=15;
+	}
 	else if(m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=16)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=16;
+	}
 	else if(m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=8)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=8;
+	}
 	else if(m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=17)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos=17;
+	}
 	else if(m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=18)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 18;
+	}
 	else if(m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=19)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 19;
+	}
 	else if(m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=26)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 26;
+	}
 	else if(m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=25)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 25;
+	}
 	else if(m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=9)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 9;
+	}
 	else if(m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=10)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 10;
+	}
 	else if(m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=1)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 1;
+	}
 	else if(m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=4)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 4;
+	}
 	else if(m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465)
+	{
+		if(m_nPos!=12)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 12;
+	}
 	else if(m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=5)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 5;
+	}
 	else if(m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=7)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 7;
+	}
 	else if(m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=23)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 23;
+	}
 	else if(m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=2)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 2;
+	}
 	else if(m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=21)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 21;
+	}
 	else if(m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415)
+	{
+		if(m_nPos!=6)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 6;
+	}
 	else if(m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515)
+	{
+		if(m_nPos!=20)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 20;
+	}
 	else if(m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565)
+	{
+		if(m_nPos!=27)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 27;
+	}
 	else if(m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565)
+	{
+		if(m_nPos!=29)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 29;
+	}
 	else if(m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565)
+	{
+		if(m_nPos!=28)
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPos = 28;
+	}
 	else
 		m_nPos = 0;
 }

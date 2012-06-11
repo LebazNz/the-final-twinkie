@@ -18,7 +18,7 @@
 #include <dbghelp.h>	//	Used for Dump File
 #pragma comment(lib, "dbghelp.lib")
 #include "../Headers/Game.h"
-
+#include "../resource.h"
 const TCHAR* g_szWINDOW_CLASS_NAME	= _T("SGP Project");			//	Window Class Name.
 
 const TCHAR* g_szWINDOW_TITLE		= _T("The Final Twinkie");		//	Window Title.
@@ -179,8 +179,8 @@ BOOL RegisterWindowClass(HINSTANCE hInstance)
 	winClassEx.cbClsExtra		= 0;
 	winClassEx.cbWndExtra		= 0;
 	winClassEx.hInstance		= hInstance;
-	winClassEx.hIcon			= LoadIcon(NULL, IDI_APPLICATION);
-	winClassEx.hIconSm			= NULL;
+	winClassEx.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	winClassEx.hIconSm			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	winClassEx.hCursor			= LoadCursor(NULL, IDC_ARROW);
 	winClassEx.hbrBackground	= (HBRUSH)GetStockObject(BLACK_BRUSH);
 	winClassEx.lpszMenuName		= NULL; 

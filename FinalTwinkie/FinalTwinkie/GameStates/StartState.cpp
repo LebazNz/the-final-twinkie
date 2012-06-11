@@ -1,6 +1,7 @@
 #include "StartState.h"
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 CStartState* CStartState::m_pSelf = nullptr;
 
@@ -46,6 +47,9 @@ void CStartState::Enter(void)
 
 	m_nBG1ID = m_pTM->LoadTexture(_T("resource/graphics/start_screen.png"));
 	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/title_screen.png"));
+	
+	m_nMusic = CSGD_XAudio2::GetInstance()->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
+	CSGD_XAudio2::GetInstance()->MusicPlaySong(m_nMusic, false);
 
 	m_nEndTimer = 0;
 
@@ -54,6 +58,7 @@ void CStartState::Enter(void)
 
 void CStartState::Exit(void)
 {
+	CSGD_XAudio2::GetInstance()->MusicStopSong(m_nMusic);
 	if(m_nBG1ID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBG1ID);

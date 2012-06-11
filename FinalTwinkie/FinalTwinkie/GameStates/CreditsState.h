@@ -36,6 +36,9 @@ private:
 	int m_nMouseX;
 	int m_nMouseY;
 
+	int m_nButton;
+	int m_nClick;
+
 	int m_nCursor;
 	DWORD m_dColor;
 
@@ -44,6 +47,8 @@ private:
 	string m_sAP;
 	string m_sAL;
 	string m_sBack;
+	string m_sAddArt;
+	string m_sAddProg;
 };
 
 

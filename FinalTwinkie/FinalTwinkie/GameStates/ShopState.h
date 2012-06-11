@@ -141,6 +141,9 @@ private:
 	float m_fArmorUp;
 	float m_fSpeedUp;
 
+	int m_nButton;
+	int m_nClick;
+
 	string m_sTitle;
 	string m_sRocket;
 	string m_sLaser;

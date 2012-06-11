@@ -90,7 +90,7 @@ void CLoadGameState::Exit(void)
 	if(m_nMusic != -1)
 	{
 		if(m_pAudio->MusicIsSongPlaying(m_nMusic))
-						m_pAudio->MusicStopSong(m_nMusic);
+			m_pAudio->MusicStopSong(m_nMusic);
 
 		m_pAudio->MusicUnloadSong(m_nMusic);
 		m_nMusic = -1;
