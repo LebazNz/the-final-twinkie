@@ -43,6 +43,8 @@
 #include "../Event and Messages/CreateBoss.h"
 #include "../Event and Messages/CreateFactoryMessage.h"
 #include "../Event and Messages/DestroyFactoryMessage.h"
+#include "../Event and Messages/CreateEMPMessage.h"
+#include "../Event and Messages/DestroyEMPMessage.h"
 #include "../GameObjects/Bullet.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Player.h"
@@ -67,6 +69,7 @@
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
 #include "../GameObjects/PirateBoss.h"
+#include "../GameObjects/EMPBlast.h"
 
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
@@ -274,10 +277,10 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<CTree>("CTree");
 		m_pOF->RegisterClassType<CFlyText>("CFlyText");
 		m_pOF->RegisterClassType<CNaziBoss>("NaziBoss");
-		m_pOF->RegisterClassType<CEMP>("CEMP");
 		m_pOF->RegisterClassType<CPirateBoss>("CPirateBoss");
 		m_pOF->RegisterClassType<Factory>("CFactory");
 		m_pOF->RegisterClassType<CJet>("CJet");
+		m_pOF->RegisterClassType<CEMPBlast>("CEMPBlast");
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -305,8 +308,9 @@ void CGamePlayState::Enter(void)
 		pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
 		CReinforcements* pRF = new CReinforcements;
 		CAirStrike* pAS = new CAirStrike;
+		CEMP* pEMP = new CEMP;
 		player->SetSpecial1(pNuke);
-		player->SetSpecial2(pSmoke);
+		player->SetSpecial2(pEMP);
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(5);
 		player->SetOldPos(v2Pos);
@@ -1894,6 +1898,23 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CDestroyPirateBoss* Msg=dynamic_cast<CDestroyPirateBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
+		}
+		break;
+	case MSG_CREATEEMP:
+		{
+			CCreateEMPMessage* pMessage = dynamic_cast<CCreateEMPMessage*>(pMsg);
+			CEMPBlast* pEMP = (CEMPBlast*)pSelf->m_pOF->CreateObject("CEMPBlast");
+			pEMP->SetPosX(pSelf->m_pPlayer->GetPosX()-C->GetPosX());
+			pEMP->SetPosY(pSelf->m_pPlayer->GetPosY()-C->GetPosY());
+			pSelf->m_pOM->AddObject(pEMP);
+			pEMP->Release();
+			pEMP = nullptr;
+		}
+		break;
+	case MSG_DESTROYEMP:
+		{
+			CEMPBlast* pEMP = dynamic_cast<CDestroyEMPMessage*>(pMsg)->GetEMP();
+			pSelf->m_pOM->RemoveObject(pEMP);
 		}
 		break;
 	default:

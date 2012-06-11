@@ -137,7 +137,7 @@ void CObjectManager::RenderAllObjects(void)
 	}
 }
 
-void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
+void CObjectManager::AreaEffect(float x, float y, int radius, int damage, bool EMP)
 {
 	CPlayer *pPlayer = CPlayer::GetInstance();
 	
@@ -177,54 +177,66 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 					{
 					case OBJ_ENEMY:
 						{
-							CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
-							if(damage > 0)
-								pEnemy->TakeDamage((int)damage);
-							else
+							if(EMP == false)
 							{
-								pEnemy->SetStopTimer(10.0f);
-								pEnemy->SetStop(true);								
-							}
-							if(pEnemy->GetHealth() <= 0.0f)
-							{
-								if(pEnemy->GetHasATuert())
+								CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pTarget);
+								if(damage > 0)
+									pEnemy->TakeDamage((int)damage);
+								else
 								{
-									CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
-									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
-									CMessageSystem::GetInstance()->SndMessage(pMst);
-									pMst = nullptr;
+									pEnemy->SetStopTimer(10.0f);
+									pEnemy->SetStop(true);								
 								}
-								CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
-								CMessageSystem::GetInstance()->SndMessage(pMse);
-								pMse = nullptr;
+								if(pEnemy->GetHealth() <= 0.0f)
+								{
+									if(pEnemy->GetHasATuert())
+									{
+										CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+										CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+										CMessageSystem::GetInstance()->SndMessage(pMst);
+										pMst = nullptr;
+									}
+									CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+									CMessageSystem::GetInstance()->SndMessage(pMse);
+									pMse = nullptr;
+								}
 							}
 						}
 						break;
 						case OBJ_TANK:
 						{
 							CTank* pEnemy = dynamic_cast<CTank*>(m_pTarget);
-
-							if(damage > 0)
-								pEnemy->TakeDamage((int)damage);
+							if(EMP == false)
+							{
+								if(damage > 0)
+									pEnemy->TakeDamage((int)damage);
+								else
+								{
+									pEnemy->SetStopTimer(10.0f);
+									pEnemy->SetStop(true);	
+									pEnemy->GetTurret()->SetStopTimer(10.0f);
+									pEnemy->GetTurret()->SetStop(true);
+								}
+								if(pEnemy->GetHealth() <= 0.0f)
+								{
+									if(pEnemy->GetHasATuert())
+									{
+										CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
+										CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+										CMessageSystem::GetInstance()->SndMessage(pMst);
+										pMst = nullptr;
+									}
+									CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
+									CMessageSystem::GetInstance()->SndMessage(pMse);
+									pMse = nullptr;
+								}
+							}
 							else
 							{
-								pEnemy->SetStopTimer(10.0f);
+								pEnemy->SetStopTimer(10000000.0f);
 								pEnemy->SetStop(true);	
-								pEnemy->GetTurret()->SetStopTimer(10.0f);
+								pEnemy->GetTurret()->SetStopTimer(10000000.0f);
 								pEnemy->GetTurret()->SetStop(true);
-							}
-							if(pEnemy->GetHealth() <= 0.0f)
-							{
-								if(pEnemy->GetHasATuert())
-								{
-									CTurret* pTurret = dynamic_cast<CTank*>(pEnemy)->GetTurret();
-									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
-									CMessageSystem::GetInstance()->SndMessage(pMst);
-									pMst = nullptr;
-								}
-								CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
-								CMessageSystem::GetInstance()->SndMessage(pMse);
-								pMse = nullptr;
 							}
 						}
 						break;
@@ -247,22 +259,30 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage)
 								}
 							}*/
 							CTurret* pEnemy = dynamic_cast<CTurret*>(m_pTarget);
-							if(pEnemy->GetOwner() == nullptr)
+							if(EMP == false)
 							{
-								pEnemy->TakeDamage(damage);
-								if(damage > 0)
-									pEnemy->TakeDamage((int)damage);
-								else
+								if(pEnemy->GetOwner() == nullptr)
 								{
-									pEnemy->SetStopTimer(10.0f);
-									pEnemy->SetStop(true);								
+									pEnemy->TakeDamage(damage);
+									if(damage > 0)
+										pEnemy->TakeDamage((int)damage);
+									else
+									{
+										pEnemy->SetStopTimer(10.0f);
+										pEnemy->SetStop(true);								
+									}
+									if(pEnemy->GetHealth() <= 0.0f)
+									{
+										CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pEnemy);
+										CMessageSystem::GetInstance()->SndMessage(pMst);
+										pMst = nullptr;
+									}
 								}
-								if(pEnemy->GetHealth() <= 0.0f)
-								{
-									CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pEnemy);
-									CMessageSystem::GetInstance()->SndMessage(pMst);
-									pMst = nullptr;
-								}
+							}
+							else
+							{
+								pEnemy->SetStopTimer(10000000.0f);
+								pEnemy->SetStop(true);		
 							}
 						}
 						break;
