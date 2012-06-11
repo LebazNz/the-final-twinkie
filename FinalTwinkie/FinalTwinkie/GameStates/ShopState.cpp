@@ -169,6 +169,23 @@ void CShopState::Render(void)
 	m_pTM->Draw(m_nBGImageID,15,15,1.0f,1.0f,&rSelf,0,0,0);*/
 	int y = 100;
 	int y2 = 80;
+	
+	if(m_pPlayer->GetRocketAccess())
+		m_dwRocket = D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetLaserAccess())
+		m_dwLaser = D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetNukeAccess())
+		m_dwNuke =  D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetEMPAccess())
+		m_dwEMP =  D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetArtilleryAccess())
+		m_dwArillery =  D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetFlamerAccess())
+		m_dwFlamer =  D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetAirStrikeAccess())
+		m_dwAirStrike =  D3DCOLOR_ARGB(150,255,200,200);
+	if(m_pPlayer->GetSmokeBombAccess())
+		m_dwSmokeBomb =  D3DCOLOR_ARGB(150,255,200,200);
 	m_pTM->Draw(m_nButtonImageID,35,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwRocket);
 	m_pFont->Print(m_sRocket.c_str(),75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,220,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwLaser);
@@ -190,19 +207,44 @@ void CShopState::Render(void)
 	y = y/2;
 	m_pTM->Draw(m_nBGImageID,35 ,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwHeat);
 	m_pFont->Print(m_sHeat.c_str(),75 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	char buffer[10];
+	_itoa_s(m_pPlayer->GetHeatLevel(),buffer,10);
+	m_pFont->Print(buffer,150 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",160 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	
 	m_pTM->Draw(m_nBGImageID,295,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwDamage);
-	m_pFont->Print(m_sDamage.c_str(),335,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sDamage.c_str(),320,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	_itoa_s(m_pPlayer->GetDamageLevel(),buffer,10);
+	m_pFont->Print(buffer,410 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",420 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	
+	
+	
 	m_pTM->Draw(m_nBGImageID,555,200 + y,1.2f,0.5f,&rSelf,0,0,0,m_dwAmmo);
 	m_pFont->Print(m_sAmmo.c_str(),595,220 + y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
-	
+	_itoa_s(m_pPlayer->GetAmmoLevel(),buffer,10);
+	m_pFont->Print(buffer,670 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",680 ,220 +  y,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+
+
 	y2 = 45;
 	m_pTM->Draw(m_nBGImageID,35 ,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwHealth);
-	m_pFont->Print(m_sHealth.c_str(),75, 320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sHealth.c_str(),60, 320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	_itoa_s(m_pPlayer->GetHealthLevel(),buffer,10);
+	m_pFont->Print(buffer,150 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",160 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	
 	m_pTM->Draw(m_nBGImageID,295,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwArmor);
-	m_pFont->Print(m_sArmor.c_str(),335,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sArmor.c_str(),320,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	_itoa_s(m_pPlayer->GetArmorLevel(),buffer,10);
+	m_pFont->Print(buffer,410 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",420 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	
 	m_pTM->Draw(m_nBGImageID,555,300 + y2,1.2f,0.5f,&rSelf,0,0,0,m_dwSpeed);
-	m_pFont->Print(m_sSpeed.c_str(),595,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
-
+	m_pFont->Print(m_sSpeed.c_str(),580,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	_itoa_s(m_pPlayer->GetSpeedLevel(),buffer,10);
+	m_pFont->Print(buffer,670 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(" of 5",680 ,320 + y2,0.9f,D3DCOLOR_ARGB(255,255,255,255));
 	// Description bar
 
 	m_pTM->Draw(m_nBGImageID,-5 ,400+ y2,5,0.75f,&rSelf,0,0,0);

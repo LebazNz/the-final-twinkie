@@ -731,24 +731,30 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 			CPlayer::GetInstance()->SetScore(info.nScore);
 		}
 
-		/*if(gameData->Attribute("RocketAccess"	, &info.bRocketAccess)==nullptr)
-		info.bRocketAccess = 0;
-		if(gameData->Attribute("LaserAccess"	, &info.bLaserAccess)==nullptr)
-		info.bLaserAccess = 0;
-		if(gameData->Attribute("NukeAccess"		, &info.bNukeAccess)==nullptr)
-		info.bNukeAccess = 0;
-		if(gameData->Attribute("EMPAccess"		, &info.bEMPAccess)==nullptr)
-		info.bEMPAccess = 0;
-		if(gameData->Attribute("ArtilleryAccess", &info.bArtilleryAccess)==nullptr)
-		info.bArtilleryAccess = 0;
-		if(gameData->Attribute("FlamerAccess"	, &info.bFlamerAccess)==nullptr)
-		info.bFlamerAccess = 0;
-		if(gameData->Attribute("AirStrikeAccess", &info.bAirStrikeAccess)==nullptr)
-		info.bAirStrikeAccess = 0;
-		if(gameData->Attribute("SmokeBombAccess", &info.bSmokeBombAccess)==nullptr)
-		info.bSmokeBombAccess = 0;*/
-
-
+		if(gameData->Attribute("bNaziBoss"		, &info.bNaziBoss) == nullptr)
+			info.bNaziBoss = 0;
+		if(gameData->Attribute("bAlienBoss"		, &info.bAlienBoss) == nullptr)
+			info.bAlienBoss = 0;
+		if(gameData->Attribute("bRobotBoss"		, &info.bRobotBoss) == nullptr)
+			info.bRobotBoss = 0;
+		if(gameData->Attribute("bSparta"		, &info.bSparta) == nullptr)
+			info.bSparta = 0;
+		if(gameData->Attribute("bSapperAbsorb"		, &info.bSapperAbsorb) == nullptr)
+			info.bSapperAbsorb = 0;
+		if(gameData->Attribute("bNukem"		, &info.bNukem) == nullptr)
+			info.bNukem = 0;
+		if(gameData->Attribute("bIamBoss"		, &info.bIamBoss) == nullptr)
+			info.bIamBoss = 0;
+		if(gameData->Attribute("bAllUpgrades"		, &info.bAllUpgrades) == nullptr)
+			info.bAllUpgrades = 0;
+		// bNaziBoss",		
+		// bAlienBoss",	
+		// bRobotBoss",	
+		// bSparta",		
+		// bSapperAbsorb",	
+		// bNukem",		
+		// bIamBoss",		
+		// bAllUpgrades",	
 
 
 

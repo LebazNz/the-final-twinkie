@@ -4,7 +4,9 @@
 #include "../Headers/Game.h"
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/CSGD_Direct3D.h"
-
+#include "../Event and Messages/CreateEnemyMessage.h"
+#include "../Event and Messages/MessageSystem.h"
+#include "../Event and Messages/EventSystem.h"
 RobotBoss::RobotBoss(void)
 {
 }
@@ -98,6 +100,45 @@ void RobotBoss::Update(float fDt)
 			SetVelX(35);
 			SetVelY(35);
 		}
+	}
+	static bool spawnsapper = false;
+	static bool regenhealth = false;
+	static bool regenagain = false;
+	static bool speedboost = false;
+	if(GetHealth() < GetMaxHealth()*0.8 && spawnsapper == false)
+	{
+		for(unsigned int i = 0; i < 5; i++)
+		{
+			CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 0,GetPosX()+70, GetPosY()+135, rand()%3);
+			CMessageSystem::GetInstance()->SndMessage(msg);
+			spawnsapper = true;
+		}
+	}
+	else if(GetHealth() < GetMaxHealth()*0.7 && regenhealth == false)
+	{
+		SetHealth(GetHealth() + (float)(GetMaxHealth()*0.3));
+		regenhealth = true;
+	}
+	else if(GetHealth() < GetMaxHealth()*0.5 && regenagain == false)
+	{
+		SetHealth(GetHealth() + (float)(GetMaxHealth()*0.1));
+		regenhealth = true;
+		for(unsigned int i = 0; i < 5; i++)
+		{
+			CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3,GetPosX()+70, GetPosY()+135, rand()%3);
+			CMessageSystem::GetInstance()->SndMessage(msg);
+			regenagain = true;
+		}
+	}
+	else if(GetHealth() < GetMaxHealth()*0.2 && speedboost == false)
+	{
+		SetHealth(GetHealth() + (float)(GetMaxHealth()*0.2));
+		speedboost = true;
+		SetRotationRate(0.5f);
+		SetSight(2000);
+		SetVelX(25);
+		SetVelY(25);
+
 	}
 }
 void RobotBoss::Render(void)

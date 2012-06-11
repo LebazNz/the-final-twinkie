@@ -316,7 +316,7 @@ void CGamePlayState::Enter(void)
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
 		player->SetInvul(true);
-		player->SetInvulTimer(50000);
+		player->SetInvulTimer(0);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -423,6 +423,11 @@ void CGamePlayState::Enter(void)
 	gameEndTimer = 0.0f;
 
 	m_pAudio->MusicPlaySong(m_nGameMusic, true);
+	m_pPlayer->SetHealth((float)(m_pPlayer->GetHealth()*dynamic_cast<CPlayer*>(m_pPlayer)->GetHealthMod()));
+	m_pPlayer->SetMaxHealth((float)(m_pPlayer->GetHealth()*dynamic_cast<CPlayer*>(m_pPlayer)->GetHealthMod()));
+	dynamic_cast<CPlayer*>(m_pPlayer)->SetMaxWeaponAmmo((int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoShell()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()),(int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoArtillery()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()),(int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoMissile()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()));
+	m_pPlayer->SetArmor((float)(m_pPlayer->GetArmor()*dynamic_cast<CPlayer*>(m_pPlayer)->GetArmorMod()));
+	m_pPlayer->SetMaxArmor((float)(m_pPlayer->GetMaxArmor()*dynamic_cast<CPlayer*>(m_pPlayer)->GetArmorMod()));
 }
 
 void CGamePlayState::Exit(void)
@@ -931,7 +936,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(35.0f);
+							Bullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -990,7 +995,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(45.0f);
+							Bullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 						}
 						Bullet->SetVelX(300);
 						Bullet->SetVelY(300);
@@ -1050,7 +1055,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(15.0f);
+							Bullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -1094,7 +1099,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(5.0f);
+							Bullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -1208,7 +1213,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case SAPPER:
 				{
 					CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
-					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+					
 					sapper->SetPosX(pMessage->GetPosX());
 					sapper->SetPosY(pMessage->GetPosY());
 					sapper->SetHeight(32);
@@ -1216,10 +1221,36 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					sapper->SetPlayer(player);
 					sapper->SetSight(400);
-					sapper->SetVelX(45);
-					sapper->SetVelY(45);
-					sapper->SetHealth(35);
-					sapper->SetMaxHealth(35);
+					if(pMessage->GetKind() == 0)
+					{
+						sapper->SetVelX(45);
+						sapper->SetVelY(45);
+						sapper->SetHealth(35);
+						sapper->SetMaxHealth(35);
+						sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+						sapper->SetDamage(10);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						sapper->SetVelX(55);
+						sapper->SetVelY(55);
+						sapper->SetHealth(60);
+						sapper->SetMaxHealth(60);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
+						sapper->SetImageID(nID);
+						sapper->SetDamage(15);
+
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						sapper->SetVelX(65);
+						sapper->SetVelY(65);
+						sapper->SetHealth(100);
+						sapper->SetMaxHealth(100);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
+						sapper->SetImageID(nID);
+						sapper->SetDamage(15);
+					}
 					sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
 					sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(sapper);
@@ -1242,10 +1273,30 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
 					tank->SetSight(400);
-					tank->SetVelX(30);
-					tank->SetVelY(30);
-					tank->SetHealth(300);
-					tank->SetMaxHealth(300);
+					if(pMessage->GetKind() == 0)
+					{
+						tank->SetVelX(30);
+						tank->SetVelY(30);
+						tank->SetHealth(200);
+						tank->SetMaxHealth(200);
+						tank->SetDamage(20);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						tank->SetVelX(40);
+						tank->SetVelY(40);
+						tank->SetHealth(300);
+						tank->SetMaxHealth(300);
+						tank->SetDamage(30);
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						tank->SetVelX(50);
+						tank->SetVelY(50);
+						tank->SetHealth(400);
+						tank->SetMaxHealth(400);
+						tank->SetDamage(35);
+					}
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 
@@ -1283,7 +1334,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetPosY(pMessage->GetPosY());
 					turret->SetWidth(64);
 					turret->SetHeight(128);
-
+					turret->SetDamage(220);
 					turret->SetOwner(nullptr);
 					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
@@ -1313,10 +1364,35 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
-					enemy->SetHealth(50);
-					enemy->SetMaxHealth(50);
-					enemy->SetVelX(30);
-					enemy->SetVelY(30);
+					if(pMessage->GetKind() == 0)
+					{
+						enemy->SetVelX(45);
+						enemy->SetVelY(45);
+						enemy->SetHealth(50);
+						enemy->SetMaxHealth(50);
+						enemy->SetDamage(1);
+						enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						enemy->SetVelX(55);
+						enemy->SetVelY(55);
+						enemy->SetHealth(75);
+						enemy->SetMaxHealth(75);
+						enemy->SetDamage(1);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
+						enemy->SetImageID(nID);
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						enemy->SetVelX(65);
+						enemy->SetVelY(65);
+						enemy->SetHealth(115);
+						enemy->SetMaxHealth(115);
+						enemy->SetDamage(1);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
+						enemy->SetImageID(nID);
+					}
 					enemy->SetMinDistance(200);
 					enemy->SetMaxDistance(600);
 					enemy->SetShotTimer(0.1f);
@@ -1636,7 +1712,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetVelX(300);
 					pBullet->SetVelY(300);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-					pBullet->SetDamage(15.0f);
+					pBullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
 					{
 						pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());					
@@ -1972,16 +2048,17 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	data->SetAttribute("HealthLevel",		pPlayer->GetHealthLevel());
 	data->SetAttribute("ArmorLevel",		pPlayer->GetArmorLevel());
 	data->SetAttribute("SpeedLevel",		pPlayer->GetSpeedLevel());
-	
 	data->SetAttribute("Score",				pPlayer->GetScore());
-	//data->SetAttribute("RocketAccess",		m_dGameData.bRocketAccess);
-	//data->SetAttribute("LaserAccess",		m_dGameData.bLaserAccess);
-	//data->SetAttribute("NukeAccess",		m_dGameData.bNukeAccess);
-	//data->SetAttribute("EMPAccess",			m_dGameData.bEMPAccess);
-	//data->SetAttribute("ArtilleryAccess",	m_dGameData.bArtilleryAccess);
-	//data->SetAttribute("FlamerAccess",		m_dGameData.bFlamerAccess);
-	//data->SetAttribute("AirStrikeAccess",	m_dGameData.bAirStrikeAccess);
-	//data->SetAttribute("SmokeBombAccess",	m_dGameData.bSmokeBombAccess);
+
+
+	data->SetAttribute("bNaziBoss",			pPlayer->GetNaziBoss());
+	data->SetAttribute("bAlienBoss",		pPlayer->GetAlienBoss());
+	data->SetAttribute("bRobotBoss",		pPlayer->GetRobotBoss());
+	data->SetAttribute("bSparta",			pPlayer->GetSparta());
+	data->SetAttribute("bSapperAbsorb",		pPlayer->GetSapperAbsorb());
+	data->SetAttribute("bNukem",			pPlayer->GetNukem());
+	data->SetAttribute("bIamBoss",			pPlayer->GetIamBoss());
+	data->SetAttribute("bAllUpgrades",		pPlayer->GetAllUpgrades());
 
 	char szName[32];
 	strcpy_s(szName,32,pPlayer->GetUserName().c_str());

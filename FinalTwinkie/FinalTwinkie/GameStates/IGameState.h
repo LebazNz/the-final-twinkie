@@ -59,7 +59,23 @@ struct Data
 	//int		bAirStrikeAccess;
 	//int		bSmokeBombAccess;
 
-
+		// Achievable
+	// Defeat the Nazi Boss
+	int bNaziBoss;	// Dat Reich
+	// Defeat the Alien Boss
+	int bAlienBoss;	// All your base are belong to me
+	// Defeat Anthony's mom
+	int bRobotBoss;	// Greased
+	// Kill 300 enemies;
+	int bSparta;	// This is not Sparta!
+	// Absorb 50 sappers
+	int bSapperAbsorb;	// WTF is damage?
+	// Kill 10 enemies with one Nuke
+	int bNukem;	// Nuke Dukem;
+	// Purchase a level 5 upgrade
+	int bIamBoss;	// Max Pain;
+	// Purchase all Upgrades
+	int bAllUpgrades;	// God mode
 	
 };
 
