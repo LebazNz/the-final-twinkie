@@ -101,6 +101,9 @@ void CShopState::Enter(void)
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nShopMusic = m_pAudio->MusicLoadSong(_T("resource/sound/ShopMusic.xwm"));
 
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+
 	if(m_nShopMusic != -1)
 	{
 		m_pAudio->MusicPlaySong(m_nShopMusic,true);
@@ -457,83 +460,99 @@ void CShopState::Clicked()
 {
 	if(m_dwRocket			 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nRocketPrice;
 		SelectThis(&m_bRocket);
 	}
 	else if(m_dwLaser		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nLaserPrice;
 		SelectThis(&m_bLaser);
 
 	}
 	else if(m_dwNuke		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nNukePrice;
 		SelectThis(&m_bNuke);
 	}
 	else if(m_dwEMP			 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nEMPPrice;
 		SelectThis(&m_bEMP);
 	}
 	else if(m_dwArillery	 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nArtilleryPrice;
 		SelectThis(&m_bArillery);
 	}
 	else if(m_dwFlamer		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nFlamerPrice;
 		SelectThis(&m_bFlamer);
 	}
 	else if(m_dwAirStrike	 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nAirStrikePrice;
 		SelectThis(&m_bAirStrike);
 	}
 	else if(m_dwSmokeBomb	 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_SmokeBombPrice;
 		SelectThis(&m_bSmokeBomb);
 	}
 	else if(m_dwBuy			 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nSelectedCost;
 		Purchase();
 		
 	}
 	else if(m_dwBack		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nSelectedCost;
 
 	}
 	else if(m_dwHeat		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nHeatPrice*m_fPriceIncrease);
 		SelectThis(&m_bHeat);
 	}
 	else if(m_dwDamage		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nDamagePrice*m_fPriceIncrease);
 		SelectThis(&m_bDamage);
 	}
 	else if(m_dwAmmo		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nAmmoPrice*m_fPriceIncrease);
 		SelectThis(&m_bAmmo);
 	}
 	else if(m_dwHealth		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nHealthPrice*m_fPriceIncrease);
 		SelectThis(&m_bHealth);
 	}
 	else if(m_dwArmor		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nArmorPrice*m_fPriceIncrease);
 		SelectThis(&m_bArmor);
 	}
 	else if(m_dwSpeed		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = (int)(m_nSpeedPrice*m_fPriceIncrease);
 		SelectThis(&m_bSpeed);
 	}

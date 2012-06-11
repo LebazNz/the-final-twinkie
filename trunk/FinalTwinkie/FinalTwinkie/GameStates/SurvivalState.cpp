@@ -141,7 +141,7 @@ void CSurvivalState::Enter( void )
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
 		m_pGUI = CGUI::GetInstance();
-
+		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
@@ -194,6 +194,7 @@ void CSurvivalState::Enter( void )
 		m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
 		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
+		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -239,16 +240,21 @@ void CSurvivalState::Enter( void )
 		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
 		CSmoke* pSmoke=new CSmoke();
 		pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
+		//CReinforcements* pRF = new CReinforcements;
+		//CAirStrike* pAS = new CAirStrike;
 		player->SetSpecial1(pNuke);
 		player->SetSpecial2(pSmoke);
 		player->SetSpecial1Ammo(1);
-		player->SetSpecial2Ammo(2);
+		player->SetSpecial2Ammo(5);
 		player->SetOldPos(v2Pos);
-		player->SetSecondType(LAZER);
+		player->SetSecondType(MACHINEGUN);
+		player->SetInvul(true);
+		player->SetInvulTimer(50000);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
 		
+		player->SetGunSel(1);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -274,6 +280,8 @@ void CSurvivalState::Enter( void )
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
 		m_pGUI->SetSelect(m_anEnemyIDs[8]);
+		m_pGUI->SetGunSel(m_anEnemyIDs[13]);
+		m_pGUI->SetGunSelected(1);
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
@@ -496,6 +504,13 @@ bool CSurvivalState::Input( void )
 		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
 		{
 			m_bPaused = !m_bPaused;
+		}
+	}
+	if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
+	{
+		if(m_pDI->KeyPressed(DIK_TAB))
+		{
+			m_bPaused=true;
 		}
 	}
 	return true;

@@ -110,8 +110,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pAudio->MusicSetMasterVolume(mainVol);
 	m_pAudio->SFXSetMasterVolume(sfxVol);
 
-	m_nMusic = m_pAudio->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
-	m_pAudio->MusicPlaySong(m_nMusic, false);
+	
 	
 }
 

@@ -4,6 +4,7 @@
 			<Play>Play</Play>
 			<Campaign>Campaign</Campaign>
 			<Survival>Survival</Survival>
+			<Tutorial>Tutorial</Tutorial>
 			<Options>Options</Options>
 			<Credits>Credits</Credits>
 			<Exit>Exit</Exit>
@@ -24,6 +25,8 @@
 			<EP>Executive Producer:</EP>
 			<AP>Associate Producer:</AP>
 			<AL>Art Lead:</AL>
+			<AddProg>Additional Art by:</AddProg>
+			<AddArt>Additional Help by:</AddArt>
 			<Back>Back</Back>
 		</CreditsState>
 		<StatState>
@@ -101,25 +104,205 @@
 	<Pirate>
 		<MenuState>
 			<Play>Begin Ye Adventure</Play>
+			<Campaign>Tales</Campaign>
+			<Survival>Brave the Sea</Survival>
+			<Tutorial>Learn the Ropes</Tutorial>
 			<Options>Custimizations</Options>
 			<Credits>Acknowledgments</Credits>
 			<Exit>Abandon Ship</Exit>
 		</MenuState>
 		<OptionsState>
+			<Options>Custimizations</Options>
+			<SFX>Cannon Volume:</SFX>
+			<Music>Shanty Volume:</Music>
+			<FullScreen>Telescope:</FullScreen>
+			<On>Arr</On>
+			<Off>Narr</Off>
+			<Language>Speakin:</Language>
+			<Selected>Buckaneer</Selected>
+			<Back>Retreat</Back>
 		</OptionsState>
 		<CreditsState>
+			<DAP>Shipwrights:</DAP>
+			<EP>Pirate King:</EP>
+			<AP>Captain:</AP>
+			<AL>Picture Man:</AL>
+			<AddProg>Picture Man's Assistent:</AddProg>
+			<AddArt>Shipwrights Assistent:</AddArt>
+			<Back>Retreat</Back>
 		</CreditsState>
+		<StatState>
+			<Stats>Manifest</Stats>
+			<Score>Tally</Score>
+			<Shots>Cannons Loosed</Shots>
+			<Nukes>TNT Exploded</Nukes>
+			<Damage>Damage Tanked</Damage>
+			<Monies>Gold Amassed</Monies>
+			<Enemies>Opponents Sunk</Enemies>
+			<Sappers>Explosive Barges Hit</Sappers>
+			<Achievements>Crimes</Achievements>
+			<NaziBoss>All Your Reich Are Belong To Us</NaziBoss>
+			<AlienBoss>Otherworldly Creatures</AlienBoss>
+			<RobotBoss>Scrap Metal</RobotBoss>
+			<Sparta>We Are Not In Sparta Anymore</Sparta>
+			<WTFDamage>Unsinkable</WTFDamage>
+			<Nukem>God of TNT</Nukem>
+			<Pain>Max Pain</Pain>
+			<OwnAll>Pirates Treasure</OwnAll>
+		</StatState>
+		<ShopState>
+			<Title>Timothys Shipyard</Title>
+			<Rocket>Tracking Cannon</Rocket>
+			<Laser>Light Weapon</Laser>
+			<Nuke>TNT</Nuke>
+			<Emp>Magic Force</Emp>
+			<Artillery>Long Nines</Artillery>
+			<Flamer>Flaming Cannon</Flamer>
+			<AirStrike>Flying Beasts</AirStrike>
+			<SmokeBomb>Clouds</SmokeBomb>
+			<Heat>Extra Water</Heat>
+			<Damage>Stronger Cannons</Damage>
+			<Ammo>Extra Cannonballs</Ammo>
+			<Health>Constitution</Health>
+			<Armor>Extra Timber</Armor>
+			<Speed>Larger Sails</Speed>
+			<Monies>Gold</Monies>
+			<Cost>Cost</Cost>
+			<Buy>Aquire</Buy>
+			<Continue>Sail Forward</Continue>
+		</ShopState>
+		<LoadGameState>
+			<NewGame>Fresh Tale</NewGame>
+			<Load>Sail On</Load>
+			<Delete>Destroy</Delete>
+			<Name>Name:</Name>
+			<Level>Rank:</Level>
+			<Money>Gold:</Money>
+		</LoadGameState>
+		<GetNameState>
+			<Shift>Shift</Shift>
+			<Space>Space</Space>
+			<Backspace>Backspace</Backspace>
+			<Enter>Enter</Enter>
+			<Name>What Be Ye Name:</Name>
+		</GetNameState>
+		<GameState>
+			<Paused>Time Freeze</Paused>
+			<Resume>Fight Again</Resume>
+			<Options>Custimizations</Options>
+			<Exit>Retreat</Exit>
+		</GameState>
+		<FlyText>
+			<Health>Constitution</Health>
+			<Ammo>Extra Cannonballs</Ammo>
+			<Armor>Extra Timber</Armor>
+			<DDamage>Heavy Cannonballs</DDamage>
+			<NoReload>Speed Loading</NoReload>
+			<Invulnerability>Steel Plating</Invulnerability>
+			<InfiniteAmmo>Magic Ammo Stores</InfiniteAmmo>
+			<Money>Gold</Money>
+		</FlyText>
 	</Pirate>
 	<German>
 		<MenuState>
 			<Play>Spielen</Play>
+			<Campaign>Kampagne</Campaign>
+			<Survival>Uberleben</Survival>
+			<Tutorial>Lernprogramm</Tutorial>
 			<Options>Optionen</Options>
 			<Credits>Gutschriften</Credits>
 			<Exit>Ausgang</Exit>
 		</MenuState>
 		<OptionsState>
+			<Options>Optionen</Options>
+			<SFX>SEK Volumen:</SFX>
+			<Music>Musik Volumen:</Music>
+			<FullScreen>Voll Schirm:</FullScreen>
+			<On>Auf</On>
+			<Off>Ab</Off>
+			<Language>Sprache:</Language>
+			<Selected>Deutsch</Selected>
+			<Back>Zuruck</Back>
 		</OptionsState>
 		<CreditsState>
+			<DAP>Entworfen und programmiert durch:</DAP>
+			<EP>Exekutive Produzent:</EP>
+			<AP>Assoziieren Produzent:</AP>
+			<AL>Kunst Fuhren:</AL>
+			<AddProg>Zusatzlich Kunst durch:</AddProg>
+			<AddArt>Zusatzlich Hilfe durch:</AddArt>
+			<Back>Zuruck</Back>
 		</CreditsState>
+		<StatState>
+			<Stats>Statistik</Stats>
+			<Score>Partitur</Score>
+			<Shots>Schusse bgefeuert</Shots>
+			<Nukes>Atombombe Verwustete</Nukes>
+			<Damage>Schaden Nehmen</Damage>
+			<Monies>Geld Gesammelt</Monies>
+			<Enemies>Feind Dezimiert</Enemies>
+			<Sappers>Pioniere Aufgenommene</Sappers>
+			<Achievements>Erfolge</Achievements>
+ 			<NaziBoss>Alle Ihre Reich Sind Gehoren Zu Uns</NaziBoss>
+			<AlienBoss>Oh Nicht Fremd</AlienBoss>
+			<RobotBoss>Fett</RobotBoss>
+			<Sparta>Wir Sind Nicht In Sparta Mehr</Sparta>
+			<WTFDamage>Was Ist Schaden</WTFDamage>
+			<Nukem>Atombombe Zeigen</Nukem>
+			<Pain>Max Schmerz</Pain>
+			<OwnAll>Ich Besitze Es Alle</OwnAll>
+		</StatState>
+		<ShopState>
+			<Title>Mr. Tim's Hardware</Title>
+			<Rocket>Rakete</Rocket>
+			<Laser>Freizeit</Laser>
+			<Nuke>Atombombe</Nuke>
+			<Emp>Emp</Emp>
+			<Artillery>Artillerie</Artillery>
+			<Flamer>Flammenwerfer</Flamer>
+			<AirStrike>Luft Schlagen</AirStrike>
+			<SmokeBomb>Rauchen</SmokeBomb>
+			<Heat>Warme</Heat>
+			<Damage>Schaden</Damage>
+			<Ammo>Munition</Ammo>
+			<Health>Gesundheit</Health>
+			<Armor>Rustung</Armor>
+			<Speed>Geschwindigkeit</Speed>
+			<Monies>Geld</Monies>
+			<Cost>Kosten</Cost>
+			<Buy>Kaufen</Buy>
+			<Continue>Fortsetzen</Continue>
+		</ShopState>
+		<LoadGameState>
+			<NewGame>Neues Spiel</NewGame>
+			<Load>Laden</Load>
+			<Delete>Loschen</Delete>
+			<Name>Namen:</Name>
+			<Level>Ebene:</Level>
+			<Money>Geld:</Money>
+		</LoadGameState>
+		<GetNameState>
+			<Shift>Verschieben</Shift>
+			<Space>Raum</Space>
+			<Backspace>Rucktaste</Backspace>
+			<Enter>Eingeben</Enter>
+			<Name>Geben Sie Ihren Namen:</Name>
+		</GetNameState>
+		<GameState>
+			<Paused>Pushim</Paused>
+			<Resume>Wieder Aufnehmen</Resume>
+			<Options>Optionen</Options>
+			<Exit>Ausgang</Exit>
+		</GameState>
+		<FlyText>
+			<Health>Gesundheit</Health>
+			<Ammo>Munition</Ammo>
+			<Armor>Rustung</Armor>
+			<DDamage>Doppelklicken Schaden</DDamage>
+			<NoReload>Kein Nachladen</NoReload>
+			<Invulnerability>Unverwundbar</Invulnerability>
+			<InfiniteAmmo>Unendlich Munition</InfiniteAmmo>
+			<Money>Geld</Money>
+		</FlyText>
 	</German>
 </Root>

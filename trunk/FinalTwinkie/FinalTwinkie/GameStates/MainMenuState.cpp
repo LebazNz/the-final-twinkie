@@ -5,6 +5,7 @@
 #include "LoadGameState.h"
 #include "TutorState.h"
 #include "ShopState.h"
+#include "GetNameState.h"
 #include "../Headers/Game.h"
 #include "../Headers/BitmapFont.h"
 #include "../tinyxml/tinystr.h"
@@ -53,13 +54,15 @@ CMainMenuState::CMainMenuState(void)
 	m_nCurVolume = 50;
 	m_nLang = 0;
 	m_bWindowed = false;
-	m_bPlayedSound = false;
+	m_bPlaySelect = false;
+	playing=false;
 
 	LoadOptions("options.txt");
 
 	m_nMouseX = 0;
 	m_nMouseY = 0;
 	m_nCursor = -1;
+	m_nPos2=3;
 }
 
 CMainMenuState::~CMainMenuState(void)
@@ -92,13 +95,21 @@ void CMainMenuState::Enter(void)
 	m_nMouseY = m_pDI->MouseGetPosY();
 
 	LoadText();
-	m_sTutor = "Tutorial";
+	m_bPlaySelect=false;
+	m_nPos2=3;
+	playTimer=0;
 
 	if(m_nMenuMusicID == -1)
 	{
 		m_nMenuMusicID = m_pAudio->MusicLoadSong(_T("resource/sound/MenuMusic.xwm"));
-		m_pAudio->MusicPlaySong(m_nMenuMusicID, true);
-		m_bPlayedSound = false;
+	}
+	if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+	{
+		playing=true;
+	}
+	else
+	{
+		playing=false;
 	}
 }
 
@@ -172,11 +183,14 @@ bool CMainMenuState::Input(void)
 		if(m_nPosition == 0)
 		{
 			m_nPosition = 3;
+			m_bPlaySelect=false;
 		}
-		else
+		else 
 		{
 			m_nPosition -= 1;
+			m_bPlaySelect=false;
 		}
+		m_nPos2=3;
 	}
 	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 	{
@@ -185,57 +199,73 @@ bool CMainMenuState::Input(void)
 		if(m_nPosition == 3)
 		{
 			m_nPosition = 0;
+			m_bPlaySelect=false;
 		}
 		else
 		{
 			m_nPosition += 1;
+			m_bPlaySelect=false;
+		}
+		m_nPos2=3;
+	}
+	if(m_bPlaySelect==true)
+	{
+		if(m_pDI->KeyPressed(DIK_RIGHT))
+		{
+			m_nPos2++;
+			if(m_nPos2>6)
+				m_nPos2=6;
+		}
+		if(m_pDI->KeyPressed(DIK_LEFT))
+		{
+			m_nPos2--;
+			if(m_nPos2<3)
+				m_nPos2=3;
 		}
 	}
 	// Make selection
-	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
+	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
 
 		if(m_nPosition == 0)
 		{
-			if(m_nPos2 == 4)
+			if(m_bPlaySelect=true)
 			{
-				CLoadGameState::GetInstance()->SetSong(m_nMenuMusicID);
-				CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
-				return true;
-			}
-			else if (m_nPos2 == 5)
-			{
-				if(m_nMenuMusicID != -1)
+				if(m_nPos2 == 4)
 				{
 					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
 						m_pAudio->MusicStopSong(m_nMenuMusicID);
-
-					m_pAudio->MusicUnloadSong(m_nMenuMusicID);
-					m_nMenuMusicID = -1;
+					CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+					//playing=false;
+					return true;
 				}
-				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
-				return true;
-			}
-			else if(m_nPos2 == 6)
-			{
-				if(m_nMenuMusicID != -1)
+				else if (m_nPos2 == 5)
 				{
 					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
 						m_pAudio->MusicStopSong(m_nMenuMusicID);
-
-					m_pAudio->MusicUnloadSong(m_nMenuMusicID);
-					m_nMenuMusicID = -1;
+					CGetNameState::GetInstance()->SetSurvival(true);
+					CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+					//playing = false;
+					return true;
 				}
-				CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
-				return true;
+				else if(m_nPos2 == 6)
+				{
+					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+						m_pAudio->MusicStopSong(m_nMenuMusicID);
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+			}
+			else
+			{
+				m_bPlaySelect=true;
 			}
 		}
-		else if(m_nPosition == 1)
+		if(m_nPosition == 1)
 		{
-			
-				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
-				return true;
+			CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+			return true;
 		}
 		else if(m_nPosition == 2)
 		{
@@ -270,15 +300,6 @@ void CMainMenuState::Update(float fDt)
 	if(m_pDI->JoystickGetLStickYAmount() < 0)
 		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
 
-	/*if(m_pDI->JoystickGetRStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetRStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetRStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetRStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);*/
-
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
@@ -299,6 +320,7 @@ void CMainMenuState::Update(float fDt)
 			m_pAudio->SFXPlaySound(m_nButton);
 			m_nPosition = 1;
 		}
+		m_bPlaySelect=false;
 	}
 	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 390 && m_nMouseY <= 435)
@@ -308,6 +330,7 @@ void CMainMenuState::Update(float fDt)
 			m_pAudio->SFXPlaySound(m_nButton);
 			m_nPosition = 2;
 		}
+		m_bPlaySelect=false;
 	}
 	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 435 && m_nMouseY <= 480)
@@ -317,8 +340,17 @@ void CMainMenuState::Update(float fDt)
 			m_pAudio->SFXPlaySound(m_nButton);
 			m_nPosition = 3;
 		}
+		m_bPlaySelect=false;
 	}
-	
+	if(playTimer<1.0f)
+	{
+		playTimer+=fDt;
+	}
+	else if(playing==false)
+	{
+		playing=true;
+		m_pAudio->MusicPlaySong(m_nMenuMusicID, true);
+	}
 }
 
 void CMainMenuState::Render(void)
@@ -437,9 +469,8 @@ bool CMainMenuState::LoadOptions(const char* szFileName)
 
 void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 {
-	if( dwPlayColor == D3DCOLOR_XRGB(177,132,0))
+	if(m_bPlaySelect==true)
 	{
-		
 		if(m_nMouseX >= 250 && m_nMouseX <= 417
 			&& m_nMouseY >= 295 && m_nMouseY <= 335)
 		{
@@ -466,8 +497,10 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 				m_nPos2 = 6;
 			}
 		}
-		else 
-			m_nPos2 = 0;
+		else
+		{
+			//m_nPos2 = 0;
+		}
 
 		DWORD fScale1, fScale2,fScale3;
 		switch(m_nPos2)
@@ -502,13 +535,8 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 		CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
 		
 	}
-
-
-
-
-
-
 }
+
 void CMainMenuState::LoadText(void)
 {
 	TiXmlDocument doc("resource/files/Text.xml");
@@ -531,6 +559,9 @@ void CMainMenuState::LoadText(void)
 				pButton=pState->FirstChild("Survival");
 				pText = pButton->FirstChild()->ToText();
 				m_sSurvival=pText->Value();
+				pButton=pState->FirstChild("Tutorial");
+				pText = pButton->FirstChild()->ToText();
+				m_sTutor = pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();
@@ -555,6 +586,9 @@ void CMainMenuState::LoadText(void)
 				pButton=pState->FirstChild("Survival");
 				pText = pButton->FirstChild()->ToText();
 				m_sSurvival=pText->Value();
+				pButton=pState->FirstChild("Tutorial");
+				pText = pButton->FirstChild()->ToText();
+				m_sTutor = pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();
@@ -579,6 +613,9 @@ void CMainMenuState::LoadText(void)
 				pButton=pState->FirstChild("Survival");
 				pText = pButton->FirstChild()->ToText();
 				m_sSurvival=pText->Value();
+				pButton=pState->FirstChild("Tutorial");
+				pText = pButton->FirstChild()->ToText();
+				m_sTutor = pText->Value();
 				pButton=pState->FirstChild("Options");
 				pText = pButton->FirstChild()->ToText();
 				m_sOptions=pText->Value();

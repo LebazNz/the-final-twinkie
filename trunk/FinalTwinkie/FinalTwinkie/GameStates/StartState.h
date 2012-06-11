@@ -31,5 +31,7 @@ private:
 	int m_nBG2ID;
 
 	bool m_bSwitch;
+
+	int m_nMusic;
 };
 

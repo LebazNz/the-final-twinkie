@@ -52,7 +52,9 @@ private:
 	int								m_nMenuMusicID;
 	int								m_nButton;
 	int								m_nClick;
-	bool							m_bPlayedSound;
+	bool							m_bPlaySelect;
+	bool							playing;
+	float							playTimer;
 
 	int m_nCursor;
 

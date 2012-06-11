@@ -344,64 +344,6 @@ void CGamePlayState::Enter(void)
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
 
-		CNaziBoss* boss=(CNaziBoss*)m_pOF->CreateObject("NaziBoss");
-		boss->SetImageID(m_anEnemyIDs[9]);
-		boss->SetWidth(148);
-		boss->SetHeight(260);
-		boss->SetPosX(0);
-		boss->SetPosY(300);
-		boss->SetPlayer(CPlayer::GetInstance());
-		boss->CreateTurrets();
-		boss->SetHealth(1000);
-		boss->SetMaxHealth(1000);
-		m_pOM->AddObject(boss);
-		boss->Release();
-
-		Factory* factory=(Factory*)m_pOF->CreateObject("CFactory");
-		factory->SetImageID(m_anEnemyIDs[10]);
-		factory->SetPosX(300);
-		factory->SetPosY(300);
-		factory->SetHeight(128);
-		factory->SetWidth(128);
-		factory->SetHealth(200);
-		factory->SetMaxHealth(200);
-		m_pOM->AddObject(factory);
-		factory->Release();
-
-		CTurret* tur1=(CTurret*)m_pOF->CreateObject("CTurret");
-		tur1->SetPosX(factory->GetPosX()-200);
-		tur1->SetPosY(factory->GetPosY());
-		tur1->SetHealth(50);
-		tur1->SetMaxHealth(50);
-		tur1->SetImageID(m_nPlayerTurretID);
-		tur1->SetBullet(BUL_SHELL);
-		tur1->SetWidth(64);
-		tur1->SetHeight(128);
-		tur1->SetRotationPositon(32,98);
-		tur1->SetUpVec(0,-1);
-		tur1->SetDistance(800);
-		tur1->SetRotationRate(1.0f);
-		tur1->SetTarget(CPlayer::GetInstance());
-		m_pOM->AddObject(tur1);
-
-		CTurret* tur2=(CTurret*)m_pOF->CreateObject("CTurret");
-		tur2->SetPosX(factory->GetPosX()+200);
-		tur2->SetPosY(factory->GetPosY());
-		tur2->SetHealth(50);
-		tur2->SetMaxHealth(50);
-		tur2->SetImageID(m_nPlayerTurretID);
-		tur2->SetBullet(BUL_SHELL);
-		tur2->SetWidth(64);
-		tur2->SetHeight(128);
-		tur2->SetRotationPositon(32,98);
-		tur2->SetUpVec(0,-1);
-		tur2->SetDistance(800);
-		tur2->SetRotationRate(1.0f);
-		tur2->SetTarget(CPlayer::GetInstance());
-		m_pOM->AddObject(tur2);
-
-		factory->SetTurrets(tur1, tur2);
-
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
 		m_pGUI->SetSelect(m_anEnemyIDs[8]);
@@ -711,6 +653,13 @@ bool CGamePlayState::Input(void)
 		{
 			CGame::GetInstance()->ChangeState(StatState::GetInstance());
 			return true;
+		}
+		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
+		{
+			if(m_pDI->KeyPressed(DIK_TAB))
+			{
+				m_bPaused=true;
+			}
 		}
 		return true;
 	}
@@ -1882,8 +1831,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetImageID(pSelf->m_anEnemyIDs[9]);
 					boss->SetWidth(148);
 					boss->SetHeight(260);
-					boss->SetPosX(0);
-					boss->SetPosY(300);
+					boss->SetPosX(Msg->GetPosX());
+					boss->SetPosY(Msg->GetPosY());
 					boss->SetPlayer(CPlayer::GetInstance());
 					boss->CreateTurrets();
 					boss->SetHealth(1000);

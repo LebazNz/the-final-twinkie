@@ -12,6 +12,7 @@
 CReinforcements::CReinforcements(void)
 {
 	m_nAmmo = 5;
+	SetType(REINFORCE);
 }
 
 CReinforcements::~CReinforcements(void)

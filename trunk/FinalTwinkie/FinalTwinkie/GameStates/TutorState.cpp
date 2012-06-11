@@ -184,7 +184,7 @@ void CTutorState::Enter(void)
 		m_pGUI = CGUI::GetInstance();
 		m_pFont = CBitmapFont::GetInstance();
 		m_pFont->Init(COptionsState::GetInstance()->GetLang());
-
+		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
@@ -563,62 +563,69 @@ bool CTutorState::Input(void)
 {
 	if(m_bGameOver == false && (m_bWinner == false || m_nEnemyCount > 0))
 	{
-	if(m_bPaused)
-	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE))
+		if(m_bPaused)
 		{
-			m_bPaused = !m_bPaused;
-		}
-		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
-		{
-			if(m_nPosition == 0)
+			if(m_pDI->KeyPressed(DIK_ESCAPE))
 			{
 				m_bPaused = !m_bPaused;
 			}
-			else if(m_nPosition == 1)
+			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 			{
-				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				if(m_nPosition == 0)
+				{
+					m_bPaused = !m_bPaused;
+				}
+				else if(m_nPosition == 1)
+				{
+					CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				}
+				else if(m_nPosition == 2)
+				{
+					m_bPaused = false;
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;		
+				}
 			}
-			else if(m_nPosition == 2)
+			if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 			{
-				m_bPaused = false;
-				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-				return true;		
+				if(m_nPosition == 0)
+				{
+					m_nPosition = 2;
+				}
+				else
+				{
+					m_nPosition -= 1;
+				}
+			}
+			else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+			{
+				if(m_nPosition == 2)
+				{
+					m_nPosition = 0;
+				}
+				else
+				{
+					m_nPosition += 1;
+				}
 			}
 		}
-		if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+		else
 		{
-			if(m_nPosition == 0)
+			if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
 			{
-				m_nPosition = 2;
-			}
-			else
-			{
-				m_nPosition -= 1;
+				m_bPaused = !m_bPaused;
 			}
 		}
-		else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
-		{
-			if(m_nPosition == 2)
+		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
 			{
-				m_nPosition = 0;
+				if(m_pDI->KeyPressed(DIK_TAB))
+				{
+					m_bPaused=true;
+				}
 			}
-			else
-			{
-				m_nPosition += 1;
-			}
-		}
+		return true;
 	}
-	else
-	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
-		{
-			m_bPaused = !m_bPaused;
-		}
-	}
-
 	return true;
-	}return true;
 }
 
 void CTutorState::Update(float fDt)
@@ -1264,7 +1271,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{
 					// TO DO: SET UP MESSAGES TO GET POSITIONS
 					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
-					pSelf->m_pEnemy->SetImageID(pSelf->m_nPlayerID);
+					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[6]);
 					pSelf->m_pEnemy->SetPosX(pMessage->GetPosX());
 					pSelf->m_pEnemy->SetPosY(pMessage->GetPosY());	
 					pSelf->m_pEnemy->SetWidth(64);
@@ -1285,7 +1292,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(tank);
 
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
-					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
+					pSelf->m_pTurret->SetImageID(pSelf->m_anEnemyIDs[7]);					
 					pSelf->m_pTurret->SetPosX(pSelf->m_pEnemy->GetPosX());
 					pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
 					pSelf->m_pTurret->SetWidth(64);
@@ -1315,7 +1322,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
-					pSelf->m_pTurret->SetImageID(pSelf->m_nPlayerTurretID);					
+					pSelf->m_pTurret->SetImageID(pSelf->m_anEnemyIDs[7]);					
 					pSelf->m_pTurret->SetPosX(pMessage->GetPosX());
 					pSelf->m_pTurret->SetPosY(pMessage->GetPosY());
 					pSelf->m_pTurret->SetWidth(64);

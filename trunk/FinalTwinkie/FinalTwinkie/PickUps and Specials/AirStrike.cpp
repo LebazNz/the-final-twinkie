@@ -5,6 +5,7 @@
 CAirStrike::CAirStrike(void)
 {
 	m_nAmmo = 2;
+	SetType(AIRSTRIKE);
 }
 
 
