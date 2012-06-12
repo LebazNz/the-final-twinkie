@@ -34,6 +34,6 @@ private:
 
 	bool m_bSwitch;
 
-	int m_nMusic;
+	//int m_nMusic;
 };
 
