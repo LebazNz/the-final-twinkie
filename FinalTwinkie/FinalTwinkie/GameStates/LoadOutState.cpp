@@ -569,23 +569,7 @@ void CLoadOutState::Update( float fDt )
 	{		
 		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
 		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
-		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
-		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
-		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
-		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
-		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
-		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
-		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
-		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
-		m_dBack = D3DCOLOR_XRGB(177,132,0);
-		m_dContinue = D3DCOLOR_XRGB(255,255,255);
-	}
-	else if(m_nMouseX >= 374 && m_nMouseX <= 409
-	&& m_nMouseY >= 228 && m_nMouseY <= 253)
-	{
-		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
-		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
-		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(177,132,0);
 		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
@@ -594,16 +578,32 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
-		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 374 && m_nMouseX <= 409
+	&& m_nMouseY >= 228 && m_nMouseY <= 253)
+	{
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(177,132,0);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 	}
 	else if(m_nMouseX >= 432 && m_nMouseX <= 467
 	&& m_nMouseY >= 225 && m_nMouseY <= 253)
 	{
-		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
-		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(177,132,0);
 		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
@@ -616,11 +616,11 @@ void CLoadOutState::Update( float fDt )
 	&& m_nMouseY >= 228 && m_nMouseY <= 253)
 	{
 		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
-		m_dShellMax =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
-		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(177,132,0);
 		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
@@ -641,7 +641,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
-		m_dBack = D3DCOLOR_XRGB(177,132,0);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 	}
 	else if(m_nMouseX >= 303 && m_nMouseX <= 415
@@ -658,12 +658,12 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
-		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 	}
 	else if(m_nMouseX >= 479 && m_nMouseX <= 592
 	&& m_nMouseY >= 349 && m_nMouseY <= 378)
 	{
-		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
@@ -680,12 +680,12 @@ void CLoadOutState::Update( float fDt )
 	&& m_nMouseY >= 446 && m_nMouseY <= 474)
 	{
 		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
-		m_dShellMax =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
-		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(177,132,0);
 		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
@@ -702,10 +702,10 @@ void CLoadOutState::Update( float fDt )
 		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
-		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(177,132,0);
 		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
-		m_dBack = D3DCOLOR_XRGB(177,132,0);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 	}
 	else if(m_nMouseX >= 384 && m_nMouseX <= 419
@@ -719,15 +719,15 @@ void CLoadOutState::Update( float fDt )
 		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
-		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(177,132,0);
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
-		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 	}
 	else if(m_nMouseX >= 552 && m_nMouseX <= 587
 	&& m_nMouseY >= 446 && m_nMouseY <= 474)
 	{
-		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
@@ -736,7 +736,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
-		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(177,132,0);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
 	}
@@ -792,9 +792,9 @@ void CLoadOutState::Render( void )
 		break;
 	}
 	m_pTM->Draw(m_nButtonImageID,142,350,0.5f,0.5f,nullptr,0,0,0,dColor1);
-	//if(m_bLaser)
+	if(m_bLaser)
 		m_pTM->Draw(m_nButtonImageID,303,350,0.5f,0.5f,nullptr,0,0,0,dColor2);
-	//if(m_bFlame)
+	if(m_bFlame)
 		m_pTM->Draw(m_nButtonImageID,480,350,0.5f,0.5f,nullptr,0,0,0,dColor3);
 
 	SetRect(&rSelf, 467, 638, 631, 760);
@@ -812,17 +812,17 @@ void CLoadOutState::Render( void )
 	m_pTM->Draw(m_nButtonImageID,88,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMin);
 	m_pTM->Draw(m_nButtonImageID,195,226,0.15f,0.5f,nullptr,0,0,0,m_dShellMax);
 	// Missile
-	//if(m_bMissile)
-	//{
+	if(m_bMissile)
+	{
 		m_pTM->Draw(m_nButtonImageID,268,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMin);
 		m_pTM->Draw(m_nButtonImageID,375,226,0.15f,0.5f,nullptr,0,0,0,m_dRocketMax);
-	//}
+	}
 	// Artillery
-	//if(m_bArtillery)
-	//{
+	if(m_bArtillery)
+	{
 		m_pTM->Draw(m_nButtonImageID,433,226,0.15f,0.5f,nullptr,0,0,0,m_dArtilleryMin);
 		m_pTM->Draw(m_nButtonImageID,538,226,0.15f,0.5f,nullptr,0,0,0, m_dArtilleryMax);
-	//}
+	}
 	// SP One
 	m_pTM->Draw(m_nButtonImageID,85,447,0.15f,0.5f,nullptr,0,0,0,m_dSPOneMin);
 	m_pTM->Draw(m_nButtonImageID,253,447,0.15f,0.5f,nullptr,0,0,0,m_dSPOneMax);
@@ -845,17 +845,17 @@ void CLoadOutState::Render( void )
 	font->Print(buffer,140,230,0.75f,D3DCOLOR_XRGB(255,255,255));
 
 	font->Print("Rocket",300,190,0.9f,D3DCOLOR_XRGB(177,132,0));
-	//if(m_bMissile)
-	//{
+	if(m_bMissile)
+	{
 		_itoa_s(m_nMissileCount,buffer,10);
 		font->Print(buffer,320,230,0.75f,D3DCOLOR_XRGB(255,255,255));
-	//}
+	}
 	font->Print("Artillery",450,190,0.9f,D3DCOLOR_XRGB(177,132,0));
 	if(m_bArtillery)
-	//{
+	{
 		_itoa_s(m_nArtilleryCount,buffer,10);
 		font->Print(buffer,485,230,0.75f,D3DCOLOR_XRGB(255,255,255));
-	//}
+	}
 
 	font->Print("Secondary Weapon Type",50,275,1.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print("Machine Gun",125,315,0.9f,D3DCOLOR_XRGB(177,132,0));
