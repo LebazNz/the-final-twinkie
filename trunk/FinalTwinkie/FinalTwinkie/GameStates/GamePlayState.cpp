@@ -1465,7 +1465,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
 					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[5]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);
