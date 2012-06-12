@@ -44,6 +44,7 @@ public:
 	void SetHelpTarget(CEntity* pTarget){m_pTarget=pTarget;}
 	CEntity* GetHelpTarget(void){return m_pTarget;}
 	void SetEType(ENEMYTYPE eType){m_nEType=eType;}
+	int GetEType(void) { return m_nEType;}
 	float GetRotation(void){return m_fRotation;}
 
 	void SetShotTimer(float fTimer){m_fShotTimer=fTimer;}

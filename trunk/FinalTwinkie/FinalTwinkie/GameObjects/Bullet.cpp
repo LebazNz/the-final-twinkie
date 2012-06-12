@@ -20,6 +20,7 @@
 #include "Building.h"
 #include "Tree.h"
 #include "Factory.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
@@ -30,10 +31,9 @@ CBullet::CBullet(void)
 	// true		= player fired
 	// false	= enemy fired
 	m_bWhoFired = false;
-	CEventSystem::GetInstance()->RegisterClient("play_explode",this);
+	CEventSystem::GetInstance()->RegisterClient("shoot",this);
 	m_fRotation = 0.0f;
 	m_fDamage = 0.0f;
-	m_nType=0;
 	m_fFlameTimer=0.0f;
 	SetRect(&m_rTarget,0,0,0,0);
 	m_fMissileTimer = 0.0f;
@@ -41,7 +41,7 @@ CBullet::CBullet(void)
 
 CBullet::~CBullet(void)
 {
-	CEventSystem::GetInstance()->UnregisterClient("play_explode",this);
+	CEventSystem::GetInstance()->UnregisterClient("shoot",this);
 }
 
 void CBullet::Update(float fDT)
@@ -321,10 +321,14 @@ void CBullet::HandleEvent(CEvent* pEvent)
 	if(pEvent->GetParam() != this)
 		return;
 
-	if(pEvent->GetEventID() == "play_explode")
+	if(pEvent->GetEventID() == "shoot")
 	{
-
+		if(m_nBulletSound != -1)
+		{
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nBulletSound);
+		}
 	}
+
 }
 
 void CBullet::Render(void)

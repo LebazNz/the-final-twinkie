@@ -12,6 +12,7 @@
 #include "../PickUps and Specials/Special.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Boss/NaziBoss.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
@@ -152,7 +153,10 @@ void CPlayer::Update(float fDt)
 					m_fHeat+=1.0f*m_fHeatModifier;
 				}
 				else
+				{
 					m_fFireRate += fDt;
+
+				}
 			}
 			break;
 		case FLAME:
@@ -160,15 +164,23 @@ void CPlayer::Update(float fDt)
 				if(!m_bOverheat)
 				{
 					GetTurret()->GetFlamer()->ActivateEmitter();
+					
+
 					m_fHeat+=.4f*m_fHeatModifier;
 					if(!SlowFlame)
 					{
 						CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(pMsg);
 						SlowFlame=true;
+						if(m_bSoundPlaying == false && m_nFireSound != -1)
+						{
+							CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nFireSound,true);
+							m_bSoundPlaying = true;
+						}
 					}
 					else
 					{
+
 						SlowFlame=false;
 					}
 				}
@@ -179,6 +191,11 @@ void CPlayer::Update(float fDt)
 		{
 			m_bOverheat=true;
 			GetTurret()->GetFlamer()->DeactivateEmitter();
+			
+			if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
+				CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+
+			m_bSoundPlaying = false;
 		}
 		if(m_bOverheat&&m_fOverheatTimer>=1.5f)
 		{
@@ -190,11 +207,18 @@ void CPlayer::Update(float fDt)
 			m_fOverheatTimer+=fDt;
 		}
 	}
-	if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
+	else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
 	{
 		if(m_nSecondType==FLAME)
 		{
 			GetTurret()->GetFlamer()->DeactivateEmitter();
+			
+			if(m_bSoundPlaying == true)
+			{
+				if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
+					CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+			}
+			m_bSoundPlaying = false;
 		}
 	}
 	this;
@@ -218,6 +242,9 @@ void CPlayer::Update(float fDt)
 	{
 		if(m_pSelectedSpec!=nullptr)
 		{
+			if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
+				CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
+				
 			m_pSelectedSpec->ActivateSpecial();
 			m_anSpecialammo[m_pSelectedSpecAmmo]--;
 		}
@@ -466,6 +493,11 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 				this->SetPosY(this->GetOldPos().fY);
 			}
 			break;
+		case OBJ_TREE:
+			{
+
+			}
+			break;
 		case OBJ_NAZIBOSS:
 			{
 				CNaziBoss* pEnemy =dynamic_cast<CNaziBoss*>(pBase);
@@ -534,6 +566,10 @@ CPlayer::CPlayer(void)
 	m_nArmorLevel	= 1;
 	m_fSpeedMod		= 1;
 	m_nSpeedLevel	= 1;
+
+
+	m_nFireSound = -1;
+	m_bSoundPlaying = false;
 
 
 	m_fHeatModifier = CShopState::GetInstance()->GetHeat();

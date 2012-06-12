@@ -26,11 +26,13 @@ CStartState::CStartState(void)
 	m_pD3D = nullptr;
 	m_pTM = nullptr;
 	m_pDI = nullptr;
+	m_pAudio = nullptr;
 
 	m_nEndTimer = 0;
 
 	m_nBG1ID = -1;
 	m_nBG2ID = -1;
+	m_nMusic = -1;
 
 	m_bSwitch = false;
 }
@@ -44,6 +46,11 @@ void CStartState::Enter(void)
 	m_pD3D	= CSGD_Direct3D::GetInstance();
 	m_pTM	= CSGD_TextureManager::GetInstance();
 	m_pDI	= CSGD_DirectInput::GetInstance();
+	m_pAudio = CSGD_XAudio2::GetInstance();
+
+
+	m_nMusic = m_pAudio->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
+	m_pAudio->MusicPlaySong(m_nMusic, false);
 
 	m_nBG1ID = m_pTM->LoadTexture(_T("resource/graphics/start_screen.png"));
 	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/title_screen.png"));
@@ -58,7 +65,15 @@ void CStartState::Enter(void)
 
 void CStartState::Exit(void)
 {
-	CSGD_XAudio2::GetInstance()->MusicStopSong(m_nMusic);
+	if(m_nMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nMusic))
+			m_pAudio->MusicStopSong(m_nMusic);
+
+		m_pAudio->MusicUnloadSong(m_nMusic);
+		m_nMusic = -1;
+	}
+
 	if(m_nBG1ID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBG1ID);

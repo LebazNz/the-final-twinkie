@@ -24,7 +24,7 @@ CGame::CGame(void)
 {
 	m_nScreenWidth = -1;
 	m_nScreenHeight = -1;
-	m_nMusic = -1;
+
 	m_bWindowed = true;	
 	
 	m_dwTime = 0;	
@@ -116,14 +116,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 
 void CGame::Shutdown(void)
 {
-	if(m_nMusic != -1)
-	{
-		if(m_pAudio->MusicIsSongPlaying(m_nMusic))
-			m_pAudio->MusicStopSong(m_nMusic);
-
-		m_pAudio->MusicUnloadSong(m_nMusic);
-		m_nMusic = -1;
-	}
+	
 
 	if(m_pAudio != nullptr)
 	{

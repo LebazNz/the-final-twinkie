@@ -22,6 +22,7 @@ private:
 	CSGD_Direct3D*			m_pD3D;
 	CSGD_TextureManager*	m_pTM;
 	CSGD_DirectInput*		m_pDI;
+	CSGD_XAudio2*			m_pAudio;
 
 	static CStartState*	m_pSelf;
 
@@ -29,6 +30,7 @@ private:
 
 	int m_nBG1ID;
 	int m_nBG2ID;
+	int m_nMusic;
 
 	bool m_bSwitch;
 

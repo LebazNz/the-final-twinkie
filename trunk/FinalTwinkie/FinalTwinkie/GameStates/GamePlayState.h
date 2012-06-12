@@ -79,6 +79,7 @@ private:
 	//IMAGE IDS
 	int m_anBulletImageIDs[5];
 	int m_anEnemyIDs[16];
+	int m_anBulletSounds[6];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
 	int m_nBackGround;

@@ -53,7 +53,7 @@ private:
 	static CGame*			 m_pSelf;
 
 	// Sound
-	int m_nMusic;
+	
 
 public:
 

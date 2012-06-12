@@ -28,11 +28,14 @@ public:
 
 	void SetFlameTimer(float Time){m_fFlameTimer=Time;}
 	void SetBulletType(int Type){m_nBulletType=Type;}
+	int GetBulletType(void) { return m_nBulletType;}
 
 	void SetTargetRect(RECT rTarget){m_rTarget = rTarget; }
 	RECT GetTargetRect(void) {return m_rTarget;}
 	void SetTargetPos(tVector2D vTarget){m_v2TargetPos = vTarget;}
 	void SetMissileTimer(float fMissileTimer){m_fMissileTimer = fMissileTimer;}
+	void SetBulletSound(int s) { m_nBulletSound  = s;}
+	
 
 private:
 	// bool for who fired the bullet
@@ -49,5 +52,7 @@ private:
 	RECT m_rTarget;
 	tVector2D m_v2TargetPos;
 	float m_fMissileTimer;
+
+	int m_nBulletSound;
 };
 #endif

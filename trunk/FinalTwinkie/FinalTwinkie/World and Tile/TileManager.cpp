@@ -314,17 +314,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_BULLET:
 					{
-						if(m_vTiles[i][j].GetTrigger() == 1)
-						{
-							break;
-						}
-
-						CBullet* pBullet =dynamic_cast<CBullet*>(pBase);
 						
-
-						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(pBullet);
-						CMessageSystem::GetInstance()->SndMessage(pMsg);
-						pMsg = nullptr;
 					}
 					break;
 				case OBJ_ENEMY:

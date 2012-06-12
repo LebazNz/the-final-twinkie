@@ -263,6 +263,10 @@ void CGamePlayState::Enter(void)
 		// LOAD MUSIC HERE
 		//////////////////////////////////////////////////////////
 		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
+		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
+		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
+		
 		/////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -852,7 +856,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					//TODO::
+					//CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -908,7 +913,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					//CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -966,8 +971,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				}
 				break;
 			case BUL_ARTILLERY:
-				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+				{		
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[2]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -1027,7 +1033,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_MACHINEGUN:
 				{
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -1073,7 +1080,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_LASER:
 				{
-				CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[4]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -1209,6 +1217,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						sapper->SetImageID(nID);
 						sapper->SetDamage(15);
 					}
+					sapper->SetEType(SAPPER);
 					sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
 					sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(sapper);
@@ -1255,6 +1264,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetMaxHealth(400);
 						tank->SetDamage(35);
 					}
+					tank->SetEType(TANK);
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 
@@ -1470,6 +1480,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			pSelf->m_nEnemyCount--;
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
+	//TODO:: CHANGE SOUNDS ONLY TO BE FOR A SAPPER
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
