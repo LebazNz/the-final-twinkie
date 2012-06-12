@@ -167,6 +167,9 @@ public:
 	void SetFireSound(int s) {m_nFireSound = s;}
 	void SetNukeSound(int n) { m_nNukeSound = n;}
 
+	void SetLevel(int nLevel){m_nLevel = nLevel;}
+	int GetLevel(void){return m_nLevel;}
+
 private:
 	CPlayer(void);
 	~CPlayer(void);
@@ -287,7 +290,7 @@ private:
 	// Purchase all Upgrades
 	bool m_bAllUpgrades;	// God mode
 	
-
+	int m_nLevel;
 
 };
 #endif

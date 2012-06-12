@@ -208,6 +208,10 @@ void CGamePlayState::Enter(void)
 
 		// LOAD ALL XMLS HERE
 		//////////////////////////
+		//m_pTile->Load("resource/files/graphic_layer.xml");	
+		m_pTile->Load("resource/files/level123.xml");	
+
+		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
 		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
 		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
@@ -370,8 +374,8 @@ void CGamePlayState::Enter(void)
 		player->SetMaxHealth(250);
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
-		player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
-		player->SetMaxWeaponAmmo(40,40,40);
+		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
+		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
 		player->SetMoney(m_dGameData.nMoney);
 		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
 		//CNuke* pNuke = new CNuke();
@@ -379,16 +383,15 @@ void CGamePlayState::Enter(void)
 		//CSmoke* pSmoke=new CSmoke();
 		//pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
 		CReinforcements* pRF = new CReinforcements;
-		CAirStrike* pAS = new CAirStrike;
-		CEMP* pEMP = new CEMP;
-		player->SetSpecial1(pAS);
-		player->SetSpecial2(pEMP);
+		CSpecial* pSP = new CSpecial;
+		//CAirStrike* pAS = new CAirStrike;
+		//CEMP* pEMP = new CEMP;
+		player->SetSpecial1(pRF);
+		player->SetSpecial2(pSP);
 		player->SetSpecial1Ammo(player->GetSpecial1()->GetAmmoCount());
 		player->SetSpecial2Ammo(player->GetSpecial2()->GetAmmoCount());
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(0);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -396,6 +399,7 @@ void CGamePlayState::Enter(void)
 		player->SetArtilleryAccess(true);
 		player->SetGunSel(1);
 		player->SetMoney(m_dGameData.nMoney);
+		player->SetLevel(m_nLevel);
 
 		//buffs
 		player->SetDoubleDamage(true);
@@ -2057,8 +2061,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CCreateFactoryMessage* Msg=dynamic_cast<CCreateFactoryMessage*>(pMsg);
 			Factory* factory=(Factory*)pSelf->m_pOF->CreateObject("CFactory");
 			factory->SetImageID(pSelf->m_anEnemyIDs[10]);
-			factory->SetPosX(300);
-			factory->SetPosY(300);
+			factory->SetPosX(3424);
+			factory->SetPosY(800);
 			factory->SetHeight(128);
 			factory->SetWidth(128);
 			factory->SetHealth(200);
@@ -2158,12 +2162,12 @@ void CGamePlayState::SaveGame(const char* szFileName)
 
 	TiXmlElement* data = new TiXmlElement("game_data");
 
-	data->SetAttribute("level",			m_nLevel);
+	data->SetAttribute("level",			pPlayer->GetLevel());
 	data->SetAttribute("money",			pPlayer->GetMoney());
 	data->SetAttribute("hp",			(int)pPlayer->GetMaxHealth());
 	data->SetAttribute("armor",			(int)pPlayer->GetMaxArmor());
-	data->SetAttribute("ammo",			m_dGameData.nAmmo);
-	data->SetAttribute("speed",			m_dGameData.nSpeed);
+	data->SetAttribute("ammo",			pPlayer->GetAmmoLevel());
+	data->SetAttribute("speed",			pPlayer->GetSpeedLevel());
 	data->SetAttribute("shellammo",		pPlayer->GetMaxWeaponAmmoShell());
 	data->SetAttribute("missileammo",	pPlayer->GetMaxWeaponAmmoMissile());
 	data->SetAttribute("artilleryammo", pPlayer->GetMaxWeaponAmmoArtillery());
