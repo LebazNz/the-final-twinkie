@@ -57,7 +57,7 @@ CMainMenuState::CMainMenuState(void)
 	m_bPlaySelect = false;
 	playing=false;
 
-	LoadOptions("options.txt");
+	LoadOptions("resource/files/options.txt");
 
 	m_nMouseX = 0;
 	m_nMouseY = 0;
@@ -84,7 +84,7 @@ void CMainMenuState::Enter(void)
 	
 	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
 	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
-	LoadOptions("options.txt");
+	LoadOptions("resource/files/options.txt");
 
 	COptionsState::GetInstance()->SetMusicVolume(m_nCurVolume);
 	COptionsState::GetInstance()->SetSFXVolume(m_nSFXVolume);
@@ -629,6 +629,29 @@ void CMainMenuState::LoadText(void)
 			break;
 		case 3:
 			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("MenuState");
+				TiXmlNode* pButton = pState->FirstChild("Play");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPlay=pText->Value();
+				pButton=pState->FirstChild("Campaign");
+				pText = pButton->FirstChild()->ToText();
+				m_sCampaign=pText->Value();
+				pButton=pState->FirstChild("Survival");
+				pText = pButton->FirstChild()->ToText();
+				m_sSurvival=pText->Value();
+				pButton=pState->FirstChild("Tutorial");
+				pText = pButton->FirstChild()->ToText();
+				m_sTutor = pText->Value();
+				pButton=pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton = pState->FirstChild("Credits");
+				pText = pButton->FirstChild()->ToText();
+				m_sCredits=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		}

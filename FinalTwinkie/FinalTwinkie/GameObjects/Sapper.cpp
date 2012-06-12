@@ -136,7 +136,8 @@ void CSapper::Update(float fDt)
 				m_pExplosion->ActivateEmitter();
 				CDestroyEnemyMessage* msg=new CDestroyEnemyMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(msg);
-				CPlayer::GetInstance()->TakeDamage(30);
+				this;
+				CPlayer::GetInstance()->TakeDamage(25);
 			}
 			if(m_bOnFire)
 			{

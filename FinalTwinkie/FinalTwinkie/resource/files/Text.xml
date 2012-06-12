@@ -90,6 +90,29 @@
 			<Options>Options</Options>
 			<Exit>Exit</Exit>
 		</GameState>
+		<TutorState>
+			<Pad>
+				<a>Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive push UP on LS</a>
+				<b>Pull down on LS to reverse\nLEFT to rotate counter clockwise\nRIGHT to rotate clockwise</b>
+				<c>To rotate the tank counter clockwise\npush the left thumbstick to the left\nTo rotate the tank clockwise\npush it to the right</c>
+				<d>Press Left and Right Bumper\nTo select specials\nand X to activate</d>
+			</Pad>
+			<Keyboard>
+				<a>Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive press W</a>
+				<b>To reverse press S\nRotate counter clockwise with A\nTo rotate clockwise use D</b>
+				<c>LEFT click the mouse\nTo fire your main cannon\nRIGHT click will fire\n your secondary turret</c>
+				<d>Press 1 or 2 to\nswitch specials and\nSPACEBAR to activate</d>
+			</Keyboard>
+			<e>Buildings\n Most are abondoned but\nsome have been\n repurposed by the enemy</e>
+			<f>Trees and Barricades\nCan be shot or driven over\n Helps stop foot soldiers\nbut will also slow you down.</f>
+			<g>Mines\nThese little bad boys\npack quite a punch\nAvoid these at any cost</g>
+			<h>A puny rifleman appears!.\nWhile armored they can't truly\n harm you but lose that and\n these guys will start to hurt</h>
+			<i>A wild sapper appears! \nThey will rush your tank \nand explode to cause heavy damage.</i>
+			<j>A strong rocket soldier appears!\nThey shoot rpgs that\nwill hurt you with\n or without armor.</j>
+			<k>A pair of turrets appear\nIt is is completely stationary\nbut get to close and\n you will be too.\n Because you'll die.</k>
+			<l>A heavy enemy tank appears\nThese guys are just\nas B.A. as you\n maybe a little less.</l>
+			<Obj>Follow the Tutorial</Obj>
+		</TutorState>
 		<FlyText>
 			<Health>Health</Health>
 			<Ammo>Ammo</Ammo>
@@ -141,13 +164,13 @@
 			<Enemies>Opponents Sunk</Enemies>
 			<Sappers>Explosive Barges Hit</Sappers>
 			<Achievements>Crimes</Achievements>
-			<NaziBoss>All Your Reich Are Belong To Us</NaziBoss>
+			<NaziBoss>The Master Race of Pirates</NaziBoss>
 			<AlienBoss>Otherworldly Creatures</AlienBoss>
 			<RobotBoss>Scrap Metal</RobotBoss>
-			<Sparta>We Are Not In Sparta Anymore</Sparta>
+			<Sparta>Sank the Spanish Armada</Sparta>
 			<WTFDamage>Unsinkable</WTFDamage>
 			<Nukem>God of TNT</Nukem>
-			<Pain>Max Pain</Pain>
+			<Pain>Fully Loaded</Pain>
 			<OwnAll>Pirates Treasure</OwnAll>
 		</StatState>
 		<ShopState>
@@ -202,6 +225,29 @@
 			<InfiniteAmmo>Magic Ammo Stores</InfiniteAmmo>
 			<Money>Gold</Money>
 		</FlyText>
+		<TutorState>
+			<Pad>
+				<a>Welcome t' Tank Drivers ed\n Each time ye hit a mud patch\n a new tip will appear\n T' drive push UP on LS</a>
+				<b>Pull down on LS t' reverse\nPORT t' rotate counter clockwise\nSTARBOARD t' rotate clockwise</b>
+				<c>To rotate th' tank counter clockwise\npush th' port thumbstick t' th' port\nTo rotate th' tank clockwise\npush 't t' th' starboard</c>
+				<d>Press Port an' Starboard Bumper\nTo select specials\nand X t' activate</d>
+			</Pad>
+			<Keyboard>
+				<a>Welcome t' Tank Drivers ed\n Each time ye hit a mud patch\n a new tip will appear\n T' drive press W</a>
+				<b>To reverse press S\nRotate counter clockwise wi' A\nTo rotate clockwise use D</b>
+				<c>PORT click th' mouse\nTo fire yer main cannon\nSTARBOARD click will fire\n yer secondary turret</c>
+				<d>Press 1 or 2 t'\nswitch specials an'\nSPACEBAR t' activate</d>
+			</Keyboard>
+			<e>Buildings\n Most be abandoned but\nsome ben\n re-purposed by th' enemy</e>
+			<f>Trees an' Barricades\nCan be shot or dri'en over\n Helps halt foot soldiers\nbut will also slow ye down.</f>
+			<g>Mines\nThese wee bad boys\npack quite a punch\nAvoid these at any cost</g>
+			<h>A puny rifleman appears!.\nWhile armored they canna truly\n harm ye but lose that an'\n these guys will start t' hurt</h>
+			<i>A wild sapper appears! \nThey will rush yer tank \nand explode t' cause heavy damage.</i>
+			<j>A strong rocket soldier appears!\nThey shoot RPGs that\nwill hurt ye wi'\n or without armor.</j>
+			<k>A pair o' turrets appear\n'Tis be completely stationary\nbut get t' close an'\n ye be too.\n On accoun' o' ye`ll sink t'Davy Jones' locker.</k>
+			<l>A heavy enemy tank appears\nThese guys be jus'\nas B.A. as ye\n maybe a wee less.</l>
+			<Obj>Learn the Rigging</Obj>
+		</TutorState>
 	</Pirate>
 	<German>
 		<MenuState>
@@ -304,5 +350,28 @@
 			<InfiniteAmmo>Unendlich Munition</InfiniteAmmo>
 			<Money>Geld</Money>
 		</FlyText>
+		<TutorState>
+			<Pad>
+				<a>Willkommen bei Tank-Drivers Ed \n Jedes Mal, wenn eine Schlamm-Patch \n ein neuer Tipp erscheinen \n Zum Antrieb drucke OBEN auf LS wird</a>
+				<b>Ziehen Sie am LS zu \nLEFT umzukehren, um gegen den Uhrzeigersinn \nRechts drehen, um im Uhrzeigersinn drehen</b>
+				<c>Um den Tank gegen den Uhrzeigersinn drehen \n drucken Sie den linken Stick nach links \n Zum Drehen der Behalter im Uhrzeigersinn \n drucken Sie ihn nach rechts</c>
+				<d>Drucken Sie linke und rechte Bumper \n So wahlen Specials \n und X zu aktivieren</d>
+			</Pad>
+			<Keyboard>
+				<a>Willkommen bei Tank-Drivers Ed \n Jedes Mal, wenn eine Schlamm-Patch \n ein neuer Tipp erscheint \n drucken Sie w fahren</a>
+				<b>Zum Umkehren Presse S \n Drehen Zahler mit einem \n im Uhrzeigersinn, um den Uhrzeigersinn drehen Einsatz D</b>
+				<c>Linksklick mit der Maus \n Um Ihr Haupt-Kanone abzufeuern \n Rechter Mausklick \n Ihre sekundare Revolver feuern</c>
+				<d>Drucken Sie 1 oder 2, um \n Schalter Specials und \n Leertaste zu aktivieren</d>
+			</Keyboard>
+			<e>Gebaude \n und die meisten sind aber aufgegeben \n einige wurden \n durch den Feind wieder purposed</e>
+			<f>Baume und Barrikaden \n geschossen werden kann, oder angetrieben uber \n Hilft stoppen Infanteristen\n wird aber auch langsam nach unten.</f>
+			<g>Mines \n Diese kleine Bad Boys \n packen ganz ein Schlag \n Vermeiden Sie diese um jeden Preis</g>
+			<h>Ein Schutze mickrig erscheint! \n Wahrend gepanzerte konnen sie nicht wirklich \n schaden, wenn du aber verlieren und dass \n diese Jungs beginnen zu schmerzen</h>
+			<i>Eine wilde Sapper erscheint! \n Sie beeilen sich Ihren Tank \n explodieren und zu schweren Schaden fuhren.</i>
+			<j>Eine starke Rakete Soldat erscheint! \n Sie schiessen RPGs, dass \n Sie mit oder ohne Rustung wird verletzt.</j>
+			<k>Ein Paar Turme erscheinen \n Es ist vollig stationaren \n, sondern bekommen geschlossen und \n werden Sie auch. \n Weil du sterben wirst.</k>
+			<l>Ein schweres feindliches Heer dann erscheint \n Diese Jungs sind einfach \n als BA wie Sie \n vielleicht etwas weniger.</l>
+			<Obj>Folgen Sie dem Tutorial</Obj>
+		</TutorState>
 	</German>
 </Root>

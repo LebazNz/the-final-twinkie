@@ -60,6 +60,7 @@ void CFlyText::SetFlyText(int nType, float fTimer, DWORD dColor, float fX, float
 		pLanguage = pParent->FirstChild("Pirate");
 		break;
 	case 3:
+		pLanguage = pParent->FirstChild("German");
 		break;
 	}
 	TiXmlNode* pState = pLanguage->FirstChild("FlyText");

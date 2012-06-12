@@ -208,10 +208,6 @@ void CGamePlayState::Enter(void)
 
 		// LOAD ALL XMLS HERE
 		//////////////////////////
-		m_pTile->Load("resource/files/graphic_layer.xml");	
-		//m_pTile->Load("resource/files/level123.xml");	
-
-		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
 		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
 		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
@@ -220,7 +216,6 @@ void CGamePlayState::Enter(void)
 		FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
 		FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
 		FXAirStrike = m_PM->AddEmitter("resource/files/AirStrike.xml");
-
 		////////////////////////////////////////
 		///////////////////////////////////////
 
@@ -236,23 +231,62 @@ void CGamePlayState::Enter(void)
 		m_anBulletImageIDs[4] = m_pTM->LoadTexture( _T( "resource/graphics/Laser.png"), 	0 );
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
-		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
-		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
-		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/Rocketeer.png"));
 		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
-		m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
-		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
-		m_anEnemyIDs[9]=m_pTM->LoadTexture(_T("resource/graphics/sprites_naziBoss.png"));
 		m_anEnemyIDs[10]=m_pTM->LoadTexture(_T("resource/graphics/factory_twinkie.png"));
-		m_anEnemyIDs[11]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip1.png"));
-		m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
-
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
-		m_anEnemyIDs[14] =m_pTM->LoadTexture(_T("resource/graphics/RPGPirate.jpg"));
-		m_anEnemyIDs[15] =m_pTM->LoadTexture(_T("resource/graphics/RiflePirate.jpg"));
+		
+		switch(m_nLevel)
+		{
+		case 1:
+			{
+				//Pirate
+				//m_anEnemyIDs[1]=?;
+				m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/RPGPirate.png"));
+				//m_anEnemyIDs[6]=?;
+				//m_anEnemyIDs[7]=?;
+				m_anEnemyIDs[11]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip1.png"));
+				m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
+				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RiflePirate.png"));
+				m_pTile->Load("resource/files/PirateLevel.xml");	
+			}
+			break;
+		case 2:
+			{
+				m_anEnemyIDs[1]=m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
+				//m_anEnemyIDs[4]=?;
+				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankBase.png"));
+				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankTurret.png"));
+				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RobotSoldier.png"));
+				m_pTile->Load("resource/files/RobotLevel.xml");
+			}
+			break;
+		case 3:
+			{
+				m_anEnemyIDs[1]=m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
+				//m_anEnemyIDs[4]=?;
+				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/AlienTankBase.png"));
+				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/AlienTankTurret.png"));
+				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/AlienSoldier.png"));
+				m_pTile->Load("resource/files/AlienLevel.xml");
+			}
+			break;
+		case 4:
+			{
+				//Nazi
+				m_anEnemyIDs[1]=m_pTM->LoadTexture( _T( "resource/graphics/Nazi Sapper.png"));
+				m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/Rocketeer.png"));
+				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
+				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
+				m_anEnemyIDs[9]=m_pTM->LoadTexture(_T("resource/graphics/sprites_naziBoss.png"));
+				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Nazi Rifle.png"));
+				m_pTile->Load("resource/files/NaziLevel.xml");
+			}
+			break;
+		}
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -646,8 +680,8 @@ void CGamePlayState::Exit(void)
 			m_pES = nullptr;
 		}
 	
-	m_bWinner = false;
-	m_bGameOver = false;
+		m_bWinner = false;
+		m_bGameOver = false;
 		m_pD3D	= nullptr;
 		m_pDI	= nullptr;
 		m_pTM	= nullptr;
@@ -914,14 +948,17 @@ void CGamePlayState::Render(void)
 		if(gameEndTimer <= 5.0f)
 			m_pTM->Draw(GameOverID,0,0,0.8f,0.7f);
 		else
-			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 	}
 	else if(m_bWinner == true)
 	{
 		if(gameEndTimer <= 5.0f)
 			m_pTM->Draw(WinnerID,0,0,0.8f,0.7f);
 		else
-			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+		{
+			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+			m_nLevel++;
+		}
 
 	}
 }
@@ -937,7 +974,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEntity* pBullet = pSelf->m_pOF->CreateObject("CBullet");
 			CBullet* Bullet = dynamic_cast<CBullet*>(pBullet);
 			CCreateBulletMessage* pMessage = dynamic_cast<CCreateBulletMessage*>(pMsg);
-			CPlayer* player=dynamic_cast<CPlayer*>(pSelf->m_pPlayer);
+			CPlayer* player=CPlayer::GetInstance();
 			switch(pMessage->GetBulletType())
 			{
 			case BUL_SHELL:
@@ -1278,13 +1315,13 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					sapper->SetPlayer(player);
 					sapper->SetSight(400);
+					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 					if(pMessage->GetKind() == 0)
 					{
 						sapper->SetVelX(45);
 						sapper->SetVelY(45);
 						sapper->SetHealth(35);
 						sapper->SetMaxHealth(35);
-						sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 						sapper->SetDamage(10);
 					}
 					else if(pMessage->GetKind() == 1)
@@ -1293,8 +1330,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						sapper->SetVelY(55);
 						sapper->SetHealth(60);
 						sapper->SetMaxHealth(60);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
-						sapper->SetImageID(nID);
 						sapper->SetDamage(15);
 
 					}
@@ -1304,8 +1339,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						sapper->SetVelY(65);
 						sapper->SetHealth(100);
 						sapper->SetMaxHealth(100);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
-						sapper->SetImageID(nID);
 						sapper->SetDamage(15);
 					}
 					sapper->SetEType(SAPPER);
@@ -1337,7 +1370,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(30);
 						tank->SetHealth(200);
 						tank->SetMaxHealth(200);
-						tank->SetDamage(20);
 					}
 					else if(pMessage->GetKind() == 1)
 					{
@@ -1345,7 +1377,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(40);
 						tank->SetHealth(300);
 						tank->SetMaxHealth(300);
-						tank->SetDamage(30);
 					}
 					else if(pMessage->GetKind() == 2)
 					{
@@ -1353,7 +1384,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(50);
 						tank->SetHealth(400);
 						tank->SetMaxHealth(400);
-						tank->SetDamage(35);
 					}
 					tank->SetEType(TANK);
 					tank->SetHasATurret(true);
@@ -1378,6 +1408,18 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
+					if(pMessage->GetKind() == 0)
+					{
+						turret->SetDamage(20);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						turret->SetDamage(30);
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						turret->SetDamage(35);
+					}
 					turret->Release();
 					turret = nullptr;
 					tank->Release();
@@ -1395,7 +1437,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetHeight(128);
 					turret->SetDamage(220);
 					turret->SetOwner(nullptr);
-					turret->SetBullet(BUL_LASER);	
+					turret->SetBullet(BUL_SHELL);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
@@ -1406,6 +1448,18 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
+					if(pMessage->GetKind() == 0)
+					{
+						turret->SetDamage(20);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						turret->SetDamage(30);
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						turret->SetDamage(35);
+					}
 					turret->Release();
 					turret = nullptr;
 				
@@ -1424,6 +1478,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 					if(pMessage->GetKind() == 0)
 					{
 						enemy->SetVelX(45);
@@ -1431,7 +1486,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetHealth(50);
 						enemy->SetMaxHealth(50);
 						enemy->SetDamage(1);
-						enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					}
 					else if(pMessage->GetKind() == 1)
 					{
@@ -1440,8 +1494,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
 						enemy->SetDamage(1);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
-						enemy->SetImageID(nID);
 					}
 					else if(pMessage->GetKind() == 2)
 					{
@@ -1450,8 +1502,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
 						enemy->SetDamage(1);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
-						enemy->SetImageID(nID);
 					}
 					enemy->SetMinDistance(200);
 					enemy->SetMaxDistance(600);
@@ -1480,6 +1530,18 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetShotTimer(3.0f);
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
+					if(pMessage->GetKind() == 0)
+					{
+						enemy->SetDamage(25);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						enemy->SetDamage(35);
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						enemy->SetDamage(45);
+					}
 					enemy->Release();
 					enemy = nullptr;
 				}
@@ -1519,7 +1581,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetEType(RIFLE);
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetType(OBJ_HELP);
-							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 							enemy->SetPosX(pMessage->GetPosX());
 							enemy->SetPosY(pMessage->GetPosY());
 							enemy->SetHeight(32);
@@ -1762,7 +1824,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetWhoFired(false);
 					pBullet->SetVelX(norVec.fX*400);
 					pBullet->SetVelY(norVec.fY*400);
-					pBullet->SetDamage(1);
+					pBullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 					if(pMessage->GetFiringEntity()->GetType() == OBJ_HELP)
@@ -1944,6 +2006,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		{
 			CDestroyNaziBoss* Msg=dynamic_cast<CDestroyNaziBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
+			pSelf->m_bWinner = true;
 		}
 		break;
 	case MSG_CREATEBOSS:
@@ -2196,7 +2259,7 @@ void CGamePlayState::LoadText(void)
 			break;
 		case 2:
 			{
-				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
 				TiXmlNode* pState = pLanguage->FirstChild("GameState");
 				TiXmlNode* pButton = pState->FirstChild("Paused");
 				TiXmlText* pText = pButton->FirstChild()->ToText();
@@ -2214,6 +2277,20 @@ void CGamePlayState::LoadText(void)
 			break;
 		case 3:
 			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("GameState");
+				TiXmlNode* pButton = pState->FirstChild("Paused");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		}

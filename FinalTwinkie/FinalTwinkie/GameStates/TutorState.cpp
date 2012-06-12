@@ -44,6 +44,7 @@
 #include "../PickUps and Specials/Pickup.h"
 #include "../Event and Messages/CreatePickupMessage.h"
 #include "../Event and Messages/DestroyPickupMessage.h"
+#include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
 #include "ShopState.h"
 #include "../Headers/FlyText.h"
@@ -142,38 +143,6 @@ CTutorState::CTutorState(void)
 
 CTutorState::~CTutorState(void)
 {
-}
-
-void CTutorState::LoadWords(void)
-{
-	
-
-	if(m_bActivePad == false)
-	{	
-		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive press W";
-		m_asInfo[1] = "To reverse press S\nRotate counter clockwise with A\nTo rotate clockwise use D";
-		m_asInfo[2] = "LEFT click the mouse\nTo fire your main cannon\nRIGHT click will fire\n your secondary turret";
-		m_asInfo[3] = "Press 1 or 2 to\nswitch specials and\nSPACEBAR to activate";
-
-	}
-	else
-	{
-		m_asInfo[0] = "Welcome to Tank Drivers ed\n Each time you hit a mud patch\n a new tip will appear\n To drive push UP on LS";
-		m_asInfo[1] = "Pull down on LS to reverse\nLEFT to rotate counter clockwise\nRIGHT to rotate clockwise";
-		m_asInfo[2] = "To rotate the tank counter clockwise\npush the left thumbstick to the left\nTo rotate the tank clockwise\npush it to the right";
-		m_asInfo[3] = "Press Left and Right Bumper\nTo select specials\nand X to activate";
-	}
-
-		m_asInfo[6] = "Mines\nThese little bad boys\npack quite a punch\nAvoid these at any cost";
-		m_asInfo[5] = "Trees and Barricades\nCan be shot or driven over\n Helps stop foot soldiers\nbut will also slow you down.";
-		m_asInfo[4] = "Buildings\n Most are abondoned but\nsome have been\n repurposed by the enemy";
-
-		m_asInfo[8] = "A wild sapper appears! \nThey will rush your tank \nand explode to cause heavy damage.";
-		m_asInfo[7] = "A puny rifleman appears!.\nWhile armored they can't truly\n harm you but lose that and\n these guys will start to hurt";
-		m_asInfo[9] = "A strong rocket soldier appears!\nThey shoot rpgs that\nwill hurt you with\n or without armor.";	
-		m_asInfo[10] = "A pair of turrets appear\nIt is is completely stationary\nbut get to close and\n you will be too.\n Because you'll die.";
-		m_asInfo[11] = "A heavy enemy tank appears\nThese guys are just\nas B.A. as you\n maybe a little less.";
-
 }
 
 void CTutorState::Enter(void)
@@ -872,7 +841,7 @@ void CTutorState::Render(void)
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
-		m_pFont->Print("Follow the Tutorial", 539,547,.67f,UINT_MAX);
+		m_pFont->Print(m_sObj.c_str(), 539,547,.67f,UINT_MAX);
 		CPlayer::GetInstance()->Render();
 		CPlayer::GetInstance()->GetTurret()->Render();
 	}
@@ -1947,4 +1916,281 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		}
 		break;
 	};
+}
+
+void CTutorState::LoadWords(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("TutorState");
+				if(m_bActivePad == false)
+				{	
+					TiXmlNode* pButton=pState->FirstChild("Keyboard");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+
+				}
+				else
+				{
+					TiXmlNode* pButton=pState->FirstChild("Pad");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+				}
+				TiXmlNode* pButton = pState->FirstChild("e");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_asInfo[4]=pText->Value();
+				pButton=pState->FirstChild("f");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[5]=pText->Value();
+				pButton=pState->FirstChild("g");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[6]=pText->Value();
+				pButton=pState->FirstChild("h");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[7]=pText->Value();
+				pButton=pState->FirstChild("i");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[8]=pText->Value();
+				pButton=pState->FirstChild("j");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[9]=pText->Value();
+				pButton=pState->FirstChild("k");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[10]=pText->Value();
+				pButton=pState->FirstChild("l");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[11]=pText->Value();
+				pButton=pState->FirstChild("Obj");
+				pText = pButton->FirstChild()->ToText();
+				m_sObj=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("TutorState");
+				if(m_bActivePad == false)
+				{	
+					TiXmlNode* pButton=pState->FirstChild("Keyboard");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+
+				}
+				else
+				{
+					TiXmlNode* pButton=pState->FirstChild("Pad");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+				}
+				TiXmlNode* pButton = pState->FirstChild("e");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_asInfo[4]=pText->Value();
+				pButton=pState->FirstChild("f");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[5]=pText->Value();
+				pButton=pState->FirstChild("g");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[6]=pText->Value();
+				pButton=pState->FirstChild("h");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[7]=pText->Value();
+				pButton=pState->FirstChild("i");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[8]=pText->Value();
+				pButton=pState->FirstChild("j");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[9]=pText->Value();
+				pButton=pState->FirstChild("k");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[10]=pText->Value();
+				pButton=pState->FirstChild("l");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[11]=pText->Value();
+				pButton=pState->FirstChild("Obj");
+				pText = pButton->FirstChild()->ToText();
+				m_sObj=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("TutorState");
+				if(m_bActivePad == false)
+				{	
+					TiXmlNode* pButton=pState->FirstChild("Keyboard");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+
+				}
+				else
+				{
+					TiXmlNode* pButton=pState->FirstChild("Pad");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+				}
+				TiXmlNode* pButton = pState->FirstChild("e");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_asInfo[4]=pText->Value();
+				pButton=pState->FirstChild("f");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[5]=pText->Value();
+				pButton=pState->FirstChild("g");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[6]=pText->Value();
+				pButton=pState->FirstChild("h");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[7]=pText->Value();
+				pButton=pState->FirstChild("i");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[8]=pText->Value();
+				pButton=pState->FirstChild("j");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[9]=pText->Value();
+				pButton=pState->FirstChild("k");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[10]=pText->Value();
+				pButton=pState->FirstChild("l");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[11]=pText->Value();
+				pButton=pState->FirstChild("Obj");
+				pText = pButton->FirstChild()->ToText();
+				m_sObj=pText->Value();
+			}
+			break;
+		case 3:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("TutorState");
+				if(m_bActivePad == false)
+				{	
+					TiXmlNode* pButton=pState->FirstChild("Keyboard");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+
+				}
+				else
+				{
+					TiXmlNode* pButton=pState->FirstChild("Pad");
+					TiXmlNode* pLine=pButton->FirstChild("a");
+					TiXmlText* pText=pLine->FirstChild()->ToText();
+					m_asInfo[0]=pText->Value();
+					pLine=pButton->FirstChild("b");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[1]=pText->Value();
+					pLine=pButton->FirstChild("c");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[2]=pText->Value();
+					pLine=pButton->FirstChild("d");
+					pText=pLine->FirstChild()->ToText();
+					m_asInfo[3]=pText->Value();
+				}
+				TiXmlNode* pButton = pState->FirstChild("e");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_asInfo[4]=pText->Value();
+				pButton=pState->FirstChild("f");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[5]=pText->Value();
+				pButton=pState->FirstChild("g");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[6]=pText->Value();
+				pButton=pState->FirstChild("h");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[7]=pText->Value();
+				pButton=pState->FirstChild("i");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[8]=pText->Value();
+				pButton=pState->FirstChild("j");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[9]=pText->Value();
+				pButton=pState->FirstChild("k");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[10]=pText->Value();
+				pButton=pState->FirstChild("l");
+				pText = pButton->FirstChild()->ToText();
+				m_asInfo[11]=pText->Value();
+				pButton=pState->FirstChild("Obj");
+				pText = pButton->FirstChild()->ToText();
+				m_sObj=pText->Value();
+			}
+			break;
+		}
+	}
 }

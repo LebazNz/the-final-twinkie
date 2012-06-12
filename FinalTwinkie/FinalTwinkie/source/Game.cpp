@@ -75,7 +75,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pAudio = CSGD_XAudio2::GetInstance();
 
 	float mainVol, sfxVol;
-	if(CMainMenuState::GetInstance()->LoadOptions("options.txt"))
+	if(CMainMenuState::GetInstance()->LoadOptions("resources/files/options.txt"))
 	{
 		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
 		mainVol = CMainMenuState::GetInstance()->GetMusicVolume()/100.0f;
@@ -187,7 +187,7 @@ void CGame::Update(void)
 
 	if(fElapsedTime > 0.125f)
 		fElapsedTime = 0.125f;
-
+	m_pAudio->Update();
 	// let current state handle the update
 	m_pCurState->Update(fElapsedTime);
 }

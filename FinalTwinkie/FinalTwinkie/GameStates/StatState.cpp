@@ -4,6 +4,7 @@
 #include "MainMenuState.h"
 #include "GamePlayState.h"
 #include "../GameObjects/Player.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 StatState* StatState::m_pSelf = nullptr;
 StatState::StatState(void)
@@ -45,6 +46,10 @@ void StatState::Enter( void )
 	m_nBGImageID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"),D3DCOLOR_XRGB(255,255,255));
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+
+	m_nButton = CSGD_XAudio2::GetInstance()->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = CSGD_XAudio2::GetInstance()->SFXLoadSound(_T("resource/sound/click.wav"));
+	m_nPos=0;
 }
 
 void StatState::Exit( void )
@@ -156,26 +161,37 @@ void StatState::SelectButtons()
 		&& m_nMouseY >= CGame::GetInstance()->GetHeight()-40 && m_nMouseY <= CGame::GetInstance()->GetHeight()-40 + nButtonHeight)
 	{
 		// Buy
+		if(m_nPos!=1)
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nButton,false);
 		Highlight(&m_dwBack);
+		m_nPos=1;
 	}
 	else if(m_nMouseX >= CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80 && m_nMouseX <= CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80 + nButtonWidth
 		&& m_nMouseY >= CGame::GetInstance()->GetHeight()-40 && m_nMouseY <= CGame::GetInstance()->GetHeight()-40 + nButtonHeight)
 	{
 		// Continue
+		if(m_nPos!=2)
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nButton,false);
 		Highlight(&m_dwNext);
+		m_nPos=2;
 	}
 	else
+	{
 		Highlight(nullptr);
+		m_nPos=0;
+	}
 }
 
 void StatState::Clicked()
 {
 	if(m_dwNext			 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick, false);
 		m_bStats = false;
 	}
 	else if(m_dwBack		 ==D3DCOLOR_XRGB(177,132,0))
 	{
+		CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick, false);
 		m_bStats = true;
 	}
 }

@@ -303,11 +303,14 @@ bool CBullet::CheckCollision(IEntity* pBase)
 				break;
 			case OBJ_PIRATEBOSS:
 				{
-					CPirateBoss* pBoss = dynamic_cast<CPirateBoss*>(pBase);
-					pBoss->TakeDamage((int)this->m_fDamage);
-					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-					CMessageSystem::GetInstance()->SndMessage(pMsg);
-					pMsg = nullptr;
+					if(GetWhoFired()==true)
+					{	
+						CPirateBoss* pBoss = dynamic_cast<CPirateBoss*>(pBase);
+						pBoss->TakeDamage((int)this->m_fDamage);
+						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+						CMessageSystem::GetInstance()->SndMessage(pMsg);
+						pMsg = nullptr;
+					}
 				}
 				break;
 		};
