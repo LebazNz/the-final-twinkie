@@ -39,6 +39,7 @@ public:
 	void SetWinner(bool w) { m_bWinner = w;}
 	
 	static void MessageProc(CMessage* pMsg);
+	int GetLevel(void) {return m_nLevel;}
 
 	void SetSavedGame(Data gameData);
 	int m_nEnemyCount;

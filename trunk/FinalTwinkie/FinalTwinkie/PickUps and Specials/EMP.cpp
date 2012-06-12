@@ -6,6 +6,7 @@ CEMP::CEMP(void)
 {
 	m_nType = EMP;
 	m_nAmmo = 2;
+	SetType(EMP);
 }
 
 CEMP::~CEMP(void)

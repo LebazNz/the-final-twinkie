@@ -180,6 +180,7 @@ void CCreditsState::Render(void)
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }
+
 void CCreditsState::LoadText(void)
 {
 	TiXmlDocument doc("resource/files/Text.xml");

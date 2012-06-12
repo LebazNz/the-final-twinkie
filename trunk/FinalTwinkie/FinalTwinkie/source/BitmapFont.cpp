@@ -46,10 +46,11 @@ void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, D
 			nPosX += int(m_nCharWidth*m_fScale)-(int)(m_fOffset*m_fScale);
 			continue;
 		}
-		else if(ch == '\n')
+		else if(ch == '\\'&&szText[i+1]=='n')
 		{
 			nPosY += int(m_nCharHeight*m_fScale);
 			nPosX = ColStart;
+			i++;
 			continue;
 		}
 

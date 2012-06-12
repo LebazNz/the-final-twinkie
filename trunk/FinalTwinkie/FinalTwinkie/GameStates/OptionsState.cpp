@@ -76,7 +76,7 @@ void COptionsState::Enter(void)
 
 void COptionsState::Exit(void)
 {
-	SaveOptions("options.txt");
+	SaveOptions("resource/files/options.txt");
 
 	if(m_nButton != -1)
 	{

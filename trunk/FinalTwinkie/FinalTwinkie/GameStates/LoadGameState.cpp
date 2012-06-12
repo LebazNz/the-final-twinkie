@@ -81,6 +81,8 @@ void CLoadGameState::Enter(void)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 	LoadText();
 }
@@ -135,6 +137,7 @@ bool CLoadGameState::Input(void)
 	// Move the cursor position
 	if(m_pDI->KeyPressed(DIK_LEFT) || m_pDI->JoystickDPadPressed(DIR_LEFT))
 	{
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		switch(m_nCount)
 		{
 		case 0:
@@ -181,6 +184,7 @@ bool CLoadGameState::Input(void)
 	}
 	else if(m_pDI->KeyPressed(DIK_RIGHT) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
 	{
+		m_pAudio->SFXPlaySound(m_nButton,false);
 		switch(m_nCount)
 		{
 		case 0:
@@ -230,6 +234,7 @@ bool CLoadGameState::Input(void)
 	{
 		if(m_nPosition == 0)
 		{	
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(vSavedData[m_nPosition].nLevel != 0)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
@@ -253,6 +258,7 @@ bool CLoadGameState::Input(void)
 		}
 		else if(m_nPosition == 1)
 		{
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(vSavedData[m_nPosition].nLevel != 0)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
@@ -275,7 +281,8 @@ bool CLoadGameState::Input(void)
 			}
 		}
 		else if(m_nPosition == 2)
-		{		
+		{	
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(vSavedData[m_nPosition].nLevel != 0)
 				CGamePlayState::GetInstance()->SetSavedGame(vSavedData[m_nPosition]);
 			else
@@ -299,6 +306,7 @@ bool CLoadGameState::Input(void)
 		}
 		else if(m_nPosition == 3)
 		{	
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame1.xml");
@@ -326,6 +334,7 @@ bool CLoadGameState::Input(void)
 		}
 		else if(m_nPosition == 4)
 		{	
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame2.xml");
@@ -345,6 +354,7 @@ bool CLoadGameState::Input(void)
 		}
 		else if(m_nPosition == 5)
 		{	
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			remove("savedGame3.xml");
 			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
 			vSavedData[m_nPosition-3] = data;
@@ -372,41 +382,53 @@ void CLoadGameState::Update(float fDt)
 	if(m_nMouseX >= 45 && m_nMouseX <= 215
 		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
+		if(m_nPosition!=0)
+			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 0;
 	}
 	if(m_nMouseX >= 295 && m_nMouseX <= 465
 		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
+		if(m_nPosition!=1)
+			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 1;
 	}
 	if(m_nMouseX >= 550 && m_nMouseX <= 720
 		&& m_nMouseY >= 455 && m_nMouseY <= 495)
 	{
+		if(m_nPosition!=2)
+			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 2;
 	}
 	if(m_nMouseX >= 45 && m_nMouseX <= 215
 		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
 		if(vSavedData[0].nLevel != 0)
+		{
+			if(m_nPosition!=3)
+				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 3;
+		}
 	}
 	if(m_nMouseX >= 295 && m_nMouseX <= 465
 		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
-		if(vSavedData[0].nLevel == 0)
-			m_nPosition = 3;
-		else
+		if(vSavedData[1].nLevel != 0)
+		{
+			if(m_nPosition!=4)
+				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 4;
+		}
 	}
 	if(m_nMouseX >= 550 && m_nMouseX <= 720
 		&& m_nMouseY >= 505 && m_nMouseY <= 545)
 	{
-		if(vSavedData[0].nLevel == 0 && vSavedData[1].nLevel == 0 )
-			m_nPosition = 3;
-		else if((vSavedData[0].nLevel == 0 && vSavedData[1].nLevel != 0) || (vSavedData[0].nLevel != 0 && vSavedData[1].nLevel == 0) )
-			m_nPosition = 4;
-		else
+		if(vSavedData[2].nLevel != 0)
+		{
+			if(m_nPosition!=5)
+				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 5;
+		}
 	}
 }
 
@@ -849,6 +871,26 @@ void CLoadGameState::LoadText(void)
 			break;
 		case 3:
 			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("LoadGameState");
+				TiXmlNode* pButton = pState->FirstChild("NewGame");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sNewGame=pText->Value();
+				pButton=pState->FirstChild("Load");
+				pText = pButton->FirstChild()->ToText();
+				m_sLoad=pText->Value();
+				pButton = pState->FirstChild("Delete");
+				pText = pButton->FirstChild()->ToText();
+				m_sDelete=pText->Value();
+				pButton=pState->FirstChild("Name");
+				pText = pButton->FirstChild()->ToText();
+				m_sName=pText->Value();
+				pButton=pState->FirstChild("Level");
+				pText = pButton->FirstChild()->ToText();
+				m_sLevel=pText->Value();
+				pButton=pState->FirstChild("Money");
+				pText = pButton->FirstChild()->ToText();
+				m_sMoney=pText->Value();
 			}
 			break;
 		}

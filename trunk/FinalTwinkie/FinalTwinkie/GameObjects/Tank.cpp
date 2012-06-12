@@ -6,6 +6,7 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Event and Messages/DestroyEnemyMessage.h"
 #include "../Event and Messages/MessageSystem.h"
+#include "../GameStates/GamePlayState.h"
 
 CTank::CTank(void)
 {
@@ -62,8 +63,16 @@ void CTank::Update(float fDt)
 					SetPosX(GetPosX()+DX);
 					SetPosY(GetPosY()+DY);
 				}
-				m_pTurret->SetPosX(GetPosX()+16*Look.fX);
-				m_pTurret->SetPosY(GetPosY()+16*Look.fY);
+				if(CGamePlayState::GetInstance()->GetLevel()==4)
+				{
+					m_pTurret->SetPosX(GetPosX()+16*Look.fX);
+					m_pTurret->SetPosY(GetPosY()+16*Look.fY);
+				}
+				else
+				{
+					m_pTurret->SetPosX(GetPosX());
+					m_pTurret->SetPosY(GetPosY());
+				}
 				CGame* game=CGame::GetInstance();
 				if(abs(m_fRotation)>=2.335)
 				{

@@ -44,6 +44,9 @@ private:
 
 	bool m_bStats;
 
+	int m_nClick;
+	int m_nButton;
+	int m_nPos;
 
 	DWORD m_dwNaziBoss;	
 	DWORD m_dwAlienBoss;	

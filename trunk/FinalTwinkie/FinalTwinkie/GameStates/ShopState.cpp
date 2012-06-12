@@ -1,5 +1,6 @@
 #include "ShopState.h"
 #include "OptionsState.h"
+#include "LoadOutState.h"
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
 #include "GamePlayState.h"
@@ -109,6 +110,7 @@ void CShopState::Enter(void)
 		m_pAudio->MusicPlaySong(m_nShopMusic,true);
 	}
 	LoadText();
+	m_nPos=0;
 }
 
 void CShopState::Exit(void)
@@ -359,101 +361,152 @@ void CShopState::SelectButtons()
 	if(m_nMouseX >= 35 && m_nMouseX <= 35 + nButtonWidth
 		&& m_nMouseY >= 15+y && m_nMouseY <= 15 + nButtonHeight+y)
 	{
+		if(m_nPos!=1)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=1;
 		// Rocket
 		Highlight(&m_dwRocket);
 	}
 	else if(m_nMouseX >= 220 && m_nMouseX <= 220 + nButtonWidth
 		&& m_nMouseY >= 15+y && m_nMouseY <= 15 + nButtonHeight+y)
 	{
+		if(m_nPos!=2)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=2;
 		// Laser
 		Highlight(&m_dwLaser);
 	}
 	else if(m_nMouseX >= 405 && m_nMouseX <= 405 + nButtonWidth
 		&& m_nMouseY >= 15+y && m_nMouseY <= 15 + nButtonHeight+y)
 	{
+		if(m_nPos!=3)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=3;
 		// Nuke
 		Highlight(&m_dwNuke);
 	}
 	else if(m_nMouseX >= 590 && m_nMouseX <= 590 + nButtonWidth
 		&& m_nMouseY >= 15+y && m_nMouseY <= 15 + nButtonHeight+y)
 	{
+		if(m_nPos!=4)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=4;
 		// EMP
 		Highlight(&m_dwEMP);
 	}
 	else if(m_nMouseX >= 35 && m_nMouseX <= 35 + nButtonWidth
 		&& m_nMouseY >= 100+y2 && m_nMouseY <= 100 + nButtonHeight+y2)
 	{
+		if(m_nPos!=5)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=5;
 		// Artillery
 		Highlight(&m_dwArillery);
 	}
 	else if(m_nMouseX >= 220 && m_nMouseX <= 220 + nButtonWidth
 		&& m_nMouseY >= 100+y2 && m_nMouseY <= 100 + nButtonHeight+y2)
 	{
+		if(m_nPos!=6)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=6;
 		// Flamer
 		Highlight(&m_dwFlamer);
 	}
 	else if(m_nMouseX >= 405 && m_nMouseX <= 405 + nButtonWidth
 		&& m_nMouseY >= 100+y2 && m_nMouseY <= 100 + nButtonHeight+y2)
 	{
+		if(m_nPos!=7)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=7;
 		// Air Strike
 		Highlight(&m_dwAirStrike);
 	}
 	else if(m_nMouseX >= 590 && m_nMouseX <= 590 + nButtonWidth
 		&& m_nMouseY >= 100+y2 && m_nMouseY <= 100 + nButtonHeight+y2)
 	{
+		if(m_nPos!=8)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=8;
 		// Smoke Bomb
 		Highlight(&m_dwSmokeBomb);
 	}
 	else if(m_nMouseX >= 0 && m_nMouseX <= 0 + nButtonWidth
 		&& m_nMouseY >= CGame::GetInstance()->GetHeight()-40 && m_nMouseY <= CGame::GetInstance()->GetHeight()-40 + nButtonHeight)
 	{
+		if(m_nPos!=9)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=9;
 		// Buy
 		Highlight(&m_dwBuy);
 	}
 	else if(m_nMouseX >= CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80 && m_nMouseX <= CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80 + nButtonWidth
 		&& m_nMouseY >= CGame::GetInstance()->GetHeight()-40 && m_nMouseY <= CGame::GetInstance()->GetHeight()-40 + nButtonHeight)
 	{
+		if(m_nPos!=10)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=10;
 		// Continue
 		Highlight(&m_dwBack);
 	}
 	else if(m_nMouseX >= 35 && m_nMouseX <= 35 + nBoxWidth
 		&& m_nMouseY >= 200+BoxY && m_nMouseY <= 200+BoxY+nBoxHeight)
 	{
+		if(m_nPos!=11)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=11;
 		// Heat
 		Highlight(&m_dwHeat);
 	}
 	else if(m_nMouseX >= 295 && m_nMouseX <= 295 + nBoxWidth
 		&& m_nMouseY >= 200+BoxY && m_nMouseY <= 200+BoxY+nBoxHeight)
 	{
+		if(m_nPos!=12)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=12;
 		// Damage
 		Highlight(&m_dwDamage);
 	}
 	else if(m_nMouseX >= 555 && m_nMouseX <= 555 + nBoxWidth
 		&& m_nMouseY >= 200+BoxY && m_nMouseY <= 200+BoxY+nBoxHeight)
 	{
+		if(m_nPos!=13)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=13;
 		// Ammo
 		Highlight(&m_dwAmmo);
 	}
 	else if(m_nMouseX >= 35 && m_nMouseX <= 35 + nBoxWidth
 		&& m_nMouseY >= 300+BoxY2 && m_nMouseY <= 300+BoxY2+nBoxHeight)
 	{
+		if(m_nPos!=14)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=14;
 		// Health
 		Highlight(&m_dwHealth);
 	}
 	else if(m_nMouseX >= 295 && m_nMouseX <= 295 + nBoxWidth
 		&& m_nMouseY >= 300+BoxY2 && m_nMouseY <= 300+BoxY2+nBoxHeight)
 	{
+		if(m_nPos!=15)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=15;
 		// Armor
 		Highlight(&m_dwArmor);
 	}
 	else if(m_nMouseX >= 555 && m_nMouseX <= 555 + nBoxWidth
 		&& m_nMouseY >= 300+BoxY2 && m_nMouseY <= 300+BoxY2+nBoxHeight)
 	{
+		if(m_nPos!=16)
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		m_nPos=16;
 		// Speed
 		Highlight(&m_dwSpeed);
 	}
 	else
+	{
 		Highlight(nullptr);
+		m_nPos=0;
+	}
 }
 
 void CShopState::Clicked()
@@ -518,7 +571,7 @@ void CShopState::Clicked()
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSelectedCost  = m_nSelectedCost;
-
+		CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
 	}
 	else if(m_dwHeat		 ==D3DCOLOR_XRGB(177,132,0))
 	{
@@ -1040,6 +1093,65 @@ void CShopState::LoadText(void)
 			break;
 		case 3:
 			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("ShopState");
+				TiXmlNode* pButton = pState->FirstChild("Title");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sTitle=pText->Value();
+				pButton = pState->FirstChild("Rocket");
+				pText = pButton->FirstChild()->ToText();
+				m_sRocket=pText->Value();
+				pButton=pState->FirstChild("Laser");
+				pText = pButton->FirstChild()->ToText();
+				m_sLaser=pText->Value();
+				pButton = pState->FirstChild("Nuke");
+				pText = pButton->FirstChild()->ToText();
+				m_sNuke=pText->Value();
+				pButton=pState->FirstChild("Emp");
+				pText = pButton->FirstChild()->ToText();
+				m_sEmp=pText->Value();
+				pButton=pState->FirstChild("Artillery");
+				pText = pButton->FirstChild()->ToText();
+				m_sArtillery=pText->Value();
+				pButton=pState->FirstChild("Flamer");
+				pText = pButton->FirstChild()->ToText();
+				m_sFlamer=pText->Value();
+				pButton=pState->FirstChild("AirStrike");
+				pText = pButton->FirstChild()->ToText();
+				m_sAirStrike=pText->Value();
+				pButton=pState->FirstChild("SmokeBomb");
+				pText = pButton->FirstChild()->ToText();
+				m_sSmokeBomb=pText->Value();
+				pButton=pState->FirstChild("Heat");
+				pText = pButton->FirstChild()->ToText();
+				m_sHeat=pText->Value();
+				pButton=pState->FirstChild("Damage");
+				pText = pButton->FirstChild()->ToText();
+				m_sDamage=pText->Value();
+				pButton=pState->FirstChild("Ammo");
+				pText = pButton->FirstChild()->ToText();
+				m_sAmmo=pText->Value();
+				pButton=pState->FirstChild("Health");
+				pText = pButton->FirstChild()->ToText();
+				m_sHealth=pText->Value();
+				pButton=pState->FirstChild("Armor");
+				pText = pButton->FirstChild()->ToText();
+				m_sArmor=pText->Value();
+				pButton=pState->FirstChild("Speed");
+				pText = pButton->FirstChild()->ToText();
+				m_sSpeed=pText->Value();
+				pButton=pState->FirstChild("Monies");
+				pText = pButton->FirstChild()->ToText();
+				m_sMonies=pText->Value();
+				pButton=pState->FirstChild("Cost");
+				pText = pButton->FirstChild()->ToText();
+				m_sCost=pText->Value();
+				pButton=pState->FirstChild("Buy");
+				pText = pButton->FirstChild()->ToText();
+				m_sBuy=pText->Value();
+				pButton=pState->FirstChild("Continue");
+				pText = pButton->FirstChild()->ToText();
+				m_sContinue=pText->Value();
 			}
 			break;
 		}

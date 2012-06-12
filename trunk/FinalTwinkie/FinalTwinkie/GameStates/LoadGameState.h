@@ -42,6 +42,8 @@ private:
 	int						m_nCount;
 	int						m_nButtonImageID;
 	int						m_nMusic;
+	int						m_nButton;
+	int						m_nClick;
 
 	Data vSavedData[3];
 

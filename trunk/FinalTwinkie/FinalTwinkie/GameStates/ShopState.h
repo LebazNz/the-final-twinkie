@@ -143,6 +143,7 @@ private:
 
 	int m_nButton;
 	int m_nClick;
+	int m_nPos;
 
 	string m_sTitle;
 	string m_sRocket;
