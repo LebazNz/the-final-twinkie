@@ -566,6 +566,7 @@ CPlayer::CPlayer(void)
 	m_nArmorLevel	= 1;
 	m_fSpeedMod		= 1;
 	m_nSpeedLevel	= 1;
+	m_nNukeSound = -1;
 
 
 	m_nFireSound = -1;

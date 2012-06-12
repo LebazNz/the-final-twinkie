@@ -130,6 +130,9 @@ CTutorState::CTutorState(void)
 	for(int i = 0; i < 6; i++)
 		m_anBulletSounds[i] = -1;
 
+	for(int i = 0; i < 9; i++)
+		m_anSoldierSounds[i] = -1;
+
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
 	m_bWinner = false;
@@ -281,12 +284,26 @@ void CTutorState::Enter(void)
 		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
 		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
 		m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
+
+		m_anSoldierSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt1.wav"));
+		m_anSoldierSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt2.wav"));
+		m_anSoldierSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt3.wav"));
+		m_anSoldierSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt4.wav"));
+		m_anSoldierSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt5.wav"));
+		m_anSoldierSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt6.wav"));
+		m_anSoldierSounds[6] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt7.wav"));
+		m_anSoldierSounds[7] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt8.wav"));
+		m_anSoldierSounds[8] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt9.wav"));
+
 		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
 		m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
 		
-		m_pAudio->MusicPlaySong(m_nGameMusic, true);
+		if(m_nGameMusic != -1)
+		{
+			m_pAudio->MusicPlaySong(m_nGameMusic, true);
+		}
 		///////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////
 		m_pMS->InitMessageSystem(&MessageProc);
@@ -400,67 +417,82 @@ void CTutorState::Exit(void)
 
 	CGame::GetInstance()->isTutor = false;
 
-	if(m_nGameMusic != -1)
-	{
-		if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
-			m_pAudio->MusicStopSong(m_nGameMusic);
-
-		m_pAudio->MusicUnloadSong(m_nGameMusic);
-		m_nGameMusic = -1;
-	}
 	
-	
-	if(m_nDeadBullet != -1)
-	{
-		if(m_pAudio->SFXIsSoundPlaying(m_nDeadBullet) == true)
-			m_pAudio->SFXStopSound(m_nDeadBullet);
-
-		m_pAudio->SFXUnloadSound(m_nDeadBullet);
-		m_nDeadBullet = -1;
-	}
-
-	if(m_nNukeSound != -1)
-	{
-		if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
-			m_pAudio->SFXStopSound(m_nNukeSound);
-
-		m_pAudio->SFXUnloadSound(m_nNukeSound);
-		m_nNukeSound = -1;
-	}
-
-	if(m_nSappSound != -1)
-	{
-		if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
-			m_pAudio->SFXStopSound(m_nSappSound);
-
-		m_pAudio->SFXUnloadSound(m_nSappSound);
-		m_nSappSound = -1;
-	}
-
-	if(m_nMineSound != -1)
-	{
-		if(m_pAudio->SFXIsSoundPlaying(m_nMineSound) == true)
-			m_pAudio->SFXStopSound(m_nMineSound);
-
-		m_pAudio->SFXUnloadSound(m_nMineSound);
-		m_nMineSound = -1;
-	}
-
-	for(int i = 0; i < 6; i++)
-	{
-		if(m_anBulletSounds[i] != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
-				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
-
-			m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
-			m_anBulletSounds[i] = -1;
-		}
-
-	}
 
 	if(m_bPaused == false)
 	{
+		if(m_nGameMusic != -1)
+		{
+			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
+				m_pAudio->MusicStopSong(m_nGameMusic);
+
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+		}
+	
+	
+		if(m_nDeadBullet != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nDeadBullet) == true)
+				m_pAudio->SFXStopSound(m_nDeadBullet);
+
+			m_pAudio->SFXUnloadSound(m_nDeadBullet);
+			m_nDeadBullet = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
+				m_pAudio->SFXStopSound(m_nNukeSound);
+
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+
+		if(m_nSappSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
+				m_pAudio->SFXStopSound(m_nSappSound);
+
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		if(m_nMineSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nMineSound) == true)
+				m_pAudio->SFXStopSound(m_nMineSound);
+
+			m_pAudio->SFXUnloadSound(m_nMineSound);
+			m_nMineSound = -1;
+		}
+
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+
+		}
+
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
@@ -1142,6 +1174,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{		
 					Bullet->SetBulletSound(pSelf->m_anBulletSounds[2]);
 					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
+
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -1254,8 +1287,12 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.15f);
-					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-						Bullet->SetWhoFired(true);
+
+					if(pMessage->GetFiringEntity()->GetOwner() != nullptr)
+					{
+						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+							Bullet->SetWhoFired(true);
+					}
 					else
 						Bullet->SetWhoFired(false);
 					if(pMessage->GetFiringEntity() != nullptr)
@@ -1347,6 +1384,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			case SAPPER:
 				{
 					CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
+					sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
+					sapper->SetExplode(pSelf->m_nSappSound);
 					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 					sapper->SetEType(SAPPER);
 					sapper->SetPosX(pMessage->GetPosX());
@@ -1369,7 +1408,6 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case TANK:
 				{
-					// TO DO: SET UP MESSAGES TO GET POSITIONS
 					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
 					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[6]);
 					pSelf->m_pEnemy->SetPosX(pMessage->GetPosX());
@@ -1434,14 +1472,6 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					turret->SetWidth(64);
 					turret->SetHeight(128);
 
-					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
-					pSelf->m_pTurret->SetImageID(pSelf->m_anEnemyIDs[7]);					
-					pSelf->m_pTurret->SetPosX(pMessage->GetPosX());
-					pSelf->m_pTurret->SetPosY(pMessage->GetPosY());
-					pSelf->m_pTurret->SetWidth(64);
-					pSelf->m_pTurret->SetHeight(128);
-
-					//CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					
 					turret->SetOwner(nullptr);
 					turret->SetBullet(BUL_LASER);	
@@ -1465,6 +1495,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{
 					CPlayer* player = CPlayer::GetInstance();
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 					enemy->SetEType(RIFLE);
 					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 					enemy->SetPosX(pMessage->GetPosX());
@@ -1487,6 +1518,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
+					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 					enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
@@ -1515,7 +1547,10 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
 							sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+							sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							sapper->SetType(OBJ_HELP);
+							sapper->SetExplode(pSelf->m_nSappSound);
+
 							sapper->SetPosX(pMessage->GetPosX());
 							sapper->SetPosY(pMessage->GetPosY());
 							sapper->SetHeight(32);
@@ -1537,6 +1572,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 							enemy->SetEType(RIFLE);
+							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetType(OBJ_HELP);
 							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 							enemy->SetPosX(pMessage->GetPosX());
@@ -1561,6 +1597,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 							enemy->SetEType(ROCKET);
+							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 							enemy->SetType(OBJ_HELP);
 							enemy->SetPosX(pMessage->GetPosX());
@@ -1595,11 +1632,6 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		{
 			pSelf->m_nEnemyCount--;
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
-	//TODO:: CHANGE SOUNDS ONLY TO BE FOR A SAPPER
-			if(pEnemy->GetEType() == SAPPER)
-			{
-				CSGD_XAudio2::GetInstance()->SFXPlaySound(pSelf->m_nSappSound);
-			}
 	
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
@@ -1776,7 +1808,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{
-					pBullet->SetBulletSound(pSelf->m_anBulletSounds[1]);
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
 					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
 					
 					tVector2D norVec = Vector2DNormalize(Up);
@@ -1798,8 +1830,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{
-					pBullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[0]);
 					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
+
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);

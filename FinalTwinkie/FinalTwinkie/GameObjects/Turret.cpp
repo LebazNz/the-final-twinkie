@@ -130,7 +130,7 @@ void CTurret::Update(float fDt)
 				{
 					m_fFireRate = 0.0f;
 
-					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
+					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,m_nBulletType,this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}

@@ -31,6 +31,9 @@ CEnemy::CEnemy(void)
 	m_bStop = false;
 	m_bOnFire=false;
 
+	for(int i = 0; i < 9; i++)
+		m_anHurtSounds[i] = -1;
+
 	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
 
@@ -324,4 +327,24 @@ void CEnemy::SetOnFire()
 	m_bHurt1=false;
 	m_bHurt2=false;
 	m_pOnFire->ActivateEmitter();
+}
+
+
+void CEnemy::TakeDamage(int nDamage)
+{
+	if(m_nEType == SAPPER || m_nEType == ROCKET || m_nEType == RIFLE)
+	{
+		int random = rand() % 9;
+
+		if(m_anHurtSounds[random] != -1)
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_anHurtSounds[random]);
+	}
+	CEntity::TakeDamage(nDamage);
+}
+void CEnemy::SetSoldierSounds(int sounds[])
+{
+	for(int i = 0; i < 9; i++)
+	{
+		m_anHurtSounds[i] = sounds[i];
+	}
 }
