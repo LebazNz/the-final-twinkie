@@ -59,8 +59,8 @@ private:
 	CSGD_XAudio2*			m_pAudio;
 public:
 	CFactory*				m_pOF;
-private:
 	CParticleManager*		m_PM;
+private:
 	CMessageSystem*			m_pMS;
 	CTileManager*			m_pTile;
 	CAnimationManager*		m_AM;
@@ -94,10 +94,11 @@ private:
 	int FXSapper_Explosion;
 	int FXFlame;
 	int FXBuildingFlame;
-	int FXNuke;
 	int FXTreads;
 	int m_nMine;
+	int FXNuke;
 	int FXSmoke;
+private:
 	int m_nTree;
 	int m_nDeadTree;
 	int m_nBarricade;

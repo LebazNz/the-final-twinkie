@@ -9,7 +9,7 @@ class CBullet: public CEntity, public IListener
 public:
 	virtual void Update(float);
 	virtual void Render(void);
-	
+	virtual RECT GetRect(void);
 	virtual bool CheckCollision(IEntity*);
 	
 	CBullet(void);

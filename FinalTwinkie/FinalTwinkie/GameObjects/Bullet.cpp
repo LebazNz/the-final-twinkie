@@ -22,6 +22,7 @@
 #include "Factory.h"
 #include "../SGD Wrappers/CSGD_XAudio2.h"
 
+#include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/CSGD_DirectInput.h"
 
 CBullet::CBullet(void)
@@ -336,6 +337,15 @@ void CBullet::Render(void)
 	Camera* C=Camera::GetInstance();
 	if(GetImageID() != -1)
 	{
-		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), 1.0f, 1.0f, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		CSGD_TextureManager::GetInstance()->Draw(GetImageID(), int(GetPosX()-(GetWidth()/2)+C->GetPosX()), int(GetPosY()-(GetHeight()/2)+C->GetPosY()), m_fScale, m_fScale, nullptr, float(GetWidth()/2), float(GetHeight()/2), m_fRotation, GetColor()); 
+		//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
 	}
+}
+
+RECT CBullet::GetRect(void)
+{
+	Camera* C=Camera::GetInstance();
+	RECT rSelf = { };
+	SetRect(&rSelf, (int)(GetPosX()+C->GetPosX())-GetWidth()/2, (int)(GetPosY()+C->GetPosY())-GetHeight()/2, (int)((GetPosX()+C->GetPosX())+(GetWidth()/2)*m_fScale), (int)((GetPosY()+C->GetPosY())+(GetHeight()/2)*m_fScale));
+	return rSelf;
 }

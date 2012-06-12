@@ -3,6 +3,11 @@
 #include "GamePlayState.h"
 #include "ShopState.h"
 #include "../Headers/Game.h"
+#include "../PickUps and Specials/AirStrike.h"
+#include "../PickUps and Specials/EMP.h"
+#include "../PickUps and Specials/Nuke.h"
+#include "../PickUps and Specials/Reinforcements.h"
+#include "../PickUps and Specials/Smoke.h"
 
 CLoadOutState* CLoadOutState::m_pSelf = nullptr;
 
@@ -13,6 +18,7 @@ CLoadOutState::CLoadOutState(void)
 	m_pTM = nullptr;
 	m_pFont = nullptr;
 	m_pPlayer = nullptr;
+	m_PM = nullptr;
 
 	m_nBGID = -1;
 	m_nButtonImageID = -1;
@@ -27,6 +33,8 @@ CLoadOutState::CLoadOutState(void)
 	m_nMissileMaxCount = 0;
 	m_nArtilleryMaxCount = 0;
 	m_nSecondAmmo = -1;
+	FXNuke = -1;
+	FXSmoke = -1;
 
 	m_bMissile		= false;
 	m_bArtillery	= false;
@@ -75,12 +83,16 @@ void CLoadOutState::Enter( void )
 	m_pD3D	= CSGD_Direct3D::GetInstance();
 	m_pDI	= CSGD_DirectInput::GetInstance();
 	m_pTM = CSGD_TextureManager::GetInstance();
-	m_pFont = CBitmapFont::GetInstance();;
+	m_pFont = CBitmapFont::GetInstance();
 	m_pPlayer = CPlayer::GetInstance();
+	m_PM = CParticleManager::GetInstance();
 
 	m_nBGID = m_pTM->LoadTexture(_T("resource/graphics/bg_loadMenu_&_sprites.png"));
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+
+	FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
+	FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -93,9 +105,9 @@ void CLoadOutState::Enter( void )
 	m_bLaser = m_pPlayer->GetLaserAccess();
 	m_bFlame = m_pPlayer->GetFlamerAccess();
 	m_bNuke			=	true;	//m_pPlayer->GetNukeAccess();
-	m_bSmoke		=	true;	//m_pPlayer->GetSmokeBombAccess();
+	m_bSmoke		=	true;//m_pPlayer->GetSmokeBombAccess();
 	m_bEMP			=	true;	//m_pPlayer->GetEMPAccess();
-	m_bAirStirke	=	true;	//m_pPlayer->GetAirStrikeAccess();
+	m_bAirStirke	=	true;//m_pPlayer->GetAirStrikeAccess();
 	m_nSecondAmmo = m_pPlayer->GetSecondType();
 	m_bRF = true;
 
@@ -170,9 +182,6 @@ void CLoadOutState::Enter( void )
 
 void CLoadOutState::Exit( void )
 {
-	m_pPlayer->SetWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
-	m_pPlayer->SetMaxWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
-
 	if(m_nBGID != -1)
 	{
 		m_pTM->UnloadTexture(m_nBGID);
@@ -195,13 +204,14 @@ void CLoadOutState::Exit( void )
 	m_pDI = nullptr;
 	m_pTM = nullptr;
 	m_pFont = nullptr;
+	m_PM = nullptr;
 	
 	m_pSpecialOne = nullptr;
 	m_pSpecialTwo = nullptr;
 
 	m_nPosition = 0;
 
-	m_vSpCount.clear();
+	//m_vSpCount.clear();
 }
 
 bool CLoadOutState::Input( void )
@@ -212,7 +222,6 @@ bool CLoadOutState::Input( void )
 		return true;
 	}*/
 	// Back/Continue
-
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 25 && m_nMouseX <= 193
 		&& m_nMouseY >= 550 && m_nMouseY <= 575))
 	{
@@ -226,11 +235,102 @@ bool CLoadOutState::Input( void )
 		m_pPlayer->SetWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
 		m_pPlayer->SetMaxWeaponAmmo(m_nShellCount,m_nArtilleryCount,m_nMissileCount);
 		m_pPlayer->SetSecondType(m_nSecondAmmo);
+		switch(m_vSpCount[m_nSpecialPos1])
+		{
+		case 0:
+			{
+				CSpecial* pSpecial = new CSpecial;
+				m_pPlayer->SetSpecial1(pSpecial);
+			}
+			break;
+		case 1:
+			{
+				CSmoke* pSpecial = new CSmoke;
+				pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
+				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 2:
+			{
+				CEMP* pSpecial = new CEMP;
+				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 3:
+			{
+				CNuke* pSpecial = new CNuke;
+				pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
+				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 4:
+			{
+				CReinforcements* pSpecial = new CReinforcements;
+				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 5:
+			{
+				CAirStrike* pSpecial = new CAirStrike;
+				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		}
+		switch(m_vSpCount[m_nSpecialPos2])
+		{
+		case 0:
+			{
+				CSpecial* pSpecial = new CSpecial;
+				m_pPlayer->SetSpecial2(pSpecial);
+			}
+			break;
+		case 1:
+			{
+				CSmoke* pSpecial = new CSmoke;
+				pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
+				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 2:
+			{
+				CEMP* pSpecial = new CEMP;
+				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 3:
+			{
+				CNuke* pSpecial = new CNuke;
+				pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
+				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 4:
+			{
+				CReinforcements* pSpecial = new CReinforcements;
+				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		case 5:
+			{
+				CAirStrike* pSpecial = new CAirStrike;
+				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		}
 		return true;
 	}
 
 	// Ammo counts
-
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 121
 		&& m_nMouseY >= 225 && m_nMouseY <= 253))
 	{
@@ -277,7 +377,6 @@ bool CLoadOutState::Input( void )
 	}
 
 	// Second Weapon type
-
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 537 && m_nMouseX <= 570
 		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
@@ -324,7 +423,6 @@ bool CLoadOutState::Input( void )
 	}
 
 	//Specials
-
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 84 && m_nMouseX <= 118
 		&& m_nMouseY >= 446 && m_nMouseY <= 474))
 	{
