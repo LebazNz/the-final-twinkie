@@ -199,6 +199,7 @@ void CGamePlayState::Enter(void)
 		// LOAD ALL XMLS HERE
 		//////////////////////////
 		m_pTile->Load("resource/files/graphic_layer.xml");	
+		//m_pTile->Load("resource/files/level123.xml");	
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
@@ -315,12 +316,12 @@ void CGamePlayState::Enter(void)
 		CEMP* pEMP = new CEMP;
 		player->SetSpecial1(pNuke);
 		player->SetSpecial2(pEMP);
-		player->SetSpecial1Ammo(1);
-		player->SetSpecial2Ammo(5);
+		player->SetSpecial1Ammo(player->GetSpecial1()->GetAmmoCount());
+		player->SetSpecial2Ammo(player->GetSpecial2()->GetAmmoCount());
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
-		player->SetInvul(true);
-		player->SetInvulTimer(0);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(0);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -332,11 +333,11 @@ void CGamePlayState::Enter(void)
 		//buffs
 		player->SetDoubleDamage(true);
 		player->SetDamageTimer(15);
-		player->SetNoReloadTimer(15);
-		player->SetInvul(true);
-		player->SetInvulTimer(15);
+		player->SetNoReloadTimer(150);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(15);
 		player->SetInfAmmo(true);
-		player->SetInfoAmmoTimer(15);
+		player->SetInfoAmmoTimer(150);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -877,7 +878,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 						norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						if(Bullet->GetWhoFired())
+						if(Bullet->GetWhoFired() == true)
 						{
 							if(player->GetWeaponAmmoShell()> 0)
 							{
@@ -931,7 +932,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tVector2D Up={0,-1};
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						if(Bullet->GetWhoFired())
+						if(Bullet->GetWhoFired() == true)
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
@@ -945,13 +946,13 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								{
 									int ammoChange=player->GetWeaponAmmoMissile();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
-									RECT rSelf;
-									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
-									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
-									Bullet->SetTargetPos(vPos);
-									Bullet->SetMissileTimer(0.25f);
 								}
+								RECT rSelf;
+								SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
+								Bullet->SetTargetRect(rSelf);
+								tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
+								Bullet->SetTargetPos(vPos);
+								Bullet->SetMissileTimer(0.25f);
 							}
 						}
 						else
@@ -993,7 +994,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
 						norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-						if(Bullet->GetWhoFired())
+						if(Bullet->GetWhoFired() == true)
 						{
 							if(player->GetWeaponAmmoArtillery()> 0)
 							{
@@ -1007,12 +1008,12 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								{
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
-									RECT rSelf;
-									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
-									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
-									Bullet->SetTargetPos(vPos);
 								}
+								RECT rSelf;
+								SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
+								Bullet->SetTargetRect(rSelf);
+								tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
+								Bullet->SetTargetPos(vPos);
 							}
 						}
 						else
@@ -1372,7 +1373,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[5]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);

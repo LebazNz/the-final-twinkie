@@ -159,12 +159,12 @@ void CGUI::Render(void)
 			break;
 		case REINFORCE:
 			{
-				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
+				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
 			}
 			break;
 		case AIRSTRIKE:
 			{
-				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
+				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
 			}
 			break;
 		}
@@ -204,12 +204,12 @@ void CGUI::Render(void)
 			break;
 		case REINFORCE:
 			{
-				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
+				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
 			}
 			break;
 		case AIRSTRIKE:
 			{
-				rect.top=(LONG)280; rect.left=(LONG)830; rect.right=(LONG)871; rect.bottom=(LONG)321;
+				rect.top=(LONG)280; rect.left=(LONG)774; rect.right=(LONG)813; rect.bottom=(LONG)321;
 			}
 			break;
 		}

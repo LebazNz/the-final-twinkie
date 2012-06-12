@@ -2,6 +2,7 @@
 #include "igamestate.h"
 #include "../GameObjects/Player.h"
 #include "../PickUps and Specials/Special.h"
+#include "../Particle/ParticleManager.h"
 
 #include <vector>
 using std::vector;
@@ -29,6 +30,7 @@ private:
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
 	CPlayer*				m_pPlayer;
+	CParticleManager*		m_PM;
 
 	static CLoadOutState*	m_pSelf;
 
@@ -64,6 +66,9 @@ private:
 	bool m_bUseMachineGun;
 	bool m_bUseLaser;
 	bool m_bUseFlame;
+
+	int FXNuke;
+	int FXSmoke;
 
 	DWORD m_dShellMin;
 	DWORD m_dShellMax;
