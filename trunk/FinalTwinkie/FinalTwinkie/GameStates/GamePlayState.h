@@ -77,9 +77,14 @@ private:
 
 
 	//IMAGE IDS
+	int m_anBulletSounds[6];
+	int m_anSoldierSounds[9];
+	int m_nMineSound;
+	int m_nSappSound;
+	int m_nGameMusic;
+	int m_nNukeSound;
 	int m_anBulletImageIDs[5];
 	int m_anEnemyIDs[16];
-	int m_anBulletSounds[6];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
 	int m_nBackGround;
@@ -127,7 +132,6 @@ private:
 	IDirect3DTexture9* MiniMap;
 
 	int m_nLevel;
-	int m_nGameMusic;
 
 	string m_sPaused;
 	string m_sResume;

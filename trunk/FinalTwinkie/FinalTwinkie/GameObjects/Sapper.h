@@ -21,10 +21,12 @@ public:
 	void SetExplosion(CEmitter* pEmitter) {m_pExplosion=pEmitter;}
 	void SetRadius(float fRad){m_fRadius=fRad;}
 	void SetDamage(float fDam){m_fDamage=fDam;}
-
+	void SetExplode(int s) { m_nExplode = s;}
 	tVector2D GetOldPos(void) { return m_v2OldPos;}
 
 private:
+	int m_nExplode;
+
 	float m_fRadius;
 	float m_fDamage;
 

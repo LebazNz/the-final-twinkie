@@ -54,6 +54,9 @@ public:
 	virtual void SetStop(bool bStop){m_bStop = bStop;}
 	virtual bool GetStop(void){return m_bStop;}
 
+	virtual void TakeDamage(int nDamage);
+	void SetSoldierSounds(int sounds[]);
+
 protected:
 	bool m_bOnFire;
 	bool m_bHurt1;
@@ -68,6 +71,7 @@ private:
 	int		m_nMainBulletType;
 	int		m_nMachineGunBulletType;
 	bool	m_bHasATurret;
+	int     m_anHurtSounds[9];
 	
 	tVector2D m_v2OldPos;
 

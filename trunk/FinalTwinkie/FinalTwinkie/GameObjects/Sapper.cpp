@@ -8,6 +8,7 @@
 #include "../Headers/Game.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../GameObjects/Tank.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 
 CSapper::CSapper(void)
@@ -15,7 +16,7 @@ CSapper::CSapper(void)
 	m_nType=OBJ_ENEMY;
 	m_fStopTimer = 0.0f;
 	m_bStop = false;
-
+	m_nExplode = -1;
 	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
 CSapper::~CSapper(void)
@@ -71,6 +72,9 @@ void CSapper::Update(float fDt)
 				}
 				if(length<=100)
 				{
+					if(m_nExplode != -1)
+						CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nExplode);
+
 					m_pExplosion->ActivateEmitter();
 					CDestroyEnemyMessage* msg=new CDestroyEnemyMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(msg);
@@ -126,6 +130,9 @@ void CSapper::Update(float fDt)
 			}
 			if(length<=100)
 			{
+				if(m_nExplode != -1)
+						CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nExplode);
+
 				m_pExplosion->ActivateEmitter();
 				CDestroyEnemyMessage* msg=new CDestroyEnemyMessage(this);
 				CMessageSystem::GetInstance()->SndMessage(msg);

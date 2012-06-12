@@ -76,6 +76,7 @@ private:
 
 	//IMAGE IDS
 	int m_anBulletSounds[6];
+	int m_anSoldierSounds[9];
 	int m_nMineSound;
 	int m_nSappSound;
 	int m_nGameMusic;
