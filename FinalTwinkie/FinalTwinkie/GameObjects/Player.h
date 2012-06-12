@@ -164,6 +164,8 @@ public:
 	void SetGunSel(int Sel) {m_nGunSel=Sel;}
 
 	void SlowVel(float time, float vel);
+	void SetFireSound(int s) {m_nFireSound = s;}
+	void SetNukeSound(int n) { m_nNukeSound = n;}
 
 private:
 	CPlayer(void);
@@ -179,6 +181,7 @@ private:
 	int m_anWeaponAmmo[3];
 	int m_anMaxWeaponAmmo[3];
 	int m_anSpecialammo[2];
+	
 	CEmitter* m_pTracksLeft;
 	CEmitter* m_pTracksRight;
 	CTurret* m_pTurret;
@@ -240,6 +243,9 @@ private:
 	bool m_bAirStrikeAccess;
 	bool m_bSmokeBombAccess;
 
+	int m_nFireSound;
+	int m_nNukeSound;
+	bool m_bSoundPlaying;
 
 	static CPlayer* m_pInstance;
 	CSGD_DirectInput* m_pDI;

@@ -36,9 +36,14 @@ bool CTree::CheckCollision(IEntity* pObject)
 				if(m_bHit == true)
 					pPlayer->SlowVel(0.5f,70);
 				else
+				{
 					pPlayer->SlowVel(0.5f,45);
+					m_bHit = true;
+					SetHit(true);
+					SetWidth(32);
+					SetHeight(32);
 
-				m_bHit = true;
+				}
 			}
 			break;
 		case OBJ_ENEMY:
@@ -47,16 +52,20 @@ bool CTree::CheckCollision(IEntity* pObject)
 				{
 					// MAKE ENEMY SLOW DOWN
 					CTank* pTank = dynamic_cast<CTank*>(pObject);
-				if(m_bHit == true)
-					pTank->SlowVel(0.5f,70);
-				else
-					pTank->SlowVel(0.5f,45);
-
-					m_bHit = true;
+					if(m_bHit == true)
+						pTank->SlowVel(0.5f,70);
+					else
+					{
+						pTank->SlowVel(0.5f,45);
+						m_bHit = true;
+						SetHit(true);
+						SetWidth(32);
+						SetHeight(32);
+					}
 				}
 				else
 				{
-					if(m_bHit == true)
+					if(m_bHit == false)
 					{
 						CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
 						pEnemy->SetPosX(pEnemy->GetOldPos().fX);

@@ -63,6 +63,7 @@ private:
 	CAnimationManager*		m_AM;
 	CEventSystem*			m_pES;
 	CGUI*					m_pGUI;
+	CSGD_XAudio2*			m_pAudio;
 	
 	
 	static CTutorState*	m_pSelf;
@@ -74,6 +75,12 @@ private:
 
 
 	//IMAGE IDS
+	int m_anBulletSounds[6];
+	int m_nMineSound;
+	int m_nSappSound;
+	int m_nGameMusic;
+	int m_nNukeSound;
+	int m_nDeadBullet;
 	int m_anBulletImageIDs[5];
 	int m_anEnemyIDs[16];
 	int m_nPlayerID;
@@ -99,6 +106,7 @@ private:
 	int m_nBarricade;
 	int m_nDeadBarr;
 	int FXEnemyOnFire;
+	int FXAirStrike;
 
 
 

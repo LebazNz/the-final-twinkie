@@ -26,6 +26,8 @@
 #include "../Event and Messages/DestroyTreeMessage.h"
 #include "../Event and Messages/CreateFlyTextMessage.h"
 #include "../Event and Messages/DestroyFlyTextMessage.h"
+#include "../Event and Messages/DestrotJetMessage.h"
+#include "../Event and Messages/CreateJetMessage.h"
 #include "../World and Tile/Tile.h"
 #include "../World and Tile/TileManager.h"
 #include "../GameObjects/Enemy.h"
@@ -33,6 +35,7 @@
 #include "../GameObjects/Turret.h"
 #include "../GameObjects/Mine.h"
 #include "../GameObjects/Tree.h"
+#include "../GameObjects//Jet.h"
 #include "../Headers/Camera.h"
 #include "../GameObjects/Sapper.h"
 #include "../GameObjects/Tank.h"
@@ -80,7 +83,7 @@ CTutorState::CTutorState(void)
 	m_pMS	= nullptr;
 	m_pTile = nullptr;
 	m_AM	= nullptr;
-	m_pES	= nullptr;
+	m_pAudio = nullptr;
 
 
 	for(int i = 0; i < 16; ++i)
@@ -119,6 +122,14 @@ CTutorState::CTutorState(void)
 	m_nDeadTree = -1;
 	m_nBarricade = -1;
 	m_nDeadBarr = -1;
+	m_nGameMusic = -1;
+	m_nMineSound = -1;
+	m_nSappSound = -1;
+	m_nNukeSound = -1;
+	m_nDeadBullet = -1;
+	for(int i = 0; i < 6; i++)
+		m_anBulletSounds[i] = -1;
+
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
 	m_bWinner = false;
@@ -184,6 +195,8 @@ void CTutorState::Enter(void)
 		m_pGUI = CGUI::GetInstance();
 		m_pFont = CBitmapFont::GetInstance();
 		m_pFont->Init(COptionsState::GetInstance()->GetLang());
+		m_pAudio = CSGD_XAudio2::GetInstance();
+
 		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
@@ -221,6 +234,7 @@ void CTutorState::Enter(void)
 		FXTreads=m_PM->AddEmitter("resource/files/Tracks.xml");
 		FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
 		FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
+		FXAirStrike = m_PM->AddEmitter("resource/files/AirStrike.xml");
 
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -256,6 +270,25 @@ void CTutorState::Enter(void)
 		m_nBarricade =m_pTM->LoadTexture(_T("resource/graphics/barr2.png"));
 		m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
 		m_nBox = m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
+
+
+		// SOUNDS
+		////////////////////////////////////////////////////////
+		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
+		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
+		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
+		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
+		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
+		m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
+		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
+		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
+		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
+		m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
+		
+		m_pAudio->MusicPlaySong(m_nGameMusic, true);
+		///////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////
 		m_pMS->InitMessageSystem(&MessageProc);
 
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -273,6 +306,8 @@ void CTutorState::Enter(void)
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
 		player->SetImageID(m_nPlayerID);
+		player->SetFireSound(m_anBulletSounds[5]);
+		player->SetNukeSound(m_nNukeSound);
 		player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
 		player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
 		player->SetRotation(0);
@@ -282,6 +317,7 @@ void CTutorState::Enter(void)
 		player->SetVelY(90);
 		player->SetHealth(250);
 		player->SetMaxHealth(250);
+		player->SetNoReloadTimer(50000);
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
@@ -363,6 +399,65 @@ void CTutorState::Exit(void)
 	m_fWordTimer = 0.0f;
 
 	CGame::GetInstance()->isTutor = false;
+
+	if(m_nGameMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
+			m_pAudio->MusicStopSong(m_nGameMusic);
+
+		m_pAudio->MusicUnloadSong(m_nGameMusic);
+		m_nGameMusic = -1;
+	}
+	
+	
+	if(m_nDeadBullet != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nDeadBullet) == true)
+			m_pAudio->SFXStopSound(m_nDeadBullet);
+
+		m_pAudio->SFXUnloadSound(m_nDeadBullet);
+		m_nDeadBullet = -1;
+	}
+
+	if(m_nNukeSound != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
+			m_pAudio->SFXStopSound(m_nNukeSound);
+
+		m_pAudio->SFXUnloadSound(m_nNukeSound);
+		m_nNukeSound = -1;
+	}
+
+	if(m_nSappSound != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
+			m_pAudio->SFXStopSound(m_nSappSound);
+
+		m_pAudio->SFXUnloadSound(m_nSappSound);
+		m_nSappSound = -1;
+	}
+
+	if(m_nMineSound != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nMineSound) == true)
+			m_pAudio->SFXStopSound(m_nMineSound);
+
+		m_pAudio->SFXUnloadSound(m_nMineSound);
+		m_nMineSound = -1;
+	}
+
+	for(int i = 0; i < 6; i++)
+	{
+		if(m_anBulletSounds[i] != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
+				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+
+			m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+			m_anBulletSounds[i] = -1;
+		}
+
+	}
 
 	if(m_bPaused == false)
 	{
@@ -635,6 +730,7 @@ void CTutorState::Update(float fDt)
 	{
 		Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
 		m_PM->UpdateEverything(fDt);
+		m_pAudio->Update();
 		m_pOM->UpdateAllObjects(fDt);
 		m_pOM->CheckCollisions();
 
@@ -926,7 +1022,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[0]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -968,7 +1065,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX);
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
-							Bullet->SetDamage(25.0f);
+							Bullet->SetDamage(35.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
 						Bullet->SetVelY(norVec.fY*400);
@@ -982,7 +1079,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[1]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
+					
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -997,10 +1096,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
-						//tVector2D norVec = pMessage->GetFiringEntity()->GetLook();
 						tVector2D Up={0,-1};
 						Up=Vector2DRotate(Up, pMessage->GetFiringEntity()->GetRotation());
-						//norVec = Vector2DNormalize(norVec);
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
@@ -1031,8 +1128,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY);
 							Bullet->SetDamage(45.0f);
 						}
-						Bullet->SetVelX(/*norVec.fX**/300);
-						Bullet->SetVelY(/*norVec.fY**/300);
+						Bullet->SetVelX(300);
+						Bullet->SetVelY(300);
 					}
 					Bullet->SetBulletType(BUL_ROCKET);
 					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
@@ -1042,8 +1139,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				}
 				break;
 			case BUL_ARTILLERY:
-				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+				{		
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[2]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -1078,9 +1176,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
 									RECT rSelf;
-									SetRect(&rSelf,(int)(pSelf->m_nMouseX-32),(int)(pSelf->m_nMouseY-32),(int)(pSelf->m_nMouseX+32),(int)(pSelf->m_nMouseY+32));
+									SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-32),(int)(pSelf->m_nMouseY-C->GetPosY()-32),(int)(pSelf->m_nMouseX-C->GetPosX()+32),(int)(pSelf->m_nMouseY-C->GetPosY()+32));
 									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { (float)(pSelf->m_nMouseX-16),(float)(pSelf->m_nMouseY-16)};
+									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
 									Bullet->SetTargetPos(vPos);
 								}
 							}
@@ -1103,7 +1201,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_MACHINEGUN:
 				{
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -1149,7 +1248,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_LASER:
 				{
-				CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[4]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -1235,7 +1335,6 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		{
 			CBullet* pBullet = dynamic_cast<CDestroyBulletMessage*>(pMsg)->GetBullet();
 			pSelf->m_pOM->RemoveObject(pBullet);
-			
 		}
 		break;
 	case MSG_CREATEENEMY:
@@ -1249,6 +1348,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{
 					CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
 					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+					sapper->SetEType(SAPPER);
 					sapper->SetPosX(pMessage->GetPosX());
 					sapper->SetPosY(pMessage->GetPosY());
 					sapper->SetHeight(32);
@@ -1278,8 +1378,14 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pSelf->m_pEnemy->SetHeight(128);
 
 					CPlayer* player = CPlayer::GetInstance();
-					CTank* tank = dynamic_cast<CTank*>(pSelf->m_pEnemy);
 					
+					CTank* tank = (CTank*)pSelf->m_pOF->CreateObject("CTank");
+					tank->SetImageID(pSelf->m_nPlayerID);
+					tank->SetPosX(pMessage->GetPosX());
+					tank->SetPosY(pMessage->GetPosY());	
+					tank->SetEType(TANK);
+					tank->SetWidth(64);
+					tank->SetHeight(128);
 					tank->SetPlayer(player);
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
@@ -1300,26 +1406,33 @@ void CTutorState::MessageProc(CMessage* pMsg)
 
 					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					tank->SetTurret(turret);
-					turret->SetOwner(pSelf->m_pEnemy);
-					turret->SetBullet(BUL_SHELL);	
+					turret->SetOwner(tank);
+					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
-				  //pTurret->SetFireRate(2.5f);
-					turret->SetTarget(player);
+					turret->SetHealth(200);
+					turret->SetMaxHealth(200);
+				  //turret->SetFireRate(2.5f);
+					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
-					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
-					pSelf->m_pTurret->Release();
-					pSelf->m_pEnemy->Release();
-					pSelf->m_pEnemy = nullptr;
-					pSelf->m_pTurret = nullptr;
+					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
+					pSelf->m_pOM->AddObject(turret);
+					turret->Release();
+					turret = nullptr;
+					tank->Release();
+					tank = nullptr;
 					
 				}
 				break;
 			case TURRET:
 				{
-					// TO DO: SET UP MESSAGE TO GET POSITIONS
-					CPlayer* player = CPlayer::GetInstance();
+					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
+					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetPosX(pMessage->GetPosX());
+					turret->SetPosY(pMessage->GetPosY());
+					turret->SetWidth(64);
+					turret->SetHeight(128);
 
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
 					pSelf->m_pTurret->SetImageID(pSelf->m_anEnemyIDs[7]);					
@@ -1331,18 +1444,19 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					
 					turret->SetOwner(nullptr);
-					turret->SetBullet(BUL_SHELL);	
+					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
 				  //turret->SetFireRate(2.5f);
-					turret->SetTarget(player);
+					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
+					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
-					pSelf->m_pTurret->Release();
-					pSelf->m_pTurret = nullptr;
+					turret->Release();
+					turret = nullptr;
 				
 				}
 				break;
@@ -1352,10 +1466,10 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(RIFLE);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
-					enemy->SetHeight(32);
+					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
 					enemy->SetHealth(50);
@@ -1373,10 +1487,10 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
-					enemy->SetHeight(32);
+					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(CPlayer::GetInstance());
 					enemy->SetHealth(50);
@@ -1392,6 +1506,84 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					enemy = nullptr;
 				}
 				break;
+			case HELP:
+				{
+					int randNum = rand()%2;
+					switch(randNum)
+					{
+					case 0:
+						{
+							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
+							sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+							sapper->SetType(OBJ_HELP);
+							sapper->SetPosX(pMessage->GetPosX());
+							sapper->SetPosY(pMessage->GetPosY());
+							sapper->SetHeight(32);
+							sapper->SetWidth(32);
+							sapper->SetHelpTarget(pSelf->m_pOM->GetTarget(sapper));
+							sapper->SetSight(400);
+							sapper->SetVelX(45);
+							sapper->SetVelY(45);
+							sapper->SetHealth(35);
+							sapper->SetMaxHealth(35);
+							sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
+							sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(sapper);
+							sapper->Release();
+							sapper = nullptr;
+						}
+						break;
+					case 1:
+						{
+							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+							enemy->SetEType(RIFLE);
+							enemy->SetType(OBJ_HELP);
+							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetPosX(pMessage->GetPosX());
+							enemy->SetPosY(pMessage->GetPosY());
+							enemy->SetHeight(32);
+							enemy->SetWidth(32);
+							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
+							enemy->SetHealth(50);
+							enemy->SetMaxHealth(50);
+							enemy->SetVelX(30);
+							enemy->SetVelY(30);
+							enemy->SetMinDistance(200);
+							enemy->SetMaxDistance(600);
+							enemy->SetShotTimer(0.1f);
+							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(enemy);
+							enemy->Release();
+							enemy = nullptr;
+						}
+						break;
+					case 2:
+						{
+							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
+							enemy->SetEType(ROCKET);
+							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetType(OBJ_HELP);
+							enemy->SetPosX(pMessage->GetPosX());
+							enemy->SetPosY(pMessage->GetPosY());	
+							enemy->SetHeight(32);
+							enemy->SetWidth(32);
+							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
+							enemy->SetHealth(50);
+							enemy->SetMaxHealth(50);
+							enemy->SetVelX(30);
+							enemy->SetVelY(30);
+							enemy->SetMinDistance(200);
+							enemy->SetMaxDistance(600);
+							enemy->SetShotTimer(3.0f);
+							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
+							pSelf->m_pOM->AddObject(enemy);
+							enemy->Release();
+							enemy = nullptr;
+						}
+						break;
+					}
+				}
+				break;
 			default:
 				{
 				}
@@ -1403,7 +1595,12 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		{
 			pSelf->m_nEnemyCount--;
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
-			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
+	//TODO:: CHANGE SOUNDS ONLY TO BE FOR A SAPPER
+			if(pEnemy->GetEType() == SAPPER)
+			{
+				CSGD_XAudio2::GetInstance()->SFXPlaySound(pSelf->m_nSappSound);
+			}
+	
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
 			int nRandNum = rand()%12;
@@ -1431,76 +1628,80 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_CREATEPICKUP:
 		{
-			CEntity* pEntity = pSelf->m_pOF->CreateObject("CPickup");
-			CPickup* pPickup = dynamic_cast<CPickup*>(pEntity);
-			CCreatePickupMessage* pMessage = dynamic_cast<CCreatePickupMessage*>(pMsg);
-			pPickup->SetWidth(32);
-			pPickup->SetHeight(32);
-			switch(pMessage->GetPickUpType())
+			CCreatePickupMessage* pMessage = dynamic_cast<CCreatePickupMessage*>(pMsg);	
+			
+			if(pMessage->GetEntity()->GetType() != OBJ_HELP)
 			{
-			case 0:
+				CEntity* pEntity = pSelf->m_pOF->CreateObject("CPickup");
+				CPickup* pPickup = dynamic_cast<CPickup*>(pEntity);
+				pPickup->SetWidth(32);
+				pPickup->SetHeight(32);
+				switch(pMessage->GetPickUpType())
 				{
-					pPickup->SetImageID(pSelf->m_nPickupHealthID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
+				case 0:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupHealthID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 1:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupAmmoID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 2:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupArmorID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 3:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupDoubleDID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 4:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupNoReloadID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 5:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupInvuID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 6:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupInfAmmoID);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 7:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
+						pPickup->SetGiven(50);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
 				}
-				break;
-			case 1:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupAmmoID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 2:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupArmorID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 3:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupDoubleDID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 4:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupNoReloadID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 5:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupInvuID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 6:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupInfAmmoID);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
-			case 7:
-				{
-					pPickup->SetImageID(pSelf->m_nPickupMoneyID);
-					pPickup->SetGiven(50);
-					pPickup->SetPickUpType(pMessage->GetPickUpType());
-				}
-				break;
+
+				pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
+				pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
+
+				pPickup->SetAliveTime(150.0f);
+
+				pSelf->m_pOM->AddObject(pPickup);
+
+				pPickup->Release();
+				pPickup = nullptr;
 			}
-
-			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
-			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
-
-			pPickup->SetAliveTime(150.0f);
-
-			pSelf->m_pOM->AddObject(pPickup);
-
-			pPickup->Release();
-			pPickup = nullptr;
 		}
 		break;
 	case MSG_DESTROYPICKUP:
@@ -1556,6 +1757,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_DESTROYMINE:
 		{
+			if(pSelf->m_nMineSound != -1)
+				CSGD_XAudio2::GetInstance()->SFXPlaySound(pSelf->m_nMineSound);
+
 			CMine* pMine = dynamic_cast<CDestroyMineMessage*>(pMsg)->GetMine();
 			pSelf->m_pOM->RemoveObject(pMine);
 		}
@@ -1572,6 +1776,9 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			{
 			case BUL_SHELL:
 				{
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[1]);
+					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
+					
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);
@@ -1582,6 +1789,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pBullet->SetDamage(1);
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
+					if(pMessage->GetFiringEntity()->GetType() == OBJ_HELP)
+						pBullet->SetWhoFired(true);
 					pSelf->m_pOM->AddObject(pBullet);
 					pBullet->Release();
 					pBullet = nullptr;
@@ -1589,6 +1798,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case BUL_ROCKET:
 				{
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);
@@ -1629,19 +1840,22 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
 			pTree->SetPosX(pMessage->GetPosX());
 			pTree->SetPosY(pMessage->GetPosY());
-			pTree->SetWidth(64);
-			pTree->SetHeight(64);
+			
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
 			if(pMessage->GetBarr() == true)
 			{
 				pTree->SetImageID(pSelf->m_nBarricade);
 				pTree->SetDestroyedImage(pSelf->m_nDeadBarr);
+				pTree->SetWidth(32);
+				pTree->SetHeight(32);
 			}
 			else
 			{
 				pTree->SetImageID(pSelf->m_nTree);
 				pTree->SetDestroyedImage(pSelf->m_nDeadTree);
+				pTree->SetWidth(64);
+				pTree->SetHeight(64);
 			}
 			pTree->SetHit(false);
 			pSelf->m_pOM->AddObject(pTree);
@@ -1670,7 +1884,30 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			pSelf->m_pOM->RemoveObject(pFlyText);
 		}
 		break;
-
+	case MSG_CREATEJET:
+		{
+			CCreateJetMessage* pMessage = dynamic_cast<CCreateJetMessage*>(pMsg);
+			CJet* pJet = (CJet*)pSelf->m_pOF->CreateObject("CJet");
+			RECT rSelf;
+			SetRect(&rSelf,(int)(pSelf->m_nMouseX-C->GetPosX()-8),(int)(pSelf->m_nMouseY-C->GetPosY()-8),(int)(pSelf->m_nMouseX-C->GetPosX()+8),(int)(pSelf->m_nMouseY-C->GetPosY()+8));
+			pJet->SetTargetRect(rSelf);
+			tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
+			pJet->SetTargetPos(vPos);
+			pJet->SetHeight(128);
+			pJet->SetWidth(128);
+			pJet->SetVelY(-300);
+			pJet->SetEmitter(pSelf->m_PM->GetEmitter(pSelf->FXAirStrike));
+			pSelf->m_pOM->AddObject(pJet);
+			pJet->Release();
+			pJet = nullptr;
+		}
+		break;
+	case MSG_DESTROYJET:
+		{
+			CJet* pJet = dynamic_cast<CDestrotJetMessage*>(pMsg)->GetJet();
+			pSelf->m_pOM->RemoveObject(pJet);
+		}
+		break;
 	default:
 		{
 
