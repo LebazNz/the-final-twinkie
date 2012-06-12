@@ -215,7 +215,7 @@ void CTutorState::Enter(void)
 		m_anBulletImageIDs[4] = m_pTM->LoadTexture( _T( "resource/graphics/Laser.png"), 	0 );
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
-		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
+		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
@@ -226,6 +226,8 @@ void CTutorState::Enter(void)
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
 
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
+		m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
+		m_anEnemyIDs[15]=m_pTM->LoadTexture(_T("resource/graphics/Rocketeer.png"));
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
 		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
@@ -1264,6 +1266,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					}
 					else
 						Bullet->SetWhoFired(false);
+
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
 

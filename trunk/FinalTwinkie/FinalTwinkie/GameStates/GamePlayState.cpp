@@ -236,13 +236,15 @@ void CGamePlayState::Enter(void)
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
 		m_anEnemyIDs[10]=m_pTM->LoadTexture(_T("resource/graphics/factory_twinkie.png"));
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
-		
+		m_anEnemyIDs[14] =m_pTM->LoadTexture(_T("resource/graphics/RPG_Pirate.png"));
+		m_anEnemyIDs[15] =m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
 		switch(m_nLevel)
 		{
 		case 1:
@@ -1217,10 +1219,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.15f);
-					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
-						Bullet->SetWhoFired(true);
+					if(pMessage->GetFiringEntity()->GetOwner() != nullptr)
+					{
+						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
+							Bullet->SetWhoFired(true);
+					}
 					else
 						Bullet->SetWhoFired(false);
+
 					if(pMessage->GetFiringEntity() != nullptr)
 					{
 
@@ -1322,8 +1328,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 					if(pMessage->GetKind() == 0)
 					{
-						sapper->SetVelX(45);
-						sapper->SetVelY(45);
+						sapper->SetVelX(70);
+						sapper->SetVelY(70);
 						sapper->SetHealth(35);
 						sapper->SetMaxHealth(35);
 						sapper->SetDamage(10);
@@ -1490,6 +1496,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetHealth(50);
 						enemy->SetMaxHealth(50);
 						enemy->SetDamage(1);
+
+						enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					}
 					else if(pMessage->GetKind() == 1)
 					{
