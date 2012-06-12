@@ -33,8 +33,6 @@ CLoadOutState::CLoadOutState(void)
 	m_nMissileMaxCount = 0;
 	m_nArtilleryMaxCount = 0;
 	m_nSecondAmmo = -1;
-	FXNuke = -1;
-	FXSmoke = -1;
 
 	m_bMissile		= false;
 	m_bArtillery	= false;
@@ -91,9 +89,6 @@ void CLoadOutState::Enter( void )
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 
-	FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
-	FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
-
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
@@ -104,10 +99,10 @@ void CLoadOutState::Enter( void )
 	m_bArtillery = m_pPlayer->GetArtilleryAccess();;
 	m_bLaser = m_pPlayer->GetLaserAccess();
 	m_bFlame = m_pPlayer->GetFlamerAccess();
-	m_bNuke			=	true;	//m_pPlayer->GetNukeAccess();
-	m_bSmoke		=	true;//m_pPlayer->GetSmokeBombAccess();
-	m_bEMP			=	true;	//m_pPlayer->GetEMPAccess();
-	m_bAirStirke	=	true;//m_pPlayer->GetAirStrikeAccess();
+	m_bNuke			=	m_pPlayer->GetNukeAccess();
+	m_bSmoke		=	m_pPlayer->GetSmokeBombAccess();
+	m_bEMP			=	m_pPlayer->GetEMPAccess();
+	m_bAirStirke	=	m_pPlayer->GetAirStrikeAccess();
 	m_nSecondAmmo = m_pPlayer->GetSecondType();
 	m_bRF = true;
 
@@ -166,7 +161,6 @@ void CLoadOutState::Enter( void )
 		m_nSpecialCount += 1;	
 
 	m_vSpCount.clear();
-	//m_vSpCount.resize(m_nSpecialCount);
 	m_vSpCount.push_back(SPECIAL);	
 	if(m_bSmoke)
 		m_vSpCount.push_back(SMOKE);
@@ -211,7 +205,7 @@ void CLoadOutState::Exit( void )
 
 	m_nPosition = 0;
 
-	//m_vSpCount.clear();
+	m_vSpCount.clear();
 }
 
 bool CLoadOutState::Input( void )
@@ -246,7 +240,7 @@ bool CLoadOutState::Input( void )
 		case 1:
 			{
 				CSmoke* pSpecial = new CSmoke;
-				pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
+				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 			}
@@ -261,7 +255,7 @@ bool CLoadOutState::Input( void )
 		case 3:
 			{
 				CNuke* pSpecial = new CNuke;
-				pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
+				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 			}
@@ -292,7 +286,7 @@ bool CLoadOutState::Input( void )
 		case 1:
 			{
 				CSmoke* pSpecial = new CSmoke;
-				pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
+				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 			}
@@ -307,7 +301,7 @@ bool CLoadOutState::Input( void )
 		case 3:
 			{
 				CNuke* pSpecial = new CNuke;
-				pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
+				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 			}
@@ -559,6 +553,182 @@ void CLoadOutState::Update( float fDt )
 	{
 		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dShellMax =		D3DCOLOR_XRGB(177,132,0);
+		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dBack =			D3DCOLOR_XRGB(255,255,255);
+		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 267 && m_nMouseX <= 301
+	&& m_nMouseY >= 225 && m_nMouseY <= 253)
+	{		
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 374 && m_nMouseX <= 409
+	&& m_nMouseY >= 228 && m_nMouseY <= 253)
+	{
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
+		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+	}
+	else if(m_nMouseX >= 432 && m_nMouseX <= 467
+	&& m_nMouseY >= 225 && m_nMouseY <= 253)
+	{
+		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dBack =			D3DCOLOR_XRGB(255,255,255);
+		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 537 && m_nMouseX <= 570
+	&& m_nMouseY >= 228 && m_nMouseY <= 253)
+	{
+		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax =		D3DCOLOR_XRGB(177,132,0);
+		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dBack =			D3DCOLOR_XRGB(255,255,255);
+		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 143 && m_nMouseX <= 253
+	&& m_nMouseY >= 349 && m_nMouseY <= 378)
+	{		
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 303 && m_nMouseX <= 415
+	&& m_nMouseY >= 349 && m_nMouseY <= 378)
+	{
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
+		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+	}
+	else if(m_nMouseX >= 479 && m_nMouseX <= 592
+	&& m_nMouseY >= 349 && m_nMouseY <= 378)
+	{
+		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dBack =			D3DCOLOR_XRGB(255,255,255);
+		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 84 && m_nMouseX <= 118
+	&& m_nMouseY >= 446 && m_nMouseY <= 474)
+	{
+		m_dShellMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax =		D3DCOLOR_XRGB(177,132,0);
+		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax =	D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin =		D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
+		m_dBack =			D3DCOLOR_XRGB(255,255,255);
+		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 253 && m_nMouseX <= 287
+	&& m_nMouseY >= 446 && m_nMouseY <= 474)
+	{		
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(177,132,0);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+	}
+	else if(m_nMouseX >= 384 && m_nMouseX <= 419
+	&& m_nMouseY >= 446 && m_nMouseY <= 474)
+	{
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
+		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+	}
+	else if(m_nMouseX >= 552 && m_nMouseX <= 587
+	&& m_nMouseY >= 446 && m_nMouseY <= 474)
+	{
+		m_dShellMin =		D3DCOLOR_XRGB(177,132,0);
+		m_dShellMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMin =		D3DCOLOR_XRGB(255,255,255);
 		m_dRocketMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dArtilleryMin =	D3DCOLOR_XRGB(255,255,255);

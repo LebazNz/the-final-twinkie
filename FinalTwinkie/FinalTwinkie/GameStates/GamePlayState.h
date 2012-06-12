@@ -96,6 +96,7 @@ private:
 	int FXBuildingFlame;
 	int FXTreads;
 	int m_nMine;
+public:
 	int FXNuke;
 	int FXSmoke;
 private:

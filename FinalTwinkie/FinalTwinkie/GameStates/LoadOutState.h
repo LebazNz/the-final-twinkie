@@ -67,9 +67,6 @@ private:
 	bool m_bUseLaser;
 	bool m_bUseFlame;
 
-	int FXNuke;
-	int FXSmoke;
-
 	DWORD m_dShellMin;
 	DWORD m_dShellMax;
 	DWORD m_dRocketMin;

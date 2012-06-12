@@ -1441,7 +1441,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pSelf->m_pTurret->SetWidth(64);
 					pSelf->m_pTurret->SetHeight(128);
 
-					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
+					//CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					
 					turret->SetOwner(nullptr);
 					turret->SetBullet(BUL_LASER);	

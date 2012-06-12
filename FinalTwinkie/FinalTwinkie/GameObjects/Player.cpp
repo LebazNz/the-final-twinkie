@@ -242,8 +242,8 @@ void CPlayer::Update(float fDt)
 	{
 		if(m_pSelectedSpec!=nullptr)
 		{
-			if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
-				CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
+			//if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
+				//CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
 				
 			m_pSelectedSpec->ActivateSpecial();
 			m_anSpecialammo[m_pSelectedSpecAmmo]--;
