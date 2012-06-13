@@ -38,5 +38,6 @@ private:
 
 	bool m_bSlowDown;
 	float m_fSlowTimer;
+	int m_nHPBARID;
 };
 

@@ -74,7 +74,7 @@ private:
 
 	vector<CEmitter*>		m_pEmitters;
 	CPlayer*				m_pPlayer;
-	CEntity*				m_pEnemy;
+	CPlayer*				m_pEnemy;
 	CEntity*				m_pTurret;
 
 
