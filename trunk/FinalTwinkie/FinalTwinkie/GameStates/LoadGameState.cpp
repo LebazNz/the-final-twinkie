@@ -76,6 +76,8 @@ void CLoadGameState::Enter(void)
 	m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 	m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 
+	FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
+	FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
 
 	for(int i = 0; i < 3; ++i)
 		vSavedData[i] = data;
@@ -272,7 +274,7 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetHealthLevel(0);
 				m_pPlayer->SetHealthMod(1);
 				m_pPlayer->SetHeatLevel(0);
-				m_pPlayer->SetHeatModifier(0);
+				m_pPlayer->SetHeatModifier(1);
 				m_pPlayer->SetIamBoss(0);
 				m_pPlayer->SetLaserAccess(0);
 				m_pPlayer->SetLevel(1);
@@ -304,7 +306,7 @@ bool CLoadGameState::Input(void)
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
 				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
-				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmo);
+				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
 				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
 				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);
@@ -349,7 +351,7 @@ bool CLoadGameState::Input(void)
 				case 1:
 					{
 						CSmoke* pSpecial = new CSmoke;
-						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
+						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 					}
@@ -364,7 +366,7 @@ bool CLoadGameState::Input(void)
 				case 3:
 					{
 						CNuke* pSpecial = new CNuke;
-						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
+						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 					}
@@ -396,7 +398,7 @@ bool CLoadGameState::Input(void)
 				case 1:
 					{
 						CSmoke* pSpecial = new CSmoke;
-						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
+						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 					}
@@ -411,7 +413,7 @@ bool CLoadGameState::Input(void)
 				case 3:
 					{
 						CNuke* pSpecial = new CNuke;
-						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
+						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 					}
@@ -466,7 +468,7 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetHealthLevel(0);
 				m_pPlayer->SetHealthMod(1);
 				m_pPlayer->SetHeatLevel(0);
-				m_pPlayer->SetHeatModifier(0);
+				m_pPlayer->SetHeatModifier(1);
 				m_pPlayer->SetIamBoss(0);
 				m_pPlayer->SetLaserAccess(0);
 				m_pPlayer->SetLevel(1);
@@ -498,7 +500,7 @@ bool CLoadGameState::Input(void)
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
 				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
-				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmo);
+				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
 				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
 				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);
@@ -660,7 +662,7 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetHealthLevel(0);
 				m_pPlayer->SetHealthMod(1);
 				m_pPlayer->SetHeatLevel(0);
-				m_pPlayer->SetHeatModifier(0);
+				m_pPlayer->SetHeatModifier(1);
 				m_pPlayer->SetIamBoss(0);
 				m_pPlayer->SetLaserAccess(0);
 				m_pPlayer->SetLevel(1);
@@ -692,7 +694,7 @@ bool CLoadGameState::Input(void)
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
 				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
-				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmo);
+				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
 				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
 				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);

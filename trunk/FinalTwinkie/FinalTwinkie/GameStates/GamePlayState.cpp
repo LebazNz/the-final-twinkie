@@ -104,6 +104,7 @@ CGamePlayState::CGamePlayState(void)
 	m_AM	= nullptr;
 	m_pES	= nullptr;
 	m_pAudio = nullptr;
+	m_pPlayer = nullptr;
 
 
 	for(int i = 0; i < 16; ++i)
@@ -183,6 +184,7 @@ void CGamePlayState::Enter(void)
 		m_pGUI = CGUI::GetInstance();
 		m_pFont = CBitmapFont::GetInstance();
 		m_pAudio = CSGD_XAudio2::GetInstance();
+		m_pPlayer = CPlayer::GetInstance();
 		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
@@ -1213,7 +1215,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					Bullet->SetScale(0.15f);
+					Bullet->SetScale(0.25f);
 					if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
 						Bullet->SetWhoFired(true);
 					else
@@ -1260,7 +1262,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
-					Bullet->SetScale(0.15f);
+					Bullet->SetScale(0.55f);
 					if(pMessage->GetFiringEntity()->GetOwner() != nullptr)
 					{
 						if(pMessage->GetFiringEntity()->GetOwner()->GetType() == OBJ_PLAYER)
