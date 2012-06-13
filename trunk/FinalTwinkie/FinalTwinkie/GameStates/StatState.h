@@ -18,6 +18,7 @@ public:
 	void Clicked();
 	void RenderStats();
 	void RenderAchievements();
+	void LoadText(void);
 private:
 	StatState(void);
 	StatState(const StatState&);
@@ -56,4 +57,22 @@ private:
 	DWORD m_dwNukem;	
 	DWORD m_dwIamBoss;	
 	DWORD m_dwAllUpgrades;
+
+	string m_sStat;
+	string m_sScore;
+	string m_sShots;
+	string m_sNukes; 
+	string m_sDamage;
+	string m_sMonies;
+	string m_sEnemies;
+	string m_sSappers;
+	string m_sAchieve;
+	string m_sNazi;
+	string m_sAlien;
+	string m_sRobot;
+	string m_sSparta;
+	string m_sWTF;
+	string m_sNukem;
+	string m_sPain;
+	string m_sOwnAll;
 };

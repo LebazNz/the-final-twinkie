@@ -89,6 +89,10 @@
 			<Resume>Resume</Resume>
 			<Options>Options</Options>
 			<Exit>Exit</Exit>
+			<Pirate>Kill the Pirate Boss</Pirate>
+			<Robots>Kill the Robot Boss</Robots>
+			<Aliens>Destroy the Aliens Factory</Aliens>
+			<Nazi>Kill the Nazi Boss</Nazi>
 		</GameState>
 		<TutorState>
 			<Pad>
@@ -112,7 +116,18 @@
 			<k>A pair of turrets appear\nIt is is completely stationary\nbut get to close and\n you will be too.\n Because you'll die.</k>
 			<l>A heavy enemy tank appears\nThese guys are just\nas B.A. as you\n maybe a little less.</l>
 			<Obj>Follow the Tutorial</Obj>
+			<Paused>Paused</Paused>
+			<Resume>Resume</Resume>
+			<Options>Options</Options>
+			<Exit>Exit</Exit>
 		</TutorState>
+		<SurvivalState>
+			<Wave>Wave</Wave>
+			<Paused>Paused</Paused>
+			<Resume>Resume</Resume>
+			<Options>Options</Options>
+			<Exit>Exit</Exit>
+		</SurvivalState>
 		<FlyText>
 			<Health>Health</Health>
 			<Ammo>Ammo</Ammo>
@@ -123,6 +138,27 @@
 			<InfiniteAmmo>Infinite Ammo</InfiniteAmmo>
 			<Money>Money</Money>
 		</FlyText>
+		<LoadOutState>
+			<Load>Load Out</Load>
+			<Cannon>Main Cannon Ammo</Cannon>
+			<Shell>Shell</Shell>
+			<Rocket>Rocket</Rocket>
+			<Artillery>Artillery</Artillery>
+			<Second>Secondary Weapon Type</Second>
+			<Machine>Machine Gun</Machine>
+			<Laser>Laser Gun</Laser>
+			<Flame>Flamethrower</Flame>
+			<SpecOne>Special Weapon One</SpecOne>
+			<SpecTwo>Special Weapon Two</SpecTwo>
+			<None>None</None>
+			<Smoke>Smoke</Smoke>
+			<EMP>EMP</EMP>
+			<Nuke>Nuke</Nuke>
+			<Reinforce>Reinforcements</Reinforce>
+			<AirStrike>Air Strike</AirStrike>
+			<Back>Back</Back>
+			<Continue>Continue</Continue>
+		</LoadOutState>
 	</English>
 	<Pirate>
 		<MenuState>
@@ -214,6 +250,10 @@
 			<Resume>Fight Again</Resume>
 			<Options>Custimizations</Options>
 			<Exit>Retreat</Exit>
+			<Pirate>Sink Yer Mate</Pirate>
+			<Robots>Scrap the Mechanical Monster</Robots>
+			<Aliens>Scuttle the Creatures Building</Aliens>
+			<Nazi>Send the Leader to the Locker</Nazi>
 		</GameState>
 		<FlyText>
 			<Health>Constitution</Health>
@@ -247,7 +287,39 @@
 			<k>A pair o' turrets appear\n'Tis be completely stationary\nbut get t' close an'\n ye be too.\n On accoun' o' ye`ll sink t'Davy Jones' locker.</k>
 			<l>A heavy enemy tank appears\nThese guys be jus'\nas B.A. as ye\n maybe a wee less.</l>
 			<Obj>Learn the Rigging</Obj>
+			<Paused>Time Freeze</Paused>
+			<Resume>Fight Again</Resume>
+			<Options>Custimizations</Options>
+			<Exit>Retreat</Exit>
 		</TutorState>
+		<SurvivalState>
+			<Wave>Wave</Wave>
+			<Paused>Time Freeze</Paused>
+			<Resume>Fight Again</Resume>
+			<Options>Custimizations</Options>
+			<Exit>Retreat</Exit>
+		</SurvivalState>
+		<LoadOutState>
+			<Load>Ships Stores</Load>
+			<Cannon>Cannon Type</Cannon>
+			<Shell>Normal Cannon</Shell>
+			<Rocket>Tracking Cannon</Rocket>
+			<Artillery>Long Nines</Artillery>
+			<Second>Backup Weapon</Second>
+			<Machine>Repeating Cannon</Machine>
+			<Laser>Light Weapon</Laser>
+			<Flame>Flaming Cannon</Flame>
+			<SpecOne>First Magic Spell</SpecOne>
+			<SpecTwo>Second Magic Spell</SpecTwo>
+			<None>Nothin</None>
+			<Smoke>Clouds</Smoke>
+			<EMP>Magic Force</EMP>
+			<Nuke>TNT</Nuke>
+			<Reinforce>Yer Mates</Reinforce>
+			<AirStrike>Flying Beasts</AirStrike>
+			<Back>Retreat</Back>
+			<Continue>Sail Forward</Continue>
+		</LoadOutState>
 	</Pirate>
 	<German>
 		<MenuState>
@@ -339,6 +411,10 @@
 			<Resume>Wieder Aufnehmen</Resume>
 			<Options>Optionen</Options>
 			<Exit>Ausgang</Exit>
+			<Pirate>Tote den Piraten Chef</Pirate>
+			<Robots>Tote den Roboter Chef</Robots>
+			<Aliens>Zerstore die Fremd Fabrik</Aliens>
+			<Nazi>Tote den Nazi Chef</Nazi>
 		</GameState>
 		<FlyText>
 			<Health>Gesundheit</Health>
@@ -372,6 +448,38 @@
 			<k>Ein Paar Turme erscheinen \n Es ist vollig stationaren \n, sondern bekommen geschlossen und \n werden Sie auch. \n Weil du sterben wirst.</k>
 			<l>Ein schweres feindliches Heer dann erscheint \n Diese Jungs sind einfach \n als BA wie Sie \n vielleicht etwas weniger.</l>
 			<Obj>Folgen Sie dem Tutorial</Obj>
+			<Paused>Pushim</Paused>
+			<Resume>Wieder Aufnehmen</Resume>
+			<Options>Optionen</Options>
+			<Exit>Ausgang</Exit>
 		</TutorState>
+		<SurvivalState>
+			<Wave>Welle</Wave>
+			<Paused>Pushim</Paused>
+			<Resume>Wieder Aufnehmen</Resume>
+			<Options>Optionen</Options>
+			<Exit>Ausgang</Exit>
+		</SurvivalState>
+		<LoadOutState>
+			<Load>Legen Aus</Load>
+			<Cannon>Haupt Kanone Munition</Cannon>
+			<Shell>Schale</Shell>
+			<Rocket>Rakete</Rocket>
+			<Artillery>Artillerie</Artillery>
+			<Second>Sekundare Waffe Typ</Second>
+			<Machine>Maschinengewehr</Machine>
+			<Laser>Freizeit</Laser>
+			<Flame>Flammenwerfe</Flame>
+			<SpecOne>Spezialwaffe ein</SpecOne>
+			<SpecTwo>Spezialwaffe zwei</SpecTwo>
+			<None>Keiner</None>
+			<Smoke>Rauchen</Smoke>
+			<EMP>Emp</EMP>
+			<Nuke>Atombombe</Nuke>
+			<Reinforce>Verstarkung</Reinforce>
+			<AirStrike>Luft Schlagen</AirStrike>
+			<Back>Zuruck</Back>
+			<Continue>Fortsetzen</Continue>
+		</LoadOutState>
 	</German>
 </Root>

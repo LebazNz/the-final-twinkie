@@ -274,15 +274,15 @@ private:
 	
 	// Achievable
 	// Defeat the Nazi Boss
-	bool m_bNaziBoss;	// Dat Reich
+	bool m_bNaziBoss;	//-------// Dat Reich
 	// Defeat the Alien Boss
-	bool m_bAlienBoss;	// All your base are belong to me
+	bool m_bAlienBoss;	//-------// All your base are belong to me
 	// Defeat Anthony's mom
 	bool m_bRobotBoss;	// Greased
 	// Kill 300 enemies;
-	bool m_bSparta;	// This is not Sparta!
+	bool m_bSparta;	//--------// This is not Sparta!
 	// Absorb 50 sappers
-	bool m_bSapperAbsorb;	// WTF is damage?
+	bool m_bSapperAbsorb;	//--------// WTF is damage?
 	// Kill 10 enemies with one Nuke
 	bool m_bNukem;	// Nuke Dukem;
 	// Purchase a level 5 upgrade

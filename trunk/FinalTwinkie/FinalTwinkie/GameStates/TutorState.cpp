@@ -270,6 +270,8 @@ void CTutorState::Enter(void)
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
 		m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
+		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 		
 		if(m_nGameMusic != -1)
 		{
@@ -669,6 +671,7 @@ bool CTutorState::Input(void)
 			}
 			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 			{
+				m_pAudio->SFXPlaySound(m_nClick, false);
 				if(m_nPosition == 0)
 				{
 					m_bPaused = !m_bPaused;
@@ -763,20 +766,29 @@ void CTutorState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 295 && m_nMouseY <= 340)
+	if(m_bPaused)
 	{
-		m_nPosition = 0;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 340 && m_nMouseY <= 390)
-	{
-		m_nPosition = 1;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 390 && m_nMouseY <= 435)
-	{
-		m_nPosition = 2;
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 295 && m_nMouseY <= 340)
+		{
+			if(m_nPosition!=0)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 0;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 340 && m_nMouseY <= 390)
+		{
+			if(m_nPosition!=1)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 1;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 390 && m_nMouseY <= 435)
+		{
+			if(m_nPosition!=2)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 2;
+		}
 	}
 
 	if(m_pPlayer->GetHealth() <= 0)
@@ -984,10 +996,10 @@ void CTutorState::Render(void)
 		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2+90,0.75f,0.75f,nullptr,0,0,0,fScale3);
 
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
-		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
-		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sPaused.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sResume.c_str(),(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
@@ -1994,6 +2006,18 @@ void CTutorState::LoadWords(void)
 				pButton=pState->FirstChild("Obj");
 				pText = pButton->FirstChild()->ToText();
 				m_sObj=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		case 1:
@@ -2060,6 +2084,18 @@ void CTutorState::LoadWords(void)
 				pButton=pState->FirstChild("Obj");
 				pText = pButton->FirstChild()->ToText();
 				m_sObj=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		case 2:
@@ -2126,6 +2162,18 @@ void CTutorState::LoadWords(void)
 				pButton=pState->FirstChild("Obj");
 				pText = pButton->FirstChild()->ToText();
 				m_sObj=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		case 3:
@@ -2192,6 +2240,18 @@ void CTutorState::LoadWords(void)
 				pButton=pState->FirstChild("Obj");
 				pText = pButton->FirstChild()->ToText();
 				m_sObj=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
 			}
 			break;
 		}

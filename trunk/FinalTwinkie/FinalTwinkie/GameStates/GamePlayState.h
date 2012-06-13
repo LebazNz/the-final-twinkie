@@ -102,6 +102,8 @@ private:
 	int FXBuildingFlame;
 	int FXTreads;
 	int m_nMine;
+	int	m_nButton;
+	int	m_nClick;
 public:
 	int FXNuke;
 	int FXSmoke;
@@ -134,6 +136,7 @@ private:
 
 	int m_nLevel;
 
+	string m_sObj;
 	string m_sPaused;
 	string m_sResume;
 	string m_sOptions;

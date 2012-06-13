@@ -108,12 +108,18 @@ private:
 	int m_nDeadBarr;
 	int FXEnemyOnFire;
 	int FXAirStrike;
+	int	m_nButton;
+	int	m_nClick;
 
 
 
 	int m_nBox;
 	string m_asInfo[12];
 	string m_sObj;
+	string m_sPaused;
+	string m_sResume;
+	string m_sOptions;
+	string m_sExit;
 	int m_nCursor;
 	bool m_bActivePad;
 	bool m_bWordBox;
