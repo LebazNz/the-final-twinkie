@@ -1022,37 +1022,37 @@ void CLoadOutState::Render( void )
 	case 0:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("None",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sNone.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 1:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("Smoke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sSmoke.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 2:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("EMP",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sEMP.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 3:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("Nuke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sNuke.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("Reinforcements",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print("Air Strike",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sAirStrike.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	default:
@@ -1067,37 +1067,37 @@ void CLoadOutState::Render( void )
 	case 0:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print("None",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sNone.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 1:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print("Smoke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sSmoke.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 2:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print("EMP",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sEMP.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 3:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print("Nuke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sNuke.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print("Reinforcements",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-					font->Print("Air Strike",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+					font->Print(m_sAirStrike.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	default:

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <graphic_layer>
   <file_name>wastelandtiles.png</file_name>
-  <map_info playerx="336" playery="2640" mapwidth="50" mapheight="100" tilewidth="32" tileheight="32" setwidth="19" setheight="19" />
+  <map_info playerx="432" playery="2672" mapwidth="50" mapheight="100" tilewidth="32" tileheight="32" setwidth="19" setheight="19" />
   <tile_row>
     <tile_info index="248" posy="0" posx="0" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="0" posx="32" collision="0" spawn="0" trigger="0" />
@@ -1052,10 +1052,10 @@
     <tile_info index="248" posy="640" posx="192" collision="0" spawn="0" trigger="0" />
     <tile_info index="21" posy="640" posx="224" collision="1" spawn="10" trigger="0" />
     <tile_info index="248" posy="640" posx="256" collision="0" spawn="0" trigger="0" />
-    <tile_info index="248" posy="640" posx="288" collision="0" spawn="5" trigger="0" />
+    <tile_info index="248" posy="640" posx="288" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="640" posx="320" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="640" posx="352" collision="0" spawn="0" trigger="0" />
-    <tile_info index="248" posy="640" posx="384" collision="0" spawn="5" trigger="0" />
+    <tile_info index="248" posy="640" posx="384" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="640" posx="416" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="640" posx="448" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="640" posx="480" collision="0" spawn="0" trigger="0" />
@@ -1157,7 +1157,7 @@
     <tile_info index="21" posy="704" posx="224" collision="1" spawn="10" trigger="0" />
     <tile_info index="248" posy="704" posx="256" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="704" posx="288" collision="0" spawn="0" trigger="0" />
-    <tile_info index="248" posy="704" posx="320" collision="0" spawn="5" trigger="0" />
+    <tile_info index="248" posy="704" posx="320" collision="0" spawn="0" trigger="0" />
     <tile_info index="366" posy="704" posx="352" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="704" posx="384" collision="0" spawn="0" trigger="0" />
     <tile_info index="248" posy="704" posx="416" collision="0" spawn="0" trigger="0" />
@@ -3983,9 +3983,9 @@
     <tile_info index="63" posy="2432" posx="800" collision="1" spawn="10" trigger="0" />
     <tile_info index="63" posy="2432" posx="832" collision="1" spawn="10" trigger="0" />
     <tile_info index="64" posy="2432" posx="864" collision="1" spawn="10" trigger="0" />
-    <tile_info index="97" posy="2432" posx="896" collision="0" spawn="0" trigger="0" />
-    <tile_info index="99" posy="2432" posx="928" collision="0" spawn="0" trigger="0" />
-    <tile_info index="101" posy="2432" posx="960" collision="0" spawn="0" trigger="0" />
+    <tile_info index="97" posy="2432" posx="896" collision="1" spawn="12" trigger="1" />
+    <tile_info index="99" posy="2432" posx="928" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="2432" posx="960" collision="1" spawn="12" trigger="1" />
     <tile_info index="63" posy="2432" posx="992" collision="1" spawn="10" trigger="0" />
     <tile_info index="63" posy="2432" posx="1024" collision="1" spawn="10" trigger="0" />
     <tile_info index="61" posy="2432" posx="1056" collision="1" spawn="10" trigger="0" />
@@ -4277,7 +4277,7 @@
     <tile_info index="21" posy="2624" posx="224" collision="1" spawn="10" trigger="0" />
     <tile_info index="185" posy="2624" posx="256" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2624" posx="288" collision="0" spawn="0" trigger="0" />
-    <tile_info index="185" posy="2624" posx="320" collision="0" spawn="15" trigger="0" />
+    <tile_info index="185" posy="2624" posx="320" collision="0" spawn="0" trigger="0" />
     <tile_info index="343" posy="2624" posx="352" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2624" posx="384" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2624" posx="416" collision="0" spawn="0" trigger="0" />
@@ -4332,7 +4332,7 @@
     <tile_info index="185" posy="2656" posx="320" collision="0" spawn="0" trigger="0" />
     <tile_info index="343" posy="2656" posx="352" collision="0" spawn="0" trigger="0" />
     <tile_info index="343" posy="2656" posx="384" collision="0" spawn="0" trigger="0" />
-    <tile_info index="185" posy="2656" posx="416" collision="0" spawn="0" trigger="0" />
+    <tile_info index="185" posy="2656" posx="416" collision="0" spawn="15" trigger="0" />
     <tile_info index="343" posy="2656" posx="448" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2656" posx="480" collision="0" spawn="0" trigger="0" />
     <tile_info index="343" posy="2656" posx="512" collision="0" spawn="0" trigger="0" />
@@ -4340,7 +4340,7 @@
     <tile_info index="343" posy="2656" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2656" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2656" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="101" posy="2656" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="2656" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="100" posy="2656" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="336" posy="2656" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2656" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4392,7 +4392,7 @@
     <tile_info index="343" posy="2688" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2688" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2688" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="185" posy="2688" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="185" posy="2688" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="185" posy="2688" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2688" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="337" posy="2688" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4444,7 +4444,7 @@
     <tile_info index="343" posy="2720" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2720" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="337" posy="2720" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="337" posy="2720" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="337" posy="2720" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="185" posy="2720" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2720" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2720" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4496,7 +4496,7 @@
     <tile_info index="342" posy="2752" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="336" posy="2752" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="337" posy="2752" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="337" posy="2752" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="337" posy="2752" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="185" posy="2752" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2752" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2752" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4548,7 +4548,7 @@
     <tile_info index="343" posy="2784" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2784" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2784" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="337" posy="2784" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="337" posy="2784" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="337" posy="2784" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2784" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="337" posy="2784" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4600,7 +4600,7 @@
     <tile_info index="342" posy="2816" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2816" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2816" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="337" posy="2816" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="337" posy="2816" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="337" posy="2816" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2816" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2816" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4652,7 +4652,7 @@
     <tile_info index="336" posy="2848" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2848" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2848" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="342" posy="2848" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="342" posy="2848" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="342" posy="2848" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2848" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2848" posx="768" collision="0" spawn="0" trigger="0" />
@@ -4704,7 +4704,7 @@
     <tile_info index="185" posy="2880" posx="576" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2880" posx="608" collision="0" spawn="0" trigger="0" />
     <tile_info index="342" posy="2880" posx="640" collision="0" spawn="0" trigger="0" />
-    <tile_info index="342" posy="2880" posx="672" collision="0" spawn="0" trigger="0" />
+    <tile_info index="342" posy="2880" posx="672" collision="0" spawn="11" trigger="2" />
     <tile_info index="185" posy="2880" posx="704" collision="0" spawn="0" trigger="0" />
     <tile_info index="177" posy="2880" posx="736" collision="0" spawn="0" trigger="0" />
     <tile_info index="185" posy="2880" posx="768" collision="0" spawn="0" trigger="0" />
@@ -5213,9 +5213,6 @@
     <enemy_spawn posx="576" posy="576" type="5" />
     <enemy_spawn posx="864" posy="576" type="0" />
     <enemy_spawn posx="800" posy="608" type="0" />
-    <enemy_spawn posx="288" posy="640" type="0" />
-    <enemy_spawn posx="384" posy="640" type="0" />
-    <enemy_spawn posx="320" posy="704" type="0" />
     <enemy_spawn posx="736" posy="736" type="5" />
     <enemy_spawn posx="1088" posy="736" type="6" />
     <enemy_spawn posx="576" posy="768" type="5" />

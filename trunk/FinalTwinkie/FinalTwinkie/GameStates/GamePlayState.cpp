@@ -244,8 +244,11 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
 		m_anEnemyIDs[10]=m_pTM->LoadTexture(_T("resource/graphics/factory_twinkie.png"));
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
-		//m_anEnemyIDs[14] =m_pTM->LoadTexture(_T());
-		//m_anEnemyIDs[15] =m_pTM->LoadTexture(_T());
+		m_nGetBox=m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
+		m_bAGet=false;
+		m_fGetTimer=0;
+		m_pPlayer=CPlayer::GetInstance();
+
 		m_nLevel = CPlayer::GetInstance()->GetLevel();
 		switch(m_nLevel)
 		{
@@ -384,38 +387,16 @@ void CGamePlayState::Enter(void)
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(player->GetMaxWeaponAmmoShell(),player->GetMaxWeaponAmmoArtillery(),player->GetMaxWeaponAmmoMissile());
-		//player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
-		//player->SetMoney(m_dGameData.nMoney);
-		//tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
-		//CNuke* pNuke = new CNuke();
-		//pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
-		//CSmoke* pSmoke=new CSmoke();
-		//pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
-		//CReinforcements* pRF = new CReinforcements;
-		//CSpecial* pSP = new CSpecial;
-		//CAirStrike* pAS = new CAirStrike;
-		//CEMP* pEMP = new CEMP;
-		//player->SetSpecial1(pRF);
-		//player->SetSpecial2(pSP);
-		//player->SetSpecial1Ammo(player->GetSpecial1()->GetAmmoCount());
-		//player->SetSpecial2Ammo(player->GetSpecial2()->GetAmmoCount());
-		//player->SetOldPos(v2Pos);
-		//player->SetSecondType(MACHINEGUN);
-		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-		//player->SetRocketAccess(true);
-		//player->SetArtilleryAccess(true);
 		player->SetGunSel(1);
-		//player->SetMoney(m_dGameData.nMoney);
-		//player->SetLevel(m_nLevel);
 
 		//buffs
 		//player->SetDoubleDamage(true);
 		//player->SetDamageTimer(15);
 		//player->SetNoReloadTimer(150);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(15);
+		player->SetInvul(true);
+		player->SetInvulTimer(10000000);
 		//player->SetInfAmmo(true);
 		//player->SetInfoAmmoTimer(150);
 
@@ -719,7 +700,7 @@ void CGamePlayState::Exit(void)
 			m_pGUI=nullptr;
 		}
 	}
-	
+	CPlayer::GetInstance()->SetLevel(m_nLevel);
 }
 
 bool CGamePlayState::Input(void)
@@ -890,6 +871,18 @@ void CGamePlayState::Update(float fDt)
 
 	if(m_bGameOver == true || m_bWinner == true)
 			gameEndTimer += fDt;
+
+	if(m_bAGet)
+	{
+		if(m_fGetTimer<=5.0f)
+		{
+			m_fGetTimer+=fDt;
+		}
+		else
+		{
+			m_bAGet=false;
+		}
+	}
 }
 
 void CGamePlayState::Render(void)
@@ -937,8 +930,14 @@ void CGamePlayState::Render(void)
 		
 	}
 
-	m_pD3D->GetSprite()->Flush();	
-	
+	m_pD3D->GetSprite()->Flush();
+	if(m_bAGet)
+	{
+		m_pTM->Draw(m_nGetBox, 0,0,1.25f,0.5f);
+		m_pD3D->GetSprite()->Flush();
+		m_pFont->Print(m_sGet.c_str(), 30,15,1.0f, UINT_MAX);
+		m_pD3D->GetSprite()->Flush();
+	}
 	if(m_bPaused)
 	{
 		CBitmapFont* font = CBitmapFont::GetInstance();
@@ -991,14 +990,23 @@ void CGamePlayState::Render(void)
 	else if(m_bWinner == true)
 	{
 		if(gameEndTimer <= 5.0f)
+		{
 			m_pTM->Draw(WinnerID,0,0,0.8f,0.7f);
+			if(m_bAGet)
+			{
+				m_pTM->Draw(m_nGetBox, 0,0,1.25f,0.5f);
+				m_pD3D->GetSprite()->Flush();
+				m_pFont->Print(m_sGet.c_str(), 30,15,1.0f, UINT_MAX);
+				m_pD3D->GetSprite()->Flush();
+			}
+		}
 		else
 		{
 			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
-			m_nLevel++;
 		}
-
 	}
+	
+	
 }
 
 void CGamePlayState::MessageProc(CMessage* pMsg)
@@ -1736,6 +1744,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				if(CPlayer::GetInstance()->GetUnitsKilled()>=300)
 				{
 					CPlayer::GetInstance()->SetSparta(true);
+					pSelf->m_bAGet=true;
+					pSelf->m_fGetTimer=0;
 				}
 				if(dynamic_cast<CSapper*>(pEnemy))
 				{
@@ -1743,6 +1753,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					if(CPlayer::GetInstance()->GetSappersExploded()>=50)
 					{
 						CPlayer::GetInstance()->SetSapperAbsorb(true);
+						pSelf->m_bAGet=true;
+						pSelf->m_fGetTimer=0;
 					}
 				}
 			}
@@ -1758,6 +1770,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				if(CPlayer::GetInstance()->GetUnitsKilled()>=300)
 				{
 					CPlayer::GetInstance()->SetSparta(true);
+					pSelf->m_bAGet=true;
+					pSelf->m_fGetTimer=0;
 				}
 			}
 			pSelf->m_pOM->RemoveObject(pTurret);
@@ -2110,6 +2124,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYNAZIBOSS:
 		{
 			CPlayer::GetInstance()->SetNaziBoss(true);
+			pSelf->m_bAGet=true;
+			pSelf->m_fGetTimer=0;
+			pSelf->m_nLevel++;
 			CDestroyNaziBoss* Msg=dynamic_cast<CDestroyNaziBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
@@ -2257,6 +2274,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYFACTORY:
 		{
 			CPlayer::GetInstance()->SetAlienBoss(true);
+			pSelf->m_bAGet=true;
+			pSelf->m_fGetTimer=0;
+			pSelf->m_nLevel++;
 			CDestroyFactoryMessage* Msg=dynamic_cast<CDestroyFactoryMessage*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetFactory());
 		}
@@ -2266,6 +2286,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CDestroyPirateBoss* Msg=dynamic_cast<CDestroyPirateBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
+			pSelf->m_nLevel++;
+			CPlayer::GetInstance()->SetAlienBoss(true);
+			pSelf->m_bAGet=true;
+			pSelf->m_fGetTimer=0;
 		}
 		break;
 	case MSG_DESTROYROBOTBOSS:
@@ -2273,6 +2297,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CDestroyRobotBoss* Msg=dynamic_cast<CDestroyRobotBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
+			pSelf->m_nLevel++;
+			CPlayer::GetInstance()->SetRobotBoss(true);
+			pSelf->m_bAGet=true;
+			pSelf->m_fGetTimer=0;
 		}
 		break;
 	case MSG_CREATEEMP:
@@ -2403,6 +2431,9 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 				switch(m_nLevel)
 				{
 				case 1:
@@ -2452,6 +2483,9 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 				switch(m_nLevel)
 				{
 				case 1:
@@ -2501,6 +2535,9 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 				switch(m_nLevel)
 				{
 				case 1:
