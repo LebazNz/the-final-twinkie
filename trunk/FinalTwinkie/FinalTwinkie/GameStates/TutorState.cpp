@@ -1419,23 +1419,22 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 
-					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
-					pSelf->m_pTurret->SetImageID(pSelf->m_anEnemyIDs[7]);					
-					pSelf->m_pTurret->SetPosX(pSelf->m_pEnemy->GetPosX());
-					pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
-					pSelf->m_pTurret->SetWidth(64);
-					pSelf->m_pTurret->SetHeight(128);
+					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
+					turret->SetImageID(pSelf->m_anEnemyIDs[7]);					
+					turret->SetPosX(pSelf->m_pEnemy->GetPosX());
+					turret->SetPosY(pSelf->m_pEnemy->GetPosY());
+					turret->SetWidth(64);
+					turret->SetHeight(128);
 
-					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					tank->SetTurret(turret);
 					turret->SetOwner(tank);
-					turret->SetBullet(BUL_LASER);	
+					turret->SetBullet(BUL_SHELL);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
-				  //turret->SetFireRate(2.5f);
+					turret->SetFireRate(2.5f);
 					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
@@ -1458,13 +1457,13 @@ void CTutorState::MessageProc(CMessage* pMsg)
 
 					
 					turret->SetOwner(nullptr);
-					turret->SetBullet(BUL_LASER);	
+					turret->SetBullet(BUL_SHELL);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
-				  //turret->SetFireRate(2.5f);
+				    turret->SetFireRate(2.5f);
 					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
@@ -1822,8 +1821,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pBullet->SetHeight(32);
 					pBullet->SetScale(0.35f);
 					pBullet->SetWhoFired(false);
-					pBullet->SetVelX(300);
-					pBullet->SetVelY(300);
+					pBullet->SetVelX(norVec.fX*300);
+					pBullet->SetVelY(norVec.fY*300);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 					pBullet->SetDamage(15.0f);
 					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
@@ -1840,7 +1839,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						pBullet->SetWhoFired(true);
 					}
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
-					pBullet->SetBulletType(BUL_ROCKET);
+					pBullet->SetBulletType(BUL_SHELL);
 					pSelf->m_pOM->AddObject(pBullet);
 					pBullet->Release();
 					pBullet = nullptr;

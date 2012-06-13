@@ -102,6 +102,7 @@ private:
 	int FXBuildingFlame;
 	int FXTreads;
 	int m_nMine;
+	int m_nPirateTurret;
 	int	m_nButton;
 	int	m_nClick;
 public:

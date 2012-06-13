@@ -19,7 +19,7 @@ public:
 	void SetRotationRate(float rotate) { m_fRotationRate = rotate;}
 	void SetUpVec(float x, float y);
 	void SetRotationPositon(float fRX, float fRY) {m_fRotPosX=fRX; m_fRotPosY=fRY;}
-	//void SetFireRate(float fFireRate){m_fFireRate = fFireRate;}
+	void SetFireRate(float fFireRate){m_fFireRate = fFireRate;}
 	void SetDistance(float fDistance) {m_fMaxDistance=fDistance;}
 	void SetFlamer(CEmitter* pEmitter) {m_pFlamer=pEmitter;}
 	CEmitter* GetFlamer(void) {return m_pFlamer;}
@@ -48,6 +48,7 @@ private:
 	float m_fRotation;
 	float m_fRotationRate;
 	float m_fFireRate;
+	float m_fFireTimer;
 	CEntity* m_pOwner;
 	CEntity* m_pTarget;
 	int m_nBulletType;
