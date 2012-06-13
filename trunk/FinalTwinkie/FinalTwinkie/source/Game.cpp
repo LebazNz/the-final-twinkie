@@ -75,7 +75,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pAudio = CSGD_XAudio2::GetInstance();
 
 	float mainVol, sfxVol;
-	if(CMainMenuState::GetInstance()->LoadOptions("resources/files/options.txt"))
+	if(CMainMenuState::GetInstance()->LoadOptions("resource/files/options.txt"))
 	{
 		m_bWindowed = CMainMenuState::GetInstance()->GetWindowed();
 		mainVol = CMainMenuState::GetInstance()->GetMusicVolume()/100.0f;
@@ -98,7 +98,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	// Set screen info
 	m_nScreenWidth	= nScreenWidth;
 	m_nScreenHeight	= nScreenHeight;
-	//m_bWindowed		= bWindowed;
+	m_bWindowed		= bWindowed;
 
 	// Set up sound
 	m_pAudio->MusicSetMasterVolume(mainVol);

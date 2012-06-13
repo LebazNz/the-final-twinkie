@@ -762,9 +762,12 @@ void CLoadOutState::Update( float fDt )
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=5)
+		if(CPlayer::GetInstance()->GetRocketAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=5)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
 
 		m_nPosition=5;
@@ -785,9 +788,12 @@ void CLoadOutState::Update( float fDt )
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=6)
+		if(CPlayer::GetInstance()->GetRocketAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=6)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
 
 		m_nPosition=6;
@@ -808,9 +814,12 @@ void CLoadOutState::Update( float fDt )
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=7)
+		if(CPlayer::GetInstance()->GetArtilleryAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=7)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
 
 		m_nPosition=7;
@@ -831,9 +840,12 @@ void CLoadOutState::Update( float fDt )
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=8)
+		if(CPlayer::GetInstance()->GetArtilleryAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=8)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
 
 		m_nPosition=8;
@@ -877,11 +889,13 @@ void CLoadOutState::Update( float fDt )
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=10)
+		if(CPlayer::GetInstance()->GetLaserAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=10)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
-
 		m_nPosition=10;
 	}
 	else if(m_nMouseX >= 479 && m_nMouseX <= 592
@@ -900,11 +914,13 @@ void CLoadOutState::Update( float fDt )
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
 
-		if(m_nPosition!=11)
+		if(CPlayer::GetInstance()->GetFlamerAccess())
 		{
-			m_pAudio->SFXPlaySound(m_nButton,false);
+			if(m_nPosition!=11)
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			}
 		}
-
 		m_nPosition=11;
 	}
 	else if(m_nMouseX >= 84 && m_nMouseX <= 118

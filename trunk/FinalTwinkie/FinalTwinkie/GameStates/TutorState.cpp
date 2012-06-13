@@ -248,7 +248,7 @@ void CTutorState::Enter(void)
 
 		// SOUNDS
 		////////////////////////////////////////////////////////
-		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		
 		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
 		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
 		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
@@ -270,13 +270,7 @@ void CTutorState::Enter(void)
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
 		m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
-		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 		
-		if(m_nGameMusic != -1)
-		{
-			m_pAudio->MusicPlaySong(m_nGameMusic, true);
-		}
 		///////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////
 		m_pMS->InitMessageSystem(&MessageProc);
@@ -307,7 +301,6 @@ void CTutorState::Enter(void)
 		player->SetVelY(90);
 		player->SetHealth(250);
 		player->SetMaxHealth(250);
-		player->SetNoReloadTimer(50000);
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
 		player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
@@ -323,7 +316,7 @@ void CTutorState::Enter(void)
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(2);
 		player->SetOldPos(v2Pos);
-		player->SetSecondType(LAZER);
+		player->SetSecondType(MACHINEGUN);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -379,6 +372,13 @@ void CTutorState::Enter(void)
 	m_nBoxIndex = -1;
 	gameEndTimer = 0.0f;
 	m_fWordTimer = 0.0f;
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+	if(m_nGameMusic != -1)
+	{
+		m_pAudio->MusicPlaySong(m_nGameMusic, true);
+	}
 
 }
 

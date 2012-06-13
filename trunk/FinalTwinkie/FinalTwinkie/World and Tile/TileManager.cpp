@@ -295,6 +295,7 @@ void CTileManager::CheckCollision(IEntity* pBase)
 							if(CGame::GetInstance()->isTutor == true)
 							{
 								CTutorState::GetInstance()->IncrementBox();
+								m_vTiles[i][j].SetCollision(false);
 								break;
 							}
 

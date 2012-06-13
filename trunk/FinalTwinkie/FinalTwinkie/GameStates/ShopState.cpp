@@ -900,13 +900,13 @@ void CShopState::Purchase()
 				}
 			}
 		}
-		if(m_pPlayer->GetSpeedLevel()==5||m_pPlayer->GetArmorLevel()==5||m_pPlayer->GetHealthLevel()==5||m_pPlayer->GetAmmoLevel()==5||m_pPlayer->GetDamageLevel()==5||m_pPlayer->GetHeatLevel()==5&&!CPlayer::GetInstance()->GetIamBoss())
+		if((m_pPlayer->GetSpeedLevel()==5||m_pPlayer->GetArmorLevel()==5||m_pPlayer->GetHealthLevel()==5||m_pPlayer->GetAmmoLevel()==5||m_pPlayer->GetDamageLevel()==5||m_pPlayer->GetHeatLevel()==5)&&!CPlayer::GetInstance()->GetIamBoss())
 		{
 			CPlayer::GetInstance()->SetIamBoss(true);
 			m_bAGet=true;
 			m_fGetTimer=0;
 		}
-		if(m_pPlayer->GetSpeedLevel()==5&&m_pPlayer->GetArmorLevel()==5&&m_pPlayer->GetHealthLevel()==5&&m_pPlayer->GetAmmoLevel()==5&&m_pPlayer->GetDamageLevel()==5&&m_pPlayer->GetHeatLevel()==5&&!CPlayer::GetInstance()->GetAllUpgrades())
+		if((m_pPlayer->GetSpeedLevel()==5&&m_pPlayer->GetArmorLevel()==5&&m_pPlayer->GetHealthLevel()==5&&m_pPlayer->GetAmmoLevel()==5&&m_pPlayer->GetDamageLevel()==5&&m_pPlayer->GetHeatLevel()==5)&&!CPlayer::GetInstance()->GetAllUpgrades())
 		{
 			CPlayer::GetInstance()->SetAllUpgrades(true);
 			m_bAGet=true;
