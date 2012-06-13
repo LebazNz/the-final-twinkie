@@ -3,6 +3,7 @@
 #include "../GameObjects/Player.h"
 #include "../PickUps and Specials/Special.h"
 #include "../Particle/ParticleManager.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 
 #include <vector>
 using std::vector;
@@ -18,6 +19,7 @@ public:
 	virtual bool Input(void);
 	virtual void Update(float fDt);
 	virtual void Render(void);
+	void LoadText();
 private:
 	CLoadOutState(void);
 	CLoadOutState(const CLoadOutState&);
@@ -31,6 +33,7 @@ private:
 	CBitmapFont*			m_pFont;
 	CPlayer*				m_pPlayer;
 	CParticleManager*		m_PM;
+	CSGD_XAudio2*			m_pAudio;
 
 	static CLoadOutState*	m_pSelf;
 
@@ -66,6 +69,8 @@ private:
 	bool m_bUseMachineGun;
 	bool m_bUseLaser;
 	bool m_bUseFlame;
+	int m_nButton;
+	int m_nClick;
 
 	DWORD m_dShellMin;
 	DWORD m_dShellMax;
@@ -82,5 +87,25 @@ private:
 
 	CSpecial* m_pSpecialOne;
 	CSpecial* m_pSpecialTwo;
+
+	string m_sLoad;
+	string m_sCannon;
+	string m_sShell;
+	string m_sRocket;
+	string m_sArtillery;
+	string m_sSecond;
+	string m_sMachine;
+	string m_sLaser;
+	string m_sFlame;
+	string m_sSpecOne;
+	string m_sSpecTwo;
+	string m_sNone;
+	string m_sSmoke;
+	string m_sEMP;
+	string m_sNuke;
+	string m_sReinforce;
+	string m_sAirStrike;
+	string m_sBack;
+	string m_sContinue;
 };
 

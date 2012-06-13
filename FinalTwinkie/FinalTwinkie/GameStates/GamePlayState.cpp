@@ -209,7 +209,7 @@ void CGamePlayState::Enter(void)
 		// LOAD ALL XMLS HERE
 		//////////////////////////
 		//m_pTile->Load("resource/files/graphic_layer.xml");	
-		m_pTile->Load("resource/files/level123.xml");	
+		//m_pTile->Load("resource/files/level123.xml");	
 
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
@@ -236,27 +236,26 @@ void CGamePlayState::Enter(void)
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
-		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
 		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
 		m_anEnemyIDs[10]=m_pTM->LoadTexture(_T("resource/graphics/factory_twinkie.png"));
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
-		m_anEnemyIDs[14] =m_pTM->LoadTexture(_T("resource/graphics/RPG_Pirate.png"));
-		m_anEnemyIDs[15] =m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
+		//m_anEnemyIDs[14] =m_pTM->LoadTexture(_T());
+		//m_anEnemyIDs[15] =m_pTM->LoadTexture(_T());
 		switch(m_nLevel)
 		{
 		case 1:
 			{
 				//Pirate
-				//m_anEnemyIDs[1]=?;
-				m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/RPGPirate.png"));
+				m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
+				m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/RPG_Pirate.png"));
 				//m_anEnemyIDs[6]=?;
 				//m_anEnemyIDs[7]=?;
 				m_anEnemyIDs[11]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip1.png"));
 				m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
-				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RiflePirate.png"));
+				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
 				m_pTile->Load("resource/files/PirateLevel.xml");	
 			}
 			break;
@@ -334,6 +333,9 @@ void CGamePlayState::Enter(void)
 		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
+
+		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 		
 		if(m_nGameMusic != -1)
 		{
@@ -721,6 +723,7 @@ bool CGamePlayState::Input(void)
 			}
 			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 			{
+				m_pAudio->SFXPlaySound(m_nClick, false);
 				if(m_nPosition == 0)
 				{
 					m_bPaused = !m_bPaused;
@@ -738,6 +741,7 @@ bool CGamePlayState::Input(void)
 			}
 			if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
 				if(m_nPosition == 0)
 				{
 					m_nPosition = 2;
@@ -749,6 +753,7 @@ bool CGamePlayState::Input(void)
 			}
 			else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
 				if(m_nPosition == 2)
 				{
 					m_nPosition = 0;
@@ -837,20 +842,29 @@ void CGamePlayState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 295 && m_nMouseY <= 340)
+	if(m_bPaused)
 	{
-		m_nPosition = 0;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 340 && m_nMouseY <= 390)
-	{
-		m_nPosition = 1;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 390 && m_nMouseY <= 435)
-	{
-		m_nPosition = 2;
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 295 && m_nMouseY <= 340)
+		{
+			if(m_nPosition!=0)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 0;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 340 && m_nMouseY <= 390)
+		{
+			if(m_nPosition!=1)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 1;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 390 && m_nMouseY <= 435)
+		{
+			if(m_nPosition!=2)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 2;
+		}
 	}
 
 	if(m_pPlayer->GetHealth() <= 0)
@@ -898,7 +912,7 @@ void CGamePlayState::Render(void)
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
 		m_pD3D->GetSprite()->Flush();
-		m_pFont->Print("Destroy the Pirate Boss", 539,547,.67f,UINT_MAX);
+		m_pFont->Print(m_sObj.c_str(), 539,547,.67f,UINT_MAX);
 		CPlayer::GetInstance()->Render();
 		CPlayer::GetInstance()->GetTurret()->Render();
 		
@@ -1365,7 +1379,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CPlayer* player = CPlayer::GetInstance();
 					
 					CTank* tank = (CTank*)pSelf->m_pOF->CreateObject("CTank");
-					tank->SetImageID(pSelf->m_nPlayerID);
+					tank->SetImageID(pSelf->m_anEnemyIDs[6]);
 					tank->SetPosX(pMessage->GetPosX());
 					tank->SetPosY(pMessage->GetPosY());	
 					tank->SetWidth(64);
@@ -1400,7 +1414,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(tank);
 
 					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
-					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetImageID(pSelf->m_anEnemyIDs[7]);
 					turret->SetPosX(tank->GetPosX());
 					turret->SetPosY(tank->GetPosY());
 					turret->SetWidth(64);
@@ -1440,7 +1454,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case TURRET:
 				{
 					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
-					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetImageID(pSelf->m_anEnemyIDs[6]);
 					turret->SetPosX(pMessage->GetPosX());
 					turret->SetPosY(pMessage->GetPosY());
 					turret->SetWidth(64);
@@ -1497,7 +1511,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetMaxHealth(50);
 						enemy->SetDamage(1);
 
-						enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
+						//enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					}
 					else if(pMessage->GetKind() == 1)
 					{
@@ -1660,13 +1674,36 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
 				pMsg = nullptr;
 			}
-
+			if(pEnemy->GetType()!=OBJ_HELP)
+			{
+				CPlayer::GetInstance()->SetUnitsKilled(CPlayer::GetInstance()->GetUnitsKilled()+1);
+				if(CPlayer::GetInstance()->GetUnitsKilled()>=300)
+				{
+					CPlayer::GetInstance()->SetSparta(true);
+				}
+				if(dynamic_cast<CSapper*>(pEnemy))
+				{
+					CPlayer::GetInstance()->SetSappersExploded(CPlayer::GetInstance()->GetSappersExploded()+1);
+					if(CPlayer::GetInstance()->GetSappersExploded()>=50)
+					{
+						CPlayer::GetInstance()->SetSapperAbsorb(true);
+					}
+				}
+			}
 			pSelf->m_pOM->RemoveObject(pEnemy);
 		}
 		break;
 	case MSG_DESTROYTURRET:
 		{
 			CTurret* pTurret = dynamic_cast<CDestroyTurretMessage*>(pMsg)->GetTurret();
+			if(pTurret->GetOwner()==nullptr)
+			{
+				CPlayer::GetInstance()->SetUnitsKilled(CPlayer::GetInstance()->GetUnitsKilled()+1);
+				if(CPlayer::GetInstance()->GetUnitsKilled()>=300)
+				{
+					CPlayer::GetInstance()->SetSparta(true);
+				}
+			}
 			pSelf->m_pOM->RemoveObject(pTurret);
 		}
 		break;	
@@ -2016,6 +2053,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_DESTROYNAZIBOSS:
 		{
+			CPlayer::GetInstance()->SetNaziBoss(true);
 			CDestroyNaziBoss* Msg=dynamic_cast<CDestroyNaziBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
@@ -2115,6 +2153,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 		break;
 	case MSG_DESTROYFACTORY:
 		{
+			CPlayer::GetInstance()->SetAlienBoss(true);
 			CDestroyFactoryMessage* Msg=dynamic_cast<CDestroyFactoryMessage*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetFactory());
 		}
@@ -2249,6 +2288,37 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				switch(m_nLevel)
+				{
+				case 1:
+					{
+						pButton=pState->FirstChild("Pirate");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 2:
+					{
+						pButton=pState->FirstChild("Robots");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 3:
+					{
+						pButton=pState->FirstChild("Aliens");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 4:
+					{
+						pButton=pState->FirstChild("Nazi");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				}
 			}
 			break;
 		case 1:
@@ -2267,6 +2337,37 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				switch(m_nLevel)
+				{
+				case 1:
+					{
+						pButton=pState->FirstChild("Pirate");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 2:
+					{
+						pButton=pState->FirstChild("Robots");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 3:
+					{
+						pButton=pState->FirstChild("Aliens");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 4:
+					{
+						pButton=pState->FirstChild("Nazi");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				}
 			}
 			break;
 		case 2:
@@ -2285,6 +2386,37 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				switch(m_nLevel)
+				{
+				case 1:
+					{
+						pButton=pState->FirstChild("Pirate");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 2:
+					{
+						pButton=pState->FirstChild("Robots");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 3:
+					{
+						pButton=pState->FirstChild("Aliens");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 4:
+					{
+						pButton=pState->FirstChild("Nazi");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				}
 			}
 			break;
 		case 3:
@@ -2303,6 +2435,37 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
+				switch(m_nLevel)
+				{
+				case 1:
+					{
+						pButton=pState->FirstChild("Pirate");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 2:
+					{
+						pButton=pState->FirstChild("Robots");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 3:
+					{
+						pButton=pState->FirstChild("Aliens");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				case 4:
+					{
+						pButton=pState->FirstChild("Nazi");
+						pText = pButton->FirstChild()->ToText();
+						m_sObj=pText->Value();
+					}
+					break;
+				}
 			}
 			break;
 		}

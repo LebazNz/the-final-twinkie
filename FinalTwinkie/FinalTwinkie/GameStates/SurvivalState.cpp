@@ -58,6 +58,7 @@
 #include "../PickUps and Specials/Nuke.h"
 #include "../PickUps and Specials/Smoke.h"
 #include "StatState.h"
+#include "../Headers/BitmapFont.h"
 CSurvivalState* CSurvivalState::m_pSelf = nullptr;
 
 CSurvivalState::CSurvivalState(void)
@@ -141,6 +142,8 @@ void CSurvivalState::Enter( void )
 		m_AM	= CAnimationManager::GetInstance();
 		m_pES = CEventSystem::GetInstance();
 		m_pGUI = CGUI::GetInstance();
+		m_pFont=CBitmapFont::GetInstance();
+		m_pAudio = CSGD_XAudio2::GetInstance();
 		m_pDI->ClearInput();
 		for(int i = 0; i < 16; ++i)
 		{
@@ -185,11 +188,11 @@ void CSurvivalState::Enter( void )
 		m_anBulletImageIDs[4] = m_pTM->LoadTexture( _T( "resource/graphics/Laser.png"), 	0 );
 		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
 		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
-		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/AC_testturret.png"));
+		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/Nazi Sapper.png"));
 		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
 		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
 		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
-		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
+		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/Nazi Rifle.png"));
 		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
 		m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
 		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
@@ -204,6 +207,9 @@ void CSurvivalState::Enter( void )
 		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
+
+		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -289,6 +295,7 @@ void CSurvivalState::Enter( void )
 
 		player->SetMoney(0);
 	}
+	LoadText();
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
@@ -461,6 +468,7 @@ bool CSurvivalState::Input( void )
 		}
 		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 		{
+			m_pAudio->SFXPlaySound(m_nClick, false);
 			if(m_nPosition == 0)
 			{
 				m_bPaused = !m_bPaused;
@@ -542,20 +550,29 @@ void CSurvivalState::Update( float fDt )
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 295 && m_nMouseY <= 340)
+	if(m_bPaused)
 	{
-		m_nPosition = 0;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 340 && m_nMouseY <= 390)
-	{
-		m_nPosition = 1;
-	}
-	if(m_nMouseX >= 315 && m_nMouseX <= 435
-		&& m_nMouseY >= 390 && m_nMouseY <= 435)
-	{
-		m_nPosition = 2;
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 295 && m_nMouseY <= 340)
+		{
+			if(m_nPosition!=0)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 0;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 340 && m_nMouseY <= 390)
+		{
+			if(m_nPosition!=1)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 1;
+		}
+		if(m_nMouseX >= 315 && m_nMouseX <= 435
+			&& m_nMouseY >= 390 && m_nMouseY <= 435)
+		{
+			if(m_nPosition!=2)
+				m_pAudio->SFXPlaySound(m_nButton,false);
+			m_nPosition = 2;
+		}
 	}
 
 	if(m_nNumUnits <= 0)
@@ -606,6 +623,8 @@ void CSurvivalState::Render( void )
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
+		m_pD3D->GetSprite()->Flush();
+		m_pFont->Print(m_sWave.c_str(), 539,547,.67f,UINT_MAX);
 	}
 
 	m_pD3D->GetSprite()->Flush();	
@@ -644,10 +663,10 @@ void CSurvivalState::Render( void )
 		m_pTM->Draw(m_nButtonImageID,(CGame::GetInstance()->GetWidth()/2)-85,CGame::GetInstance()->GetHeight()/2+90,0.75f,0.75f,nullptr,0,0,0,fScale3);
 
 		m_pD3D->GetSprite()->Flush();
-		font->Print("Paused",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
-		font->Print("Resume",(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
-		font->Print("Options",(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
-		font->Print("Exit",(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sPaused.c_str(),(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sResume.c_str(),(CGame::GetInstance()->GetWidth()/2)-48,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),(CGame::GetInstance()->GetWidth()/2)-50,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
@@ -1491,5 +1510,102 @@ void CSurvivalState::GenerateWave()
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, rand()%500+100, rand()%500+100, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		m_nNumUnits++;
+	}
+}
+
+void CSurvivalState::LoadText(void)
+{
+	TiXmlDocument doc("resource/files/Text.xml");
+	int LangSel=COptionsState::GetInstance()->GetLang();
+	if(doc.LoadFile())
+	{
+		TiXmlNode* pParent = doc.RootElement();
+		switch(LangSel)
+		{
+		case 0:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("SurvivalState");
+				TiXmlNode* pButton = pState->FirstChild("Wave");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sWave=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 1:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("English");
+				TiXmlNode* pState = pLanguage->FirstChild("SurvivalState");
+				TiXmlNode* pButton = pState->FirstChild("Wave");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sWave=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 2:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("Pirate");
+				TiXmlNode* pState = pLanguage->FirstChild("SurvivalState");
+				TiXmlNode* pButton = pState->FirstChild("Wave");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sWave=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		case 3:
+			{
+				TiXmlNode* pLanguage = pParent->FirstChild("German");
+				TiXmlNode* pState = pLanguage->FirstChild("SurvivalState");
+				TiXmlNode* pButton = pState->FirstChild("Wave");
+				TiXmlText* pText = pButton->FirstChild()->ToText();
+				m_sWave=pText->Value();
+				pButton = pState->FirstChild("Paused");
+				pText = pButton->FirstChild()->ToText();
+				m_sPaused=pText->Value();
+				pButton=pState->FirstChild("Resume");
+				pText = pButton->FirstChild()->ToText();
+				m_sResume=pText->Value();
+				pButton = pState->FirstChild("Options");
+				pText = pButton->FirstChild()->ToText();
+				m_sOptions=pText->Value();
+				pButton=pState->FirstChild("Exit");
+				pText = pButton->FirstChild()->ToText();
+				m_sExit=pText->Value();
+			}
+			break;
+		}
 	}
 }

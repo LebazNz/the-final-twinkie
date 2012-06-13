@@ -32,6 +32,7 @@ public:
 	bool GetPaused(void)const {return m_bPaused;}
 	bool LoadWave(const char* szFileName, int nGamedata);
 	static void MessageProc(CMessage* pMsg);
+	void LoadText(void);
 
 	int		GetNumUnits() { return m_nNumUnits; }
 	void	SetNumUnits(int rhs) { m_nNumUnits = rhs; }
@@ -54,6 +55,7 @@ private:
 	CAnimationManager*		m_AM;
 	CEventSystem*			m_pES;
 	CGUI*					m_pGUI;
+	CSGD_XAudio2*			m_pAudio;
 
 	static CSurvivalState*	m_pSelf;
 	vector<CWave*>			m_vWave;
@@ -95,6 +97,8 @@ private:
 	int m_nPickupInvuID;
 	int m_nPickupInfAmmoID;
 	int m_nPickupMoneyID;
+	int	m_nButton;
+	int	m_nClick;
 
 	IDirect3DTexture9* MiniMap;
 
@@ -103,6 +107,10 @@ private:
 	int m_nCurrWave;
 
 
-
+	string m_sWave;
+	string m_sPaused;
+	string m_sResume;
+	string m_sOptions;
+	string m_sExit;
 };
 
