@@ -111,6 +111,9 @@ void CShopState::Enter(void)
 	}
 	LoadText();
 	m_nPos=0;
+	m_nGetBox=m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
+	m_bAGet=false;
+	m_fGetTimer=0;
 }
 
 void CShopState::Exit(void)
@@ -139,7 +142,7 @@ bool CShopState::Input(void)
 {
 	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 	{
-		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
 		return true;
 	}
 
@@ -156,6 +159,17 @@ void CShopState::Update(float fDt)
 	SelectButtons();
 	DetermineSelection();
 	ColorSelected();
+	if(m_bAGet)
+	{
+		if(m_fGetTimer<=5.0f)
+		{
+			m_fGetTimer+=fDt;
+		}
+		else
+		{
+			m_bAGet=false;
+		}
+	}
 }
 
 void CShopState::Render(void)
@@ -263,6 +277,14 @@ void CShopState::Render(void)
 	m_pFont->Print(m_sContinue.c_str(),CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+90,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	//m_pFont->Print("Rocket",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+
+	if(m_bAGet)
+	{
+		m_pTM->Draw(m_nGetBox, 0,0,1.25f,0.5f);
+		m_pD3D->GetSprite()->Flush();
+		m_pFont->Print(m_sGet.c_str(), 30,15,1.0f, UINT_MAX);
+		m_pD3D->GetSprite()->Flush();
+	}
 
 }
 
@@ -879,6 +901,18 @@ void CShopState::Purchase()
 				}
 			}
 		}
+		if(m_pPlayer->GetSpeedLevel()==5||m_pPlayer->GetArmorLevel()==5||m_pPlayer->GetHealthLevel()==5||m_pPlayer->GetAmmoLevel()==5||m_pPlayer->GetDamageLevel()==5||m_pPlayer->GetHeatLevel()==5&&!CPlayer::GetInstance()->GetIamBoss())
+		{
+			CPlayer::GetInstance()->SetIamBoss(true);
+			m_bAGet=true;
+			m_fGetTimer=0;
+		}
+		if(m_pPlayer->GetSpeedLevel()==5&&m_pPlayer->GetArmorLevel()==5&&m_pPlayer->GetHealthLevel()==5&&m_pPlayer->GetAmmoLevel()==5&&m_pPlayer->GetDamageLevel()==5&&m_pPlayer->GetHeatLevel()==5&&!CPlayer::GetInstance()->GetAllUpgrades())
+		{
+			CPlayer::GetInstance()->SetAllUpgrades(true);
+			m_bAGet=true;
+			m_fGetTimer=0;
+		}
 	}
 
 
@@ -963,6 +997,9 @@ void CShopState::LoadText(void)
 				pButton=pState->FirstChild("Continue");
 				pText = pButton->FirstChild()->ToText();
 				m_sContinue=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 			}
 			break;
 		case 1:
@@ -1026,6 +1063,9 @@ void CShopState::LoadText(void)
 				pButton=pState->FirstChild("Continue");
 				pText = pButton->FirstChild()->ToText();
 				m_sContinue=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 			}
 			break;
 		case 2:
@@ -1089,6 +1129,9 @@ void CShopState::LoadText(void)
 				pButton=pState->FirstChild("Continue");
 				pText = pButton->FirstChild()->ToText();
 				m_sContinue=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 			}
 			break;
 		case 3:
@@ -1152,6 +1195,9 @@ void CShopState::LoadText(void)
 				pButton=pState->FirstChild("Continue");
 				pText = pButton->FirstChild()->ToText();
 				m_sContinue=pText->Value();
+				pButton=pState->FirstChild("Get");
+				pText = pButton->FirstChild()->ToText();
+				m_sGet=pText->Value();
 			}
 			break;
 		}

@@ -304,8 +304,8 @@ void CSurvivalState::Enter( void )
 //	LoadWave();
 	
 	m_nNumUnits = 0;
-	LoadWave("48wavesofhell.xml",0);
-	
+	//LoadWave("48wavesofhell.xml",0);
+	LoadWave("Nate.xml",0);
 }
 
 void CSurvivalState::Exit( void )
@@ -1591,7 +1591,7 @@ void CSurvivalState::GenerateWave()
 		m_nNumUnits++;
 	}
 
-	/*for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
+	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
 	{
 	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, rand()%500+100, rand()%500+100, rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
@@ -1607,10 +1607,10 @@ void CSurvivalState::GenerateWave()
 
 	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nTanks; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, rand()%500+100, rand()%500+100, rand()%3);
-	CMessageSystem::GetInstance()->SndMessage(msg);
-	m_nNumUnits++;
-	}*/
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, TANK, rand()%500+100, rand()%500+100, rand()%3);
+		CMessageSystem::GetInstance()->SndMessage(msg);
+		m_nNumUnits++;
+	}
 }
 
 void CSurvivalState::LoadText(void)

@@ -4,7 +4,7 @@
 #include "IGameState.h"
 #include "../ObjectManager and Factory/ObjectFactory.h"
 #include "../Event and Messages/Message.h"
-
+#include "../GameObjects/Player.h"
 #include <string>
 
 class CParticleManager;
@@ -72,7 +72,7 @@ private:
 	static CGamePlayState*	m_pSelf;
 
 	vector<CEmitter*>		m_pEmitters;
-	CEntity*				m_pPlayer;
+	CPlayer*				m_pPlayer;
 	CEntity*				m_pEnemy;
 	CEntity*				m_pTurret;
 
@@ -116,6 +116,10 @@ private:
 	int FXEnemyOnFire;
 	int FXAirStrike;
 
+	int m_nGetBox;
+	bool m_bAGet;
+	float m_fGetTimer;
+
 	int m_nCursor;
 
 	Data m_dGameData;
@@ -142,6 +146,7 @@ private:
 	string m_sResume;
 	string m_sOptions;
 	string m_sExit;
+	string m_sGet;
 };
 
 #endif

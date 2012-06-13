@@ -8,6 +8,7 @@
 #include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../Event and Messages/DestroyTreeMessage.h"
 #include "../Event and Messages/DestroyNaziBoss.h"
+#include "../Event and Messages/DestroyFactoryMessage.h"
 #include "../Event and Messages/DestroyRobotBoss.h"
 #include "../GameStates/OptionsState.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
@@ -298,6 +299,11 @@ bool CBullet::CheckCollision(IEntity* pBase)
 					{	
 						Factory* fac=dynamic_cast<Factory*>(pBase);
 						fac->TakeDamage((int)(this->m_fDamage));
+						if(fac->GetHealth()<=0)
+						{
+							CDestroyFactoryMessage* Msg=new CDestroyFactoryMessage (fac);
+							CMessageSystem::GetInstance()->SndMessage(Msg);
+						}
 					}
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);

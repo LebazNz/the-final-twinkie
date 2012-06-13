@@ -68,6 +68,7 @@
 			<Cost>Cost</Cost>
 			<Buy>Buy</Buy>
 			<Continue>Continue</Continue>
+			<Get>Achievement Get</Get>
 		</ShopState>
 		<LoadGameState>
 			<NewGame>New Game</NewGame>
@@ -93,6 +94,7 @@
 			<Robots>Kill the Robot Boss</Robots>
 			<Aliens>Destroy the Aliens Factory</Aliens>
 			<Nazi>Kill the Nazi Boss</Nazi>
+			<Get>Achievement Get</Get>
 		</GameState>
 		<TutorState>
 			<Pad>
@@ -229,6 +231,7 @@
 			<Cost>Cost</Cost>
 			<Buy>Aquire</Buy>
 			<Continue>Sail Forward</Continue>
+			<Get>Crime Comitted</Get>
 		</ShopState>
 		<LoadGameState>
 			<NewGame>Fresh Tale</NewGame>
@@ -254,6 +257,7 @@
 			<Robots>Scrap the Mechanical Monster</Robots>
 			<Aliens>Scuttle the Creatures Building</Aliens>
 			<Nazi>Send the Leader to the Locker</Nazi>
+			<Get>Crime Comitted</Get>
 		</GameState>
 		<FlyText>
 			<Health>Constitution</Health>
@@ -390,6 +394,7 @@
 			<Cost>Kosten</Cost>
 			<Buy>Kaufen</Buy>
 			<Continue>Fortsetzen</Continue>
+			<Get>Leistung zu erhalten</Get>
 		</ShopState>
 		<LoadGameState>
 			<NewGame>Neues Spiel</NewGame>
@@ -415,6 +420,7 @@
 			<Robots>Tote den Roboter Chef</Robots>
 			<Aliens>Zerstore die Fremd Fabrik</Aliens>
 			<Nazi>Tote den Nazi Chef</Nazi>
+			<Get>Leistung zu erhalten</Get>
 		</GameState>
 		<FlyText>
 			<Health>Gesundheit</Health>

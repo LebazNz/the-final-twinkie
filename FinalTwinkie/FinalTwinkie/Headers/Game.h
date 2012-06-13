@@ -21,7 +21,7 @@ public:
 	int GetHeight(void) const { return m_nScreenHeight; }
 	bool IsWindowed(void) const { return m_bWindowed; }
 	void SetIsWindowded(bool isWindowed) { m_bWindowed = isWindowed; }
-
+	IGameState* GetCurState(void){return m_pCurState;}
 private:
 	CGame(void);
 	CGame(const CGame&);

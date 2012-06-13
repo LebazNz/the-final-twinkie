@@ -2,7 +2,8 @@
 #include "../GameObjects/Player.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Headers/Camera.h"
-
+#include "../Headers/Game.h"
+#include "../GameStates/GamePlayState.h"
 CNuke::CNuke(void)
 {
 	m_nType = NUKE;
@@ -26,5 +27,13 @@ void CNuke::ActivateSpecial(void)
 		m_pEmitter->ActivateEmitter();
 		CObjectManager::GetInstance()->AreaEffect(CPlayer::GetInstance()->GetPosX(),CPlayer::GetInstance()->GetPosY(),m_nRadius,m_nDamage);
 		m_nAmmo--;
+		if(CGame::GetInstance()->GetCurState()==CGamePlayState::GetInstance())
+		{
+			CPlayer::GetInstance()->SetNukesBlasted(CPlayer::GetInstance()->GetNukesBlasted()+1);
+			if(CPlayer::GetInstance()->GetNukesBlasted()>5)
+			{
+				CPlayer::GetInstance()->SetNukem(true);
+			}
+		}
 	}	
 }

@@ -283,10 +283,10 @@ private:
 	bool m_bSparta;	//--------// This is not Sparta!
 	// Absorb 50 sappers
 	bool m_bSapperAbsorb;	//--------// WTF is damage?
-	// Kill 10 enemies with one Nuke
-	bool m_bNukem;	// Nuke Dukem;
+	// Use 5 Nukes
+	bool m_bNukem;	//--------// Nuke Dukem;
 	// Purchase a level 5 upgrade
-	bool m_bIamBoss;	// Max Pain;
+	bool m_bIamBoss;	// Max Pain
 	// Purchase all Upgrades
 	bool m_bAllUpgrades;	// God mode
 	

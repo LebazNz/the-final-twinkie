@@ -145,6 +145,10 @@ private:
 	int m_nClick;
 	int m_nPos;
 
+	int m_nGetBox;
+	bool m_bAGet;
+	float m_fGetTimer;
+
 	string m_sTitle;
 	string m_sRocket;
 	string m_sLaser;
@@ -164,6 +168,7 @@ private:
 	string m_sCost;
 	string m_sBuy;
 	string m_sContinue;
+	string m_sGet;
 };
 
 #endif
