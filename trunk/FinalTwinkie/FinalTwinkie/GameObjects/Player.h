@@ -18,7 +18,7 @@ public:
 	virtual bool CheckCollision(IEntity*);
 	virtual tVector2D GetOldPos(void) { return m_v2OldPos;}
 
-
+	RECT GetSpawnRect();
 	// BOOLS FOR THE CAMERA RYAN IS MAKING DO NOT TOUCH OR ELSE PANCKAES WILL RAIN HELLFIRE AND BUTTER ONTO YOUR CHILDREN
 	bool		GetMoveRight() const { return m_bMoveRight; }
 	void		SetMoveRight(bool val) { m_bMoveRight = val; }

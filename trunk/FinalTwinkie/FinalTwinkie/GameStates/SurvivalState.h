@@ -105,7 +105,7 @@ private:
 	int m_nNumUnits;
 	int m_nWavesRemaining;
 	int m_nCurrWave;
-	vector<RECT*> m_vRECTS;
+	vector<RECT> m_vRECTS;
 	
 
 

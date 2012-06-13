@@ -12,6 +12,7 @@ RobotBoss::RobotBoss(void)
 {
 	m_pPlayer = CPlayer::GetInstance();
 	m_nType = OBJ_ROBOTBOSS;
+	m_nHPBARID = CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/HealthBar.png"));
 }
 
 
@@ -170,8 +171,11 @@ void RobotBoss::Render(void)
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
 	}
-	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
-	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),0,255,255);
+
+	RECT rect;
+	rect.top=(LONG)348; rect.left=(LONG)6; rect.right=(LONG)(6+((127-6)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)363;
+	CSGD_TextureManager::GetInstance()->Draw(m_nHPBARID, 145, 10,((LONG)(GetHealth()/GetMaxHealth())*4.0f),2.0, nullptr);
+	
 }
 bool RobotBoss::CheckCollision(IEntity* pBase)
 {

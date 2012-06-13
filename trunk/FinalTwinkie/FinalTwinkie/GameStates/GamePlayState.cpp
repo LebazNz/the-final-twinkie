@@ -372,7 +372,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<RobotBoss>("RobotBoss");
 		m_pMS->InitMessageSystem(&MessageProc);
 
-		
+		m_pPlayer = CPlayer::GetInstance();
 		CPlayer* player=CPlayer::GetInstance();
 		player->SetImageID(m_nPlayerID);
 		player->SetFireSound(m_anBulletSounds[5]);
@@ -1299,7 +1299,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 						
 
-					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_LASER]);
+					Bullet->SetImageID(pSelf->m_anBulletImageIDs[4]);
 
 					pSelf->m_pOM->AddObject(Bullet);
 					Bullet->Release();
@@ -1432,6 +1432,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(30);
 						tank->SetHealth(200);
 						tank->SetMaxHealth(200);
+						tank->SetDamage(20);
 					}
 					else if(pSelf->GetLevel() == 2) // Robot
 					{
@@ -1439,6 +1440,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(40);
 						tank->SetHealth(300);
 						tank->SetMaxHealth(300);
+						tank->SetDamage(20);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
@@ -1446,6 +1448,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetVelY(50);
 						tank->SetHealth(400);
 						tank->SetMaxHealth(400);
+						tank->SetDamage(20);
 					}
 					else if(pSelf->GetLevel() == 4) // Nazi
 					{
@@ -1575,7 +1578,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetVelY(55);
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
-						enemy->SetDamage(1);
+						enemy->SetDamage(2);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
@@ -1583,7 +1586,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetVelY(65);
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
-						enemy->SetDamage(1);
+						enemy->SetDamage(3);
 					}
 					else if(pSelf->GetLevel() == 4)  //Nazi
 					{
@@ -2193,8 +2196,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					//boss->SetPosY(10);
 					boss->SetVelX(10);
 					boss->SetVelY(10);
-					boss->SetHealth(200);
-					boss->SetMaxHealth(200);
+					boss->SetHealth(700);
+					boss->SetMaxHealth(700);
 					boss->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(boss);
 
@@ -2209,10 +2212,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CTurret* turret = dynamic_cast<CTurret*>(ETurret);
 					boss->SetTurret(turret);
 					turret->SetOwner(boss);
-					turret->SetBullet(BUL_SHELL);	
+					turret->SetFireRate(0.2f);
+					turret->SetDamage(3);
+					turret->SetBullet(BUL_LASER);
+					//turret->SetFlamer(CParticleManager::GetInstance()->GetEmitter(pSelf->FXFlame));
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(400);
+					//turret->
 					//pTurret->SetFireRate(2.5f);
 					turret->SetTarget(pSelf->m_pPlayer);
 					turret->SetRotationRate(0.75f);

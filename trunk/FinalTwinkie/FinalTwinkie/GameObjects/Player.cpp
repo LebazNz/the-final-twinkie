@@ -445,6 +445,16 @@ RECT CPlayer::GetRect(void)
 	rect.right=(LONG)(GetPosX()+m_fRotationWidth/2);
 	return rect;
 }
+RECT CPlayer::GetSpawnRect()
+{
+	Camera* C=Camera::GetInstance();
+	RECT rect;
+	rect.top=(LONG)((GetPosY())-GetHeight()/2);
+	rect.left=(LONG)((GetPosX())-GetWidth()/2);
+	rect.bottom=(LONG)((GetPosY())+GetHeight()/2);
+	rect.right=(LONG)((GetPosX())+GetWidth()/2);
+	return rect;
+}
 
 bool CPlayer::CheckCollision(IEntity* pBase)
 {
