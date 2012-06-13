@@ -21,6 +21,7 @@ CPirateBoss::CPirateBoss(void)
 	m_nStartX = 0;
 	m_bChanged = false;
 	m_nMoving = 0;
+	m_nHealthBar = -1;
 
 	tOne = nullptr;
 	tTwo = nullptr;
@@ -30,6 +31,7 @@ CPirateBoss::CPirateBoss(void)
 	tFive = nullptr;
 	tSix = nullptr;
 
+	m_nHealthBar = CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/pBossHealth.png"));
 	
 }
 
@@ -71,6 +73,12 @@ CPirateBoss::~CPirateBoss(void)
 		tSix->Release();
 		//delete tSix;
 		tSix = nullptr;
+	}
+
+	if(m_nHealthBar != -1)
+	{
+		CSGD_TextureManager::GetInstance()->UnloadTexture(m_nHealthBar);
+		m_nHealthBar = -1;
 	}
 }
 
@@ -185,8 +193,17 @@ void CPirateBoss::Render(void)
 	if(tSix != nullptr)
 		tSix->Render();
 	
-	//CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
-	//CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),255,0,0);
+	
+
+	if(m_nHealthBar != -1)
+	{
+		if(GetHealth() < GetMaxHealth())
+		{
+			RECT rect = {};
+			rect.top=(LONG)7; rect.left=(LONG)3; rect.right=(LONG)(3+((122-3)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)22;
+			CSGD_TextureManager::GetInstance()->Draw(m_nHealthBar,(int)(GetPosX()+C->GetPosX()), (int)(GetPosY()+C->GetPosY()),2.0f,1.0f,&rect);
+		}
+	}
 
 }
 bool CPirateBoss::CheckCollision(IEntity* pObject)
@@ -249,12 +266,15 @@ void CPirateBoss::Rebound(float time)
 			SetPosX((float)m_nStartX);
 			tFour->SetPosX((GetPosX())+440);
 			tFour->SetPosY((GetPosY())+101);
+			tFour->SetDistance(400);
 
 			tFive->SetPosX((GetPosX())+259);
 			tFive->SetPosY((GetPosY())+108);
+			tFive->SetDistance(350);
 
 			tSix->SetPosX((GetPosX())+359);
 			tSix->SetPosY((GetPosY())+108);
+			tSix->SetDistance(400);
 			
 			m_bChanged = true;
 
@@ -303,12 +323,13 @@ void CPirateBoss::MakeTurrets(void)
 		tOne->SetInvul(true);
 		tOne->SetOwner(nullptr);
 		tOne->SetBullet(BUL_SHELL);	
+		tOne->SetDamage(20);
 		tOne->SetRotationPositon(32,98);
 		tOne->SetUpVec(0,-1);
 		tOne->SetDistance(400);
 		tOne->SetHealth(200);
 		tOne->SetMaxHealth(200);
-		//tOne->SetFireRate(2.5f);
+		tOne->SetFireRate(2.0f);
 		tOne->SetTarget(CPlayer::GetInstance());
 		tOne->SetRotationRate(1.0f);
 	}
@@ -322,12 +343,13 @@ void CPirateBoss::MakeTurrets(void)
 		tTwo->SetInvul(true);
 		tTwo->SetOwner(nullptr);
 		tTwo->SetBullet(BUL_SHELL);	
+		tTwo->SetDamage(35);
 		tTwo->SetRotationPositon(32,98);
 		tTwo->SetUpVec(0,-1);
-		tTwo->SetDistance(300);
+		tTwo->SetDistance(350);
 		tTwo->SetHealth(200);
 		tTwo->SetMaxHealth(200);
-		//Twone->SetFireRate(2.5f);
+		tTwo->SetFireRate(3.0f);
 		tTwo->SetTarget(CPlayer::GetInstance());
 		tTwo->SetRotationRate(1.0f);
 	}
@@ -340,13 +362,14 @@ void CPirateBoss::MakeTurrets(void)
 		tThree->SetHeight(128);
 		tThree->SetInvul(true);
 		tThree->SetOwner(nullptr);
-		tThree->SetBullet(BUL_SHELL);	
+		tThree->SetBullet(BUL_SHELL);
+		tThree->SetDamage(20);
 		tThree->SetRotationPositon(32,98);
 		tThree->SetUpVec(0,-1);
-		tThree->SetDistance(300);
+		tThree->SetDistance(400);
 		tThree->SetHealth(200);
 		tThree->SetMaxHealth(200);
-		//Threeone->SetFireRate(2.5f);
+		tThree->SetFireRate(1.5f);
 		tThree->SetTarget(CPlayer::GetInstance());
 		tThree->SetRotationRate(1.0f);
 	}
@@ -359,13 +382,14 @@ void CPirateBoss::MakeTurrets(void)
 		tFour->SetHeight(128);
 		tFour->SetInvul(true);
 		tFour->SetOwner(nullptr);
-		tFour->SetBullet(BUL_SHELL);	
+		tFour->SetBullet(BUL_SHELL);
+		tFour->SetDamage(20);
 		tFour->SetRotationPositon(32,98);
 		tFour->SetUpVec(0,-1);
 		tFour->SetDistance(300);
 		tFour->SetHealth(200);
 		tFour->SetMaxHealth(200);
-		//Fourone->SetFireRate(2.5f);
+		tFour->SetFireRate(1.5f);
 		tFour->SetTarget(CPlayer::GetInstance());
 		tFour->SetRotationRate(1.0f);
 	}
@@ -379,12 +403,13 @@ void CPirateBoss::MakeTurrets(void)
 		tFive->SetInvul(true);
 		tFive->SetOwner(nullptr);
 		tFive->SetBullet(BUL_SHELL);	
+		tFive->SetDamage(35);
 		tFive->SetRotationPositon(32,98);
 		tFive->SetUpVec(0,-1);
-		tFive->SetDistance(300);
+		tFive->SetDistance(100);
 		tFive->SetHealth(200);
 		tFive->SetMaxHealth(200);
-		//Fiveone->SetFireRate(2.5f);
+		tFive->SetFireRate(2.5f);
 		tFive->SetTarget(CPlayer::GetInstance());
 		tFive->SetRotationRate(1.0f);
 	}
@@ -398,12 +423,13 @@ void CPirateBoss::MakeTurrets(void)
 		tSix->SetInvul(true);
 		tSix->SetOwner(nullptr);
 		tSix->SetBullet(BUL_SHELL);	
+		tSix->SetDamage(35);
 		tSix->SetRotationPositon(32,98);
 		tSix->SetUpVec(0,-1);
-		tSix->SetDistance(300);
+		tSix->SetDistance(150);
 		tSix->SetHealth(200);
 		tSix->SetMaxHealth(200);
-		//Sixeone->SetFireRate(2.5f);
+		tSix->SetFireRate(1.5f);
 		tSix->SetTarget(CPlayer::GetInstance());
 		tSix->SetRotationRate(1.0f);
 	}

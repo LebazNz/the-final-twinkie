@@ -10,6 +10,8 @@ private:
 	int m_nRoundTwo;
 	int m_nTurrID;
 	int m_nStartX;
+	int m_nHealthBar;
+
 	CTurret *tOne;
 	CTurret *tTwo;
 	CTurret *tThree;

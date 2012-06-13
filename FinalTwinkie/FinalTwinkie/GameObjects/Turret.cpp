@@ -51,16 +51,16 @@ void CTurret::Update(float fDt)
 					else if(Steering(m_vLookVec,Vec) > 1)
 					m_fRotation += m_fRotationRate*fDt;
 
-					if(m_fFireRate >= SHOT_DELAY)
+					if(m_fFireTimer >= m_fFireRate)
 					{
-						m_fFireRate = 0.0f;
+						m_fFireTimer = 0.0f;
 
 					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,BUL_SHELL,this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 					}
 					else
-						m_fFireRate+=fDt;
+						m_fFireTimer+=fDt;
 				}
 			}
 		}
@@ -126,16 +126,16 @@ void CTurret::Update(float fDt)
 				else if(Steering(m_vLookVec,Vec) > 1)
 					m_fRotation += m_fRotationRate*fDt;
 
-				if(m_fFireRate >= SHOT_DELAY)
+				if(m_fFireTimer >= m_fFireRate)
 				{
-					m_fFireRate = 0.0f;
+					m_fFireTimer = 0.0f;
 
 					CCreateBulletMessage* pMsg = new CCreateBulletMessage(MSG_CREATEBULLET,m_nBulletType,this);
 					CMessageSystem::GetInstance()->SndMessage(pMsg);
 					pMsg = nullptr;
 				}
 				else
-					m_fFireRate+=fDt;
+					m_fFireTimer+=fDt;
 
 				}
 			}
@@ -220,6 +220,7 @@ CTurret::CTurret(void)
 	m_fRotation = 0.0f;
 	m_fRotationRate = 0.0f;
 	m_fFireRate = 0.0f;
+	m_fFireTimer = 1.0f;
 	m_fMaxDistance = 300.0f;
 	m_vUpVec.fX = 0.0;
 	m_vUpVec.fY = -1.0f;

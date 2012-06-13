@@ -140,6 +140,7 @@ CGamePlayState::CGamePlayState(void)
 	m_nDeadTree = -1;
 	m_nBarricade = -1;
 	m_nDeadBarr = -1;
+	m_nPirateTurret = -1;
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
 	m_bWinner = false;
@@ -251,11 +252,13 @@ void CGamePlayState::Enter(void)
 				//Pirate
 				m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
 				m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/RPG_Pirate.png"));
-				//m_anEnemyIDs[6]=?;
-				//m_anEnemyIDs[7]=?;
+				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/PIRATETANK.png")); 
+				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/PirateTurret.png"));
 				m_anEnemyIDs[11]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip1.png"));
 				m_anEnemyIDs[12]=m_pTM->LoadTexture(_T("resource/graphics/PirateShip2.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
+				m_anEnemyIDs[9]=m_pTM->LoadTexture(_T("resource/graphics/pStationTurret.png"));
+				m_nPirateTurret = m_pTM->LoadTexture(_T("resource/graphics/pirateshipturret.png"));
 				m_pTile->Load("resource/files/PirateLevel.xml");	
 			}
 			break;
@@ -409,10 +412,10 @@ void CGamePlayState::Enter(void)
 		player->SetDoubleDamage(true);
 		player->SetDamageTimer(15);
 		player->SetNoReloadTimer(150);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(15);
-		player->SetInfAmmo(true);
-		player->SetInfoAmmoTimer(150);
+		player->SetInvul(true);
+		player->SetInvulTimer(50000);
+		//player->SetInfAmmo(true);
+		//player->SetInfoAmmoTimer(150);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -535,6 +538,12 @@ void CGamePlayState::Exit(void)
 		{
 			m_pTM->UnloadTexture(WinnerID);
 			WinnerID = -1;
+		}
+
+		if(m_nPirateTurret != -1)
+		{
+			m_pTM->UnloadTexture(m_nPirateTurret);
+			m_nPirateTurret  = -1;
 		}
 
 		if(m_nDeadTree != -1)
@@ -1421,13 +1430,13 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetHeight(128);
 					tank->SetTurret(turret);
 					turret->SetOwner(tank);
-					turret->SetBullet(BUL_LASER);	
+					turret->SetBullet(BUL_ROCKET);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
-				  //turret->SetFireRate(2.5f);
+				    turret->SetFireRate(2.5f);
 					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
@@ -1454,7 +1463,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case TURRET:
 				{
 					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
-					turret->SetImageID(pSelf->m_anEnemyIDs[6]);
+					
 					turret->SetPosX(pMessage->GetPosX());
 					turret->SetPosY(pMessage->GetPosY());
 					turret->SetWidth(64);
@@ -1464,10 +1473,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetBullet(BUL_SHELL);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
-					turret->SetDistance(300);
+					turret->SetDistance(500);
 					turret->SetHealth(200);
 					turret->SetMaxHealth(200);
-				  //turret->SetFireRate(2.5f);
+					turret->SetFireRate(2.0f);
 					turret->SetTarget(CPlayer::GetInstance());
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
@@ -1475,14 +1484,17 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					if(pMessage->GetKind() == 0)
 					{
 						turret->SetDamage(20);
+						turret->SetImageID(pSelf->m_anEnemyIDs[9]);
 					}
 					else if(pMessage->GetKind() == 1)
 					{
 						turret->SetDamage(30);
+						turret->SetImageID(pSelf->m_anEnemyIDs[7]);
 					}
 					else if(pMessage->GetKind() == 2)
 					{
 						turret->SetDamage(35);
+						turret->SetImageID(pSelf->m_anEnemyIDs[7]);
 					}
 					turret->Release();
 					turret = nullptr;
@@ -1496,7 +1508,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 					enemy->SetEType(RIFLE);
-					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(64);
@@ -1893,8 +1905,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pBullet->SetHeight(32);
 					pBullet->SetScale(0.35f);
 					pBullet->SetWhoFired(false);
-					pBullet->SetVelX(300);
-					pBullet->SetVelY(300);
+					pBullet->SetVelX(norVec.fX*300);
+					pBullet->SetVelY(norVec.fY*300);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 					pBullet->SetDamage((float)(pMessage->GetFiringEntity()->GetDamage()));
 					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
@@ -1911,7 +1923,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						pBullet->SetWhoFired(true);
 					}
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_ROCKET]);
-					pBullet->SetBulletType(BUL_ROCKET);
+					pBullet->SetBulletType(BUL_SHELL);
 					pSelf->m_pOM->AddObject(pBullet);
 					pBullet->Release();
 					pBullet = nullptr;
@@ -2084,6 +2096,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			case PIRATE:
 				{
 					CPirateBoss * boss = (CPirateBoss*)pSelf->m_pOF->CreateObject("CPirateBoss");
+					 
 					boss->SetImageID(pSelf->m_anEnemyIDs[11]);
 					boss->SetOppImage(pSelf->m_anEnemyIDs[12]);
 					boss->SetPosX(576);
@@ -2091,7 +2104,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetStartX(576);
 					boss->SetWidth(512);
 					boss->SetHeight(128);
-					boss->SetTurrID(pSelf->m_nPlayerTurretID);
+					boss->SetTurrID(pSelf->m_nPirateTurret);
 					boss->SetHealth(1000);
 					boss->SetMaxHealth(1000);
 					boss->MakeTurrets();
