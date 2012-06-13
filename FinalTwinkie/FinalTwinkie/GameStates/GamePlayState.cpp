@@ -245,6 +245,7 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
 		//m_anEnemyIDs[14] =m_pTM->LoadTexture(_T());
 		//m_anEnemyIDs[15] =m_pTM->LoadTexture(_T());
+		m_nLevel = CPlayer::GetInstance()->GetLevel();
 		switch(m_nLevel)
 		{
 		case 1:
@@ -365,8 +366,8 @@ void CGamePlayState::Enter(void)
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
-		m_pPlayer=CPlayer::GetInstance();
-		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+		
+		CPlayer* player=CPlayer::GetInstance();
 		player->SetImageID(m_nPlayerID);
 		player->SetFireSound(m_anBulletSounds[5]);
 		player->SetNukeSound(m_nNukeSound);
@@ -381,39 +382,39 @@ void CGamePlayState::Enter(void)
 		player->SetMaxHealth(250);
 		player->SetArmor(50);
 		player->SetMaxArmor(50);
-		player->SetWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
-		player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
-		player->SetMoney(m_dGameData.nMoney);
-		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
+		player->SetWeaponAmmo(player->GetMaxWeaponAmmoShell(),player->GetMaxWeaponAmmoArtillery(),player->GetMaxWeaponAmmoMissile());
+		//player->SetMaxWeaponAmmo(m_dGameData.nShellAmmo,m_dGameData.nArtilleryAmmo,m_dGameData.nMissileAmmo);
+		//player->SetMoney(m_dGameData.nMoney);
+		//tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
 		//CNuke* pNuke = new CNuke();
 		//pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
 		//CSmoke* pSmoke=new CSmoke();
 		//pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
-		CReinforcements* pRF = new CReinforcements;
-		CSpecial* pSP = new CSpecial;
+		//CReinforcements* pRF = new CReinforcements;
+		//CSpecial* pSP = new CSpecial;
 		//CAirStrike* pAS = new CAirStrike;
 		//CEMP* pEMP = new CEMP;
-		player->SetSpecial1(pRF);
-		player->SetSpecial2(pSP);
-		player->SetSpecial1Ammo(player->GetSpecial1()->GetAmmoCount());
-		player->SetSpecial2Ammo(player->GetSpecial2()->GetAmmoCount());
-		player->SetOldPos(v2Pos);
-		player->SetSecondType(MACHINEGUN);
+		//player->SetSpecial1(pRF);
+		//player->SetSpecial2(pSP);
+		//player->SetSpecial1Ammo(player->GetSpecial1()->GetAmmoCount());
+		//player->SetSpecial2Ammo(player->GetSpecial2()->GetAmmoCount());
+		//player->SetOldPos(v2Pos);
+		//player->SetSecondType(MACHINEGUN);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-		player->SetRocketAccess(true);
-		player->SetArtilleryAccess(true);
+		//player->SetRocketAccess(true);
+		//player->SetArtilleryAccess(true);
 		player->SetGunSel(1);
-		player->SetMoney(m_dGameData.nMoney);
-		player->SetLevel(m_nLevel);
+		//player->SetMoney(m_dGameData.nMoney);
+		//player->SetLevel(m_nLevel);
 
 		//buffs
-		player->SetDoubleDamage(true);
-		player->SetDamageTimer(15);
-		player->SetNoReloadTimer(150);
-		player->SetInvul(true);
-		player->SetInvulTimer(50000);
+		//player->SetDoubleDamage(true);
+		//player->SetDamageTimer(15);
+		//player->SetNoReloadTimer(150);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(15);
 		//player->SetInfAmmo(true);
 		//player->SetInfoAmmoTimer(150);
 
@@ -437,14 +438,12 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->Release();
 
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
-		m_pGUI->SetPlayer(player);
+		m_pGUI->SetPlayer(CPlayer::GetInstance());
 		m_pGUI->SetSelect(m_anEnemyIDs[8]);
 		m_pGUI->SetGunSel(m_anEnemyIDs[13]);
 		m_pGUI->SetGunSelected(1);
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-
-		
 
 		
 	}
@@ -456,11 +455,12 @@ void CGamePlayState::Enter(void)
 	m_bGameOver = false;
 	gameEndTimer = 0.0f;
 
-	m_pPlayer->SetHealth((float)(m_pPlayer->GetHealth()*dynamic_cast<CPlayer*>(m_pPlayer)->GetHealthMod()));
-	m_pPlayer->SetMaxHealth((float)(m_pPlayer->GetHealth()*dynamic_cast<CPlayer*>(m_pPlayer)->GetHealthMod()));
-	dynamic_cast<CPlayer*>(m_pPlayer)->SetMaxWeaponAmmo((int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoShell()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()),(int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoArtillery()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()),(int)(dynamic_cast<CPlayer*>(m_pPlayer)->GetMaxWeaponAmmoMissile()*dynamic_cast<CPlayer*>(m_pPlayer)->GetAmmoMod()));
-	m_pPlayer->SetArmor((float)(m_pPlayer->GetArmor()*dynamic_cast<CPlayer*>(m_pPlayer)->GetArmorMod()));
-	m_pPlayer->SetMaxArmor((float)(m_pPlayer->GetMaxArmor()*dynamic_cast<CPlayer*>(m_pPlayer)->GetArmorMod()));
+	CPlayer* pPlayer = CPlayer::GetInstance();
+	pPlayer->SetHealth((float)(pPlayer->GetHealth()*pPlayer->GetHealthMod()));
+	pPlayer->SetMaxHealth((float)(pPlayer->GetHealth()*pPlayer->GetHealthMod()));
+	pPlayer->SetMaxWeaponAmmo((int)(pPlayer->GetMaxWeaponAmmoShell()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoArtillery()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoMissile()*pPlayer->GetAmmoMod()));
+	pPlayer->SetArmor((float)(pPlayer->GetArmor()*pPlayer->GetArmorMod()));
+	pPlayer->SetMaxArmor((float)(pPlayer->GetMaxArmor()*pPlayer->GetArmorMod()));
 }
 
 void CGamePlayState::Exit(void)
@@ -829,7 +829,7 @@ void CGamePlayState::Update(float fDt)
 	
 	if(!m_bPaused)
 	{
-		Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
+		Camera::GetInstance()->Update(CPlayer::GetInstance(),0,0,fDt);
 		m_PM->UpdateEverything(fDt);
 		m_pAudio->Update();
 		m_pOM->UpdateAllObjects(fDt);
@@ -876,7 +876,7 @@ void CGamePlayState::Update(float fDt)
 		}
 	}
 
-	if(m_pPlayer->GetHealth() <= 0)
+	if(CPlayer::GetInstance()->GetHealth() <= 0)
 		m_bGameOver = true;
 
 	if(m_bGameOver == true || m_bWinner == true)
@@ -1828,7 +1828,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pBuilding->SetSpawn(pMessage->GetType());
 			pBuilding->SetCanSpawn(pMessage->GetSpawn());
 			pBuilding->SetSpawnTime(pMessage->GetTime());
-			pBuilding->SetPlayer((CPlayer*)pSelf->m_pPlayer);
+			pBuilding->SetPlayer(CPlayer::GetInstance());
 			pBuilding->SetDead(false);
 			pBuilding->SetDeathImage(pSelf->m_anEnemyIDs[5]);
 			pBuilding->SetRange(500);
@@ -1881,7 +1881,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);
-					pBullet->SetScale(0.35f);
+					pBullet->SetScale(0.15f);
 					pBullet->SetWhoFired(false);
 					pBullet->SetVelX(norVec.fX*400);
 					pBullet->SetVelY(norVec.fY*400);
@@ -2222,12 +2222,12 @@ void CGamePlayState::SaveGame(const char* szFileName)
 
 	TiXmlElement* data = new TiXmlElement("game_data");
 
-	data->SetAttribute("level",			pPlayer->GetLevel());
+	data->SetAttribute("level",			m_nLevel);
 	data->SetAttribute("money",			pPlayer->GetMoney());
-	data->SetAttribute("hp",			(int)pPlayer->GetMaxHealth());
-	data->SetAttribute("armor",			(int)pPlayer->GetMaxArmor());
-	data->SetAttribute("ammo",			pPlayer->GetAmmoLevel());
-	data->SetAttribute("speed",			pPlayer->GetSpeedLevel());
+	data->SetAttribute("hp",			pPlayer->GetHealthMod());
+	data->SetAttribute("armor",			pPlayer->GetArmorMod());
+	data->SetAttribute("ammo",			pPlayer->GetAmmoMod());
+	data->SetAttribute("speed",			pPlayer->GetSpeedMod());
 	data->SetAttribute("shellammo",		pPlayer->GetMaxWeaponAmmoShell());
 	data->SetAttribute("missileammo",	pPlayer->GetMaxWeaponAmmoMissile());
 	data->SetAttribute("artilleryammo", pPlayer->GetMaxWeaponAmmoArtillery());
@@ -2261,6 +2261,11 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	data->SetAttribute("bNukem",			pPlayer->GetNukem());
 	data->SetAttribute("bIamBoss",			pPlayer->GetIamBoss());
 	data->SetAttribute("bAllUpgrades",		pPlayer->GetAllUpgrades());
+
+	data->SetAttribute("specialone",		pPlayer->GetSpecial1()->GetType());
+	data->SetAttribute("specialtwo",		pPlayer->GetSpecial2()->GetType());
+
+	data->SetAttribute("secondammo",		pPlayer->GetSecondType());
 
 	char szName[32];
 	strcpy_s(szName,32,pPlayer->GetUserName().c_str());

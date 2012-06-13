@@ -77,6 +77,9 @@ struct Data
 	// Purchase all Upgrades
 	int bAllUpgrades;	// God mode
 	
+	int nSpecialOne;
+	int nSpecialTwo;
+	int nSecondType;
 };
 
 class IGameState

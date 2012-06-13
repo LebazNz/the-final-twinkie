@@ -1,11 +1,15 @@
 #pragma once
 #include "Igamestate.h"
 
+#include "../Particle/ParticleManager.h"
+
 #include <string>
 using std::string;
 
 #include <vector>
 using std::vector;
+
+class CPlayer;
 
 
 class CLoadGameState : public IGameState
@@ -33,7 +37,9 @@ private:
 	CSGD_DirectInput*		m_pDI;
 	CSGD_TextureManager*	m_pTM;
 	CBitmapFont*			m_pFont;
-	CSGD_XAudio2*				m_pAudio;
+	CSGD_XAudio2*			m_pAudio;
+	CParticleManager*		m_PM;
+	CPlayer*				m_pPlayer;
 
 	static CLoadGameState*	m_pSelf;
 

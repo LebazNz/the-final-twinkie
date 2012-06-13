@@ -167,14 +167,22 @@ void CLoadOutState::Enter( void )
 	m_vSpCount.push_back(SPECIAL);	
 	if(m_bSmoke)
 		m_vSpCount.push_back(SMOKE);
+	else
+		m_vSpCount.push_back(-1);
 	if(m_bEMP)
 		m_vSpCount.push_back(EMP);
+	else
+		m_vSpCount.push_back(-1);
 	if(m_bNuke)
 		m_vSpCount.push_back(NUKE);
+	else
+		m_vSpCount.push_back(-1);
 	if(m_bRF)
 		m_vSpCount.push_back(REINFORCE);
 	if(m_bAirStirke)
 		m_vSpCount.push_back(AIRSTRIKE);
+	else
+		m_vSpCount.push_back(-1);
 
 	LoadText();
 	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
@@ -211,8 +219,6 @@ void CLoadOutState::Exit( void )
 	m_pSpecialTwo = nullptr;
 
 	m_nPosition = 0;
-
-	m_vSpCount.clear();
 }
 
 bool CLoadOutState::Input( void )
@@ -283,6 +289,12 @@ bool CLoadOutState::Input( void )
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 			}
 			break;
+		default:
+			{
+				CSpecial* pSpecial = new CSpecial;
+				m_pPlayer->SetSpecial1(pSpecial);
+			}
+			break;
 		}
 		switch(m_vSpCount[m_nSpecialPos2])
 		{
@@ -327,6 +339,12 @@ bool CLoadOutState::Input( void )
 				CAirStrike* pSpecial = new CAirStrike;
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+			}
+			break;
+		default:
+			{
+				CSpecial* pSpecial = new CSpecial;
+				m_pPlayer->SetSpecial2(pSpecial);
 			}
 			break;
 		}
@@ -1002,22 +1020,42 @@ void CLoadOutState::Render( void )
 	switch(m_vSpCount[m_nSpecialPos1])
 	{
 	case 0:
-		font->Print(m_sNone.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("None",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 1:
-		font->Print(m_sSmoke.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("Smoke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 2:
-		font->Print(m_sEMP.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("EMP",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 3:
-		font->Print(m_sNuke.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("Nuke",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 4:
-		font->Print(m_sReinforce.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("Reinforcements",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 5:
-		font->Print(m_sAirStrike.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos1] != -1)
+				font->Print("Air Strike",135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
+		break;
+	default:
 		break;
 	}
 
@@ -1027,22 +1065,42 @@ void CLoadOutState::Render( void )
 	switch(m_vSpCount[m_nSpecialPos2])
 	{
 	case 0:
-		font->Print(m_sNone.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+				font->Print("None",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 1:
-		font->Print(m_sSmoke.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+				font->Print("Smoke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 2:
-		font->Print(m_sEMP.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+				font->Print("EMP",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 3:
-		font->Print(m_sNuke.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+				font->Print("Nuke",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 4:
-		font->Print(m_sReinforce.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+				font->Print("Reinforcements",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
 		break;
 	case 5:
-		font->Print(m_sAirStrike.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		{
+			if(m_vSpCount[m_nSpecialPos2] != -1)
+					font->Print("Air Strike",435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+		}
+		break;
+	default:
 		break;
 	}
 
