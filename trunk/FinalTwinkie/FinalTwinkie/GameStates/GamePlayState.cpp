@@ -1358,7 +1358,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					sapper->SetPlayer(player);
 					sapper->SetSight(400);
 					sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1)  // Pirate
 					{
 						sapper->SetVelX(70);
 						sapper->SetVelY(70);
@@ -1366,7 +1366,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						sapper->SetMaxHealth(35);
 						sapper->SetDamage(10);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						sapper->SetVelX(55);
 						sapper->SetVelY(55);
@@ -1375,7 +1375,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						sapper->SetDamage(15);
 
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3) // Alien
+					{
+						sapper->SetVelX(65);
+						sapper->SetVelY(65);
+						sapper->SetHealth(100);
+						sapper->SetMaxHealth(100);
+						sapper->SetDamage(15);
+					}
+					else if(pSelf->GetLevel() == 4) // Nazi
 					{
 						sapper->SetVelX(65);
 						sapper->SetVelY(65);
@@ -1406,21 +1414,28 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
 					tank->SetSight(400);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1) // Pirate
 					{
 						tank->SetVelX(30);
 						tank->SetVelY(30);
 						tank->SetHealth(200);
 						tank->SetMaxHealth(200);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						tank->SetVelX(40);
 						tank->SetVelY(40);
 						tank->SetHealth(300);
 						tank->SetMaxHealth(300);
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3) // Alien
+					{
+						tank->SetVelX(50);
+						tank->SetVelY(50);
+						tank->SetHealth(400);
+						tank->SetMaxHealth(400);
+					}
+					else if(pSelf->GetLevel() == 4) // Nazi
 					{
 						tank->SetVelX(50);
 						tank->SetVelY(50);
@@ -1450,17 +1465,21 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1) // Pirate
 					{
 						turret->SetDamage(20);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						turret->SetDamage(30);
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3)// Alien
 					{
 						turret->SetDamage(35);
+					}
+					else if(pSelf->GetLevel() == 4) // Nazi
+					{
+						turret->SetDamage(40);
 					}
 					turret->Release();
 					turret = nullptr;
@@ -1490,17 +1509,22 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetRotationRate(1.0f);
 					turret->SetFlamer(pSelf->m_PM->GetEmitter(pSelf->FXFlame));
 					pSelf->m_pOM->AddObject(turret);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1) // Pirate
 					{
 						turret->SetDamage(20);
 						turret->SetImageID(pSelf->m_anEnemyIDs[9]);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						turret->SetDamage(30);
 						turret->SetImageID(pSelf->m_anEnemyIDs[7]);
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3) // Alien
+					{
+						turret->SetDamage(35);
+						turret->SetImageID(pSelf->m_anEnemyIDs[7]);
+					}
+					else if(pSelf->GetLevel() == 4) // Nazi
 					{
 						turret->SetDamage(35);
 						turret->SetImageID(pSelf->m_anEnemyIDs[7]);
@@ -1524,7 +1548,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
 					enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1) // Pirate
 					{
 						enemy->SetVelX(45);
 						enemy->SetVelY(45);
@@ -1532,9 +1556,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetMaxHealth(50);
 						enemy->SetDamage(1);
 
-						//enemy->SetImageID(pSelf->m_anEnemyIDs[15]);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						enemy->SetVelX(55);
 						enemy->SetVelY(55);
@@ -1542,7 +1565,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						enemy->SetMaxHealth(75);
 						enemy->SetDamage(1);
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3) // Alien
+					{
+						enemy->SetVelX(65);
+						enemy->SetVelY(65);
+						enemy->SetHealth(115);
+						enemy->SetMaxHealth(115);
+						enemy->SetDamage(1);
+					}
+					else if(pSelf->GetLevel() == 4)  //Nazi
 					{
 						enemy->SetVelX(65);
 						enemy->SetVelY(65);
@@ -1577,15 +1608,19 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetShotTimer(3.0f);
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
-					if(pMessage->GetKind() == 0)
+					if(pSelf->GetLevel() == 1) // Pirate
 					{
 						enemy->SetDamage(25);
 					}
-					else if(pMessage->GetKind() == 1)
+					else if(pSelf->GetLevel() == 2) // Robot
 					{
 						enemy->SetDamage(35);
 					}
-					else if(pMessage->GetKind() == 2)
+					else if(pSelf->GetLevel() == 3) // Alien
+					{
+						enemy->SetDamage(45);
+					}
+					else if(pSelf->GetLevel() == 4) // Nazi
 					{
 						enemy->SetDamage(45);
 					}

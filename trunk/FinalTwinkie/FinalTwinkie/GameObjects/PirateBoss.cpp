@@ -201,7 +201,7 @@ void CPirateBoss::Render(void)
 		{
 			RECT rect = {};
 			rect.top=(LONG)7; rect.left=(LONG)3; rect.right=(LONG)(3+((122-3)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)22;
-			CSGD_TextureManager::GetInstance()->Draw(m_nHealthBar,(int)(GetPosX()+C->GetPosX()), (int)(GetPosY()+C->GetPosY()),2.0f,1.0f,&rect);
+			CSGD_TextureManager::GetInstance()->Draw(m_nHealthBar,50, 50,2.0f,1.0f,&rect);
 		}
 	}
 

@@ -100,15 +100,17 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_nScreenHeight	= nScreenHeight;
 	//m_bWindowed		= bWindowed;
 
+	// Set up sound
+	m_pAudio->MusicSetMasterVolume(mainVol);
+	m_pAudio->SFXSetMasterVolume(sfxVol);
+
 	// Start the game in Main menu
 	ChangeState(CStartState::GetInstance());
 
 	// Set game time
 	m_dwTime = GetTickCount();
 
-	// Set up sound
-	m_pAudio->MusicSetMasterVolume(mainVol);
-	m_pAudio->SFXSetMasterVolume(sfxVol);
+	
 
 	
 	
