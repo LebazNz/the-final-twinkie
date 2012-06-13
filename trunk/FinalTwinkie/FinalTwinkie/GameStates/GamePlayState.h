@@ -17,6 +17,7 @@ class CAnimationManager;
 class CMessageSystem;
 class CEventSystem;
 class CGUI;
+class CPlayer;
 
 
 typedef CObjectFactory< std::string , CEntity> CFactory;
