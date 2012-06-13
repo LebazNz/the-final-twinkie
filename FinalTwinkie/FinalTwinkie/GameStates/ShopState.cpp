@@ -118,7 +118,6 @@ void CShopState::Enter(void)
 
 void CShopState::Exit(void)
 {
-
 	if(m_nShopMusic != -1)
 	{
 		if(m_pAudio->MusicIsSongPlaying(m_nShopMusic))
@@ -848,10 +847,10 @@ void CShopState::Purchase()
 				if(m_pPlayer->GetMoney()-m_nSelectedCost >= 0)
 				{
 					m_pPlayer->SetMoney(m_pPlayer->GetMoney()-m_nSelectedCost);
-					m_pPlayer->SetAmmoLevel(int(m_pPlayer->GetAmmoLevel()+m_fAmmoUp));
+					m_pPlayer->SetAmmoLevel(int(m_pPlayer->GetAmmoLevel()+1));
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
-					m_pPlayer->SetAmmoMod(m_pPlayer->GetAmmoMod()+0.2f);
+					m_pPlayer->SetAmmoMod(m_pPlayer->GetAmmoMod()+m_fAmmoUp);
 					m_nSelectedCost *= (int)m_fPriceIncrease;
 				}
 			}
@@ -919,11 +918,11 @@ void CShopState::Purchase()
 	int tempArt = -1;
 	int tempRoc = -1;
 	if(m_pPlayer->GetArtilleryAccess())
-		tempArt = 40;
+		tempArt = 40*m_pPlayer->GetAmmoMod();
 	if(m_pPlayer->GetRocketAccess())
-		tempRoc = 40;
+		tempRoc = 40*m_pPlayer->GetAmmoMod();
 
-	m_pPlayer->SetMaxWeaponAmmo(40,tempArt,tempRoc);
+	m_pPlayer->SetMaxWeaponAmmo(40*m_pPlayer->GetAmmoMod(),tempArt,tempRoc);
 	
 }
 

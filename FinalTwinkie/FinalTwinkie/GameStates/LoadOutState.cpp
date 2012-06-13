@@ -56,6 +56,8 @@ CLoadOutState::CLoadOutState(void)
 	m_nSpecialCount = 0;
 	m_nSpecialPos1 = 0;
 	m_nSpecialPos2 = 0;
+
+	m_nTotalAmmo = 0;
 }
 
 CLoadOutState::~CLoadOutState(void)
@@ -148,11 +150,11 @@ void CLoadOutState::Enter( void )
 	m_dBack = D3DCOLOR_XRGB(255,255,255);
 	m_dContinue = D3DCOLOR_XRGB(255,255,255);
 
-	m_nSpecialCount = 0;
-	m_nSpecialPos1 = m_pSpecialOne->GetType();
-	m_nSpecialPos2 = m_pSpecialTwo->GetType();
+	m_nSpecialCount = 5;
+	m_nSpecialPos1 = 0;//m_pSpecialOne->GetType();
+	m_nSpecialPos2 = 0;//m_pSpecialTwo->GetType();
 
-	if(m_bNuke)
+	/*if(m_bNuke)
 		m_nSpecialCount += 1;
 	if(m_bSmoke)
 		m_nSpecialCount += 1;
@@ -161,7 +163,7 @@ void CLoadOutState::Enter( void )
 	if(m_bAirStirke)
 		m_nSpecialCount += 1;
 	if(m_bRF)
-		m_nSpecialCount += 1;	
+		m_nSpecialCount += 1;	*/
 
 	m_vSpCount.clear();
 	m_vSpCount.push_back(SPECIAL);	
@@ -187,6 +189,8 @@ void CLoadOutState::Enter( void )
 	LoadText();
 	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
 	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+
+	m_nTotalAmmo = 40*m_pPlayer->GetAmmoMod();
 }
 
 void CLoadOutState::Exit( void )
@@ -465,14 +469,41 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos1 -= 1;
 
-		if(m_nSpecialPos1 < 0)
-			m_nSpecialPos1 = m_nSpecialCount;
+		if(m_nSpecialPos1 <= 0)
+			for(int i = m_vSpCount.size()-1; i > 0; i--)
+			{
+				if(m_vSpCount[i] != -1)
+					m_nSpecialPos1 = m_vSpCount[i];
+			}	
+
+		if(m_vSpCount[m_nSpecialPos1] == -1)
+			while(m_vSpCount[m_nSpecialPos1] == -1)
+			{
+				m_nSpecialPos1 -= 1;
+				if(m_nSpecialPos1 < 0)
+					m_nSpecialPos1 = m_nSpecialCount;
+
+			}
 
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
 		{
 			m_nSpecialPos1 -= 1;
-			if(m_nSpecialPos1 < 0)
-				m_nSpecialPos1 = m_nSpecialCount;
+			if(m_nSpecialPos1 <= 0)
+				for(int i = m_vSpCount.size()-1; i > 0; i--)
+				{
+					if(m_vSpCount[i] != -1)
+						m_nSpecialPos1 = m_vSpCount[i];
+				}
+			if(m_vSpCount[m_nSpecialPos1] == -1)
+				while(m_vSpCount[m_nSpecialPos1] == -1/* && m_nSpecialPos1 == m_nSpecialPos2*/)
+				{
+					m_nSpecialPos1 -= 1;
+					if(m_nSpecialPos1 < 0)
+						m_nSpecialPos1 = m_nSpecialCount;
+
+					if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+						continue;
+				}
 		}
 	}
 
@@ -482,14 +513,40 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos1 += 1;
 
-		if(m_nSpecialPos1 > m_nSpecialCount)
-			m_nSpecialPos1 = 0;
+		if(m_nSpecialPos1 >= m_nSpecialCount)
+			for(int i = 0; i < m_vSpCount.size()-1; i++)
+			{
+				if(m_vSpCount[i] != -1)
+					m_nSpecialPos1 = m_vSpCount[i];
+			}
+
+		if(m_vSpCount[m_nSpecialPos1] == -1)
+			while(m_vSpCount[m_nSpecialPos1] == -1)
+			{
+				m_nSpecialPos1 += 1;
+				if(m_nSpecialPos1 > m_nSpecialCount)
+					m_nSpecialPos1 = 0;
+			}
 
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
 		{
 			m_nSpecialPos1 += 1;
-			if(m_nSpecialPos1 > m_nSpecialCount)
-				m_nSpecialPos1 = 0;
+			if(m_nSpecialPos1 >= m_nSpecialCount)
+				for(int i = 0; i < m_vSpCount.size()-1; i++)
+			{
+				if(m_vSpCount[i] != -1)
+					m_nSpecialPos1 = m_vSpCount[i];
+			}
+
+			if(m_vSpCount[m_nSpecialPos1] == -1)
+				while(m_vSpCount[m_nSpecialPos1] == -1/* && m_nSpecialPos1 == m_nSpecialPos2*/)
+				{
+					m_nSpecialPos1 += 1;
+					if(m_nSpecialPos1 > m_nSpecialCount)
+						m_nSpecialPos1 = 0;
+					if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+						continue;
+				}
 		}
 	}
 
@@ -499,14 +556,40 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos2 -= 1;
 
-		if(m_nSpecialPos2 < 0)
-			m_nSpecialPos2 = m_nSpecialCount;
+		if(m_nSpecialPos2 <= 0)
+			for(int i = m_vSpCount.size()-1; i > 0; i--)
+			{
+				if(m_vSpCount[i] != -1)
+					m_nSpecialPos2 = m_vSpCount[i];
+			}
+
+		if(m_vSpCount[m_nSpecialPos2] == -1)
+			while(m_vSpCount[m_nSpecialPos2] == -1)
+			{
+				m_nSpecialPos2 -= 1;
+				if(m_nSpecialPos2 < 0)
+					m_nSpecialPos2 = m_nSpecialCount;
+			}
 
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
 		{
 			m_nSpecialPos2 -= 1;
-			if(m_nSpecialPos2 < 0)
-				m_nSpecialPos2 = m_nSpecialCount;
+			if(m_nSpecialPos2 <= 0)
+				for(int i = m_vSpCount.size()-1; i > 0; i--)
+				{
+					if(m_vSpCount[i] != -1)
+						m_nSpecialPos2 = m_vSpCount[i];
+				}
+
+			if(m_vSpCount[m_nSpecialPos2] == -1)
+				while(m_vSpCount[m_nSpecialPos2] == -1/* && m_nSpecialPos1 == m_nSpecialPos2*/)
+				{
+					m_nSpecialPos2 -= 1;
+					if(m_nSpecialPos2 < 0)
+						m_nSpecialPos2 = m_nSpecialCount;
+					if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+						continue;
+				}
 		}
 	}
 
@@ -516,14 +599,39 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos2 += 1;
 
-		if(m_nSpecialPos2 > m_nSpecialCount)
-			m_nSpecialPos2 = 0;
+		if(m_nSpecialPos2 >= m_nSpecialCount)
+			for(int i = 0; i < m_vSpCount.size()-1; i++)
+			{
+				if(m_vSpCount[i] != -1)
+					m_nSpecialPos2 = m_vSpCount[i];
+			}
+
+		if(m_vSpCount[m_nSpecialPos2] == -1)
+			while(m_vSpCount[m_nSpecialPos2] == -1)
+			{
+				m_nSpecialPos2 += 1;
+				if(m_nSpecialPos2 > m_nSpecialCount)
+					m_nSpecialPos2 = 0;
+			}
 
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
 		{
 			m_nSpecialPos2 += 1;
-			if(m_nSpecialPos2 > m_nSpecialCount)
-				m_nSpecialPos2 = 0;
+			if(m_nSpecialPos2 >= m_nSpecialCount)
+				for(int i = 0; i < m_vSpCount.size()-1; i++)
+				{
+					if(m_vSpCount[i] != -1)
+						m_nSpecialPos2 = m_vSpCount[i];
+				}
+			if(m_vSpCount[m_nSpecialPos2] == -1)
+				while(m_vSpCount[m_nSpecialPos2] == -1/* && m_nSpecialPos1 == m_nSpecialPos2*/)
+				{
+					m_nSpecialPos2 += 1;
+					if(m_nSpecialPos2 > m_nSpecialCount)
+						m_nSpecialPos2 = 0;
+					if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
+							continue;
+				}
 		}
 			
 	}
@@ -1046,13 +1154,13 @@ void CLoadOutState::Render( void )
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print(m_sReinforce.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),135,450,0.75f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print(m_sAirStrike.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sAirStrike.c_str(),135,450,0.75f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	default:
@@ -1091,13 +1199,13 @@ void CLoadOutState::Render( void )
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print(m_sReinforce.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),435,450,0.75f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-					font->Print(m_sAirStrike.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sAirStrike.c_str(),435,450,0.75f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	default:

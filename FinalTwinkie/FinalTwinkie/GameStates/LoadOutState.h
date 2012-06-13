@@ -72,6 +72,8 @@ private:
 	int m_nButton;
 	int m_nClick;
 
+	int m_nTotalAmmo;
+
 	DWORD m_dShellMin;
 	DWORD m_dShellMax;
 	DWORD m_dRocketMin;

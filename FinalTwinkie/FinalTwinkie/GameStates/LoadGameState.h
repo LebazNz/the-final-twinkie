@@ -63,5 +63,8 @@ private:
 	string m_sName;
 	string m_sLevel;
 	string m_sMoney;
+
+	int FXNuke;
+	int FXSmoke;
 };
 
