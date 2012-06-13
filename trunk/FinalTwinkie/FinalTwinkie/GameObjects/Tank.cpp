@@ -250,6 +250,17 @@ RECT CTank::GetRect(void)
 	rect.right=(LONG)((GetPosX()+C->GetPosX())+m_fRotationWidth/2);
 	return rect;
 }
+RECT CTank::GetSpawnRect()
+{
+	this->GetPosX();
+	Camera* C=Camera::GetInstance();
+	RECT rect;
+	rect.top=(LONG)((GetPosY()+C->GetPosY())-GetHeight()/2);
+	rect.left=(LONG)((GetPosX()+C->GetPosX())-GetWidth()/2);
+	rect.bottom=(LONG)((GetPosY()+C->GetPosY())+GetHeight()/2);
+	rect.right=(LONG)((GetPosX()+C->GetPosX())+GetWidth()/2);
+	return rect;
+}
 
 
 void CTank::SlowVel(float time, float vel)

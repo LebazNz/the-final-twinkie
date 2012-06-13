@@ -8,6 +8,7 @@
 #include "../Event and Messages/DestroyBuildingMessage.h"
 #include "../Event and Messages/DestroyTreeMessage.h"
 #include "../Event and Messages/DestroyNaziBoss.h"
+#include "../Event and Messages/DestroyRobotBoss.h"
 #include "../GameStates/OptionsState.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Headers/Camera.h"
@@ -21,6 +22,7 @@
 #include "Tree.h"
 #include "Factory.h"
 #include "../SGD Wrappers/CSGD_XAudio2.h"
+#include "../GameObjects/RobotBoss.h"
 
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../SGD Wrappers/CSGD_DirectInput.h"
@@ -310,6 +312,22 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
 						CMessageSystem::GetInstance()->SndMessage(pMsg);
 						pMsg = nullptr;
+					}
+				}
+				break;
+			case OBJ_ROBOTBOSS:
+				{
+					RobotBoss* pBoss = dynamic_cast<RobotBoss*>(pBase);
+					pBoss->TakeDamage((int)this->m_fDamage);
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				//	pBoss->TakeDamage((int)(this->m_fDamage));
+					if(pBoss->GetHealth()<=0)
+					{
+						CDestroyRobotBoss* pDest=new CDestroyRobotBoss(pBoss);
+						CMessageSystem::GetInstance()->SndMessage(pDest);
+						pDest = nullptr;
 					}
 				}
 				break;

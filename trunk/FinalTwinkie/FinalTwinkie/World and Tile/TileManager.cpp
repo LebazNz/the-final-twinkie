@@ -374,7 +374,7 @@ void CTileManager::RaiseWall(void)
 		CEventSystem::GetInstance()->SendEvent("wall_raise",wallTiles[i]);
 	}
 
-	CCreateBoss* pMsg = new CCreateBoss(PIRATE,0,0);
+	CCreateBoss* pMsg = new CCreateBoss(ROBOT,0,0);
 	CMessageSystem::GetInstance()->SndMessage(pMsg);
 	pMsg = nullptr;
 
