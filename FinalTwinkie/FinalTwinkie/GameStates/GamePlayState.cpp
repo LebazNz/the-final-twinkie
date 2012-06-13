@@ -274,7 +274,7 @@ void CGamePlayState::Enter(void)
 				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankBase.png"));
 				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankTurret.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RobotSoldier.png"));
-				m_pTile->Load("resource/files/RobotLevel.xml");
+				m_pTile->Load("resource/files/test.xml");
 			}
 			break;
 		case 3:
@@ -427,7 +427,7 @@ void CGamePlayState::Enter(void)
 		m_pGUI->SetGunSelected(1);
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-
+		m_pPlayer = CPlayer::GetInstance();
 		
 	}
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -1002,6 +1002,8 @@ void CGamePlayState::Render(void)
 		}
 		else
 		{
+			m_nLevel++;
+			m_pPlayer->SetLevel(m_nLevel);
 			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 		}
 	}

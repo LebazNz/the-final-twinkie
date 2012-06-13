@@ -323,7 +323,7 @@ void CPirateBoss::MakeTurrets(void)
 		tOne->SetInvul(true);
 		tOne->SetOwner(nullptr);
 		tOne->SetBullet(BUL_SHELL);	
-		tOne->SetDamage(20);
+		tOne->SetDamage(10);
 		tOne->SetRotationPositon(32,98);
 		tOne->SetUpVec(0,-1);
 		tOne->SetDistance(400);
@@ -343,7 +343,7 @@ void CPirateBoss::MakeTurrets(void)
 		tTwo->SetInvul(true);
 		tTwo->SetOwner(nullptr);
 		tTwo->SetBullet(BUL_SHELL);	
-		tTwo->SetDamage(35);
+		tTwo->SetDamage(20);
 		tTwo->SetRotationPositon(32,98);
 		tTwo->SetUpVec(0,-1);
 		tTwo->SetDistance(350);
@@ -363,7 +363,7 @@ void CPirateBoss::MakeTurrets(void)
 		tThree->SetInvul(true);
 		tThree->SetOwner(nullptr);
 		tThree->SetBullet(BUL_SHELL);
-		tThree->SetDamage(20);
+		tThree->SetDamage(10);
 		tThree->SetRotationPositon(32,98);
 		tThree->SetUpVec(0,-1);
 		tThree->SetDistance(400);
@@ -383,7 +383,7 @@ void CPirateBoss::MakeTurrets(void)
 		tFour->SetInvul(true);
 		tFour->SetOwner(nullptr);
 		tFour->SetBullet(BUL_SHELL);
-		tFour->SetDamage(20);
+		tFour->SetDamage(10);
 		tFour->SetRotationPositon(32,98);
 		tFour->SetUpVec(0,-1);
 		tFour->SetDistance(300);
@@ -403,7 +403,7 @@ void CPirateBoss::MakeTurrets(void)
 		tFive->SetInvul(true);
 		tFive->SetOwner(nullptr);
 		tFive->SetBullet(BUL_SHELL);	
-		tFive->SetDamage(35);
+		tFive->SetDamage(25);
 		tFive->SetRotationPositon(32,98);
 		tFive->SetUpVec(0,-1);
 		tFive->SetDistance(100);
@@ -423,7 +423,7 @@ void CPirateBoss::MakeTurrets(void)
 		tSix->SetInvul(true);
 		tSix->SetOwner(nullptr);
 		tSix->SetBullet(BUL_SHELL);	
-		tSix->SetDamage(35);
+		tSix->SetDamage(15);
 		tSix->SetRotationPositon(32,98);
 		tSix->SetUpVec(0,-1);
 		tSix->SetDistance(150);

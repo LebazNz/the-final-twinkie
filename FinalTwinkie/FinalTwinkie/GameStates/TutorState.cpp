@@ -323,7 +323,7 @@ void CTutorState::Enter(void)
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(2);
 		player->SetOldPos(v2Pos);
-		player->SetSecondType(MACHINEGUN);
+		player->SetSecondType(LAZER);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -337,7 +337,7 @@ void CTutorState::Enter(void)
 		PlayerTurret->SetPosX(player->GetPosX());
 		PlayerTurret->SetPosY(player->GetPosY());
 		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(BUL_SHELL);
+		PlayerTurret->SetBullet(FLAME);
 		PlayerTurret->SetWidth(64);
 		PlayerTurret->SetHeight(128);
 		PlayerTurret->SetRotationPositon(32,98);

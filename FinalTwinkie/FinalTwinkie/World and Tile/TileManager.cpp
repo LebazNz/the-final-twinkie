@@ -292,11 +292,13 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					{
 						if(m_vTiles[i][j].GetTrigger() == 1)
 						{
-							RaiseWall();
-							
-
 							if(CGame::GetInstance()->isTutor == true)
+							{
 								CTutorState::GetInstance()->IncrementBox();
+								break;
+							}
+
+							RaiseWall();
 
 							m_vTiles[i][j].SetCollision(false);
 							break;
