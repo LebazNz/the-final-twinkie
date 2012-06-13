@@ -12,6 +12,7 @@
 #include "../PickUps and Specials/Special.h"
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../Boss/NaziBoss.h"
+#include "../GameObjects/Factory.h"
 #include "../SGD Wrappers/CSGD_XAudio2.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
@@ -463,10 +464,10 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_ENEMY:
 			{
-				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+				/*CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
 				CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
 				CMessageSystem::GetInstance()->SndMessage(pMse);
-				pMse = nullptr;
+				pMse = nullptr;*/
 			}
 			break;
 		case OBJ_PICKUP:
@@ -514,6 +515,7 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 					{
 						pEnemy->SetCollision();
 						this->TakeDamage(50);
+						m_nDamageTaken+=50;
 					}
 				}
 			}
@@ -521,7 +523,7 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 		case OBJ_FACTORY:
 			{
 				Camera *cam = Camera::GetInstance();
-				CPlayer* pEnemy =dynamic_cast<CPlayer*>(pBase);
+				Factory* pEnemy =dynamic_cast<Factory*>(pBase);
 
 				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
 				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
@@ -606,7 +608,7 @@ CPlayer::CPlayer(void)
 	m_nTotalMoneyEarned	= 0;
 	m_nUnitsKilled		= 0;
 	m_nSappersExploded	= 0; 
-
+	m_nDamageTaken = 0;
 	m_bNaziBoss			= false;	
 	m_bAlienBoss		= false;
 	m_bRobotBoss		= false;

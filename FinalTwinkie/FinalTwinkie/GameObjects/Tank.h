@@ -21,7 +21,7 @@ public:
 	~CTank(void);
 
 	CTurret* GetTurret(void)const{return m_pTurret;}
-
+	RECT GetSpawnRect();
 	void SlowVel(float time, float vel);
 
 private:

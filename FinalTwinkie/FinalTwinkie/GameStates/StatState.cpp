@@ -101,7 +101,7 @@ void StatState::Render( void )
 	m_pTM->Draw(m_nButtonImageID,0,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
 	m_pFont->Print("Stats",40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+85,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwNext);
-	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+	
 	m_pFont->Print("Achievements",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+110,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pFont->Print("Press esc to exit",(int)(CGame::GetInstance()->GetWidth()/2-100),CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 
@@ -142,7 +142,7 @@ void StatState::Render( void )
 	if(CPlayer::GetInstance()->GetAllUpgrades())	
 		m_dwAllUpgrades = D3DCOLOR_XRGB(255,255,255);
 
-
+	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }
 
 void StatState::Highlight( DWORD* dwIndex )
@@ -237,7 +237,10 @@ void StatState::RenderStats()
 	}
 	{
 		char buffer[10];
-		_itoa_s(m_pPlayer->GetDamageTaken(),buffer,10);
+		if(m_pPlayer->GetDamageTaken() > 0)
+			_itoa_s(m_pPlayer->GetDamageTaken(),buffer,10);
+		else 
+			_itoa_s(0,buffer,10);
 		m_pFont->Print(buffer	,CGame::GetInstance()->GetWidth()-150,265,1.2f,D3DCOLOR_ARGB(255,255,255,255));
 	}
 	{
@@ -269,7 +272,47 @@ void StatState::RenderAchievements()
 	RECT rSelf = { };
 	SetRect(&rSelf, 653, 638, 816, 759);
 	m_pTM->Draw(m_nBGImageID,45,95,4.25f,3.5f,&rSelf,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
-
+	float scale = 0.9f;
+	if(m_pPlayer->GetNaziBoss())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("ALL YOUR REICH ARE BELONG TO ME",65,115,scale,m_dwNaziBoss);	
+	if(m_pPlayer->GetAlienBoss())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("OH NO ALIENZ"					,65,165,scale,m_dwAlienBoss);
+	if(m_pPlayer->GetRobotBoss())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("GREASED"						,65,215,scale,m_dwRobotBoss);
+	if(m_pPlayer->GetSparta())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("WE ARE NOT IN SPARTA ANYMORE"	,65,265,scale,m_dwSparta);
+	if(m_pPlayer->GetSapperAbsorb())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("WTF IS DAMAGE"					,65,315,scale,m_dwSapperAbsorb);
+	if(m_pPlayer->GetNukem())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("NUKE DUKEM"						,65,365,scale,m_dwNukem);
+	if(m_pPlayer->GetIamBoss())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("MAX PAIN"						,65,415,scale,m_dwIamBoss);
+	if(m_pPlayer->GetAllUpgrades())
+		scale = 1.2f;
+	else 
+		scale = 0.9f;
+	m_pFont->Print("I OWN IT ALL"					,65,465,scale,m_dwAllUpgrades);
 	
 	m_pFont->Print(m_sNazi.c_str(),65,115,1,m_dwNaziBoss);	
 	m_pFont->Print(m_sAlien.c_str()					,65,165,1,m_dwAlienBoss);	

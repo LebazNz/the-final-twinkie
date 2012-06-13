@@ -70,7 +70,8 @@
 #include "../tinyxml/tinyxml.h"
 #include "../GameObjects/PirateBoss.h"
 #include "../GameObjects/EMPBlast.h"
-
+#include "../GameObjects/RobotBoss.h"
+#include "../Event and Messages/DestroyRobotBoss.h"
 CGamePlayState* CGamePlayState::m_pSelf = nullptr;
 
 CGamePlayState* CGamePlayState::GetInstance(void)
@@ -363,7 +364,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<Factory>("CFactory");
 		m_pOF->RegisterClassType<CJet>("CJet");
 		m_pOF->RegisterClassType<CEMPBlast>("CEMPBlast");
-
+		m_pOF->RegisterClassType<RobotBoss>("RobotBoss");
 		m_pMS->InitMessageSystem(&MessageProc);
 
 		
@@ -432,6 +433,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetDistance(800);
 		PlayerTurret->SetRotationRate(1.0f);
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
+		player->SetMoney(6000);
 		m_pMS->ProcessMessages();
 		m_pOM->AddObject(player);
 		m_pOM->AddObject(PlayerTurret);
@@ -779,6 +781,13 @@ bool CGamePlayState::Input(void)
 			{
 				m_bPaused = !m_bPaused;
 			}
+		}
+		// take out
+		if(m_pDI->KeyPressed(DIK_O))
+		{
+			dynamic_cast<CPlayer*>(m_pPlayer)->SetSparta(true);
+			dynamic_cast<CPlayer*>(m_pPlayer)->SetAlienBoss(true);
+			dynamic_cast<CPlayer*>(m_pPlayer)->SetNukem(true);
 		}
 		if(m_pDI->KeyPressed(DIK_7))
 		{
@@ -2112,6 +2121,52 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->Release();
 				}
 				break;
+			case ROBOT:
+				{
+					RobotBoss* boss = (RobotBoss*)pSelf->m_pOF->CreateObject("RobotBoss");
+					int nID =  pSelf->m_pTM->LoadTexture(_T("resource/graphics/RobotBossBase.png"),0);
+					boss->SetImageID(nID);
+					boss->SetWidth(64);
+					boss->SetHeight(128);
+					boss->SetRotation(0);
+					boss->SetRotationRate(0.5f);
+					boss->SetSight(1000);
+					boss->SetPosX(368);
+					boss->SetPosY(624);
+					//boss->SetPosX(10);
+					//boss->SetPosY(10);
+					boss->SetVelX(10);
+					boss->SetVelY(10);
+					boss->SetHealth(200);
+					boss->SetMaxHealth(200);
+					boss->SetHasATurret(true);
+					pSelf->m_pOM->AddObject(boss);
+
+					CEntity*	ETurret;
+					int nID2 =  pSelf->m_pTM->LoadTexture(_T("resource/graphics/RobotBossTurret.png"),0);
+					ETurret = pSelf->m_pOF->CreateObject("CTurret");
+					ETurret->SetImageID(nID2);
+					ETurret->SetPosX(boss->GetPosX());
+					ETurret->SetPosY(boss->GetPosY());
+					ETurret->SetWidth(64);
+					ETurret->SetHeight(128);
+					CTurret* turret = dynamic_cast<CTurret*>(ETurret);
+					boss->SetTurret(turret);
+					turret->SetOwner(boss);
+					turret->SetBullet(BUL_SHELL);	
+					turret->SetRotationPositon(32,98);
+					turret->SetUpVec(0,-1);
+					turret->SetDistance(400);
+					//pTurret->SetFireRate(2.5f);
+					turret->SetTarget(pSelf->m_pPlayer);
+					turret->SetRotationRate(0.75f);
+					pSelf->m_pOM->AddObject(ETurret);
+					boss->Release();
+					ETurret->Release();
+
+
+				}
+				break;
 			}
 		}
 		break;
@@ -2174,6 +2229,13 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 	case MSG_DESTROYPIRATEBOSS:
 		{
 			CDestroyPirateBoss* Msg=dynamic_cast<CDestroyPirateBoss*>(pMsg);
+			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
+			pSelf->m_bWinner = true;
+		}
+		break;
+	case MSG_DESTROYROBOTBOSS:
+		{
+			CDestroyRobotBoss* Msg=dynamic_cast<CDestroyRobotBoss*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
 		}

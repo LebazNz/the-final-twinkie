@@ -624,6 +624,7 @@ bool RobotBossState::Input(void)
 	}
 	return true;
 	}
+	return true;
 }
 void RobotBossState::Update(float fDt)
 {

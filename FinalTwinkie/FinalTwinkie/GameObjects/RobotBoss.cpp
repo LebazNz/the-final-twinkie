@@ -7,13 +7,20 @@
 #include "../Event and Messages/CreateEnemyMessage.h"
 #include "../Event and Messages/MessageSystem.h"
 #include "../Event and Messages/EventSystem.h"
+#include "../Event and Messages/DestroyTurretMessage.h"
 RobotBoss::RobotBoss(void)
 {
+	m_pPlayer = CPlayer::GetInstance();
+	m_nType = OBJ_ROBOTBOSS;
 }
 
 
 RobotBoss::~RobotBoss(void)
 {
+	CTurret* pTurret = dynamic_cast<RobotBoss*>(this)->GetTurret();
+	CDestroyTurretMessage* pMst = new CDestroyTurretMessage(pTurret);
+	CMessageSystem::GetInstance()->SndMessage(pMst);
+	pMst = nullptr;
 }
 void RobotBoss::Update(float fDt)
 {
@@ -163,6 +170,8 @@ void RobotBoss::Render(void)
 	Camera* C=Camera::GetInstance();
 	CSGD_TextureManager::GetInstance()->Draw(GetImageID(), (int)(GetPosX()-GetWidth()/2+C->GetPosX()), (int)(GetPosY()-GetHeight()/2+C->GetPosY()), 1.0f, 1.0f, 0, (float)GetWidth()/2, (float)GetHeight()/2, m_fRotation);
 	}
+	CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
+	CSGD_Direct3D::GetInstance()->DrawRect(GetRect(),0,255,255);
 }
 bool RobotBoss::CheckCollision(IEntity* pBase)
 {
@@ -197,7 +206,8 @@ bool RobotBoss::CheckCollision(IEntity* pBase)
 			}
 			break;
 		case OBJ_BULLET:
-			{				
+			{	
+				return true;
 			}
 			break;
 		case OBJ_ENEMY:

@@ -310,9 +310,6 @@ void CSurvivalState::Enter( void )
 
 void CSurvivalState::Exit( void )
 {
-	
-
-
 	if(m_bPaused == false)
 	{
 		m_PM->RemoveAllBaseEmitters();
@@ -458,8 +455,7 @@ void CSurvivalState::Exit( void )
 
 bool CSurvivalState::Input( void )
 {
-	m_nNumUnits;
-	int x;
+	
 	if(m_bPaused)
 	{
 		if(m_pDI->KeyPressed(DIK_ESCAPE))
@@ -526,7 +522,7 @@ bool CSurvivalState::Input( void )
 
 void CSurvivalState::Update( float fDt )
 {
-	int x = m_nNumUnits;
+	
 	if(!m_bPaused)
 	{
 		Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
@@ -577,16 +573,16 @@ void CSurvivalState::Update( float fDt )
 
 	if(m_nNumUnits <= 0)
 	{
-		m_nNumUnits = 0;
+		
 		m_nWavesRemaining--;
 		if(m_nWavesRemaining <= 0)
 			CGame::GetInstance()->ChangeState(CSurvivalHS::GetInstance());
 		else
 		{
+			m_nNumUnits = 0;
 			m_nCurrWave++;
 			GenerateWave();
 		}
-
 	}
 }
 
@@ -669,7 +665,19 @@ void CSurvivalState::Render( void )
 		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
+	CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	char buffer[10];
+	_itoa_s(m_nCurrWave,buffer,10);
+	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	
+	
+	_itoa_s(m_nNumUnits,buffer,10);
+	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
+	
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
+
+
+
 }
 
 void CSurvivalState::MessageProc( CMessage* pMsg )
@@ -1013,7 +1021,31 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					sapper->SetWidth(32);
 					CPlayer* player = CPlayer::GetInstance();
 					sapper->SetPlayer(player);
-					sapper->SetSight(1000);
+					sapper->SetSight(10000);
+					loop:
+					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
+					{
+						RECT* temp = new RECT;
+						do 
+						{
+							if(IntersectRect(temp,&sapper->GetRect(),pSelf->m_vRECTS[i]))
+							{
+								sapper->SetPosX(rand()%500+100);
+								sapper->SetPosY(rand()%500+100);
+							}
+							else 
+								break;
+
+						} while (true);
+					}
+					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
+					{
+						RECT* temp2 = new RECT;
+						if(IntersectRect(temp2,&sapper->GetRect(),pSelf->m_vRECTS[k]))
+						{
+							goto loop;
+						}
+					}
 					if(pMessage->GetKind() == 0)
 					{
 						sapper->SetVelX(45);
@@ -1062,10 +1094,36 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					tank->SetPlayer(player);
 					tank->SetRotation(0);
 					tank->SetRotationRate(0.75f);
-					tank->SetSight(400);
+					tank->SetSight(1000);
 				
-					
-						
+					tankloop:
+					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
+					{
+						RECT* temp = new RECT;
+						do 
+						{
+							if(IntersectRect(temp,&tank->GetSpawnRect(),pSelf->m_vRECTS[i]))
+							{
+								tank->SetPosX(rand()%1500+100);
+								tank->SetPosY(rand()%1500+100);
+							}
+							else
+								break;
+
+						} while (true);
+					}
+					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
+					{
+						RECT* temp2 = new RECT;
+							RECT potato = tank->GetSpawnRect();
+						if(IntersectRect(temp2,&tank->GetSpawnRect(),pSelf->m_vRECTS[k]))
+						{
+							goto tankloop;
+						}
+					}
+					RECT* potato = new RECT;
+					potato = &tank->GetSpawnRect();
+					pSelf->m_vRECTS.push_back(&tank->GetSpawnRect());
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
@@ -1115,7 +1173,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					turret->SetBullet(BUL_LASER);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
-					turret->SetDistance(300);
+					turret->SetDistance(1000);
 					//pTurret->SetFireRate(2.5f);
 					turret->SetTarget(player);
 					turret->SetRotationRate(1.0f);
@@ -1166,6 +1224,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetHeight(32);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
+					enemy->SetMaxDistance(10000);
 					if(pMessage->GetKind() == 0)
 					{
 						enemy->SetVelX(45);
@@ -1210,10 +1269,39 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetHeight(64);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(CPlayer::GetInstance());
+					enemy->SetMaxDistance(10000);
+					enemy->SetVelX(45);
+					enemy->SetVelY(45);
 					enemy->SetHealth(50);
 					enemy->SetMaxHealth(50);
-					enemy->SetVelX(30);
-					enemy->SetVelY(30);
+					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					if(pMessage->GetKind() == 0)
+					{
+						enemy->SetVelX(45);
+						enemy->SetVelY(45);
+						enemy->SetHealth(50);
+						enemy->SetMaxHealth(50);
+						enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						enemy->SetVelX(55);
+						enemy->SetVelY(55);
+						enemy->SetHealth(75);
+						enemy->SetMaxHealth(75);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png",0));
+						enemy->SetImageID(nID);
+
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						enemy->SetVelX(65);
+						enemy->SetVelY(65);
+						enemy->SetHealth(115);
+						enemy->SetMaxHealth(115);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png",0));
+						enemy->SetImageID(nID);
+					}
 					enemy->SetMinDistance(200);
 					enemy->SetMaxDistance(600);
 					enemy->SetShotTimer(3.0f);
@@ -1235,7 +1323,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
 			CEventSystem::GetInstance()->SendEvent("explode",pEnemy);
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
-			pSelf->m_nNumUnits--;
+			
+				pSelf->m_nNumUnits--;
 			int score = CPlayer::GetInstance()->GetScore()+(pEnemy->GetMaxHealth()/2)+20;
 			CPlayer::GetInstance()->SetScore(score);
 			int nRandNum = rand()%12;
@@ -1491,26 +1580,37 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 
 void CSurvivalState::GenerateWave()
 {
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
+	m_vRECTS.clear();
+	m_vRECTS.push_back(&m_pPlayer->GetRect());
+	m_nWavesRemaining = 100;
+	
+	for(unsigned int i = 0; i < /*m_vWave[m_nCurrWave]->m_nSap*/100; i++)
 	{
-		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 0, rand()%500+100, rand()%500+100, rand()%3);
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, 100, 100, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		m_nNumUnits++;
 	}
 
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
+	/*for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
 	{
-		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, rand()%500+100, rand()%500+100, rand()%3);
-		CMessageSystem::GetInstance()->SndMessage(msg);
-		m_nNumUnits++;
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, rand()%500+100, rand()%500+100, rand()%3);
+	CMessageSystem::GetInstance()->SndMessage(msg);
+	m_nNumUnits++;
+	}
+
+	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nRocket; i++)
+	{
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 4, rand()%500+100, rand()%500+100, rand()%3);
+	CMessageSystem::GetInstance()->SndMessage(msg);
+	m_nNumUnits++;
 	}
 
 	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nTanks; i++)
 	{
-		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, rand()%500+100, rand()%500+100, rand()%3);
-		CMessageSystem::GetInstance()->SndMessage(msg);
-		m_nNumUnits++;
-	}
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, rand()%500+100, rand()%500+100, rand()%3);
+	CMessageSystem::GetInstance()->SndMessage(msg);
+	m_nNumUnits++;
+	}*/
 }
 
 void CSurvivalState::LoadText(void)

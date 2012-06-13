@@ -1,0 +1,366 @@
+<?xml version="1.0"?>
+<graphic_layer>
+  <file_name>wastelandtiles.png</file_name>
+  <map_info playerx="112" playery="816" mapwidth="10" mapheight="30" tilewidth="32" tileheight="32" setwidth="19" setheight="19" />
+  <tile_row>
+    <tile_info index="198" posy="0" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="0" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="32" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="32" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="64" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="64" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="96" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="96" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="128" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="128" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="160" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="160" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="192" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="192" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="224" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="224" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="256" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="256" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="198" posy="288" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="198" posy="288" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="320" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="320" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="352" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="352" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="384" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="384" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="416" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="416" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="448" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="448" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="480" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="480" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="512" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="512" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="544" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="544" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="576" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="576" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="608" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="608" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="640" posx="0" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="32" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="64" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="96" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="128" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="160" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="192" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="224" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="256" collision="1" spawn="12" trigger="1" />
+    <tile_info index="101" posy="640" posx="288" collision="1" spawn="12" trigger="1" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="672" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="672" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="704" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="704" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="736" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="736" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="768" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="768" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="800" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="96" collision="0" spawn="15" trigger="0" />
+    <tile_info index="101" posy="800" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="800" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="832" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="832" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="864" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="864" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="896" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="896" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <tile_row>
+    <tile_info index="101" posy="928" posx="0" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="32" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="64" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="96" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="128" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="160" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="192" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="224" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="256" collision="0" spawn="0" trigger="0" />
+    <tile_info index="101" posy="928" posx="288" collision="0" spawn="0" trigger="0" />
+  </tile_row>
+  <enemy_row />
+</graphic_layer>
