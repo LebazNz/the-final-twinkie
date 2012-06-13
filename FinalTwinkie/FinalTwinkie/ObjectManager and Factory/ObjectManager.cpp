@@ -293,6 +293,24 @@ void CObjectManager::AreaEffect(float x, float y, int radius, int damage, bool E
 								m_pTarget->TakeDamage((int)damage);
 						}
 						break;
+
+					case OBJ_NAZIBOSS:
+						{
+
+						}
+						break;
+
+					case OBJ_PIRATEBOSS:
+						{
+
+						}
+						break;
+						
+					case OBJ_FACTORY:
+						{
+
+						}
+						break;
 						
 					default:
 						{} break;

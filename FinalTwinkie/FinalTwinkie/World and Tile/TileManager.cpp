@@ -314,7 +314,13 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_BULLET:
 					{
-						
+						if(CGamePlayState::GetInstance()->GetLevel() == 2)
+						{
+							CBullet* pBullet = dynamic_cast<CBullet*>(pBase);
+							CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(pBullet);
+							CMessageSystem::GetInstance()->SndMessage(pMsg);
+							pMsg = nullptr;
+						}
 					}
 					break;
 				case OBJ_ENEMY:
@@ -374,8 +380,42 @@ void CTileManager::RaiseWall(void)
 		CEventSystem::GetInstance()->SendEvent("wall_raise",wallTiles[i]);
 	}
 
-	CCreateBoss* pMsg = new CCreateBoss(ROBOT,0,0);
-	CMessageSystem::GetInstance()->SndMessage(pMsg);
-	pMsg = nullptr;
+	int level = CGamePlayState::GetInstance()->GetLevel();
+
+	switch(level)
+	{
+	case 1:
+		{
+			CCreateBoss* pMsg = new CCreateBoss(PIRATE,0,0);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+		break;
+
+	case 2:
+		{
+			CCreateBoss* pMsg = new CCreateBoss(ROBOT,0,0);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+		break;
+
+	case 3:
+		{
+			CCreateBoss* pMsg = new CCreateBoss(ALIEN,0,0);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+		break;
+
+	case 4:
+		{
+			CCreateBoss* pMsg = new CCreateBoss(NAZI,0,0);
+			CMessageSystem::GetInstance()->SndMessage(pMsg);
+			pMsg = nullptr;
+		}
+		break;
+
+	}
 
 }
