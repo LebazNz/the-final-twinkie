@@ -208,8 +208,7 @@ void CSurvivalState::Enter( void )
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
-		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+		
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -254,8 +253,6 @@ void CSurvivalState::Enter( void )
 		player->SetSpecial2Ammo(5);
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
-	//	player->SetInvul(true);
-	//	player->SetInvulTimer(50000);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -298,14 +295,14 @@ void CSurvivalState::Enter( void )
 	LoadText();
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
-
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
 	
 //	LoadWave();
 	
 	m_nNumUnits = 0;
-	//LoadWave("48wavesofhell.xml",0);
-	LoadWave("Nate.xml",0);
+	LoadWave("48wavesofhell.xml",0);
 }
 
 void CSurvivalState::Exit( void )
@@ -624,6 +621,9 @@ void CSurvivalState::Render( void )
 		m_pGUI->Render();
 		m_pD3D->GetSprite()->Flush();
 		m_pFont->Print(m_sWave.c_str(), 539,547,.67f,UINT_MAX);
+		char buffer[10];
+		_itoa_s(m_nCurrWave,buffer,10);
+		CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+150,547,.67f,UINT_MAX);
 	}
 
 	m_pD3D->GetSprite()->Flush();	
@@ -668,14 +668,14 @@ void CSurvivalState::Render( void )
 		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
-	CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
-	char buffer[10];
-	_itoa_s(m_nCurrWave,buffer,10);
-	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
-	
-	
-	_itoa_s(m_nNumUnits,buffer,10);
-	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
+	//CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	//char buffer[10];
+	//_itoa_s(m_nCurrWave,buffer,10);
+	//CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	//
+	//
+	//_itoa_s(m_nNumUnits,buffer,10);
+	//CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
 	
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 

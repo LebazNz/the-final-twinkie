@@ -9,6 +9,7 @@
 #include "../tinyxml/tinyxml.h"
 
 StatState* StatState::m_pSelf = nullptr;
+
 StatState::StatState(void)
 {
 	m_pDI = nullptr;
@@ -277,52 +278,42 @@ void StatState::RenderAchievements()
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("ALL YOUR REICH ARE BELONG TO ME",65,115,scale,m_dwNaziBoss);	
+	m_pFont->Print(m_sNazi.c_str(),65,115,scale,m_dwNaziBoss);	
 	if(m_pPlayer->GetAlienBoss())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("OH NO ALIENZ"					,65,165,scale,m_dwAlienBoss);
+	m_pFont->Print(m_sAlien.c_str()					,65,165,scale,m_dwAlienBoss);
 	if(m_pPlayer->GetRobotBoss())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("GREASED"						,65,215,scale,m_dwRobotBoss);
+	m_pFont->Print(m_sRobot.c_str()						,65,215,scale,m_dwRobotBoss);
 	if(m_pPlayer->GetSparta())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("WE ARE NOT IN SPARTA ANYMORE"	,65,265,scale,m_dwSparta);
+	m_pFont->Print(m_sSparta.c_str()	,65,265,scale,m_dwSparta);
 	if(m_pPlayer->GetSapperAbsorb())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("WTF IS DAMAGE"					,65,315,scale,m_dwSapperAbsorb);
+	m_pFont->Print(m_sWTF.c_str()					,65,315,scale,m_dwSapperAbsorb);
 	if(m_pPlayer->GetNukem())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("NUKE DUKEM"						,65,365,scale,m_dwNukem);
+	m_pFont->Print(m_sNukem.c_str()						,65,365,scale,m_dwNukem);
 	if(m_pPlayer->GetIamBoss())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("MAX PAIN"						,65,415,scale,m_dwIamBoss);
+	m_pFont->Print(m_sPain.c_str()						,65,415,scale,m_dwIamBoss);
 	if(m_pPlayer->GetAllUpgrades())
 		scale = 1.2f;
 	else 
 		scale = 0.9f;
-	m_pFont->Print("I OWN IT ALL"					,65,465,scale,m_dwAllUpgrades);
-	
-	m_pFont->Print(m_sNazi.c_str(),65,115,1,m_dwNaziBoss);	
-	m_pFont->Print(m_sAlien.c_str()					,65,165,1,m_dwAlienBoss);	
-	m_pFont->Print(m_sRobot.c_str()						,65,215,1,m_dwRobotBoss);	
-	m_pFont->Print(m_sSparta.c_str()	,65,265,1,m_dwSparta);	
-	m_pFont->Print(m_sWTF.c_str()					,65,315,1,m_dwSapperAbsorb);
-	m_pFont->Print(m_sNukem.c_str()						,65,365,1,m_dwNukem);	
-	m_pFont->Print(m_sPain.c_str()						,65,415,1,m_dwIamBoss);	
-	m_pFont->Print(m_sOwnAll.c_str()					,65,465,1,m_dwAllUpgrades);
-	
+	m_pFont->Print(m_sOwnAll.c_str()					,65,465,scale,m_dwAllUpgrades);	
 }
 
 void StatState::LoadText(void)

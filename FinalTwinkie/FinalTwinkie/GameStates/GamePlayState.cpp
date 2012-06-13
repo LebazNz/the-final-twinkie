@@ -322,7 +322,7 @@ void CGamePlayState::Enter(void)
 
 		// LOAD MUSIC HERE
 		//////////////////////////////////////////////////////////
-		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		
 		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
 		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
 		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
@@ -343,14 +343,8 @@ void CGamePlayState::Enter(void)
 		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
-
-		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 		
-		if(m_nGameMusic != -1)
-		{
-			m_pAudio->MusicPlaySong(m_nGameMusic, true);
-		}
+		
 		/////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -397,8 +391,8 @@ void CGamePlayState::Enter(void)
 		//player->SetDoubleDamage(true);
 		//player->SetDamageTimer(15);
 		//player->SetNoReloadTimer(150);
-		player->SetInvul(true);
-		player->SetInvulTimer(10000000);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(10000000);
 		//player->SetInfAmmo(true);
 		//player->SetInfoAmmoTimer(150);
 
@@ -416,7 +410,6 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetDistance(800);
 		PlayerTurret->SetRotationRate(1.0f);
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
-		player->SetMoney(6000);
 		m_pMS->ProcessMessages();
 		m_pOM->AddObject(player);
 		m_pOM->AddObject(PlayerTurret);
@@ -446,6 +439,13 @@ void CGamePlayState::Enter(void)
 	pPlayer->SetMaxWeaponAmmo((int)(pPlayer->GetMaxWeaponAmmoShell()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoArtillery()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoMissile()*pPlayer->GetAmmoMod()));
 	pPlayer->SetArmor((float)(pPlayer->GetArmor()*pPlayer->GetArmorMod()));
 	pPlayer->SetMaxArmor((float)(pPlayer->GetMaxArmor()*pPlayer->GetArmorMod()));
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+	if(m_nGameMusic != -1)
+	{
+		m_pAudio->MusicPlaySong(m_nGameMusic, true);
+	}
 }
 
 void CGamePlayState::Exit(void)
@@ -1004,7 +1004,6 @@ void CGamePlayState::Render(void)
 		}
 		else
 		{
-			m_nLevel++;
 			m_pPlayer->SetLevel(m_nLevel);
 			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
 		}
@@ -1469,7 +1468,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					turret->SetHeight(128);
 					tank->SetTurret(turret);
 					turret->SetOwner(tank);
-					turret->SetBullet(BUL_ROCKET);	
+					turret->SetBullet(BUL_SHELL);	
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
 					turret->SetDistance(300);
@@ -2150,8 +2149,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetImageID(pSelf->m_anEnemyIDs[9]);
 					boss->SetWidth(148);
 					boss->SetHeight(260);
-					boss->SetPosX(Msg->GetPosX());
-					boss->SetPosY(Msg->GetPosY());
+					boss->SetPosX(928);
+					boss->SetPosY(544);
 					boss->SetPlayer(CPlayer::GetInstance());
 					boss->CreateTurrets();
 					boss->SetHealth(1000);
@@ -2298,9 +2297,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pSelf->m_pOM->RemoveObject(Msg->GetBoss());
 			pSelf->m_bWinner = true;
 			pSelf->m_nLevel++;
-			CPlayer::GetInstance()->SetAlienBoss(true);
-			pSelf->m_bAGet=true;
-			pSelf->m_fGetTimer=0;
 		}
 		break;
 	case MSG_DESTROYROBOTBOSS:
