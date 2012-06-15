@@ -191,19 +191,21 @@ void CGamePlayState::Enter(void)
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 		}
 
-		m_AM->Load("AnimationInfo.xml");
+		//m_AM->Load("AnimationInfo.xml");
 		//m_AM->Save("AnimationInfo.xml");
-
-		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
-
+		
+		m_nLevel = CPlayer::GetInstance()->GetLevel();
+		if(m_nLevel != 4)
+			m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/Loading Image.png"));
+		else
+			m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/Loading Image2.png"));
+		
 		m_pD3D->Clear( 0, 255, 255 );// Clear the background
 
 		// Start D3D rendering
 		m_pD3D->DeviceBegin();
 		m_pD3D->SpriteBegin();	
-
-		m_pTM->Draw(m_nBackGround,0,0,0.8f,0.6f);
-	
+		RenderText(false);
 		m_pD3D->GetSprite()->Flush();	
 		m_pD3D->SpriteEnd();
 		m_pD3D->DeviceEnd();	
@@ -250,8 +252,6 @@ void CGamePlayState::Enter(void)
 		m_bAGet=false;
 		m_fGetTimer=0;
 		m_pPlayer=CPlayer::GetInstance();
-
-		m_nLevel = CPlayer::GetInstance()->GetLevel();
 		switch(m_nLevel)
 		{
 		case 1:
@@ -272,17 +272,17 @@ void CGamePlayState::Enter(void)
 		case 2:
 			{
 				m_anEnemyIDs[1]=m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
-				//m_anEnemyIDs[4]=?;
+				m_anEnemyIDs[4]=m_pTM->LoadTexture( _T( "resource/graphics/RobotRocket.png"));
 				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankBase.png"));
 				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankTurret.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RobotSoldier.png"));
-				m_pTile->Load("resource/files/test.xml");
+				m_pTile->Load("resource/files/test3.xml");
 			}
 			break;
 		case 3:
 			{
 				m_anEnemyIDs[1]=m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
-				//m_anEnemyIDs[4]=?;
+				m_anEnemyIDs[4]=m_pTM->LoadTexture( _T( "resource/graphics/AlienRocket.png"));
 				m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/AlienTankBase.png"));
 				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/AlienTankTurret.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/AlienSoldier.png"));
@@ -301,6 +301,10 @@ void CGamePlayState::Enter(void)
 				m_pTile->Load("resource/files/NaziLevel.xml");
 			}
 			break;
+		default:
+			{
+
+			}
 		}
 
 		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
@@ -408,7 +412,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetRotationPositon(32,98);
 		PlayerTurret->SetUpVec(0,-1);
 		PlayerTurret->SetDistance(800);
-		PlayerTurret->SetRotationRate(1.0f);
+		PlayerTurret->SetRotationRate(1.6f);
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
 		m_pMS->ProcessMessages();
 		m_pOM->AddObject(player);
@@ -446,6 +450,9 @@ void CGamePlayState::Enter(void)
 	{
 		m_pAudio->MusicPlaySong(m_nGameMusic, true);
 	}
+
+
+	ResumeGame();
 }
 
 void CGamePlayState::Exit(void)
@@ -1449,9 +1456,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					else if(pSelf->GetLevel() == 2) // Robot
 					{
-						sapper->SetVelX(55);
-						sapper->SetVelY(55);
-						sapper->SetHealth(60);
+						sapper->SetVelX(90);
+						sapper->SetVelY(90);
+						sapper->SetHealth(50);
 						sapper->SetMaxHealth(60);
 						sapper->SetDamage(15);
 
@@ -1505,11 +1512,11 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					else if(pSelf->GetLevel() == 2) // Robot
 					{
-						tank->SetVelX(40);
-						tank->SetVelY(40);
+						tank->SetVelX(20);
+						tank->SetVelY(20);
 						tank->SetHealth(300);
 						tank->SetMaxHealth(300);
-						tank->SetDamage(20);
+						tank->SetDamage(25);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
@@ -1555,7 +1562,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					else if(pSelf->GetLevel() == 2) // Robot
 					{
-						turret->SetDamage(30);
+						turret->SetDamage(25);
 					}
 					else if(pSelf->GetLevel() == 3)// Alien
 					{
@@ -1645,8 +1652,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					{
 						enemy->SetVelX(55);
 						enemy->SetVelY(55);
-						enemy->SetHealth(75);
-						enemy->SetMaxHealth(75);
+						enemy->SetHealth(100);
+						enemy->SetMaxHealth(100);
 						enemy->SetDamage(2);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
@@ -1698,7 +1705,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					else if(pSelf->GetLevel() == 2) // Robot
 					{
-						enemy->SetDamage(35);
+						enemy->SetHealth(110);
+						enemy->SetMaxHealth(110);
+						enemy->SetDamage(25);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
@@ -2257,7 +2266,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetWidth(64);
 					boss->SetHeight(128);
 					boss->SetRotation(0);
-					boss->SetRotationRate(0.5f);
+					boss->SetRotationRate(0.2f);
 					boss->SetSight(1000);
 					boss->SetPosX(368);
 					boss->SetPosY(624);
@@ -2281,13 +2290,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					CTurret* turret = dynamic_cast<CTurret*>(ETurret);
 					boss->SetTurret(turret);
 					turret->SetOwner(boss);
+					turret->SetRotationRate(0.1f);
 					turret->SetFireRate(0.2f);
-					turret->SetDamage(3);
-					turret->SetBullet(BUL_LASER);
+					turret->SetDamage(5);
+					turret->SetBullet(BUL_SHELL);
 					//turret->SetFlamer(CParticleManager::GetInstance()->GetEmitter(pSelf->FXFlame));
 					turret->SetRotationPositon(32,98);
 					turret->SetUpVec(0,-1);
-					turret->SetDistance(400);
+					turret->SetDistance(600);
 					//turret->
 					//pTurret->SetFireRate(2.5f);
 					turret->SetTarget(pSelf->m_pPlayer);
@@ -2710,4 +2720,331 @@ void CGamePlayState::LoadText(void)
 			break;
 		}
 	}
+}
+
+void CGamePlayState::RenderText(bool bContinue)
+{
+	m_pTM->Draw(m_nBackGround,0,0,1.8f,1.8f);
+	switch(m_nLevel)
+	{
+	case 1:
+		{
+			switch(COptionsState::GetInstance()->GetLang())
+			{
+			case 0:
+				{
+					m_pFont->Print("Greetings. I have been informed you ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("are the person to contact to get ",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("things done. I am searching for an ",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ancient relic. I want you to get it",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("for me. But first I need you to ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("eliminate a pirate lord. He is close",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to finding the relic and I will not ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("allow that. I am giving you an old ",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("but powerful weapon to get the job  ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("done. So get it done.  ",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 1:
+				{
+					m_pFont->Print("Greetings. I have been informed you ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("are the person to contact to get ",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("things done. I am searching for an ",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ancient relic. I want you to get it",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("for me. But first I need you to ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("eliminate a pirate lord. He is close",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to finding the relic and I will not ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("allow that. I am giving you an old ",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("but powerful weapon to get the job  ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("done. So get it done.  ",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 2:
+				{
+					m_pFont->Print("AHOY. I have bee lookin fer a ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("guy who be able to get tings ",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("done. I be searchin fer some ",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("old booty. I will be needin ye",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to get it for me. First ye to ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("eliminate me ol boss. He be",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("huntin the booty and aint be ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("allowin fer that. I will give ",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ya an ol iron beast to be   ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("doin the heist with",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 3:
+				{
+					m_pFont->Print("Ich bin daruber informiert sind ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Sie die Person zu kontaktieren ",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("um Dinge zu erledigen. Ich bin ",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("für eine Suche altes Relikt. Ich",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("möchte, dass es für mich holen. ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Aber zuerst Ich brauche dich, um",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("einen Kapitän für mich zu ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("eliminieren. Er liegt in der Nähe",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("um es zu finden und ich werde  ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("nicht zulassen. Ich gebe Sie",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ein leistungsfähiges antike Waffe",				CGame::GetInstance()->GetWidth()/2,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("um es tun. so bekommen es getan.",				CGame::GetInstance()->GetWidth()/2,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+									
+				break;
+			}
+
+			   break;
+		}
+	case 2:
+		{
+			switch(COptionsState::GetInstance()->GetLang())
+			{
+			case 0:
+				{
+					m_pFont->Print("AHA! You are just the person I",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("needed it seems. The twi.. I mean",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("relic is one step closer... BLAST",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("I have just been notified robot",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("rebels have taken over all paths",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the relic. You will have to",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("go into their base and destroy the",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("mothertank. Goodluck.",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 1:
+				{
+					m_pFont->Print("AHA! You are just the person I",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("needed it seems. The twi.. I mean",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("relic is one step closer... BLAST",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("I have just been notified robot",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("rebels have taken over all paths",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the relic. You will have to",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("go into their base and destroy the",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("mothertank. Goodluck.",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 2:
+				{
+					m_pFont->Print("ARRRG! Ye be just the mate I",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("needed it seems. The twi.. I be",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("meanin booty be one peg closer",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("... AVAST There be metal walkers",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("sailin all over the waters to",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("my treasure. I be needin ya to",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("board their ship and kill the",		CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("big metal one.",					CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("								",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 3:
+				{
+					m_pFont->Print("AHA! Sie sind nur die Person ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("die ich brauchte es scheint. die",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("TWI .. Ich meine Reliquie ist einen ",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Schritt naher ... BLAST Ich habe nur",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("mitgeteilt worden Roboter Rebellen. ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("haben ubernommen alle Wege, um",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("die Reliquie. Sie mussen in ihr gehen ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("eliminieren. Er liegt in der Nähe",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Basis und zerstören die mothertank.  ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Viel Gluck.",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("",				CGame::GetInstance()->GetWidth()/2,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("",				CGame::GetInstance()->GetWidth()/2,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+
+			}
+					   
+				
+			break;
+		}
+	case 3:
+		{
+			switch(COptionsState::GetInstance()->GetLang())
+			{
+			case 0:
+				{
+					m_pFont->Print("Goodjob! I'm looking forward to the",	CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("taste of the delicious Twinkie...",		CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("...er I mean relic. Fine it is a",		CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Twinkie. But it is the last one ",		CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("on earth. Either way you are almost",	CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the factory containing the last",	CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Twinkie in the world. The problem",		CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("is aliens want it too. If you kill",	CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("their leader they may return to the",	CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("planet they came from. Get to it.",		CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				
+
+				}
+				break;
+			case 1:
+				{
+					m_pFont->Print("Goodjob! I'm looking forward to the",	CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("taste of the delicious Twinkie...",		CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("...er I mean relic. Fine it is a",		CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Twinkie. But it is the last one ",		CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("on earth. Either way you are almost",	CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the factory containing the last",	CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Twinkie in the world. The problem",		CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("is aliens want it too. If you kill",	CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("their leader they may return to the",	CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("planet they came from. Get to it.",		CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			case 2:
+				{
+					m_pFont->Print("HAHA! Lookin forward to the",	CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("feast of Twinkies I be...",		CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("...arrgg I mean booty. ARR fine",		CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("It be a Twinkie. But it be the last ",		CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("of its kind. Ye are still close",	CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the port holdin the last o",	CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("them in the seven seas. The problem",		CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("be green critters be wantin it too.",	CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Kill them all and they will scatter",	CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to the holes they spawned from.",		CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+				case 3:
+				{
+					m_pFont->Print("Good job! Ich freue mich schon auf  ",	CGame::GetInstance()->GetWidth()/2,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("den Geschmack der köstliche twinkie",		CGame::GetInstance()->GetWidth()/2,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("... äh ich meine Reliquie. Fein	",	CGame::GetInstance()->GetWidth()/2,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ist es ein twinkie. Aber es ist",	CGame::GetInstance()->GetWidth()/2,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print(" der letzte auf Erden. so oder so ",		CGame::GetInstance()->GetWidth()/2,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Ihre fast in die Fabrik, der die ",	CGame::GetInstance()->GetWidth()/2,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("letzte Twinkie in der Welt. Das ",	CGame::GetInstance()->GetWidth()/2,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Problem ist, Aliens wollen, dass es",	CGame::GetInstance()->GetWidth()/2,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Auch. Wenn Sie ihren Anführer töten  ",	CGame::GetInstance()->GetWidth()/2,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("können sie zur Rückkehr der Planet",				CGame::GetInstance()->GetWidth()/2,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("sie hergekommen sind. Holen Sie",				CGame::GetInstance()->GetWidth()/2,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("sich darauf.",				CGame::GetInstance()->GetWidth()/2,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+				break;
+			}
+
+
+			break;
+		}
+	
+	case 4:
+		{
+			switch(COptionsState::GetInstance()->GetLang())
+			{
+			case 0:
+				{
+					m_pFont->Print("You found it. But I don't have much",						CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("longer. The nazis have come for me....",					CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("They are looking for me. You must",							CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("get to their leader and kill him...",						CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Oh the agony. I am dying soon. No",							CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("really I am. I am bleeding. It",							CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("hurts. There is one last thing I ",							CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("want to tell you. But it seems I",							CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("do not have the strength to.",								CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("continue Because I am dying. So I",							CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("will never be able to tell you the",						CGame::GetInstance()->GetWidth()/2-10,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("important information I want you",							CGame::GetInstance()->GetWidth()/2-10,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to know.............................................",		CGame::GetInstance()->GetWidth()/2-10,390,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("..............................................................",				CGame::GetInstance()->GetWidth()/2-10,420,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("........ This is awkward...AHHHHHHHH",						CGame::GetInstance()->GetWidth()/2-10,450,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+				break;
+			case 1:
+				{
+					m_pFont->Print("You found it. But I don't have much",						CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("longer. The nazis have come for me....",					CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("They are looking for me. You must",							CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("get to their leader and kill him...",						CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Oh the agony. I am dying soon. No",							CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("really I am. I am bleeding. It",							CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("hurts. There is one last thing I ",							CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("want to tell you. But it seems I",							CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("do not have the strength to.",								CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("continue Because I am dying. So I",							CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("will never be able to tell you the",						CGame::GetInstance()->GetWidth()/2-10,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("important information I want you",							CGame::GetInstance()->GetWidth()/2-10,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("to know.............................................",		CGame::GetInstance()->GetWidth()/2-10,390,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("..............................................................",				CGame::GetInstance()->GetWidth()/2-10,420,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("........ This is awkward...AHHHHHHHH",						CGame::GetInstance()->GetWidth()/2-10,450,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+				break;
+			case 2:
+				{
+					m_pFont->Print("Ye done it! Alas I be out of time",						CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("I have been boarded it seems....",					CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("They still be lookin fer me. ",							CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Ye be needin to avenge me.",						CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ARRGG. Davy Jones be seein me soon",							CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Ill be damned to stay in his",							CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("locker. There be one last thing I ",							CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("be needin ya to do lad. Ye earned it",							CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Eat the Twinkie for yer ol capn",								CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("I hope to see ya if ye fail",							CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("But I dont be expectin that",						CGame::GetInstance()->GetWidth()/2-10,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("ARRRRRRRRRRGGGGGGGGGGGGGGGGGGGG",							CGame::GetInstance()->GetWidth()/2-10,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print(".........................................................",		CGame::GetInstance()->GetWidth()/2-10,390,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("..............................................................",				CGame::GetInstance()->GetWidth()/2-10,420,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("................................................",						CGame::GetInstance()->GetWidth()/2-10,450,0.9f,D3DCOLOR_XRGB(255,255,255));
+
+				}
+				break;
+			case 3:
+				{
+					m_pFont->Print("Du hast es gefunden. Aber ich habe",						CGame::GetInstance()->GetWidth()/2-10,30 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("nicht viel länger. Die Nazis haben",					CGame::GetInstance()->GetWidth()/2-10,60 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Die Nazis haben für mich zu kommen",							CGame::GetInstance()->GetWidth()/2-10,90 ,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("... Sie sind für mich an. Sie müssen",						CGame::GetInstance()->GetWidth()/2-10,120,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("um ihr Anführer und töte ihn ...",							CGame::GetInstance()->GetWidth()/2-10,150,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Oh die Agonie. ich bin Sterben bald.",							CGame::GetInstance()->GetWidth()/2-10,180,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Nein, wirklich ich bin. Ich blute. ",							CGame::GetInstance()->GetWidth()/2-10,210,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("dort ist eine letzte, was ich möchte",							CGame::GetInstance()->GetWidth()/2-10,240,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Ihnen sagen. Aber es scheint,",								CGame::GetInstance()->GetWidth()/2-10,270,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("Ich habe nicht die Kraft, um fortzufahren.",							CGame::GetInstance()->GetWidth()/2-10,300,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("da Ich sterbe. Also werde ich nie",						CGame::GetInstance()->GetWidth()/2-10,330,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("in der Lage sein, Ihnen zu sagen",							CGame::GetInstance()->GetWidth()/2-10,360,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("die wichtigsten Informationen, die ich",		CGame::GetInstance()->GetWidth()/2-10,390,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("möchte Sie wissen .................................",				CGame::GetInstance()->GetWidth()/2-10,420,0.9f,D3DCOLOR_XRGB(255,255,255));
+					m_pFont->Print("........ Das ist peinlich ... AHHHH ...",						CGame::GetInstance()->GetWidth()/2-10,450,0.9f,D3DCOLOR_XRGB(255,255,255));
+				}
+				break;
+			}
+
+
+			break;
+		}
+		}
+	if(bContinue)
+		m_pFont->Print("PRESS ENTER TO CONTINUE",CGame::GetInstance()->GetWidth()/2-200,CGame::GetInstance()->GetHeight()-30,1.0f,D3DCOLOR_XRGB(255,255,255));
+	else
+		m_pFont->Print("LOADING PLEASE WAIT....",CGame::GetInstance()->GetWidth()/2-200,CGame::GetInstance()->GetHeight()-30,1.0f,D3DCOLOR_XRGB(255,255,255));
+}
+
+void CGamePlayState::ResumeGame()
+{
+	m_pD3D->DeviceBegin();
+	m_pD3D->SpriteBegin();	
+	RenderText(true);
+	m_pD3D->GetSprite()->Flush();	
+	m_pD3D->SpriteEnd();
+	m_pD3D->DeviceEnd();	
+
+	m_pD3D->Present();
+	
+	bool blag = true;
+	here:
+	m_pDI->ReadDevices();
+	if(m_pDI->KeyPressed(DIK_RETURN))
+		blag = false;
+	if(blag)
+		goto here;
 }
