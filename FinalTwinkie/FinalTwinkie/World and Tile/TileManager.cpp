@@ -45,6 +45,10 @@ CTileManager::CTileManager(void)
 	m_nTileImageID = -1;
 	vector<vector<CTile>> tiles;
 	raised = false;
+	for(int i = 0; i < 13; i++)
+	{
+		m_bTriggers[i] = false;
+	}
 	//m_pGraphics.CreateLayer(0,0,0,0,0,0,0,tiles);
 }
 
@@ -290,18 +294,18 @@ void CTileManager::CheckCollision(IEntity* pBase)
 					break;
 				case OBJ_PLAYER:
 					{
-						if(m_vTiles[i][j].GetTrigger() == 1)
-						{
-							if(CGame::GetInstance()->isTutor == true)
-							{
-								CTutorState::GetInstance()->IncrementBox();
-								m_vTiles[i][j].SetCollision(false);
-								break;
-							}
+						int trigger = m_vTiles[i][j].GetTrigger();
 
+						if(trigger == 1)
+						{
 							RaiseWall();
 
 							m_vTiles[i][j].SetCollision(false);
+							break;
+						}
+						else if(trigger > 2 && trigger < 16)
+						{
+							RaiseText(trigger);
 							break;
 						}
 
@@ -332,6 +336,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						{
 							break;
 						}
+						else if(m_vTiles[i][j].GetTrigger() > 2)
+							break;
 
 						CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
 						// USE THIS TO TEST DISTANCE FORMULA int blah = distance;
@@ -421,4 +427,21 @@ void CTileManager::RaiseWall(void)
 
 	}
 
+}
+
+
+void CTileManager::RaiseText(int index)
+{
+	if(index < 3 || index > 15)
+		return;
+
+	index -= 3;
+
+	if(m_bTriggers[index] == true)
+		return;
+	else
+	{
+		m_bTriggers[index] = true;
+		CTutorState::GetInstance()->IncrementBox();
+	}
 }
