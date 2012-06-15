@@ -107,12 +107,18 @@ private:
 	int m_nCurrWave;
 	vector<RECT> m_vRECTS;
 	
-
+	int m_anBulletSounds[6];
+	int m_anSoldierSounds[9];
+	int m_nSappSound;
+	int m_nGameMusic;
+	int m_nNukeSound;
 
 	string m_sWave;
 	string m_sPaused;
 	string m_sResume;
 	string m_sOptions;
 	string m_sExit;
+
+
 };
 

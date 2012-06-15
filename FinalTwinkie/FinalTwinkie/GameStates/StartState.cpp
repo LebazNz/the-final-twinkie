@@ -49,15 +49,12 @@ void CStartState::Enter(void)
 	m_pAudio = CSGD_XAudio2::GetInstance();
 
 
-	//m_nMusic = m_pAudio->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
-	//m_pAudio->MusicPlaySong(m_nMusic, false);
+	m_nMusic = m_pAudio->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
+	m_pAudio->MusicPlaySong(m_nMusic, false);
 
 	m_nBG1ID = m_pTM->LoadTexture(_T("resource/graphics/start_screen.png"));
 	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/title_screen.png"));
 	
-	m_nMusic = CSGD_XAudio2::GetInstance()->MusicLoadSong(_T("resource/sound/StartMusic.xwm"));
-	CSGD_XAudio2::GetInstance()->MusicPlaySong(m_nMusic, false);
-
 	m_nEndTimer = 0;
 
 	m_bSwitch = false;

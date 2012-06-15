@@ -74,7 +74,7 @@ CSurvivalState::CSurvivalState(void)
 	m_pTile = nullptr;
 	m_AM	= nullptr;
 	m_pES	= nullptr;
-
+	m_pAudio = nullptr;
 
 	for(int i = 0; i < 16; ++i)
 	{
@@ -103,6 +103,18 @@ CSurvivalState::CSurvivalState(void)
 	m_nPickupInvuID = -1;
 	m_nPickupInfAmmoID = -1;
 	m_nPickupMoneyID = -1;
+
+	m_nGameMusic = -1;
+	m_nSappSound = -1;
+	m_nNukeSound = -1;
+
+	for(int i = 0; i < 6; i++)
+		m_anBulletSounds[i] = -1;
+
+	for(int i = 0; i < 9; i++)
+		m_anSoldierSounds[i] = -1;
+
+
 }
 
 CSurvivalState::~CSurvivalState(void)
@@ -145,6 +157,7 @@ void CSurvivalState::Enter( void )
 		m_pFont=CBitmapFont::GetInstance();
 		m_pAudio = CSGD_XAudio2::GetInstance();
 		m_pDI->ClearInput();
+
 		for(int i = 0; i < 16; ++i)
 		{
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
@@ -208,8 +221,27 @@ void CSurvivalState::Enter( void )
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
+		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
+		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
+		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
+		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
+		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
+		m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
 		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
 		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+
+		m_anSoldierSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt1.wav"));
+		m_anSoldierSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt2.wav"));
+		m_anSoldierSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt3.wav"));
+		m_anSoldierSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt4.wav"));
+		m_anSoldierSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt5.wav"));
+		m_anSoldierSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt6.wav"));
+		m_anSoldierSounds[6] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt7.wav"));
+		m_anSoldierSounds[7] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt8.wav"));
+		m_anSoldierSounds[8] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt9.wav"));
+
+		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
+		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -229,6 +261,8 @@ void CSurvivalState::Enter( void )
 		player->SetImageID(m_nPlayerID);
 		player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
 		player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
+		player->SetFireSound(m_anBulletSounds[5]);
+		player->SetNukeSound(m_nNukeSound);
 		player->SetRotation(0);
 		player->SetWidth(64);
 		player->SetHeight(128);
@@ -291,8 +325,6 @@ void CSurvivalState::Enter( void )
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
-		
-
 		player->SetMoney(0);
 	}
 	LoadText();
@@ -318,6 +350,60 @@ void CSurvivalState::Exit( void )
 	m_nNumUnits = 0;
 	m_nCurrWave = 0;
 	m_nWavesRemaining = 0;
+
+
+		if(m_nGameMusic != -1)
+		{
+			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
+				m_pAudio->MusicStopSong(m_nGameMusic);
+
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
+				m_pAudio->SFXStopSound(m_nNukeSound);
+
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+
+		if(m_nSappSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
+				m_pAudio->SFXStopSound(m_nSappSound);
+
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+
+		}
 		
 		if(m_nButtonImageID != -1)
 		{
@@ -593,7 +679,7 @@ void CSurvivalState::Update( float fDt )
 		m_PM->UpdateEverything(fDt);
 		m_pOM->UpdateAllObjects(fDt);
 		m_pOM->CheckCollisions();
-
+		m_pAudio->Update();
 		m_pES->ProcessEvents();
 		m_pMS->ProcessMessages();
 	}
@@ -763,7 +849,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			{
 			case BUL_SHELL:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[0]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
+
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -818,7 +906,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				break;
 			case BUL_ROCKET:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[1]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
+
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -879,7 +969,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				break;
 			case BUL_ARTILLERY:
 				{					
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[2]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
+
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
 					Bullet->SetScale(0.35f);
@@ -939,7 +1031,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				break;
 			case BUL_MACHINEGUN:
 				{
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -985,7 +1078,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				break;
 			case BUL_LASER:
 				{
-					CEventSystem::GetInstance()->SendEvent("play_explode",Bullet);
+					Bullet->SetBulletSound(pSelf->m_anBulletSounds[4]);
+					CEventSystem::GetInstance()->SendEvent("shoot",Bullet);
 
 					Bullet->SetWidth(32);
 					Bullet->SetHeight(32);
@@ -1081,7 +1175,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			case SAPPER:
 				{
 					CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
-					
+					sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
+					sapper->SetExplode(pSelf->m_nSappSound);
 					sapper->SetPosX(pMessage->GetPosX());
 					sapper->SetPosY(pMessage->GetPosY());
 					sapper->SetHeight(32);
@@ -1285,7 +1380,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					CPlayer* player = CPlayer::GetInstance();
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(RIFLE);
-					
+					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
 					enemy->SetHeight(32);
@@ -1330,6 +1425,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				{
 					CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 					enemy->SetEType(ROCKET);
+					enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					enemy->SetPosX(pMessage->GetPosX());
 					enemy->SetPosY(pMessage->GetPosY());
@@ -1542,6 +1638,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			{
 			case BUL_SHELL:
 				{
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[3]);
+					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
+					
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);
@@ -1559,6 +1658,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				break;
 			case BUL_ROCKET:
 				{
+					pBullet->SetBulletSound(pSelf->m_anBulletSounds[0]);
+					CEventSystem::GetInstance()->SendEvent("shoot",pBullet);
+
 					tVector2D norVec = Vector2DNormalize(Up);
 					pBullet->SetWidth(32);
 					pBullet->SetHeight(32);
