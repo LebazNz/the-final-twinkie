@@ -19,6 +19,8 @@
 #pragma comment(lib, "dbghelp.lib")
 #include "../Headers/Game.h"
 #include "../resource.h"
+
+
 const TCHAR* g_szWINDOW_CLASS_NAME	= _T("SGP Project");			//	Window Class Name.
 
 const TCHAR* g_szWINDOW_TITLE		= _T("The Final Twinkie");		//	Window Title.
@@ -248,7 +250,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	MSG		msg;	//	Generic message.
 	HWND	hWnd;	//	Main Window Handle.
-
 
 	//	if in release mode set the exception filter to write out a dump file
 #ifndef _DEBUG

@@ -326,7 +326,7 @@ CEntity* CObjectManager::GetTarget(CEntity* pEntity)
 	Camera* C = Camera::GetInstance();
 	CEntity* pReturn = nullptr;
 	CEntity* pTarget = nullptr;
-	tVector2D vPos = { pEntity->GetPosX(), pEntity->GetPosY() };
+	tVector2D vPos = { pEntity->GetPosX()-C->GetPosX(), pEntity->GetPosY()-C->GetPosY() };
 	tVector2D vOther = {};
 	tVector2D toTarget = {};
 	float shortest = 100000.0f;
