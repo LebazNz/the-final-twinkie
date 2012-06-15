@@ -288,6 +288,10 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 				SetPosY(GetOldPos().fY);
 			}
 			break;
+		case OBJ_TREE:
+			{
+				return false;
+			}
 		};
 		return true;
 	}

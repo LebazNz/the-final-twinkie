@@ -75,13 +75,19 @@ bool CTree::CheckCollision(IEntity* pObject)
 			}
 			break;
 
+		case OBJ_PICKUP:
+			{
+				return false;
+			}
+			break;
+
 		default:
 			{
 
 			}
 			break;
 		};
-		return true;
+		return false;
 	}
 	else
 		return false;

@@ -141,6 +141,9 @@ bool CPickup::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_ENEMY:
 			break;
+		case OBJ_TREE:
+			return false;
+			break;
 		};
 		return true;
 	}
