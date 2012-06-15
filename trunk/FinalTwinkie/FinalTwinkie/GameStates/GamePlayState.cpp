@@ -1714,7 +1714,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				break;
 			case HELP:
 				{
-					int randNum = rand()%2;
+					int randNum = rand()%3;
 					switch(randNum)
 					{
 					case 0:
