@@ -148,6 +148,9 @@ private:
 	string m_sOptions;
 	string m_sExit;
 	string m_sGet;
+	protected:
+		void RenderText(bool bContinue);
+		void ResumeGame();
 };
 
 #endif

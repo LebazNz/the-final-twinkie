@@ -151,7 +151,7 @@ void RobotBossState::Enter(void)
 		m_AM->Load("AnimationInfo.xml");
 		//m_AM->Save("AnimationInfo.xml");
 
-		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
+		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/Loading Image.jpg"));
 
 		m_pD3D->Clear( 0, 255, 255 );// Clear the background
 

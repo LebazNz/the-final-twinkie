@@ -29,7 +29,7 @@ void RobotBoss::Update(float fDt)
 	CGame *pGame = CGame::GetInstance();
 	Camera* pCam =Camera::GetInstance();
 
-	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	//if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 	{
 	Camera* C=Camera::GetInstance();
 	tVector2D Up={0,-1};
@@ -140,12 +140,12 @@ void RobotBoss::Update(float fDt)
 	}
 	else if(GetHealth() < GetMaxHealth()*0.2 && speedboost == false)
 	{
-		SetHealth(GetHealth() + (float)(GetMaxHealth()*0.2));
+		SetHealth(GetHealth() + (float)(GetMaxHealth()*0.4));
 		speedboost = true;
 		SetRotationRate(0.5f);
 		SetSight(2000);
-		SetVelX(25);
-		SetVelY(25);
+		SetVelX(40);
+		SetVelY(40);
 
 	}
 }
@@ -187,7 +187,7 @@ bool RobotBoss::CheckCollision(IEntity* pBase)
 	Camera* pCam =Camera::GetInstance();
 	CGame *pGame = CGame::GetInstance();
 
-	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	//if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
 	{
 	if(CEntity::CheckCollision(pBase) == true)
 	{
@@ -216,13 +216,13 @@ bool RobotBoss::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_ENEMY:
 			{
-				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+				/*CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
 
 				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
 				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
 
 				this->SetPosX(this->GetOldPos().fX);
-				this->SetPosY(this->GetOldPos().fY);
+				this->SetPosY(this->GetOldPos().fY);*/
 			}
 			break;
 		case OBJ_PICKUP:
@@ -241,13 +241,13 @@ bool RobotBoss::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_TANK:
 			{
-				RobotBoss* pEnemy =dynamic_cast<RobotBoss*>(pBase);
+				/*RobotBoss* pEnemy =dynamic_cast<RobotBoss*>(pBase);
 
 				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
 				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
 
 				this->SetPosX(this->GetOldPos().fX);
-				this->SetPosY(this->GetOldPos().fY);
+				this->SetPosY(this->GetOldPos().fY);*/
 			}
 			break;
 		};
@@ -256,8 +256,7 @@ bool RobotBoss::CheckCollision(IEntity* pBase)
 	else
 		return false;
 	}
-	else
-		return false;
+	
 }
 RECT RobotBoss::GetRect(void)
 {
