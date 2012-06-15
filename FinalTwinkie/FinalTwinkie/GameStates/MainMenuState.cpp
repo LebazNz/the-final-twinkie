@@ -12,7 +12,7 @@
 #include "../tinyxml/tinyxml.h"
 #include <fstream>
 #include "SurvivalState.h"
-#include "../GameStates/RobotBossState.h"
+
 using namespace std;
 
 CMainMenuState* CMainMenuState::m_pSelf = nullptr;
@@ -175,130 +175,235 @@ void CMainMenuState::Exit(void)
 
 bool CMainMenuState::Input(void)
 {
-	// Move the cursor position
-	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+	if(ARCADE ==0)
 	{
-		m_pAudio->SFXPlaySound(m_nButton,false);
+		// Move the cursor position
+		if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+		{
+			m_pAudio->SFXPlaySound(m_nButton,false);
 
-		if(m_nPosition == 0)
-		{
-			m_nPosition = 3;
-			m_bPlaySelect=false;
-		}
-		else 
-		{
-			m_nPosition -= 1;
-			m_bPlaySelect=false;
-		}
-		m_nPos2=3;
-	}
-	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
-	{
-		m_pAudio->SFXPlaySound(m_nButton,false);
-
-		if(m_nPosition == 3)
-		{
-			m_nPosition = 0;
-			m_bPlaySelect=false;
-		}
-		else
-		{
-			m_nPosition += 1;
-			m_bPlaySelect=false;
-		}
-		m_nPos2=3;
-	}
-	if(m_bPlaySelect==true)
-	{
-		if(m_pDI->KeyPressed(DIK_RIGHT))
-		{
-			m_nPos2++;
-			if(m_nPos2>6)
-				m_nPos2=6;
-		}
-		if(m_pDI->KeyPressed(DIK_LEFT))
-		{
-			m_nPos2--;
-			if(m_nPos2<3)
-				m_nPos2=3;
-		}
-	}
-	// Make selection
-	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
-	{
-		m_pAudio->SFXPlaySound(m_nClick, false);
-
-		if(m_nPosition == 0)
-		{
-			if(m_bPlaySelect=true)
+			if(m_nPosition == 0)
 			{
-				if(m_nPos2 == 4)
-				{
-					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
-						m_pAudio->MusicStopSong(m_nMenuMusicID);
-					CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
-					//playing=false;
-					return true;
-				}
-				else if (m_nPos2 == 5)
-				{
-					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
-						m_pAudio->MusicStopSong(m_nMenuMusicID);
-					CGetNameState::GetInstance()->SetSurvival(true);
-					CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
-					//playing = false;
-					return true;
-				}
-				else if(m_nPos2 == 6)
-				{
-					if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
-						m_pAudio->MusicStopSong(m_nMenuMusicID);
-					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
-					return true;
-				}
+				m_nPosition = 3;
+				m_bPlaySelect=false;
+			}
+			else 
+			{
+				m_nPosition -= 1;
+				m_bPlaySelect=false;
+			}
+			m_nPos2=3;
+		}
+		else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+		{
+			m_pAudio->SFXPlaySound(m_nButton,false);
+
+			if(m_nPosition == 3)
+			{
+				m_nPosition = 0;
+				m_bPlaySelect=false;
 			}
 			else
 			{
-				m_bPlaySelect=true;
+				m_nPosition += 1;
+				m_bPlaySelect=false;
+			}
+			m_nPos2=3;
+		}
+		if(m_bPlaySelect==true)
+		{
+			if(m_pDI->KeyPressed(DIK_RIGHT))
+			{
+				m_nPos2++;
+				if(m_nPos2>6)
+					m_nPos2=6;
+			}
+			if(m_pDI->KeyPressed(DIK_LEFT))
+			{
+				m_nPos2--;
+				if(m_nPos2<3)
+					m_nPos2=3;
 			}
 		}
-		if(m_nPosition == 1)
+		// Make selection
+		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
 		{
-			CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 2)
-		{
-			CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
-			return true;
-		}
-		else if(m_nPosition == 3)
-		{
-			return false;
-		}
+			m_pAudio->SFXPlaySound(m_nClick, false);
+
+			if(m_nPosition == 0)
+			{
+				if(m_bPlaySelect=true)
+				{
+					if(m_nPos2 == 4)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+						//playing=false;
+						return true;
+					}
+					else if (m_nPos2 == 5)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGetNameState::GetInstance()->SetSurvival(true);
+						CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+						//playing = false;
+						return true;
+					}
+					else if(m_nPos2 == 6)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+						return true;
+					}
+				}
+				else
+				{
+					m_bPlaySelect=true;
+				}
+			}
+			if(m_nPosition == 1)
+			{
+				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				return true;
+			}
+			else if(m_nPosition == 2)
+			{
+				CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
+				return true;
+			}
+			else if(m_nPosition == 3)
+			{
+				return false;
+			}
 	
+		}
+	}
+	else
+	{
+			// Move the cursor position
+		if(m_pDI->JoystickGetLStickDirPressed(DIR_UP))
+		{
+			m_pAudio->SFXPlaySound(m_nButton,false);
+
+			if(m_nPosition == 0)
+			{
+				m_nPosition = 3;
+				m_bPlaySelect=false;
+			}
+			else 
+			{
+				m_nPosition -= 1;
+				m_bPlaySelect=false;
+			}
+			m_nPos2=3;
+		}
+		else if(m_pDI->JoystickGetLStickDirPressed(DIR_DOWN))
+		{
+			m_pAudio->SFXPlaySound(m_nButton,false);
+
+			if(m_nPosition == 3)
+			{
+				m_nPosition = 0;
+				m_bPlaySelect=false;
+			}
+			else
+			{
+				m_nPosition += 1;
+				m_bPlaySelect=false;
+			}
+			m_nPos2=3;
+		}
+		if(m_bPlaySelect==true)
+		{
+			if(m_pDI->JoystickGetLStickDirPressed(DIR_RIGHT))
+			{
+				m_nPos2++;
+				if(m_nPos2>6)
+					m_nPos2=6;
+			}
+			if(m_pDI->JoystickGetLStickDirPressed(DIR_LEFT))
+			{
+				m_nPos2--;
+				if(m_nPos2<3)
+					m_nPos2=3;
+			}
+		}
+		// Make selection
+		if(m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
+		{
+			m_pAudio->SFXPlaySound(m_nClick, false);
+
+			if(m_nPosition == 0)
+			{
+				if(m_bPlaySelect=true)
+				{
+					if(m_nPos2 == 4)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGame::GetInstance()->ChangeState(CLoadGameState::GetInstance());
+						//playing=false;
+						return true;
+					}
+					else if (m_nPos2 == 5)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGetNameState::GetInstance()->SetSurvival(true);
+						CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
+						//playing = false;
+						return true;
+					}
+					else if(m_nPos2 == 6)
+					{
+						if(m_pAudio->MusicIsSongPlaying(m_nMenuMusicID))
+							m_pAudio->MusicStopSong(m_nMenuMusicID);
+						CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+						return true;
+					}
+				}
+				else
+				{
+					m_bPlaySelect=true;
+				}
+			}
+			if(m_nPosition == 1)
+			{
+				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				return true;
+			}
+			else if(m_nPosition == 2)
+			{
+				CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
+				return true;
+			}
+			else if(m_nPosition == 3)
+			{
+				return false;
+			}
+	
+		}
 	}
 
-	// robot boss state
-	if(m_pDI->KeyPressed(DIK_0))
-	{
-		CGame::GetInstance()->ChangeState(RobotBossState::GetInstance());
-		//playing = false;
-		return true;
-	}
 	return true;
 }
 
 void CMainMenuState::Update(float fDt)
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();

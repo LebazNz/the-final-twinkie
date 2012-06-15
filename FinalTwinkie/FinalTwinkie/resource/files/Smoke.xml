@@ -1,41 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
   <Effect>
-    <Picture>smoke_particle.png</Picture>
-    <Number Number="500" />
+    <Picture>testsmoke.png</Picture>
+    <Number Number="77" />
     <Looping Looping="0" />
     <Explosion Explosion="0" />
     <Life>
       <Max M="7.98" />
       <Min M="5" />
     </Life>
-    <SpawnTime SpawnTime="0" />
+    <SpawnTime SpawnTime="0.09" />
     <EmitterType Type="1" />
     <Radius R="150" />
     <Angle A="102" />
     <Source S="2" />
     <Dest D="3" />
     <SpeedX>
-      <MinX M="10" />
+      <MinX M="0" />
       <MaxX M="25" />
     </SpeedX>
     <SpeedY>
-      <MinY M="10" />
+      <MinY M="0" />
       <MaxY M="25" />
     </SpeedY>
     <Scale>
       <Min M="0.31" />
-      <Max M="2.26" />
+      <Max M="1.06" />
     </Scale>
     <Color>
       <Start>
-        <Alpha A="51" />
+        <Alpha A="15" />
         <Red R="255" />
         <Green G="255" />
         <Blue B="255" />
       </Start>
       <End>
-        <Alpha A="255" />
+        <Alpha A="12" />
         <Red R="255" />
         <Green G="255" />
         <Blue B="255" />

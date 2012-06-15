@@ -68,15 +68,31 @@ void StatState::Exit( void )
 
 bool StatState::Input( void )
 {
-	if(m_pDI->KeyPressed(DIK_ESCAPE))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-		return true;
-	}
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			return true;
+		}
 
-	if(m_pDI->MouseButtonPressed(0))
+		if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+		{
+			Clicked();
+		}
+	}
+	else
 	{
-		Clicked();
+		if(m_pDI->JoystickButtonPressed(1) || m_pDI->JoystickButtonPressed(6))
+		{
+			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			return true;
+		}
+
+		if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+		{
+			Clicked();
+		}
 	}
 
 	return true;

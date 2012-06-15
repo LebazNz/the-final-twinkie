@@ -124,247 +124,495 @@ void COptionsState::Exit(void)
 
 bool COptionsState::Input(void)
 {
-	// Move the cursor position
-	if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+	if(ARCADE == 0)
 	{
-		m_pAudio->SFXPlaySound(m_nButton);
+		// Move the cursor position
+		if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
 
-		if(m_nPosition == 0)
-		{
-			m_nPosition = 4;
-		}
-		else
-		{
-			m_nPosition -= 1;
-		}
-	}
-	else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
-	{
-		m_pAudio->SFXPlaySound(m_nButton);
-
-		if(m_nPosition == 4)
-		{
-			m_nPosition = 0;
-		}
-		else
-		{
-			m_nPosition += 1;
-		}
-	}
-	// Make selection
-	else if(m_pDI->KeyPressed(DIK_LEFTARROW) || m_pDI->JoystickDPadPressed(DIR_LEFT))
-	{	
-		m_pAudio->SFXPlaySound(m_nClick);
-
-		if(m_nPosition == 0)
-		{	
-			m_fSFXVolume -= 0.05f;
-			if(m_fSFXVolume <= 0.0f)
-				m_fSFXVolume = 0.0f;
-		
-			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
-		}
-		else if(m_nPosition == 1)
-		{
-			m_fMusicVolume -= 0.05f;
-			if(m_fMusicVolume <= 0.0f)
-				m_fMusicVolume = 0.0f;
-							
-			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
-		}
-		else if(m_nPosition == 2)
-		{
-			m_bWindowed = !m_bWindowed;
-			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
-			if(m_bWindowed == false)
+			if(m_nPosition == 0)
 			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				m_nPosition = 4;
 			}
 			else
 			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				m_nPosition -= 1;
 			}
 		}
-		else if(m_nPosition == 3)
+		else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
 		{
-			m_nLang -= 1;
-			if(m_nLang < 0)
-				m_nLang = 3;
-			LoadText();
-		}
-	}
-	else if(m_pDI->KeyPressed(DIK_RIGHTARROW) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
-	{	
-		m_pAudio->SFXPlaySound(m_nClick);
+			m_pAudio->SFXPlaySound(m_nButton);
 
-		if(m_nPosition == 0)
-		{	
-			m_fSFXVolume += 0.05f;
-			if(m_fSFXVolume >= 1.0f)
-				m_fSFXVolume = 1.0f;
-			
-			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
-			
-		}
-		else if(m_nPosition == 1)
-		{
-			m_fMusicVolume += 0.05f;
-			if(m_fMusicVolume >= 1.0f)
-				m_fMusicVolume = 1.0f;
-			
-			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
-		}
-		else if(m_nPosition == 2)
-		{
-			m_bWindowed = !m_bWindowed;
-			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
-			if(m_bWindowed == false)
+			if(m_nPosition == 4)
 			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				m_nPosition = 0;
 			}
 			else
 			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				m_nPosition += 1;
 			}
 		}
-		else if(m_nPosition == 3)
-		{
-			m_nLang += 1;
-			if(m_nLang > 3)
-				m_nLang = 0;
-			LoadText();
-		}
-	}
-	else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-
-		if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 240 && m_nMouseY <= 280))
-		{	
-			m_fSFXVolume -= 0.05f;
-			if(m_fSFXVolume <= 0.0f)
-				m_fSFXVolume = 0.0f;
-						
-			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
-		}
-		else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 290 && m_nMouseY <= 330))
-		{
-			m_fMusicVolume -= 0.05f;
-			if(m_fMusicVolume <= 0.0f)
-				m_fMusicVolume = 0.0f;
-							
-			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
-		}
-		else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 340 && m_nMouseY <= 375))
-		{
-			m_bWindowed = !m_bWindowed;
-			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
-			if(m_bWindowed == false)
-			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-			}
-			else
-			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-			}
-		}
-		else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 390 && m_nMouseY <= 425))
-		{
-			m_nLang -= 1;
-			if(m_nLang < 0)
-				m_nLang = 3;
-			LoadText();
-		}
-		else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 240 && m_nMouseY <= 280))
-		{	
-			m_fSFXVolume += 0.05f;
-			if(m_fSFXVolume >= 1.0f)
-				m_fSFXVolume = 1.0f;
-			
-			m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
-		}
-		else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 290 && m_nMouseY <= 330))
-		{
-			m_fMusicVolume += 0.05f;
-			if(m_fMusicVolume >= 1.0f)
-				m_fMusicVolume = 1.0f;
-		
-			m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
-		}
-		else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 340 && m_nMouseY <= 375))
-		{
-			m_bWindowed = !m_bWindowed;
-			CGame::GetInstance()->SetIsWindowded(m_bWindowed);
-			if(m_bWindowed == false)
-			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-			}
-			else
-			{
-				m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-			}
-		}
-		else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
-		&& m_nMouseY >= 390 && m_nMouseY <= 425))
-		{
-			m_nLang += 1;
-			if(m_nLang > 3)
-				m_nLang = 0;
-			LoadText();
-		}
-		else if(m_nPosition == 4)
-		{
-			if(CGamePlayState::GetInstance()->GetPaused() == false)
-			{
-				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-				return true;
-			}
-			else
-			{
-				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-				return true;
-			}
-		}
-	}
 		// Make selection
-	else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
+		else if(m_pDI->KeyPressed(DIK_LEFTARROW) || m_pDI->JoystickDPadPressed(DIR_LEFT))
+		{	
+			m_pAudio->SFXPlaySound(m_nClick);
 
-		if(m_nPosition == 4)
-		{
-			if(CGamePlayState::GetInstance()->GetPaused() == false)
-			{
-				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-				return true;
+			if(m_nPosition == 0)
+			{	
+				m_fSFXVolume -= 0.05f;
+				if(m_fSFXVolume <= 0.0f)
+					m_fSFXVolume = 0.0f;
+		
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 			}
-			else
+			else if(m_nPosition == 1)
 			{
-				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-				return true;
+				m_fMusicVolume -= 0.05f;
+				if(m_fMusicVolume <= 0.0f)
+					m_fMusicVolume = 0.0f;
+							
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2)
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3)
+			{
+				m_nLang -= 1;
+				if(m_nLang < 0)
+					m_nLang = 3;
+				LoadText();
 			}
 		}
-	}
-	// Exit the game when the user presses esc
-	else if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
-	{
-		if(CGamePlayState::GetInstance()->GetPaused() == false)
+		else if(m_pDI->KeyPressed(DIK_RIGHTARROW) || m_pDI->JoystickDPadPressed(DIR_RIGHT))
+		{	
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 0)
+			{	
+				m_fSFXVolume += 0.05f;
+				if(m_fSFXVolume >= 1.0f)
+					m_fSFXVolume = 1.0f;
+			
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			
+			}
+			else if(m_nPosition == 1)
 			{
-				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-				return true;
+				m_fMusicVolume += 0.05f;
+				if(m_fMusicVolume >= 1.0f)
+					m_fMusicVolume = 1.0f;
+			
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2)
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3)
+			{
+				m_nLang += 1;
+				if(m_nLang > 3)
+					m_nLang = 0;
+				LoadText();
+			}
+		}
+		else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			{	
+				m_fSFXVolume -= 0.05f;
+				if(m_fSFXVolume <= 0.0f)
+					m_fSFXVolume = 0.0f;
+						
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			}
+			else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			{
+				m_fMusicVolume -= 0.05f;
+				if(m_fMusicVolume <= 0.0f)
+					m_fMusicVolume = 0.0f;
+							
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			{
+				m_nLang -= 1;
+				if(m_nLang < 0)
+					m_nLang = 3;
+				LoadText();
+			}
+			else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			{	
+				m_fSFXVolume += 0.05f;
+				if(m_fSFXVolume >= 1.0f)
+					m_fSFXVolume = 1.0f;
+			
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			}
+			else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			{
+				m_fMusicVolume += 0.05f;
+				if(m_fMusicVolume >= 1.0f)
+					m_fMusicVolume = 1.0f;
+		
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
+			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			{
+				m_nLang += 1;
+				if(m_nLang > 3)
+					m_nLang = 0;
+				LoadText();
+			}
+			else if(m_nPosition == 4)
+			{
+				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+			}
+		}
+			// Make selection
+		else if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 4)
+			{
+				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+			}
+		}
+		// Exit the game when the user presses esc
+		else if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+		}
+	}
+	else
+	{
+			// Move the cursor position
+		if(m_pDI->JoystickGetLStickDirPressed(DIR_UP))
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+
+			if(m_nPosition == 0)
+			{
+				m_nPosition = 4;
 			}
 			else
 			{
-				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-				return true;
+				m_nPosition -= 1;
 			}
+		}
+		else if(m_pDI->JoystickGetLStickDirPressed(DIR_DOWN))
+		{
+			m_pAudio->SFXPlaySound(m_nButton);
+
+			if(m_nPosition == 4)
+			{
+				m_nPosition = 0;
+			}
+			else
+			{
+				m_nPosition += 1;
+			}
+		}
+		// Make selection
+		else if(m_pDI->JoystickGetLStickDirPressed(DIR_LEFT))
+		{	
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 0)
+			{	
+				m_fSFXVolume -= 0.05f;
+				if(m_fSFXVolume <= 0.0f)
+					m_fSFXVolume = 0.0f;
+		
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			}
+			else if(m_nPosition == 1)
+			{
+				m_fMusicVolume -= 0.05f;
+				if(m_fMusicVolume <= 0.0f)
+					m_fMusicVolume = 0.0f;
+							
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2)
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3)
+			{
+				m_nLang -= 1;
+				if(m_nLang < 0)
+					m_nLang = 3;
+				LoadText();
+			}
+		}
+		else if(m_pDI->JoystickGetLStickDirPressed(DIR_RIGHT))
+		{	
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 0)
+			{	
+				m_fSFXVolume += 0.05f;
+				if(m_fSFXVolume >= 1.0f)
+					m_fSFXVolume = 1.0f;
+			
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			
+			}
+			else if(m_nPosition == 1)
+			{
+				m_fMusicVolume += 0.05f;
+				if(m_fMusicVolume >= 1.0f)
+					m_fMusicVolume = 1.0f;
+			
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2)
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3)
+			{
+				m_nLang += 1;
+				if(m_nLang > 3)
+					m_nLang = 0;
+				LoadText();
+			}
+		}
+		else if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			{	
+				m_fSFXVolume -= 0.05f;
+				if(m_fSFXVolume <= 0.0f)
+					m_fSFXVolume = 0.0f;
+						
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			}
+			else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			{
+				m_fMusicVolume -= 0.05f;
+				if(m_fMusicVolume <= 0.0f)
+					m_fMusicVolume = 0.0f;
+							
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
+			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			{
+				m_nLang -= 1;
+				if(m_nLang < 0)
+					m_nLang = 3;
+				LoadText();
+			}
+			else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			{	
+				m_fSFXVolume += 0.05f;
+				if(m_fSFXVolume >= 1.0f)
+					m_fSFXVolume = 1.0f;
+			
+				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
+			}
+			else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			{
+				m_fMusicVolume += 0.05f;
+				if(m_fMusicVolume >= 1.0f)
+					m_fMusicVolume = 1.0f;
+		
+				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
+			}
+			else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
+			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			{
+				m_bWindowed = !m_bWindowed;
+				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
+				if(m_bWindowed == false)
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+				else
+				{
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+				}
+			}
+			else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
+			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			{
+				m_nLang += 1;
+				if(m_nLang > 3)
+					m_nLang = 0;
+				LoadText();
+			}
+			else if(m_nPosition == 4)
+			{
+				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+			}
+		}
+			// Make selection
+		else if(m_pDI->JoystickButtonPressed(0) || m_pDI->MouseButtonPressed(0))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+
+			if(m_nPosition == 4)
+			{
+				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+			}
+		}
+		// Exit the game when the user presses esc
+		else if(m_pDI->JoystickButtonPressed(0))
+		{
+			if(CGamePlayState::GetInstance()->GetPaused() == false)
+				{
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;
+				}
+				else
+				{
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+		}
 	}
 
 	return true;
@@ -372,14 +620,17 @@ bool COptionsState::Input(void)
 
 void COptionsState::Update(float fDt)
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();

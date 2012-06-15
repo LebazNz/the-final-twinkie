@@ -391,8 +391,8 @@ void CGamePlayState::Enter(void)
 		//player->SetDoubleDamage(true);
 		//player->SetDamageTimer(15);
 		//player->SetNoReloadTimer(150);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(10000000);
+		player->SetInvul(true);
+		player->SetInvulTimer(100);
 		//player->SetInfAmmo(true);
 		//player->SetInfoAmmoTimer(150);
 
@@ -707,113 +707,180 @@ void CGamePlayState::Exit(void)
 
 bool CGamePlayState::Input(void)
 {
-	if(m_bGameOver == false && m_bWinner == false)
+	if(ARCADE == 0)
 	{
-		if(m_bPaused)
+		if(m_bGameOver == false && m_bWinner == false)
 		{
-			if(m_pDI->KeyPressed(DIK_ESCAPE))
+			if(m_bPaused)
 			{
-				m_bPaused = !m_bPaused;
-			}
-			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
-			{
-				m_pAudio->SFXPlaySound(m_nClick, false);
-				if(m_nPosition == 0)
+				if(m_pDI->KeyPressed(DIK_ESCAPE))
 				{
 					m_bPaused = !m_bPaused;
 				}
-				else if(m_nPosition == 1)
+				if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 				{
-					CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+					m_pAudio->SFXPlaySound(m_nClick, false);
+					if(m_nPosition == 0)
+					{
+						m_bPaused = !m_bPaused;
+					}
+					else if(m_nPosition == 1)
+					{
+						CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+					}
+					else if(m_nPosition == 2)
+					{
+						m_bPaused = false;
+						CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+						return true;		
+					}
 				}
-				else if(m_nPosition == 2)
+				if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 				{
-					m_bPaused = false;
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-					return true;		
+					m_pAudio->SFXPlaySound(m_nButton,false);
+					if(m_nPosition == 0)
+					{
+						m_nPosition = 2;
+					}
+					else
+					{
+						m_nPosition -= 1;
+					}
+				}
+				else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+				{
+					m_pAudio->SFXPlaySound(m_nButton,false);
+					if(m_nPosition == 2)
+					{
+						m_nPosition = 0;
+					}
+					else
+					{
+						m_nPosition += 1;
+					}
 				}
 			}
-			if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+			else
 			{
-				m_pAudio->SFXPlaySound(m_nButton,false);
-				if(m_nPosition == 0)
+				if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
 				{
-					m_nPosition = 2;
-				}
-				else
-				{
-					m_nPosition -= 1;
+					m_bPaused = !m_bPaused;
 				}
 			}
-			else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+			// take out
+			if(m_pDI->KeyPressed(DIK_O))
 			{
-				m_pAudio->SFXPlaySound(m_nButton,false);
-				if(m_nPosition == 2)
-				{
-					m_nPosition = 0;
-				}
-				else
-				{
-					m_nPosition += 1;
-				}
+				dynamic_cast<CPlayer*>(m_pPlayer)->SetSparta(true);
+				dynamic_cast<CPlayer*>(m_pPlayer)->SetAlienBoss(true);
+				dynamic_cast<CPlayer*>(m_pPlayer)->SetNukem(true);
 			}
-		}
-		else
-		{
-			if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
+			if(m_pDI->KeyPressed(DIK_7))
 			{
-				m_bPaused = !m_bPaused;
-			}
-		}
-		// take out
-		if(m_pDI->KeyPressed(DIK_O))
-		{
-			dynamic_cast<CPlayer*>(m_pPlayer)->SetSparta(true);
-			dynamic_cast<CPlayer*>(m_pPlayer)->SetAlienBoss(true);
-			dynamic_cast<CPlayer*>(m_pPlayer)->SetNukem(true);
-		}
-		if(m_pDI->KeyPressed(DIK_7))
-		{
-				CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TANK,200,200);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TANK,200,200);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
 			
-		}
-		if(m_pDI->KeyPressed(DIK_8))
-		{
-				CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TURRET,100,100);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
-			
-		}
-		// Enter ShopState
-		if(m_pDI->KeyPressed(DIK_NUMPAD0))
-		{
-			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
-			return true;
-		}
-		// Enter ShopState
-		if(m_pDI->KeyPressed(DIK_NUMPAD1))
-		{
-			CGame::GetInstance()->ChangeState(StatState::GetInstance());
-			return true;
-		}
-		// LoadOut State
-		if(m_pDI->KeyPressed(DIK_NUMPAD2))
-		{
-			CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
-			return true;
-		}
-		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
-		{
-			if(m_pDI->KeyPressed(DIK_TAB))
-			{
-				m_bPaused=true;
 			}
+			if(m_pDI->KeyPressed(DIK_8))
+			{
+					CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,TURRET,100,100);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+			
+			}
+			// Enter ShopState
+			if(m_pDI->KeyPressed(DIK_NUMPAD0))
+			{
+				CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+				return true;
+			}
+			// Enter ShopState
+			if(m_pDI->KeyPressed(DIK_NUMPAD1))
+			{
+				CGame::GetInstance()->ChangeState(StatState::GetInstance());
+				return true;
+			}
+			// LoadOut State
+			if(m_pDI->KeyPressed(DIK_NUMPAD2))
+			{
+				CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
+				return true;
+			}
+			if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
+			{
+				if(m_pDI->KeyPressed(DIK_TAB))
+				{
+					m_bPaused=true;
+				}
+			}
+			return true;
 		}
 		return true;
 	}
-	return true;
+	else
+	{
+		if(m_bGameOver == false && m_bWinner == false)
+		{
+			if(m_bPaused)
+			{
+				if(m_pDI->JoystickButtonPressed(6))
+				{
+					m_bPaused = !m_bPaused;
+				}
+				if(m_pDI->JoystickButtonPressed(0))
+				{
+					m_pAudio->SFXPlaySound(m_nClick, false);
+					if(m_nPosition == 0)
+					{
+						m_bPaused = !m_bPaused;
+					}
+					else if(m_nPosition == 1)
+					{
+						CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+					}
+					else if(m_nPosition == 2)
+					{
+						m_bPaused = false;
+						CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+						return true;		
+					}
+				}
+				if(m_pDI->JoystickGetLStickDirPressed(DIR_UP))
+				{
+					m_pAudio->SFXPlaySound(m_nButton,false);
+					if(m_nPosition == 0)
+					{
+						m_nPosition = 2;
+					}
+					else
+					{
+						m_nPosition -= 1;
+					}
+				}
+				else if(m_pDI->JoystickGetLStickDirPressed(DIR_DOWN))
+				{
+					m_pAudio->SFXPlaySound(m_nButton,false);
+					if(m_nPosition == 2)
+					{
+						m_nPosition = 0;
+					}
+					else
+					{
+						m_nPosition += 1;
+					}
+				}
+			}
+			else
+			{
+				if(m_pDI->JoystickButtonPressed(6))
+				{
+					m_bPaused = !m_bPaused;
+				}
+			}
+			return true;
+		}
+		return true;
+	}
 }
 
 void CGamePlayState::Update(float fDt)
@@ -831,14 +898,17 @@ void CGamePlayState::Update(float fDt)
 		m_pMS->ProcessMessages();
 	}
 
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -2356,10 +2426,10 @@ void CGamePlayState::SaveGame(const char* szFileName)
 
 	data->SetAttribute("level",			m_nLevel);
 	data->SetAttribute("money",			pPlayer->GetMoney());
-	data->SetAttribute("hp",			pPlayer->GetHealthMod());
-	data->SetAttribute("armor",			pPlayer->GetArmorMod());
-	data->SetAttribute("ammo",			pPlayer->GetAmmoMod());
-	data->SetAttribute("speed",			pPlayer->GetSpeedMod());
+	data->SetAttribute("hp",			(int)pPlayer->GetHealthMod());
+	data->SetAttribute("armor",			(int)pPlayer->GetArmorMod());
+	data->SetAttribute("ammo",			(int)pPlayer->GetAmmoMod());
+	data->SetAttribute("speed",			(int)pPlayer->GetSpeedMod());
 	data->SetAttribute("shellammo",		pPlayer->GetMaxWeaponAmmoShell());
 	data->SetAttribute("missileammo",	pPlayer->GetMaxWeaponAmmoMissile());
 	data->SetAttribute("artilleryammo", pPlayer->GetMaxWeaponAmmoArtillery());
@@ -2398,6 +2468,8 @@ void CGamePlayState::SaveGame(const char* szFileName)
 	data->SetAttribute("specialtwo",		pPlayer->GetSpecial2()->GetType());
 
 	data->SetAttribute("secondammo",		pPlayer->GetSecondType());
+
+	data->SetAttribute("flame",				pPlayer->GetFlamerAccess());
 
 	char szName[32];
 	strcpy_s(szName,32,pPlayer->GetUserName().c_str());

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
   <Effect>
-    <Picture>smoke_particle.png</Picture>
+    <Picture>testsmoke.png</Picture>
     <Number Number="2000" />
     <Looping Looping="0" />
     <Explosion Explosion="1" />

@@ -10,6 +10,14 @@
 #include "../Event and Messages/EventSystem.h"
 #include "../Headers/BitmapFont.h"
 #include "../GameStates/StartState.h"
+#include "../GameStates/GetNameState.h"
+#include "../GameStates/LoadOutState.h"
+#include "../GameStates/ShopState.h"
+#include "../GameStates/StatState.h"
+#include "../GameStates/SurvivalHS.h"
+#include "../GameStates/SurvivalState.h"
+#include "../GameStates/TutorState.h"
+#include "../GameObjects/Player.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -118,8 +126,6 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 
 void CGame::Shutdown(void)
 {
-	
-
 	if(m_pAudio != nullptr)
 	{
 		m_pAudio->ShutdownXAudio2();
@@ -128,13 +134,21 @@ void CGame::Shutdown(void)
 
 	CMainMenuState::GetInstance()->DeleteInstance();
 	CGamePlayState::GetInstance()->DeleteInstance();
-	COptionsState::GetInstance()->DeleteInstance();
 	CCreditsState::GetInstance()->DeleteInstance();
+	COptionsState::GetInstance()->DeleteInstance();
+	CLoadGameState::GetInstance()->DeleteInstance();
 	CMessageSystem::GetInstance()->DeleteInstance();
 	CEventSystem::GetInstance()->DeleteInstance();
 	CBitmapFont::GetInstance()->DeleteInstance();
-	CLoadGameState::GetInstance()->DeleteInstance();
 	CStartState::GetInstance()->DeleteInstance();
+	CGetNameState::GetInstance()->DeleteInstance();
+	CLoadOutState::GetInstance()->DeleteInstance();
+	CShopState::GetInstance()->DeleteInstance();
+	StatState::GetInstance()->DeleteInstance();
+	CSurvivalHS::GetInstance()->DeleteInstance();
+	CSurvivalState::GetInstance()->DeleteInstance();
+	CTutorState::GetInstance()->DeleteInstance();
+	CPlayer::GetInstance()->DeleteInstance();
 }
 
 bool CGame::Main(void)

@@ -29,7 +29,7 @@ void CJet::Update(float fDt)
 	RECT rSelf = GetRect();
 
 	this;
-	if(GetPosY()/*-pCam->GetPosY()*/ < m_rTarget.bottom && GetPosY()/*-pCam->GetPosY()*/ > m_rTarget.top 
+	if(GetPosY()/*-pCam->GetPosY()*/ < m_rTarget.bottom-25 && GetPosY()/*-pCam->GetPosY()*/ > m_rTarget.top-25 
 		&& GetPosX()/*-pCam->GetPosX()*/ < m_rTarget.right && GetPosX()/*-pCam->GetPosX()*/ > m_rTarget.left )
 	{
 		if(m_bDropper == false)

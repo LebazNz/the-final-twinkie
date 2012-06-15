@@ -23,7 +23,7 @@ void CSmoke::ActivateSpecial(void)
 	{
 		m_pEmitter->ResetEmitter();
 		Camera* c = Camera::GetInstance();
- 		m_pEmitter->UpdateEmitterPos(CPlayer::GetInstance()->GetPosX()-c->GetPosX(),CPlayer::GetInstance()->GetPosY()-c->GetPosY());
+		m_pEmitter->UpdateEmitterPos((CPlayer::GetInstance()->GetPosX()-CPlayer::GetInstance()->GetWidth()/2-25)-c->GetPosX(),(CPlayer::GetInstance()->GetPosY()-CPlayer::GetInstance()->GetHeight()/2-25)-c->GetPosY());
 		m_pEmitter->ActivateEmitter();
 		CObjectManager::GetInstance()->AreaEffect(CPlayer::GetInstance()->GetPosX(),CPlayer::GetInstance()->GetPosY(),m_nRadius,m_nDamage);
 		m_nAmmo--;

@@ -91,26 +91,42 @@ void CCreditsState::Exit(void)
 
 bool CCreditsState::Input(void)
 {
-	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1) || (m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585 && m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonDown(0)))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-		CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick);
-		return true;
+		// Exit the game when the user presses esc
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1) || (m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585 && m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonDown(0)))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick);
+			return true;
+		}
+	}
+	else
+	{
+			// Exit the game when the user presses esc
+		if(m_pDI->JoystickButtonPressed(6) || (m_nMouseX >= 25 && m_nMouseX <= 177 && m_nMouseY >= 545 && m_nMouseY <= 585 && m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonDown(0)))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nClick);
+			return true;
+		}
 	}
 	return true;
 }
 
 void CCreditsState::Update(float fDt)
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();

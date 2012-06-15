@@ -80,6 +80,8 @@ struct Data
 	int nSpecialOne;
 	int nSpecialTwo;
 	int nSecondType;
+
+	int nFlame;
 };
 
 class IGameState

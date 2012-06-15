@@ -55,10 +55,21 @@ void CSurvivalHS::Exit( void )
 
 bool CSurvivalHS::Input( void )
 {
-	if(m_pDI->KeyPressed(DIK_ESCAPE))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-		return true;
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
+	}
+	else
+	{
+		if(m_pDI->JoystickButtonPressed(6))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
 	}
 	return true;
 }
@@ -87,8 +98,8 @@ void CSurvivalHS::Render( void )
 			temp+=tempNum%10+48;
 			tempNum/=10;
 		}
-		for (unsigned int i=0;i<temp.length();i++)
-			convertvalue+=temp[temp.length()-i-1];
+		for (unsigned int j=0;j<temp.length();j++)
+			convertvalue+=temp[temp.length()-j-1];
 
 		m_pFM->Print(iter->GetName().c_str(),75,50*i,1,D3DCOLOR_ARGB(255,255,255,255));
 		m_pFM->Print(convertvalue.c_str(),500,50*i,1,D3DCOLOR_ARGB(255,255,255,255));
