@@ -72,6 +72,7 @@ bool CTileManager::Load(string fileName)
 		if( pRoot == nullptr )
 			return false;
 
+
 		//Get file name and map info
 		const char* pText = pRoot->FirstChildElement("file_name")->GetText();
 		string picture="resource/graphics/";
@@ -214,7 +215,7 @@ bool CTileManager::Load(string fileName)
 		}*/
 	
 		
-
+		
 		m_pGraphics.CreateLayer(GRAPHIC,tileWidth, tileHeight, mapWidth, mapHeight, setWidth,setHeight, m_vTiles);
 	}
 	else

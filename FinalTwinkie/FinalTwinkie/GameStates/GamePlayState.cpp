@@ -2299,6 +2299,14 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 				}
 				break;
+
+			case ALIEN:
+				{
+					CCreateFactoryMessage* pMsg = new CCreateFactoryMessage(0,0);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
+				break;
 			}
 		}
 		break;
@@ -2356,6 +2364,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CPlayer::GetInstance()->SetAlienBoss(true);
 			pSelf->m_bAGet=true;
 			pSelf->m_fGetTimer=0;
+			pSelf->m_bWinner = true;
 			pSelf->m_nLevel++;
 			CDestroyFactoryMessage* Msg=dynamic_cast<CDestroyFactoryMessage*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetFactory());

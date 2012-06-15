@@ -170,6 +170,7 @@ void CPirateBoss::Update(float fDt)
 
 void CPirateBoss::Render(void)
 {
+	CGame* pGame = CGame::GetInstance();
 	CSGD_TextureManager *m_pTM = CSGD_TextureManager::GetInstance();
 	Camera* C = Camera::GetInstance();
 
@@ -199,9 +200,10 @@ void CPirateBoss::Render(void)
 	{
 		if(GetHealth() < GetMaxHealth())
 		{
+			
 			RECT rect = {};
 			rect.top=(LONG)7; rect.left=(LONG)3; rect.right=(LONG)(3+((122-3)*(GetHealth()/GetMaxHealth()))); rect.bottom=(LONG)22;
-			CSGD_TextureManager::GetInstance()->Draw(m_nHealthBar,50, 50,2.0f,1.0f,&rect);
+			CSGD_TextureManager::GetInstance()->Draw(m_nHealthBar,200,10 ,4.25f,2.2f,&rect);
 		}
 	}
 
