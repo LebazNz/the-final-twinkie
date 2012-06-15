@@ -122,9 +122,9 @@ bool CPickup::CheckCollision(IEntity* pBase)
 					break;
 				case PU_MONEY:
 					{
-						int nMoney = pPlayer->GetMoney();
+						int nMoney = CPlayer::GetInstance()->GetMoney();
 						nMoney+=m_nGiven;
-						pPlayer->SetMoney(nMoney);
+						CPlayer::GetInstance()->SetMoney(nMoney);
 						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
 					}
 					break;

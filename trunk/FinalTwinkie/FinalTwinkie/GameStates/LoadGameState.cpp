@@ -64,7 +64,7 @@ CLoadGameState::~CLoadGameState(void)
 
 void CLoadGameState::Enter(void)
 {
-	Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0};
+	Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"blahblah",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 	m_pD3D = CSGD_Direct3D::GetInstance();
 	m_pDI = CSGD_DirectInput::GetInstance();
@@ -138,11 +138,23 @@ void CLoadGameState::Exit(void)
 
 bool CLoadGameState::Input(void)
 {
-	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-		return true;
+		// Exit the game when the user presses esc
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
+	}
+	else
+	{
+			// Exit the game when the user presses esc
+		if(m_pDI->JoystickButtonPressed(6))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
 	}
 
 	// Move the cursor position
@@ -293,52 +305,106 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetSpeedLevel(0);
 				m_pPlayer->SetSpeedMod(1);
 				m_pPlayer->SetSecondType(0);
+				m_pPlayer->SetFlamerAccess(0);
 				CReinforcements* pSpecial2 = new CReinforcements;
 				m_pPlayer->SetSpecial1(pSpecial2);
 				m_pPlayer->SetSpecial1Ammo(pSpecial2->GetAmmoCount());
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
+				delete pSpecial1;
+				delete pSpecial2;
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
 			else
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
-				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
+				if(vSavedData[m_nPosition].bAirStrike == 0)
+					m_pPlayer->SetAirStrikeAccess(false);
+				else
+					m_pPlayer->SetAirStrikeAccess(true);
 				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
-				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
-				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
+				if(vSavedData[m_nPosition].bAlienBoss == 0)
+					m_pPlayer->SetAlienBoss(false);
+				else
+					m_pPlayer->SetAlienBoss(true);
+				if(vSavedData[m_nPosition].bAllUpgrades == 0)
+					m_pPlayer->SetAllUpgrades(false);
+				else
+					m_pPlayer->SetAllUpgrades(true);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);
-				m_pPlayer->SetArmor(vSavedData[m_nPosition].nArmor);
+				m_pPlayer->SetArmor(float(vSavedData[m_nPosition].nArmor));
 				m_pPlayer->SetArmorLevel(vSavedData[m_nPosition].nArmorLevel);
 				m_pPlayer->SetArmorMod(vSavedData[m_nPosition].fArmorMod);
-				m_pPlayer->SetArtilleryAccess(vSavedData[m_nPosition].bArtillery);
+				if(vSavedData[m_nPosition].bArtillery == 0)
+					m_pPlayer->SetArtilleryAccess(false);
+				else
+					m_pPlayer->SetArtilleryAccess(true);
 				m_pPlayer->SetDamageMod(vSavedData[m_nPosition].fDamageMod);
 				m_pPlayer->SetDamageLevel(vSavedData[m_nPosition].nDamageLevel);
-				m_pPlayer->SetEMPAccess(vSavedData[m_nPosition].bEMP);
+				if(vSavedData[m_nPosition].bEMP == 0)
+					m_pPlayer->SetEMPAccess(false);
+				else
+					m_pPlayer->SetEMPAccess(true);
 				m_pPlayer->SetHealthLevel(vSavedData[m_nPosition].nHealthLevel);
 				m_pPlayer->SetHealthMod(vSavedData[m_nPosition].fHealthMod);
 				m_pPlayer->SetHeatLevel(vSavedData[m_nPosition].nHeatLevel);
 				m_pPlayer->SetHeatModifier(vSavedData[m_nPosition].fHeatModifier);
-				m_pPlayer->SetIamBoss(vSavedData[m_nPosition].bIamBoss);
-				m_pPlayer->SetLaserAccess(vSavedData[m_nPosition].nLaser);
+				if(vSavedData[m_nPosition].bIamBoss == 0)
+					m_pPlayer->SetIamBoss(false);
+				else
+					m_pPlayer->SetIamBoss(true);
+				if(vSavedData[m_nPosition].nLaser == 0)
+					m_pPlayer->SetLaserAccess(false);
+				else
+					m_pPlayer->SetLaserAccess(true);
 				m_pPlayer->SetLevel(vSavedData[m_nPosition].nLevel);
 				m_pPlayer->SetMaxWeaponAmmo(vSavedData[m_nPosition].nShellAmmo,vSavedData[m_nPosition].nArtilleryAmmo, vSavedData[m_nPosition].nMissileAmmo);
 				m_pPlayer->SetMoney(vSavedData[m_nPosition].nMoney);
-				m_pPlayer->SetNaziBoss(vSavedData[m_nPosition].bNaziBoss);
-				m_pPlayer->SetNukeAccess(vSavedData[m_nPosition].bNuke);
-				m_pPlayer->SetNukem(vSavedData[m_nPosition].bNukem);
-				m_pPlayer->SetRobotBoss(vSavedData[m_nPosition].bRobotBoss);
-				m_pPlayer->SetRocketAccess(vSavedData[m_nPosition].bMissile);
-				m_pPlayer->SetSapperAbsorb(vSavedData[m_nPosition].bSapperAbsorb);
+				if(vSavedData[m_nPosition].bNaziBoss == 0)
+					m_pPlayer->SetNaziBoss(false);
+				else
+					m_pPlayer->SetNaziBoss(true);
+				if(vSavedData[m_nPosition].bNuke == 0)
+					m_pPlayer->SetNukeAccess(false);
+				else
+					m_pPlayer->SetNukeAccess(true);
+				if(vSavedData[m_nPosition].bNukem == 0)
+					m_pPlayer->SetNukem(false);
+				else
+					m_pPlayer->SetNukem(true);
+				if(vSavedData[m_nPosition].bRobotBoss == 0)
+					m_pPlayer->SetRobotBoss(false);
+				else
+					m_pPlayer->SetRobotBoss(true);
+				if(vSavedData[m_nPosition].bMissile == 0)
+					m_pPlayer->SetRocketAccess(false);
+				else
+					m_pPlayer->SetRocketAccess(false);
+				if(vSavedData[m_nPosition].bSapperAbsorb == 0)
+					m_pPlayer->SetSapperAbsorb(false);
+				else
+					m_pPlayer->SetSapperAbsorb(true);
 				m_pPlayer->SetScore(vSavedData[m_nPosition].nScore);
 				m_pPlayer->SetPurchaseLevel(vSavedData[m_nPosition].fPurchaseLevel);
-				m_pPlayer->SetSmokeBombAccess(vSavedData[m_nPosition].bSmoke);
-				m_pPlayer->SetSparta(vSavedData[m_nPosition].bSparta);
+				if(vSavedData[m_nPosition].bSmoke == 0)
+					m_pPlayer->SetSmokeBombAccess(false);
+				else
+					m_pPlayer->SetSmokeBombAccess(true);
+				if(vSavedData[m_nPosition].bSparta == 0)
+					m_pPlayer->SetSparta(false);
+				else
+					m_pPlayer->SetSparta(true);
 				m_pPlayer->SetSpeedLevel(vSavedData[m_nPosition].nSpeedLevel);
 				m_pPlayer->SetSpeedMod(vSavedData[m_nPosition].fSpeedMod);
 				m_pPlayer->SetSecondType(vSavedData[m_nPosition].nSecondType);
+				if(vSavedData[m_nPosition].nFlame == 0)
+					m_pPlayer->SetFlamerAccess(false);
+				else
+					m_pPlayer->SetFlamerAccess(true);
 				switch(vSavedData[m_nPosition].nSpecialOne)
 				{
 				case 0:
@@ -346,6 +412,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -354,6 +422,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -361,6 +431,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -369,6 +441,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -376,6 +450,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -383,6 +459,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -393,6 +471,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -401,6 +481,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -408,6 +490,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -416,6 +500,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -423,6 +509,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -430,6 +518,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -487,52 +577,106 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetSpeedLevel(0);
 				m_pPlayer->SetSpeedMod(1);
 				m_pPlayer->SetSecondType(0);
+				m_pPlayer->SetFlamerAccess(0);
 				CReinforcements* pSpecial2 = new CReinforcements;
 				m_pPlayer->SetSpecial1(pSpecial2);
 				m_pPlayer->SetSpecial1Ammo(pSpecial2->GetAmmoCount());
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
+				delete pSpecial1;
+				delete pSpecial2;
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
 			else
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
-				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
+				if(vSavedData[m_nPosition].bAirStrike == 0)
+					m_pPlayer->SetAirStrikeAccess(false);
+				else
+					m_pPlayer->SetAirStrikeAccess(true);
 				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
-				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
-				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
+				if(vSavedData[m_nPosition].bAlienBoss == 0)
+					m_pPlayer->SetAlienBoss(false);
+				else
+					m_pPlayer->SetAlienBoss(true);
+				if(vSavedData[m_nPosition].bAllUpgrades == 0)
+					m_pPlayer->SetAllUpgrades(false);
+				else
+					m_pPlayer->SetAllUpgrades(true);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);
-				m_pPlayer->SetArmor(vSavedData[m_nPosition].nArmor);
+				m_pPlayer->SetArmor(float(vSavedData[m_nPosition].nArmor));
 				m_pPlayer->SetArmorLevel(vSavedData[m_nPosition].nArmorLevel);
 				m_pPlayer->SetArmorMod(vSavedData[m_nPosition].fArmorMod);
-				m_pPlayer->SetArtilleryAccess(vSavedData[m_nPosition].bArtillery);
+				if(vSavedData[m_nPosition].bArtillery == 0)
+					m_pPlayer->SetArtilleryAccess(false);
+				else
+					m_pPlayer->SetArtilleryAccess(true);
 				m_pPlayer->SetDamageMod(vSavedData[m_nPosition].fDamageMod);
 				m_pPlayer->SetDamageLevel(vSavedData[m_nPosition].nDamageLevel);
-				m_pPlayer->SetEMPAccess(vSavedData[m_nPosition].bEMP);
+				if(vSavedData[m_nPosition].bEMP == 0)
+					m_pPlayer->SetEMPAccess(false);
+				else
+					m_pPlayer->SetEMPAccess(true);
 				m_pPlayer->SetHealthLevel(vSavedData[m_nPosition].nHealthLevel);
 				m_pPlayer->SetHealthMod(vSavedData[m_nPosition].fHealthMod);
 				m_pPlayer->SetHeatLevel(vSavedData[m_nPosition].nHeatLevel);
 				m_pPlayer->SetHeatModifier(vSavedData[m_nPosition].fHeatModifier);
-				m_pPlayer->SetIamBoss(vSavedData[m_nPosition].bIamBoss);
-				m_pPlayer->SetLaserAccess(vSavedData[m_nPosition].nLaser);
+				if(vSavedData[m_nPosition].bIamBoss == 0)
+					m_pPlayer->SetIamBoss(false);
+				else
+					m_pPlayer->SetIamBoss(true);
+				if(vSavedData[m_nPosition].nLaser == 0)
+					m_pPlayer->SetLaserAccess(false);
+				else
+					m_pPlayer->SetLaserAccess(true);
 				m_pPlayer->SetLevel(vSavedData[m_nPosition].nLevel);
 				m_pPlayer->SetMaxWeaponAmmo(vSavedData[m_nPosition].nShellAmmo,vSavedData[m_nPosition].nArtilleryAmmo, vSavedData[m_nPosition].nMissileAmmo);
 				m_pPlayer->SetMoney(vSavedData[m_nPosition].nMoney);
-				m_pPlayer->SetNaziBoss(vSavedData[m_nPosition].bNaziBoss);
-				m_pPlayer->SetNukeAccess(vSavedData[m_nPosition].bNuke);
-				m_pPlayer->SetNukem(vSavedData[m_nPosition].bNukem);
-				m_pPlayer->SetRobotBoss(vSavedData[m_nPosition].bRobotBoss);
-				m_pPlayer->SetRocketAccess(vSavedData[m_nPosition].bMissile);
-				m_pPlayer->SetSapperAbsorb(vSavedData[m_nPosition].bSapperAbsorb);
+				if(vSavedData[m_nPosition].bNaziBoss == 0)
+					m_pPlayer->SetNaziBoss(false);
+				else
+					m_pPlayer->SetNaziBoss(true);
+				if(vSavedData[m_nPosition].bNuke == 0)
+					m_pPlayer->SetNukeAccess(false);
+				else
+					m_pPlayer->SetNukeAccess(true);
+				if(vSavedData[m_nPosition].bNukem == 0)
+					m_pPlayer->SetNukem(false);
+				else
+					m_pPlayer->SetNukem(true);
+				if(vSavedData[m_nPosition].bRobotBoss == 0)
+					m_pPlayer->SetRobotBoss(false);
+				else
+					m_pPlayer->SetRobotBoss(true);
+				if(vSavedData[m_nPosition].bMissile == 0)
+					m_pPlayer->SetRocketAccess(false);
+				else
+					m_pPlayer->SetRocketAccess(false);
+				if(vSavedData[m_nPosition].bSapperAbsorb == 0)
+					m_pPlayer->SetSapperAbsorb(false);
+				else
+					m_pPlayer->SetSapperAbsorb(true);
 				m_pPlayer->SetScore(vSavedData[m_nPosition].nScore);
 				m_pPlayer->SetPurchaseLevel(vSavedData[m_nPosition].fPurchaseLevel);
-				m_pPlayer->SetSmokeBombAccess(vSavedData[m_nPosition].bSmoke);
-				m_pPlayer->SetSparta(vSavedData[m_nPosition].bSparta);
+				if(vSavedData[m_nPosition].bSmoke == 0)
+					m_pPlayer->SetSmokeBombAccess(false);
+				else
+					m_pPlayer->SetSmokeBombAccess(true);
+				if(vSavedData[m_nPosition].bSparta == 0)
+					m_pPlayer->SetSparta(false);
+				else
+					m_pPlayer->SetSparta(true);
 				m_pPlayer->SetSpeedLevel(vSavedData[m_nPosition].nSpeedLevel);
 				m_pPlayer->SetSpeedMod(vSavedData[m_nPosition].fSpeedMod);
 				m_pPlayer->SetSecondType(vSavedData[m_nPosition].nSecondType);
+				if(vSavedData[m_nPosition].nFlame == 0)
+					m_pPlayer->SetFlamerAccess(false);
+				else
+					m_pPlayer->SetFlamerAccess(true);
 				switch(vSavedData[m_nPosition].nSpecialOne)
 				{
 				case 0:
@@ -540,6 +684,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -548,6 +694,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -555,6 +703,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -563,6 +713,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -570,6 +722,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -577,6 +731,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -587,6 +743,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -595,6 +753,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -602,6 +762,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -610,6 +772,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -617,6 +781,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -624,6 +790,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -681,52 +849,106 @@ bool CLoadGameState::Input(void)
 				m_pPlayer->SetSpeedLevel(0);
 				m_pPlayer->SetSpeedMod(1);
 				m_pPlayer->SetSecondType(0);
+				m_pPlayer->SetFlamerAccess(0);
 				CReinforcements* pSpecial2 = new CReinforcements;
 				m_pPlayer->SetSpecial1(pSpecial2);
 				m_pPlayer->SetSpecial1Ammo(pSpecial2->GetAmmoCount());
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
+				delete pSpecial1;
+				delete pSpecial2;
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
 			else
 			{
 				m_pPlayer->SetName(vSavedData[m_nPosition].szName);
-				m_pPlayer->SetAirStrikeAccess(vSavedData[m_nPosition].bAirStrike);
+				if(vSavedData[m_nPosition].bAirStrike == 0)
+					m_pPlayer->SetAirStrikeAccess(false);
+				else
+					m_pPlayer->SetAirStrikeAccess(true);
 				m_pPlayer->SetAmmoLevel(vSavedData[m_nPosition].nAmmoLevel);
-				m_pPlayer->SetAlienBoss(vSavedData[m_nPosition].bAlienBoss);
-				m_pPlayer->SetAllUpgrades(vSavedData[m_nPosition].bAllUpgrades);
+				if(vSavedData[m_nPosition].bAlienBoss == 0)
+					m_pPlayer->SetAlienBoss(false);
+				else
+					m_pPlayer->SetAlienBoss(true);
+				if(vSavedData[m_nPosition].bAllUpgrades == 0)
+					m_pPlayer->SetAllUpgrades(false);
+				else
+					m_pPlayer->SetAllUpgrades(true);
 				m_pPlayer->SetAmmoMod(vSavedData[m_nPosition].fAmmoMod);
-				m_pPlayer->SetArmor(vSavedData[m_nPosition].nArmor);
+				m_pPlayer->SetArmor(float(vSavedData[m_nPosition].nArmor));
 				m_pPlayer->SetArmorLevel(vSavedData[m_nPosition].nArmorLevel);
 				m_pPlayer->SetArmorMod(vSavedData[m_nPosition].fArmorMod);
-				m_pPlayer->SetArtilleryAccess(vSavedData[m_nPosition].bArtillery);
+				if(vSavedData[m_nPosition].bArtillery == 0)
+					m_pPlayer->SetArtilleryAccess(false);
+				else
+					m_pPlayer->SetArtilleryAccess(true);
 				m_pPlayer->SetDamageMod(vSavedData[m_nPosition].fDamageMod);
 				m_pPlayer->SetDamageLevel(vSavedData[m_nPosition].nDamageLevel);
-				m_pPlayer->SetEMPAccess(vSavedData[m_nPosition].bEMP);
+				if(vSavedData[m_nPosition].bEMP == 0)
+					m_pPlayer->SetEMPAccess(false);
+				else
+					m_pPlayer->SetEMPAccess(true);
 				m_pPlayer->SetHealthLevel(vSavedData[m_nPosition].nHealthLevel);
 				m_pPlayer->SetHealthMod(vSavedData[m_nPosition].fHealthMod);
 				m_pPlayer->SetHeatLevel(vSavedData[m_nPosition].nHeatLevel);
 				m_pPlayer->SetHeatModifier(vSavedData[m_nPosition].fHeatModifier);
-				m_pPlayer->SetIamBoss(vSavedData[m_nPosition].bIamBoss);
-				m_pPlayer->SetLaserAccess(vSavedData[m_nPosition].nLaser);
+				if(vSavedData[m_nPosition].bIamBoss == 0)
+					m_pPlayer->SetIamBoss(false);
+				else
+					m_pPlayer->SetIamBoss(true);
+				if(vSavedData[m_nPosition].nLaser == 0)
+					m_pPlayer->SetLaserAccess(false);
+				else
+					m_pPlayer->SetLaserAccess(true);
 				m_pPlayer->SetLevel(vSavedData[m_nPosition].nLevel);
 				m_pPlayer->SetMaxWeaponAmmo(vSavedData[m_nPosition].nShellAmmo,vSavedData[m_nPosition].nArtilleryAmmo, vSavedData[m_nPosition].nMissileAmmo);
 				m_pPlayer->SetMoney(vSavedData[m_nPosition].nMoney);
-				m_pPlayer->SetNaziBoss(vSavedData[m_nPosition].bNaziBoss);
-				m_pPlayer->SetNukeAccess(vSavedData[m_nPosition].bNuke);
-				m_pPlayer->SetNukem(vSavedData[m_nPosition].bNukem);
-				m_pPlayer->SetRobotBoss(vSavedData[m_nPosition].bRobotBoss);
-				m_pPlayer->SetRocketAccess(vSavedData[m_nPosition].bMissile);
-				m_pPlayer->SetSapperAbsorb(vSavedData[m_nPosition].bSapperAbsorb);
+				if(vSavedData[m_nPosition].bNaziBoss == 0)
+					m_pPlayer->SetNaziBoss(false);
+				else
+					m_pPlayer->SetNaziBoss(true);
+				if(vSavedData[m_nPosition].bNuke == 0)
+					m_pPlayer->SetNukeAccess(false);
+				else
+					m_pPlayer->SetNukeAccess(true);
+				if(vSavedData[m_nPosition].bNukem == 0)
+					m_pPlayer->SetNukem(false);
+				else
+					m_pPlayer->SetNukem(true);
+				if(vSavedData[m_nPosition].bRobotBoss == 0)
+					m_pPlayer->SetRobotBoss(false);
+				else
+					m_pPlayer->SetRobotBoss(true);
+				if(vSavedData[m_nPosition].bMissile == 0)
+					m_pPlayer->SetRocketAccess(false);
+				else
+					m_pPlayer->SetRocketAccess(false);
+				if(vSavedData[m_nPosition].bSapperAbsorb == 0)
+					m_pPlayer->SetSapperAbsorb(false);
+				else
+					m_pPlayer->SetSapperAbsorb(true);
 				m_pPlayer->SetScore(vSavedData[m_nPosition].nScore);
 				m_pPlayer->SetPurchaseLevel(vSavedData[m_nPosition].fPurchaseLevel);
-				m_pPlayer->SetSmokeBombAccess(vSavedData[m_nPosition].bSmoke);
-				m_pPlayer->SetSparta(vSavedData[m_nPosition].bSparta);
+				if(vSavedData[m_nPosition].bSmoke == 0)
+					m_pPlayer->SetSmokeBombAccess(false);
+				else
+					m_pPlayer->SetSmokeBombAccess(true);
+				if(vSavedData[m_nPosition].bSparta == 0)
+					m_pPlayer->SetSparta(false);
+				else
+					m_pPlayer->SetSparta(true);
 				m_pPlayer->SetSpeedLevel(vSavedData[m_nPosition].nSpeedLevel);
 				m_pPlayer->SetSpeedMod(vSavedData[m_nPosition].fSpeedMod);
 				m_pPlayer->SetSecondType(vSavedData[m_nPosition].nSecondType);
+				if(vSavedData[m_nPosition].nFlame == 0)
+					m_pPlayer->SetFlamerAccess(false);
+				else
+					m_pPlayer->SetFlamerAccess(true);
 				switch(vSavedData[m_nPosition].nSpecialOne)
 				{
 				case 0:
@@ -734,6 +956,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -742,6 +966,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -749,6 +975,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -757,6 +985,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -764,6 +994,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -771,6 +1003,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -781,6 +1015,8 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -789,6 +1025,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -796,6 +1034,8 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -804,6 +1044,8 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -811,6 +1053,8 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -818,6 +1062,8 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						delete pSpecial;
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -831,7 +1077,7 @@ bool CLoadGameState::Input(void)
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame1.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame1.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-3] = data;
 				m_nCount--;
 				m_nPosition-=3;
@@ -839,7 +1085,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-2].nLevel != 0)
 			{
 				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-2] = data;
 				m_nCount--;
 				m_nPosition-=2;
@@ -847,7 +1093,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-1].nLevel != 0)
 			{
 				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-1] = data;
 				m_nCount--;
 				m_nPosition-=1;
@@ -859,7 +1105,7 @@ bool CLoadGameState::Input(void)
 			if(vSavedData[m_nPosition-3].nLevel != 0)
 			{
 				remove("savedGame2.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame2.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-3] = data;
 				m_nCount--;
 				m_nPosition-=3;
@@ -867,7 +1113,7 @@ bool CLoadGameState::Input(void)
 			else if(vSavedData[m_nPosition-2].nLevel != 0)
 			{
 				remove("savedGame3.xml");
-				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+				Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 				vSavedData[m_nPosition-2] = data;
 				m_nCount--;
 				m_nPosition-=2;
@@ -877,7 +1123,7 @@ bool CLoadGameState::Input(void)
 		{	
 			m_pAudio->SFXPlaySound(m_nClick, false);
 			remove("savedGame3.xml");
-			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0};
+			Data data = {"AAA",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"savedGame3.xml",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 			vSavedData[m_nPosition-3] = data;
 			m_nCount--;
 			m_nPosition-=3;			
@@ -888,14 +1134,17 @@ bool CLoadGameState::Input(void)
 
 void CLoadGameState::Update(float fDt)
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -1298,6 +1547,8 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 			info.nSpecialTwo = 0;
 		if(gameData->Attribute("secondammo"		, &info.nSecondType) == nullptr)
 			info.nSecondType = 0;
+		if(gameData->Attribute("flame"			, &info.nFlame) == nullptr)
+			info.nFlame = 0;
 
 		strcpy_s(info.szFileName,32,szFileName);
 

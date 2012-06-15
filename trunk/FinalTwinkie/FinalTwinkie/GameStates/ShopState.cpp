@@ -139,10 +139,21 @@ void CShopState::Exit(void)
 
 bool CShopState::Input(void)
 {
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-		return true;
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
+	}
+	else
+	{
+		if(m_pDI->JoystickButtonPressed(6))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
 	}
 
 	if(m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
@@ -359,14 +370,17 @@ void CShopState::DetermineSelection()
 
 void CShopState::SelectButtons()
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE== 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -918,11 +932,11 @@ void CShopState::Purchase()
 	int tempArt = -1;
 	int tempRoc = -1;
 	if(m_pPlayer->GetArtilleryAccess())
-		tempArt = 40*m_pPlayer->GetAmmoMod();
+		tempArt = int(40*m_pPlayer->GetAmmoMod());
 	if(m_pPlayer->GetRocketAccess())
-		tempRoc = 40*m_pPlayer->GetAmmoMod();
+		tempRoc = int(40*m_pPlayer->GetAmmoMod());
 
-	m_pPlayer->SetMaxWeaponAmmo(40*m_pPlayer->GetAmmoMod(),tempArt,tempRoc);
+	m_pPlayer->SetMaxWeaponAmmo(int(40*m_pPlayer->GetAmmoMod()),tempArt,tempRoc);
 	
 }
 

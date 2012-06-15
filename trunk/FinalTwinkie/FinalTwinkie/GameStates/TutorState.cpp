@@ -663,13 +663,78 @@ bool CTutorState::Input(void)
 {
 	if(m_bGameOver == false && (m_bWinner == false || m_nEnemyCount > 0))
 	{
-		if(m_bPaused)
+		if(ARCADE == 0)
 		{
-			if(m_pDI->KeyPressed(DIK_ESCAPE))
+			if(m_bPaused)
+			{
+				if(m_pDI->KeyPressed(DIK_ESCAPE))
+				{
+					m_bPaused = !m_bPaused;
+				}
+				if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+				{
+					m_pAudio->SFXPlaySound(m_nClick, false);
+					if(m_nPosition == 0)
+					{
+						m_bPaused = !m_bPaused;
+					}
+					else if(m_nPosition == 1)
+					{
+						CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+					}
+					else if(m_nPosition == 2)
+					{
+						m_bPaused = false;
+						CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+						return true;		
+					}
+				}
+				if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+				{
+					if(m_nPosition == 0)
+					{
+						m_nPosition = 2;
+					}
+					else
+					{
+						m_nPosition -= 1;
+					}
+				}
+				else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+				{
+					if(m_nPosition == 2)
+					{
+						m_nPosition = 0;
+					}
+					else
+					{
+						m_nPosition += 1;
+					}
+				}
+			}
+			else
+			{
+				if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
+				{
+					m_bPaused = !m_bPaused;
+				}
+			}
+			if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
+				{
+					if(m_pDI->KeyPressed(DIK_TAB))
+					{
+						m_bPaused=true;
+					}
+				}
+			return true;
+		}
+		else
+		{
+			if(m_pDI->JoystickButtonPressed(6))
 			{
 				m_bPaused = !m_bPaused;
 			}
-			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
+			if(m_pDI->JoystickButtonPressed(0))
 			{
 				m_pAudio->SFXPlaySound(m_nClick, false);
 				if(m_nPosition == 0)
@@ -687,8 +752,9 @@ bool CTutorState::Input(void)
 					return true;		
 				}
 			}
-			if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+			if(m_pDI->JoystickGetLStickDirPressed(DIR_UP))
 			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
 				if(m_nPosition == 0)
 				{
 					m_nPosition = 2;
@@ -698,8 +764,9 @@ bool CTutorState::Input(void)
 					m_nPosition -= 1;
 				}
 			}
-			else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+			else if(m_pDI->JoystickGetLStickDirPressed(DIR_DOWN))
 			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
 				if(m_nPosition == 2)
 				{
 					m_nPosition = 0;
@@ -708,23 +775,16 @@ bool CTutorState::Input(void)
 				{
 					m_nPosition += 1;
 				}
-			}
-		}
-		else
-		{
-			if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
+			}		
+			else
 			{
-				m_bPaused = !m_bPaused;
-			}
-		}
-		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
-			{
-				if(m_pDI->KeyPressed(DIK_TAB))
+				if(m_pDI->JoystickButtonPressed(6))
 				{
-					m_bPaused=true;
+					m_bPaused = !m_bPaused;
 				}
 			}
-		return true;
+			return true;
+		}
 	}
 	return true;
 }

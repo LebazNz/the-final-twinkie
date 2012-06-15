@@ -95,7 +95,7 @@ void CStartState::Exit(void)
 
 bool CStartState::Input(void)
 {
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(0) || m_pDI->KeyPressed(DIK_RETURN))
+	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(0) || m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(6))
 	{
 		if(m_bSwitch==false)
 			m_bSwitch=true;

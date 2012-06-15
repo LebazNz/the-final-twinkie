@@ -190,7 +190,7 @@ void CLoadOutState::Enter( void )
 	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
 	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
-	m_nTotalAmmo = 40*m_pPlayer->GetAmmoMod();
+	m_nTotalAmmo = int(40*m_pPlayer->GetAmmoMod());
 }
 
 void CLoadOutState::Exit( void )
@@ -227,11 +227,6 @@ void CLoadOutState::Exit( void )
 
 bool CLoadOutState::Input( void )
 {
-	/*if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
-	{
-		CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-		return true;
-	}*/
 	// Back/Continue
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 25 && m_nMouseX <= 193
 		&& m_nMouseY >= 550 && m_nMouseY <= 575))
@@ -514,7 +509,7 @@ bool CLoadOutState::Input( void )
 		m_nSpecialPos1 += 1;
 
 		if(m_nSpecialPos1 >= m_nSpecialCount)
-			for(int i = 0; i < m_vSpCount.size()-1; i++)
+			for(unsigned int i = 0; i < m_vSpCount.size(); i++)
 			{
 				if(m_vSpCount[i] != -1)
 					m_nSpecialPos1 = m_vSpCount[i];
@@ -532,7 +527,7 @@ bool CLoadOutState::Input( void )
 		{
 			m_nSpecialPos1 += 1;
 			if(m_nSpecialPos1 >= m_nSpecialCount)
-				for(int i = 0; i < m_vSpCount.size()-1; i++)
+				for(unsigned int i = 0; i < m_vSpCount.size(); i++)
 			{
 				if(m_vSpCount[i] != -1)
 					m_nSpecialPos1 = m_vSpCount[i];
@@ -600,7 +595,7 @@ bool CLoadOutState::Input( void )
 		m_nSpecialPos2 += 1;
 
 		if(m_nSpecialPos2 >= m_nSpecialCount)
-			for(int i = 0; i < m_vSpCount.size()-1; i++)
+			for(unsigned int i = 0; i < m_vSpCount.size()-1; i++)
 			{
 				if(m_vSpCount[i] != -1)
 					m_nSpecialPos2 = m_vSpCount[i];
@@ -618,7 +613,7 @@ bool CLoadOutState::Input( void )
 		{
 			m_nSpecialPos2 += 1;
 			if(m_nSpecialPos2 >= m_nSpecialCount)
-				for(int i = 0; i < m_vSpCount.size()-1; i++)
+				for(unsigned int i = 0; i < m_vSpCount.size()-1; i++)
 				{
 					if(m_vSpCount[i] != -1)
 						m_nSpecialPos2 = m_vSpCount[i];
@@ -632,24 +627,24 @@ bool CLoadOutState::Input( void )
 					if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
 							continue;
 				}
-		}
-			
+		}			
 	}
-
-
 	return true;
 }
 
 void CLoadOutState::Update( float fDt )
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();

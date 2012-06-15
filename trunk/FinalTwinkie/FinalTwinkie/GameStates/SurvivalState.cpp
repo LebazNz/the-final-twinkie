@@ -208,7 +208,8 @@ void CSurvivalState::Enter( void )
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
-		
+		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 		m_pMS->InitMessageSystem(&MessageProc);
 
@@ -253,6 +254,8 @@ void CSurvivalState::Enter( void )
 		player->SetSpecial2Ammo(5);
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
+		player->SetInvul(true);
+		player->SetInvulTimer(50000);
 		//player->SetName(m_dGameData.szName);
 		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
 		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
@@ -295,14 +298,14 @@ void CSurvivalState::Enter( void )
 	LoadText();
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
-	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
 	
 //	LoadWave();
 	
 	m_nNumUnits = 0;
-	LoadWave("48wavesofhell.xml",0);
+	//LoadWave("48wavesofhell.xml",0);
+	LoadWave("Nate.xml",0);
 }
 
 void CSurvivalState::Exit( void )
@@ -452,67 +455,131 @@ void CSurvivalState::Exit( void )
 
 bool CSurvivalState::Input( void )
 {
-	
-	if(m_bPaused)
+
+	if(ARCADE == 0)
 	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE))
+		if(m_bPaused)
 		{
-			m_bPaused = !m_bPaused;
-		}
-		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
-		{
-			m_pAudio->SFXPlaySound(m_nClick, false);
-			if(m_nPosition == 0)
+			if(m_pDI->KeyPressed(DIK_ESCAPE))
 			{
 				m_bPaused = !m_bPaused;
 			}
-			else if(m_nPosition == 1)
+			if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0))
 			{
-				CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				m_pAudio->SFXPlaySound(m_nClick, false);
+				if(m_nPosition == 0)
+				{
+					m_bPaused = !m_bPaused;
+				}
+				else if(m_nPosition == 1)
+				{
+					CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				}
+				else if(m_nPosition == 2)
+				{
+					m_bPaused = false;
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;		
+				}
 			}
-			else if(m_nPosition == 2)
+			if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
 			{
-				m_bPaused = false;
-				CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-				return true;		
+				if(m_nPosition == 0)
+				{
+					m_nPosition = 2;
+				}
+				else
+				{
+					m_nPosition -= 1;
+				}
+			}
+			else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+			{
+				if(m_nPosition == 2)
+				{
+					m_nPosition = 0;
+				}
+				else
+				{
+					m_nPosition += 1;
+				}
 			}
 		}
-		if(m_pDI->KeyPressed(DIK_UP) || m_pDI->JoystickDPadPressed(DIR_UP))
+		else
 		{
-			if(m_nPosition == 0)
+			if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
 			{
-				m_nPosition = 2;
-			}
-			else
-			{
-				m_nPosition -= 1;
+				m_bPaused = !m_bPaused;
 			}
 		}
-		else if(m_pDI->KeyPressed(DIK_DOWN) || m_pDI->JoystickDPadPressed(DIR_DOWN))
+		if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
 		{
-			if(m_nPosition == 2)
+			if(m_pDI->KeyPressed(DIK_TAB))
 			{
-				m_nPosition = 0;
-			}
-			else
-			{
-				m_nPosition += 1;
+				m_bPaused=true;
 			}
 		}
 	}
 	else
 	{
-		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(7))
+		if(m_bPaused)
 		{
-			m_bPaused = !m_bPaused;
+			if(m_pDI->JoystickButtonPressed(6))
+			{
+				m_bPaused = !m_bPaused;
+			}
+			if(m_pDI->JoystickButtonPressed(0))
+			{
+				m_pAudio->SFXPlaySound(m_nClick, false);
+				if(m_nPosition == 0)
+				{
+					m_bPaused = !m_bPaused;
+				}
+				else if(m_nPosition == 1)
+				{
+					CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+				}
+				else if(m_nPosition == 2)
+				{
+					m_bPaused = false;
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					return true;		
+				}
+			}
+			if(m_pDI->JoystickGetLStickDirPressed(DIR_UP))
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+				if(m_nPosition == 0)
+				{
+					m_nPosition = 2;
+				}
+				else
+				{
+					m_nPosition -= 1;
+				}
+			}
+			else if(m_pDI->JoystickGetLStickDirPressed(DIR_DOWN))
+			{
+				m_pAudio->SFXPlaySound(m_nButton,false);
+				if(m_nPosition == 2)
+				{
+					m_nPosition = 0;
+				}
+				else
+				{
+					m_nPosition += 1;
+				}
+			}
 		}
-	}
-	if(m_pDI->KeyDown(DIK_LMENU)||m_pDI->KeyDown(DIK_RMENU))
-	{
-		if(m_pDI->KeyPressed(DIK_TAB))
+		else
 		{
-			m_bPaused=true;
+			if(m_pDI->JoystickButtonPressed(6))
+			{
+				m_bPaused = !m_bPaused;
+			}
 		}
+		return true;
+		
 	}
 	return true;
 }
@@ -531,14 +598,17 @@ void CSurvivalState::Update( float fDt )
 		m_pMS->ProcessMessages();
 	}
 	
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
@@ -570,6 +640,7 @@ void CSurvivalState::Update( float fDt )
 
 	if(m_nNumUnits <= 0)
 	{
+		
 		m_nWavesRemaining--;
 		if(m_nWavesRemaining <= 0)
 			CGame::GetInstance()->ChangeState(CSurvivalHS::GetInstance());
@@ -579,10 +650,6 @@ void CSurvivalState::Update( float fDt )
 			m_nCurrWave++;
 			GenerateWave();
 		}
-	}
-	if(m_pPlayer->GetHealth() <= 0)
-	{
-		CGame::GetInstance()->ChangeState(CSurvivalHS::GetInstance());
 	}
 }
 
@@ -621,9 +688,6 @@ void CSurvivalState::Render( void )
 		m_pGUI->Render();
 		m_pD3D->GetSprite()->Flush();
 		m_pFont->Print(m_sWave.c_str(), 539,547,.67f,UINT_MAX);
-		char buffer[10];
-		_itoa_s(m_nCurrWave,buffer,10);
-		CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+150,547,.67f,UINT_MAX);
 	}
 
 	m_pD3D->GetSprite()->Flush();	
@@ -668,14 +732,14 @@ void CSurvivalState::Render( void )
 		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
-	//CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
-	//char buffer[10];
-	//_itoa_s(m_nCurrWave,buffer,10);
-	//CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
-	//
-	//
-	//_itoa_s(m_nNumUnits,buffer,10);
-	//CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
+	CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	char buffer[10];
+	_itoa_s(m_nCurrWave,buffer,10);
+	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
+	
+	
+	_itoa_s(m_nNumUnits,buffer,10);
+	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
 	
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
@@ -788,13 +852,13 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 								{
 									int ammoChange=player->GetWeaponAmmoMissile();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), player->GetWeaponAmmoArtillery(), --ammoChange);
-									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-C->GetPosX()-32),(pSelf->m_nMouseY-C->GetPosY()-32),(pSelf->m_nMouseX-C->GetPosX()+32),(pSelf->m_nMouseY-C->GetPosY()+32));
-									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX(),pSelf->m_nMouseY-C->GetPosY()};
-									Bullet->SetTargetPos(vPos);
-									Bullet->SetMissileTimer(0.25f);
 								}
+								RECT rSelf;
+								SetRect(&rSelf,int(pSelf->m_nMouseX-C->GetPosX()-32),int(pSelf->m_nMouseY-C->GetPosY()-32),int(pSelf->m_nMouseX-C->GetPosX()+32),int(pSelf->m_nMouseY-C->GetPosY()+32));
+								Bullet->SetTargetRect(rSelf);
+								tVector2D vPos = { (pSelf->m_nMouseX-C->GetPosX()),(pSelf->m_nMouseY-C->GetPosY())};
+								Bullet->SetTargetPos(vPos);
+								Bullet->SetMissileTimer(0.25f);
 							}
 						}
 						else
@@ -849,12 +913,12 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 								{
 									int ammoChange=player->GetWeaponAmmoArtillery();
 									player->SetWeaponAmmo(player->GetWeaponAmmoShell(), --ammoChange,player->GetWeaponAmmoMissile());
-									RECT rSelf;
-									SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
-									Bullet->SetTargetRect(rSelf);
-									tVector2D vPos = { (pSelf->m_nMouseX-16),(pSelf->m_nMouseY-16)};
-									Bullet->SetTargetPos(vPos);
 								}
+								RECT rSelf;
+								SetRect(&rSelf,(pSelf->m_nMouseX-32),(pSelf->m_nMouseY-32),(pSelf->m_nMouseX+32),(pSelf->m_nMouseY+32));
+								Bullet->SetTargetRect(rSelf);
+								tVector2D vPos = { float(pSelf->m_nMouseX-16),float(pSelf->m_nMouseY-16)};
+								Bullet->SetTargetPos(vPos);
 							}
 						}
 						else
@@ -1025,39 +1089,36 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					CPlayer* player = CPlayer::GetInstance();
 					sapper->SetPlayer(player);
 					sapper->SetSight(10000);
-					sapperloop:
-					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
+					loop:
+					for(unsigned int i = 0; i < pSelf->m_vRECTS.size();i++)
 					{
-						RECT temp;
+						RECT* temp = new RECT;
 						do 
 						{
-							if(IntersectRect(&temp,&sapper->GetRect(),&pSelf->m_vRECTS[i]))
+							if(IntersectRect(temp,&sapper->GetRect(),&pSelf->m_vRECTS[i]))
 							{
-								sapper->SetPosX(rand()%500+100);
-								sapper->SetPosY(rand()%500+100);
+								sapper->SetPosX(float(rand()%500+100));
+								sapper->SetPosY(float(rand()%500+100));
 							}
-							else
+							else 
 								break;
 
 						} while (true);
 					}
 					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
 					{
-						RECT temp2;
-						RECT potato = sapper->GetRect();
-						if(IntersectRect(&temp2,&sapper->GetRect(),&pSelf->m_vRECTS[k]))
+						RECT* temp2 = new RECT;
+						if(IntersectRect(temp2,&sapper->GetRect(),&pSelf->m_vRECTS[k]))
 						{
-							goto sapperloop;
+							goto loop;
 						}
 					}
-					pSelf->m_vRECTS.push_back(sapper->GetRect());
 					if(pMessage->GetKind() == 0)
 					{
 						sapper->SetVelX(45);
 						sapper->SetVelY(45);
 						sapper->SetHealth(35);
 						sapper->SetMaxHealth(35);
-						sapper->SetDamage(5);
 						sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 					}
 					else if(pMessage->GetKind() == 1)
@@ -1066,7 +1127,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						sapper->SetVelY(55);
 						sapper->SetHealth(60);
 						sapper->SetMaxHealth(60);
-						sapper->SetDamage(9);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
 						sapper->SetImageID(nID);
 
@@ -1077,8 +1137,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						sapper->SetVelY(65);
 						sapper->SetHealth(100);
 						sapper->SetMaxHealth(100);
-						sapper->SetDamage(10);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png",D3DCOLOR_ARGB(255,255,255,255)));
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
 						sapper->SetImageID(nID);
 					}
 					sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
@@ -1104,18 +1163,16 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					tank->SetRotationRate(0.75f);
 					tank->SetSight(1000);
 				
-
-
 					tankloop:
-					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
+					for(unsigned int i = 0; i < pSelf->m_vRECTS.size();i++)
 					{
-						RECT temp;
+						RECT* temp = new RECT;
 						do 
 						{
-							if(IntersectRect(&temp,&tank->GetSpawnRect(),&pSelf->m_vRECTS[i]))
+							if(IntersectRect(temp,&tank->GetSpawnRect(),&pSelf->m_vRECTS[i]))
 							{
-								tank->SetPosX(rand()%500+100);
-								tank->SetPosY(rand()%500+100);
+								tank->SetPosX(float(rand()%1500+100));
+								tank->SetPosY(float(rand()%1500+100));
 							}
 							else
 								break;
@@ -1124,9 +1181,9 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					}
 					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
 					{
-						RECT temp2;
+						RECT* temp2 = new RECT;
 							RECT potato = tank->GetSpawnRect();
-						if(IntersectRect(&temp2,&tank->GetSpawnRect(),&pSelf->m_vRECTS[k]))
+						if(IntersectRect(temp2,&tank->GetSpawnRect(),&pSelf->m_vRECTS[k]))
 						{
 							goto tankloop;
 						}
@@ -1134,9 +1191,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					//RECT* potato = new RECT;
 					//potato = &tank->GetSpawnRect();
 					pSelf->m_vRECTS.push_back(tank->GetSpawnRect());
-
-
-
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
 					pSelf->m_pTurret = pSelf->m_pOF->CreateObject("CTurret");
@@ -1145,6 +1199,40 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					pSelf->m_pTurret->SetPosY(pSelf->m_pEnemy->GetPosY());
 					pSelf->m_pTurret->SetWidth(64);
 					pSelf->m_pTurret->SetHeight(128);
+					if(pMessage->GetKind() == 0)
+					{
+						tank->SetVelX(30);
+						tank->SetVelY(30);
+						tank->SetHealth(200);
+						tank->SetMaxHealth(200);
+						tank->SetDamage(20);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/enemyTank.png"));
+						pSelf->m_pEnemy->SetImageID(nID);
+						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/enemyTurret.png"));
+						pSelf->m_pTurret->SetImageID(nIDTurret);	
+					}
+					else if(pMessage->GetKind() == 1)
+					{
+						tank->SetVelX(40);
+						tank->SetVelY(40);
+						tank->SetHealth(300);
+						tank->SetMaxHealth(300);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotTankBase.png"));
+						pSelf->m_pEnemy->SetImageID(nID);
+						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotTankTurret.png"));
+						pSelf->m_pTurret->SetImageID(nIDTurret);	
+					}
+					else if(pMessage->GetKind() == 2)
+					{
+						tank->SetVelX(50);
+						tank->SetVelY(50);
+						tank->SetHealth(400);
+						tank->SetMaxHealth(400);
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienTankBase.png"));
+						pSelf->m_pEnemy->SetImageID(nID);
+						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienTankTurret.png"));
+						pSelf->m_pTurret->SetImageID(nIDTurret);	
+					}
 
 					CTurret* turret = dynamic_cast<CTurret*>(pSelf->m_pTurret);
 					tank->SetTurret(turret);
@@ -1157,50 +1245,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					turret->SetTarget(player);
 					turret->SetRotationRate(1.0f);
 					pSelf->m_pOM->AddObject(pSelf->m_pTurret);
-
-
-					if(pMessage->GetKind() == 0)
-					{
-						tank->SetVelX(30);
-						tank->SetVelY(30);
-						turret->SetDamage(20);
-						turret->SetFireRate(3);
-						tank->SetHealth(200);
-						tank->SetMaxHealth(200);
-						tank->SetDamage(0);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/enemyTank.png"));
-						pSelf->m_pEnemy->SetImageID(nID);
-						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/enemyTurret.png"));
-						pSelf->m_pTurret->SetImageID(nIDTurret);	
-					}
-					else if(pMessage->GetKind() == 1)
-					{
-						tank->SetVelX(40);
-						tank->SetVelY(40);
-						turret->SetDamage(10);
-						turret->SetFireRate(3);
-						tank->SetHealth(300);
-						tank->SetMaxHealth(300);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotTankBase.png"));
-						pSelf->m_pEnemy->SetImageID(nID);
-						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotTankTurret.png"));
-						pSelf->m_pTurret->SetImageID(nIDTurret);	
-					}
-					else if(pMessage->GetKind() == 2)
-					{
-						tank->SetVelX(50);
-						tank->SetVelY(50);
-						turret->SetFireRate(3);
-						turret->SetDamage(500);
-						tank->SetHealth(400);
-						tank->SetMaxHealth(400);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienTankBase.png"));
-						pSelf->m_pEnemy->SetImageID(nID);
-						int nIDTurret = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienTankTurret.png"));
-						pSelf->m_pTurret->SetImageID(nIDTurret);	
-					}
-
-
 					pSelf->m_pTurret->Release();
 					pSelf->m_pEnemy->Release();
 					pSelf->m_pEnemy = nullptr;
@@ -1233,9 +1277,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					pSelf->m_pTurret->Release();
 					pSelf->m_pTurret = nullptr;
 
-
-
-
 				}
 				break;
 
@@ -1251,35 +1292,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
 					enemy->SetMaxDistance(10000);
-
-					riflemanloop:
-					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
-					{
-						RECT temp;
-						do 
-						{
-							if(IntersectRect(&temp,&enemy->GetRect(),&pSelf->m_vRECTS[i]))
-							{
-								enemy->SetPosX(rand()%500+100);
-								enemy->SetPosY(rand()%500+100);
-							}
-							else
-								break;
-
-						} while (true);
-					}
-					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
-					{
-						RECT temp2;
-						RECT potato = enemy->GetRect();
-						if(IntersectRect(&temp2,&enemy->GetRect(),&pSelf->m_vRECTS[k]))
-						{
-							goto riflemanloop;
-						}
-					}
-					pSelf->m_vRECTS.push_back(enemy->GetRect());
-
-
 					if(pMessage->GetKind() == 0)
 					{
 						enemy->SetVelX(45);
@@ -1294,7 +1306,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(55);
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png",0));
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
 						enemy->SetImageID(nID);
 
 					}
@@ -1304,7 +1316,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(65);
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png",0));
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
 						enemy->SetImageID(nID);
 					}
 					enemy->SetMinDistance(200);
@@ -1330,35 +1342,6 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetHealth(50);
 					enemy->SetMaxHealth(50);
 					enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
-
-					rocketloop:
-					for(int i = 0; i < pSelf->m_vRECTS.size();i++)
-					{
-						RECT temp;
-						do 
-						{
-							if(IntersectRect(&temp,&enemy->GetRect(),&pSelf->m_vRECTS[i]))
-							{
-								enemy->SetPosX(rand()%1000+100);
-								enemy->SetPosY(rand()%1000+100);
-							}
-							else
-								break;
-
-						} while (true);
-					}
-					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
-					{
-						RECT temp2;
-						RECT potato = enemy->GetRect();
-						if(IntersectRect(&temp2,&enemy->GetRect(),&pSelf->m_vRECTS[k]))
-						{
-							goto rocketloop;
-						}
-					}
-					pSelf->m_vRECTS.push_back(enemy->GetRect());
-
-
 					if(pMessage->GetKind() == 0)
 					{
 						enemy->SetVelX(45);
@@ -1373,7 +1356,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(55);
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png",0));
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
 						enemy->SetImageID(nID);
 
 					}
@@ -1383,7 +1366,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(65);
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
-						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png",0));
+						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
 						enemy->SetImageID(nID);
 					}
 					enemy->SetMinDistance(200);
@@ -1409,7 +1392,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 			
 				pSelf->m_nNumUnits--;
-			int score = CPlayer::GetInstance()->GetScore()+(pEnemy->GetMaxHealth()/2)+20;
+			int score = CPlayer::GetInstance()->GetScore()+int(pEnemy->GetMaxHealth()/2)+20;
 			CPlayer::GetInstance()->SetScore(score);
 			int nRandNum = rand()%12;
 			if(nRandNum <= 7)
@@ -1566,7 +1549,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					pBullet->SetWhoFired(false);
 					pBullet->SetVelX(norVec.fX*400);
 					pBullet->SetVelY(norVec.fY*400);
-					pBullet->SetDamage(pMessage->GetFiringEntity()->GetDamage());
+					pBullet->SetDamage((float)pMessage->GetFiringEntity()->GetDamage());
 					pBullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 					pSelf->m_pOM->AddObject(pBullet);
@@ -1584,7 +1567,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					pBullet->SetVelX(300);
 					pBullet->SetVelY(300);
 					pBullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
-					pBullet->SetDamage(pMessage->GetFiringEntity()->GetDamage());
+					pBullet->SetDamage((float)pMessage->GetFiringEntity()->GetDamage());
 					if(pMessage->GetFiringEntity()->GetType() == OBJ_ENEMY)
 					{
 						pBullet->SetTargetRect(pSelf->m_pPlayer->GetRect());					
@@ -1665,37 +1648,36 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 void CSurvivalState::GenerateWave()
 {
 	m_vRECTS.clear();
-	m_vRECTS.push_back(dynamic_cast<CPlayer*>(m_pPlayer)->GetSpawnRect());
+	m_vRECTS.push_back(m_pPlayer->GetRect());
+	m_nWavesRemaining = 100;
 	
-	
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
+	for(unsigned int i = 0; i < /*m_vWave[m_nCurrWave]->m_nSap*/100; i++)
 	{
-		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, SAPPER, 100, 100, rand()%3);
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, 100.0f, 100.0f, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		m_nNumUnits++;
 	}
 
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
+	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, rand()%500+100, rand()%500+100, rand()%3);
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
 	m_nNumUnits++;
 	}
 
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nRocket; i++)
+	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nRocket; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 4, rand()%500+100, rand()%500+100, rand()%3);
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 4, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
 	m_nNumUnits++;
 	}
 
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nTanks; i++)
+	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nTanks; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, rand()%500+100, rand()%500+100, rand()%3);
-	CMessageSystem::GetInstance()->SndMessage(msg);
-	m_nNumUnits++;
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, TANK, float(rand()%500+100), float(rand()%500+100), rand()%3);
+		CMessageSystem::GetInstance()->SndMessage(msg);
+		m_nNumUnits++;
 	}
-
 }
 
 void CSurvivalState::LoadText(void)

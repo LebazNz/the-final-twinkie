@@ -106,380 +106,742 @@ void CGetNameState::Exit(void)
 
 bool CGetNameState::Input(void)
 {
-	// Exit the game when the user presses esc
-	if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+	if(ARCADE == 0)
 	{
-		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
-		return true;
-	}
-	if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || (m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
-	{
-		szName[m_nCount] = 0;
-		if(m_nCount == 0)
-			strcpy_s(szName,32,"Player\0");		
-		CPlayer::GetInstance()->SetName(szName);		
-		if(!m_bSurvival)
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
-		else
-			CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
-		return true;
-	}
+		// Exit the game when the user presses esc
+		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
+		if(m_pDI->KeyPressed(DIK_RETURN) || m_pDI->JoystickButtonPressed(0) || (m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			szName[m_nCount] = 0;
+			if(m_nCount == 0)
+				strcpy_s(szName,32,"Player\0");		
+			CPlayer::GetInstance()->SetName(szName);		
+			if(!m_bSurvival)
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			else
+				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
+			return true;
+		}
 
-	if(m_pDI->KeyPressed(DIK_A) || (m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(65);
-		else
-			szName[m_nCount] = char(97);
-		m_nCount++;
-		if(m_nCount >= 10)
+		if(m_pDI->KeyPressed(DIK_A) || (m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(65);
+			else
+				szName[m_nCount] = char(97);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_B) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(66);
+			else
+				szName[m_nCount] = char(98);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_C) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(67);
+			else
+				szName[m_nCount] = char(99);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_D) || (m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(68);
+			else
+				szName[m_nCount] = char(100);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_E) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(69);
+			else
+				szName[m_nCount] = char(101);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_F) || (m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(70);
+			else
+				szName[m_nCount] = char(102);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_G) || (m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(71);
+			else
+				szName[m_nCount] = char(103);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_H) || (m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(72);
+			else
+				szName[m_nCount] = char(104);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_I) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(73);
+			else
+				szName[m_nCount] = char(105);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_J) || (m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(74);
+			else
+				szName[m_nCount] = char(106);
+			m_nCount++;
+			if(m_nCount >= 10)
 			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_B) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(66);
-		else
-			szName[m_nCount] = char(98);
-		m_nCount++;
-		if(m_nCount >= 10)
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_K) || (m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(75);
+			else
+				szName[m_nCount] = char(107);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_L) || (m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(76);
+			else
+				szName[m_nCount] = char(108);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_M) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(77);
+			else
+				szName[m_nCount] = char(109);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_N)  || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(78);
+			else
+				szName[m_nCount] = char(110);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_O) || (m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(79);
+			else
+				szName[m_nCount] = char(111);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_P) || (m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(80);
+			else
+				szName[m_nCount] = char(112);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_Q) || (m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(81);
+			else
+				szName[m_nCount] = char(113);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_R) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(82);
+			else
+				szName[m_nCount] = char(114);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_S) || (m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(83);
+			else
+				szName[m_nCount] = char(115);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_T) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(84);
+			else
+				szName[m_nCount] = char(116);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_U) || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(85);
+			else
+				szName[m_nCount] = char(117);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_V) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(86);
+			else
+				szName[m_nCount] = char(118);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_W) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(87);
+			else
+				szName[m_nCount] = char(119);
+			m_nCount++;
+			if(m_nCount >= 10)
 			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_C) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(67);
-		else
-			szName[m_nCount] = char(99);
-		m_nCount++;
-		if(m_nCount >= 10)
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_X) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(88);
+			else
+				szName[m_nCount] = char(120);
+			m_nCount++;
+			if(m_nCount >= 10)
 			m_nCount = 10;
-		m_bLowCase = true; 
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_Y) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(89);
+			else
+				szName[m_nCount] = char(121);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_Z) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(90);
+			else
+				szName[m_nCount] = char(122);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if(m_pDI->KeyPressed(DIK_LSHIFT) || m_pDI->KeyPressed(DIK_RSHIFT) || (m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			m_bLowCase = !m_bLowCase;
+		}
+		if(m_pDI->KeyReleased(DIK_LSHIFT) || m_pDI->KeyReleased(DIK_RSHIFT))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			m_bLowCase = !m_bLowCase;
+		}
+		if(m_pDI->KeyPressed(DIK_BACK) || (m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			szName[m_nCount] = char(32);
+			if(m_nCount == 0)
+				m_bLowCase = false;
+			m_nCount--;
+			if(m_nCount <= 0)
+				m_nCount = 0;
+		}
+		if(m_pDI->KeyPressed(DIK_SPACE) || (m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			szName[m_nCount] = char(32);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+		}
 	}
-	if(m_pDI->KeyPressed(DIK_D) || (m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+	else
 	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(68);
-		else
-			szName[m_nCount] = char(100);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_E) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(69);
-		else
-			szName[m_nCount] = char(101);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_F) || (m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(70);
-		else
-			szName[m_nCount] = char(102);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_G) || (m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(71);
-		else
-			szName[m_nCount] = char(103);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_H) || (m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(72);
-		else
-			szName[m_nCount] = char(104);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_I) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(73);
-		else
-			szName[m_nCount] = char(105);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_J) || (m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(74);
-		else
-			szName[m_nCount] = char(106);
-		m_nCount++;
-		if(m_nCount >= 10)
-		m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_K) || (m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(75);
-		else
-			szName[m_nCount] = char(107);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_L) || (m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(76);
-		else
-			szName[m_nCount] = char(108);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_M) || (m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(77);
-		else
-			szName[m_nCount] = char(109);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_N)  || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(78);
-		else
-			szName[m_nCount] = char(110);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_O) || (m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(79);
-		else
-			szName[m_nCount] = char(111);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_P) || (m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(80);
-		else
-			szName[m_nCount] = char(112);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_Q) || (m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(81);
-		else
-			szName[m_nCount] = char(113);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_R) || (m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(82);
-		else
-			szName[m_nCount] = char(114);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_S) || (m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(83);
-		else
-			szName[m_nCount] = char(115);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_T) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(84);
-		else
-			szName[m_nCount] = char(116);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_U) || (m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(85);
-		else
-			szName[m_nCount] = char(117);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_V) || (m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(86);
-		else
-			szName[m_nCount] = char(118);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_W) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(87);
-		else
-			szName[m_nCount] = char(119);
-		m_nCount++;
-		if(m_nCount >= 10)
-		m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_X) || (m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(88);
-		else
-			szName[m_nCount] = char(120);
-		m_nCount++;
-		if(m_nCount >= 10)
-		m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_Y) || (m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(89);
-		else
-			szName[m_nCount] = char(121);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_Z) || (m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		if(m_bLowCase == false)
-			szName[m_nCount] = char(90);
-		else
-			szName[m_nCount] = char(122);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-		m_bLowCase = true; 
-	}
-	if(m_pDI->KeyPressed(DIK_LSHIFT) || m_pDI->KeyPressed(DIK_RSHIFT) || (m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		m_bLowCase = !m_bLowCase;
-	}
-	if(m_pDI->KeyReleased(DIK_LSHIFT) || m_pDI->KeyReleased(DIK_RSHIFT))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		m_bLowCase = !m_bLowCase;
-	}
-	if(m_pDI->KeyPressed(DIK_BACK) || (m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		szName[m_nCount] = char(32);
-		if(m_nCount == 0)
-			m_bLowCase = false;
-		m_nCount--;
-		if(m_nCount <= 0)
-			m_nCount = 0;
-	}
-	if(m_pDI->KeyPressed(DIK_SPACE) || (m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
-	{
-		m_pAudio->SFXPlaySound(m_nClick);
-		szName[m_nCount] = char(32);
-		m_nCount++;
-		if(m_nCount >= 10)
-			m_nCount = 10;
-	}
+		// Exit the game when the user presses esc
+		if(m_pDI->JoystickButtonPressed(6))
+		{
+			CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+			return true;
+		}
+		if(m_pDI->JoystickButtonPressed(0) || (m_nMouseX >= 538 && m_nMouseX <= 622 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			szName[m_nCount] = 0;
+			if(m_nCount == 0)
+				strcpy_s(szName,32,"Player\0");		
+			CPlayer::GetInstance()->SetName(szName);		
+			if(!m_bSurvival)
+				CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			else
+				CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
+			return true;
+		}
 
-
+		if((m_nMouseX >= 175 && m_nMouseX <= 215 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(65);
+			else
+				szName[m_nCount] = char(97);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(66);
+			else
+				szName[m_nCount] = char(98);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(67);
+			else
+				szName[m_nCount] = char(99);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 275 && m_nMouseX <= 315 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(68);
+			else
+				szName[m_nCount] = char(100);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(69);
+			else
+				szName[m_nCount] = char(101);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 325 && m_nMouseX <= 365 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(70);
+			else
+				szName[m_nCount] = char(102);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 375 && m_nMouseX <= 415 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(71);
+			else
+				szName[m_nCount] = char(103);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 425 && m_nMouseX <= 465 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(72);
+			else
+				szName[m_nCount] = char(104);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(73);
+			else
+				szName[m_nCount] = char(105);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 475 && m_nMouseX <= 515 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(74);
+			else
+				szName[m_nCount] = char(106);
+			m_nCount++;
+			if(m_nCount >= 10)
+			m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 525 && m_nMouseX <= 565 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(75);
+			else
+				szName[m_nCount] = char(107);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 575 && m_nMouseX <= 615 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(76);
+			else
+				szName[m_nCount] = char(108);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 500 && m_nMouseX <= 540 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(77);
+			else
+				szName[m_nCount] = char(109);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(78);
+			else
+				szName[m_nCount] = char(110);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 550 && m_nMouseX <= 590 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(79);
+			else
+				szName[m_nCount] = char(111);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 600 && m_nMouseX <= 640 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(80);
+			else
+				szName[m_nCount] = char(112);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 150 && m_nMouseX <= 190 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(81);
+			else
+				szName[m_nCount] = char(113);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 300 && m_nMouseX <= 340 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(82);
+			else
+				szName[m_nCount] = char(114);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 225 && m_nMouseX <= 265 && m_nMouseY >= 425 && m_nMouseY <= 465 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(83);
+			else
+				szName[m_nCount] = char(115);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(84);
+			else
+				szName[m_nCount] = char(116);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 450 && m_nMouseX <= 490 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(85);
+			else
+				szName[m_nCount] = char(117);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 350 && m_nMouseX <= 390 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(86);
+			else
+				szName[m_nCount] = char(118);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(87);
+			else
+				szName[m_nCount] = char(119);
+			m_nCount++;
+			if(m_nCount >= 10)
+			m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 250 && m_nMouseX <= 290 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(88);
+			else
+				szName[m_nCount] = char(120);
+			m_nCount++;
+			if(m_nCount >= 10)
+			m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 400 && m_nMouseX <= 440 && m_nMouseY >= 375 && m_nMouseY <= 415 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(89);
+			else
+				szName[m_nCount] = char(121);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 200 && m_nMouseX <= 240 && m_nMouseY >= 475 && m_nMouseY <= 515 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			if(m_bLowCase == false)
+				szName[m_nCount] = char(90);
+			else
+				szName[m_nCount] = char(122);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+			m_bLowCase = true; 
+		}
+		if((m_nMouseX >= 155 && m_nMouseX <= 250 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			m_bLowCase = !m_bLowCase;
+		}
+		
+		if((m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			szName[m_nCount] = char(32);
+			if(m_nCount == 0)
+				m_bLowCase = false;
+			m_nCount--;
+			if(m_nCount <= 0)
+				m_nCount = 0;
+		}
+		if((m_nMouseX >= 260 && m_nMouseX <= 355 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))
+		{
+			m_pAudio->SFXPlaySound(m_nClick);
+			szName[m_nCount] = char(32);
+			m_nCount++;
+			if(m_nCount >= 10)
+				m_nCount = 10;
+		}
+	}
 	return true;
 }
 
 void CGetNameState::Update(float fDt)
 {
-	if(m_pDI->JoystickGetLStickXAmount() > 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
-	if(m_pDI->JoystickGetLStickXAmount() < 0)
-		m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
-	if(m_pDI->JoystickGetLStickYAmount() > 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
-	if(m_pDI->JoystickGetLStickYAmount() < 0)
-		m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	if(ARCADE == 0)
+	{
+		if(m_pDI->JoystickGetLStickXAmount() > 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()+5);
+		if(m_pDI->JoystickGetLStickXAmount() < 0)
+			m_pDI->MouseSetPosX(m_pDI->MouseGetPosX()-5);
+		if(m_pDI->JoystickGetLStickYAmount() > 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()+5);
+		if(m_pDI->JoystickGetLStickYAmount() < 0)
+			m_pDI->MouseSetPosY(m_pDI->MouseGetPosY()-5);
+	}
 
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
