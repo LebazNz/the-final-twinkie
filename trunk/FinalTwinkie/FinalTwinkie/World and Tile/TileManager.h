@@ -19,12 +19,15 @@ class CTileManager
 	bool raised;
 
 	void RaiseWall(void);
+	void RaiseText(int index);
 	void CreateObjects(void);
 	
 	CTileManager(void);
 	CTileManager(const CTileManager&);
 	CTileManager& operator=(const CTileManager&);
 	virtual ~CTileManager(void);
+
+	bool m_bTriggers[12];
 public:
 	
 	static CTileManager* GetInstance(void);
