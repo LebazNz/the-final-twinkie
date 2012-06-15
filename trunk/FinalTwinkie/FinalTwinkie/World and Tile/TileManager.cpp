@@ -305,7 +305,10 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						}
 						else if(trigger > 2 && trigger < 16)
 						{
-							RaiseText(trigger);
+							if(CGame::GetInstance()->isTutor == true)
+							{
+								RaiseText(trigger);
+							}
 							break;
 						}
 
