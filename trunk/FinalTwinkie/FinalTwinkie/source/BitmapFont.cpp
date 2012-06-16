@@ -25,6 +25,11 @@ CBitmapFont::CBitmapFont(void)
 
 CBitmapFont::~CBitmapFont(void)
 {
+	if(m_nFontID != -1)
+	{
+		CSGD_TextureManager::GetInstance()->UnloadTexture(m_nFontID);
+		m_nFontID = -1;
+	}
 }
 
 void CBitmapFont::Print(const char* szText, int nPosX, int nPosY,float fScale, DWORD dwColor)

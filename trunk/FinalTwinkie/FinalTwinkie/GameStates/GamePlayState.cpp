@@ -401,8 +401,8 @@ void CGamePlayState::Enter(void)
 		//player->SetDoubleDamage(true);
 		//player->SetDamageTimer(15);
 		//player->SetNoReloadTimer(150);
-		player->SetInvul(true);
-		player->SetInvulTimer(100);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(100);
 		//player->SetInfAmmo(true);
 		//player->SetInfoAmmoTimer(150);
 
@@ -2343,8 +2343,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CCreateFactoryMessage* Msg=dynamic_cast<CCreateFactoryMessage*>(pMsg);
 			Factory* factory=(Factory*)pSelf->m_pOF->CreateObject("CFactory");
 			factory->SetImageID(pSelf->m_anEnemyIDs[10]);
-			factory->SetPosX(3424);
-			factory->SetPosY(800);
+			factory->SetPosX(3168);
+			factory->SetPosY(416);
 			factory->SetHeight(128);
 			factory->SetWidth(128);
 			factory->SetHealth(200);

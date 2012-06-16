@@ -249,6 +249,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial1(pSpecial);
+				pSpecial = nullptr;
 			}
 			break;
 		case 1:
@@ -257,6 +258,7 @@ bool CLoadOutState::Input( void )
 				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 2:
@@ -264,6 +266,7 @@ bool CLoadOutState::Input( void )
 				CEMP* pSpecial = new CEMP;
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 3:
@@ -272,6 +275,7 @@ bool CLoadOutState::Input( void )
 				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 4:
@@ -279,6 +283,7 @@ bool CLoadOutState::Input( void )
 				CReinforcements* pSpecial = new CReinforcements;
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 5:
@@ -286,12 +291,14 @@ bool CLoadOutState::Input( void )
 				CAirStrike* pSpecial = new CAirStrike;
 				m_pPlayer->SetSpecial1(pSpecial);
 				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		default:
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial1(pSpecial);
+				pSpecial = nullptr;
 			}
 			break;
 		}
@@ -301,6 +308,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial);
+				pSpecial = nullptr;
 			}
 			break;
 		case 1:
@@ -309,6 +317,7 @@ bool CLoadOutState::Input( void )
 				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 2:
@@ -316,6 +325,7 @@ bool CLoadOutState::Input( void )
 				CEMP* pSpecial = new CEMP;
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 3:
@@ -324,6 +334,7 @@ bool CLoadOutState::Input( void )
 				pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 4:
@@ -331,6 +342,7 @@ bool CLoadOutState::Input( void )
 				CReinforcements* pSpecial = new CReinforcements;
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		case 5:
@@ -338,12 +350,14 @@ bool CLoadOutState::Input( void )
 				CAirStrike* pSpecial = new CAirStrike;
 				m_pPlayer->SetSpecial2(pSpecial);
 				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+				pSpecial = nullptr;
 			}
 			break;
 		default:
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial);
+				pSpecial = nullptr;
 			}
 			break;
 		}
@@ -1227,14 +1241,14 @@ void CLoadOutState::Render( void )
 	font->Print(m_sContinue.c_str(),625,555,1.0f,D3DCOLOR_XRGB(177,132,0));
 	
 
-	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	/*_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
 	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }

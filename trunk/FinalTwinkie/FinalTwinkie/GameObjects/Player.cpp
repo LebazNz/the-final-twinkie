@@ -106,6 +106,7 @@ void CPlayer::Update(float fDt)
 				{			
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						m_fFireTimer = 0.0f;
 						CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 				}
@@ -113,6 +114,7 @@ void CPlayer::Update(float fDt)
 				{
 					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 					CMessageSystem::GetInstance()->SndMessage(msg);
+					msg = nullptr;
 					m_fFireTimer = 0.0f;
 					CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 				}
@@ -140,6 +142,7 @@ void CPlayer::Update(float fDt)
 						m_fFireRate = 0.0f;
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						if(m_bInfAmmo == false)
 						m_fHeat+=3*m_fHeatModifier;
 					}
@@ -154,6 +157,7 @@ void CPlayer::Update(float fDt)
 						m_fFireRate = 0.0f;
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						if(m_bInfAmmo == false)
 						m_fHeat+=1.0f*m_fHeatModifier;
 					}
@@ -176,6 +180,7 @@ void CPlayer::Update(float fDt)
 						{
 							CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
 							CMessageSystem::GetInstance()->SndMessage(pMsg);
+							pMsg = nullptr;
 							SlowFlame=true;
 							if(m_bSoundPlaying == false && m_nFireSound != -1)
 							{
@@ -382,6 +387,7 @@ void CPlayer::Update(float fDt)
 				{			
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						m_fFireTimer = 0.0f;
 						CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 				}
@@ -389,6 +395,7 @@ void CPlayer::Update(float fDt)
 				{
 					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 					CMessageSystem::GetInstance()->SndMessage(msg);
+					msg = nullptr;
 					m_fFireTimer = 0.0f;
 					CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
 				}
@@ -416,6 +423,7 @@ void CPlayer::Update(float fDt)
 						m_fFireRate = 0.0f;
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						if(m_bInfAmmo == false)
 						m_fHeat+=3*m_fHeatModifier;
 					}
@@ -430,6 +438,7 @@ void CPlayer::Update(float fDt)
 						m_fFireRate = 0.0f;
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
 						if(m_bInfAmmo == false)
 						m_fHeat+=1.0f*m_fHeatModifier;
 					}
@@ -452,6 +461,7 @@ void CPlayer::Update(float fDt)
 						{
 							CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
 							CMessageSystem::GetInstance()->SndMessage(pMsg);
+							pMsg = nullptr;
 							SlowFlame=true;
 							if(m_bSoundPlaying == false && m_nFireSound != -1)
 							{

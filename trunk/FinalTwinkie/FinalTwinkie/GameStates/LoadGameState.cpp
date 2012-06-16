@@ -301,7 +301,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -399,7 +400,7 @@ bool CLoadGameState::Input(void)
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 						
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -408,7 +409,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -426,7 +427,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -443,7 +444,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -454,7 +455,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 						
 					}
 					break;
@@ -464,7 +465,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -472,7 +473,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -481,7 +482,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -489,7 +490,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -497,7 +498,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -562,7 +563,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -659,7 +661,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -668,7 +670,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -676,7 +678,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -685,7 +687,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -693,7 +695,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -701,7 +703,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -712,6 +714,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -720,7 +723,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -728,7 +731,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -737,7 +740,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -745,7 +748,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -753,7 +756,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -818,7 +821,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -915,7 +919,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -924,7 +928,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -932,7 +936,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -941,7 +945,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -949,7 +953,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -957,7 +961,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -968,7 +972,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -977,7 +981,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -985,7 +989,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -994,7 +998,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1010,7 +1014,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1241,7 +1245,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -1348,7 +1353,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1366,7 +1371,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1383,7 +1388,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1394,7 +1399,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 						
 					}
 					break;
@@ -1404,7 +1409,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1412,7 +1417,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -1421,7 +1426,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(m_PM->GetEmitter(FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1429,7 +1434,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -1437,7 +1442,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1502,7 +1507,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -1599,7 +1605,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -1608,7 +1614,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1616,7 +1622,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -1625,7 +1631,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1633,7 +1639,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -1641,7 +1647,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1652,6 +1658,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -1660,7 +1667,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1668,7 +1675,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -1677,7 +1684,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1685,7 +1692,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -1693,7 +1700,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1758,7 +1765,8 @@ bool CLoadGameState::Input(void)
 				CSpecial* pSpecial1 = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial1);	
 				m_pPlayer->SetSpecial2Ammo(pSpecial1->GetAmmoCount());
-				
+				pSpecial1 = nullptr;
+				pSpecial2 = nullptr;
 				CGame::GetInstance()->ChangeState(CGetNameState::GetInstance());
 				return true;
 			}
@@ -1855,7 +1863,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -1864,7 +1872,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1872,7 +1880,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -1881,7 +1889,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1889,7 +1897,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -1897,7 +1905,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -1908,7 +1916,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 1:
@@ -1917,7 +1925,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXSmoke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 2:
@@ -1925,7 +1933,7 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 3:
@@ -1934,7 +1942,7 @@ bool CLoadGameState::Input(void)
 						pSpecial->SetEmitter(CGamePlayState::GetInstance()->m_PM->GetEmitter(CGamePlayState::GetInstance()->FXNuke));
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 4:
@@ -1950,7 +1958,7 @@ bool CLoadGameState::Input(void)
 						CAirStrike* pSpecial = new CAirStrike;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				}
@@ -2250,7 +2258,7 @@ void CLoadGameState::Render(void)
 		font->Print(buffer,655,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
-	char buffer[10];
+	/*char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
@@ -2258,7 +2266,7 @@ void CLoadGameState::Render(void)
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }

@@ -139,6 +139,9 @@ CTutorState::CTutorState(void)
 	m_bWinner = false;
 	m_bGameOver = false;
 	m_fWordTimer = 0.0f;
+
+	for(int i = 0; i < 3; ++i)
+		m_anSupportIDs[i] = -1;
 }
 
 CTutorState::~CTutorState(void)
@@ -236,7 +239,7 @@ void CTutorState::Enter(void)
 		m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
 		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
-		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
+		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/MoneyPickUp.png"));
 
 		m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
 		m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
@@ -245,6 +248,9 @@ void CTutorState::Enter(void)
 		m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
 		m_nBox = m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
 
+		m_anSupportIDs[0] = m_pTM->LoadTexture(_T("resource/graphics/Support_Sapper.png"));
+		m_anSupportIDs[1] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rifle.png"));
+		m_anSupportIDs[2] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rocket.png"));
 
 		// SOUNDS
 		////////////////////////////////////////////////////////
@@ -315,6 +321,8 @@ void CTutorState::Enter(void)
 		player->SetSpecial2(pSmoke);
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(2);
+		pNuke = nullptr;
+		pSmoke = nullptr;
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
 		//player->SetName(m_dGameData.szName);
@@ -330,7 +338,7 @@ void CTutorState::Enter(void)
 		PlayerTurret->SetPosX(player->GetPosX());
 		PlayerTurret->SetPosY(player->GetPosY());
 		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(FLAME);
+		PlayerTurret->SetBullet(BUL_SHELL);
 		PlayerTurret->SetWidth(64);
 		PlayerTurret->SetHeight(128);
 		PlayerTurret->SetRotationPositon(32,98);
@@ -464,6 +472,15 @@ void CTutorState::Exit(void)
 				m_anSoldierSounds[i] = -1;
 			}
 
+		}
+
+		for(int i = 0; i < 3; ++i)
+		{
+			if(m_anSupportIDs[i] != -1)
+			{
+				m_pTM->UnloadTexture(m_anSupportIDs[i]);
+				m_anSupportIDs[i] = -1;
+			}
 		}
 
 		m_PM->RemoveAllBaseEmitters();
@@ -1583,20 +1600,19 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case HELP:
 				{
-					int randNum = rand()%2;
+					int randNum = rand()%3;
 					switch(randNum)
 					{
 					case 0:
 						{
 							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
-							sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+							sapper->SetImageID(pSelf->m_anSupportIDs[0]);
+							sapper->SetExplode(pSelf->m_nSappSound);
 							sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							sapper->SetType(OBJ_HELP);
-							sapper->SetExplode(pSelf->m_nSappSound);
-
 							sapper->SetPosX(pMessage->GetPosX());
 							sapper->SetPosY(pMessage->GetPosY());
-							sapper->SetHeight(32);
+							sapper->SetHeight(64);
 							sapper->SetWidth(32);
 							sapper->SetHelpTarget(pSelf->m_pOM->GetTarget(sapper));
 							sapper->SetSight(400);
@@ -1604,6 +1620,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							sapper->SetVelY(45);
 							sapper->SetHealth(35);
 							sapper->SetMaxHealth(35);
+							sapper->SetDamage(15);
 							sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
 							sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(sapper);
@@ -1617,10 +1634,10 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							enemy->SetEType(RIFLE);
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetType(OBJ_HELP);
-							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetImageID(pSelf->m_anSupportIDs[1]);
 							enemy->SetPosX(pMessage->GetPosX());
 							enemy->SetPosY(pMessage->GetPosY());
-							enemy->SetHeight(32);
+							enemy->SetHeight(64);
 							enemy->SetWidth(32);
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
@@ -1630,6 +1647,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(0.1f);
+							enemy->SetDamage(2);
 							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(enemy);
 							enemy->Release();
@@ -1639,13 +1657,13 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					case 2:
 						{
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
-							enemy->SetEType(ROCKET);
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
-							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetEType(ROCKET);
+							enemy->SetImageID(pSelf->m_anSupportIDs[2]);
 							enemy->SetType(OBJ_HELP);
 							enemy->SetPosX(pMessage->GetPosX());
 							enemy->SetPosY(pMessage->GetPosY());	
-							enemy->SetHeight(32);
+							enemy->SetHeight(64);
 							enemy->SetWidth(32);
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
@@ -1655,6 +1673,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(3.0f);
+							enemy->SetDamage(35);
 							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(enemy);
 							enemy->Release();

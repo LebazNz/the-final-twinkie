@@ -53,7 +53,7 @@ void CStartState::Enter(void)
 	m_pAudio->MusicPlaySong(m_nMusic, false);
 
 	m_nBG1ID = m_pTM->LoadTexture(_T("resource/graphics/start_screen.png"));
-	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/title_screen.png"));
+	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/TFTimage.jpg"));
 	
 	m_nEndTimer = 0;
 

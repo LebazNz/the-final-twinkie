@@ -286,6 +286,8 @@ void CSurvivalState::Enter( void )
 		player->SetSpecial2(pSmoke);
 		player->SetSpecial1Ammo(1);
 		player->SetSpecial2Ammo(5);
+		pNuke = nullptr;
+		pSmoke = nullptr;
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
 		player->SetInvul(true);
@@ -1199,6 +1201,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 								break;
 
 						} while (true);
+						temp = nullptr;
 					}
 					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
 					{
@@ -1207,6 +1210,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							goto loop;
 						}
+						temp2 = nullptr;
 					}
 					if(pMessage->GetKind() == 0)
 					{
@@ -1273,6 +1277,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 								break;
 
 						} while (true);
+						temp = nullptr;
 					}
 					for(unsigned int k = 0; k < pSelf->m_vRECTS.size();k++)
 					{
@@ -1282,6 +1287,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							goto tankloop;
 						}
+						temp2 = nullptr;
 					}
 					//RECT* potato = new RECT;
 					//potato = &tank->GetSpawnRect();
@@ -1740,6 +1746,7 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 
 		m_vWave.push_back(wave);
 		pUnit = pUnit->NextSiblingElement();
+		wave = nullptr;
 	}
 		
 	GenerateWave();
@@ -1757,6 +1764,7 @@ void CSurvivalState::GenerateWave()
 	{
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, 100.0f, 100.0f, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
+		msg = nullptr;
 		m_nNumUnits++;
 	}
 
@@ -1764,6 +1772,7 @@ void CSurvivalState::GenerateWave()
 	{
 	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
+	msg = nullptr;
 	m_nNumUnits++;
 	}
 
@@ -1771,6 +1780,7 @@ void CSurvivalState::GenerateWave()
 	{
 	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 4, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
+	msg = nullptr;
 	m_nNumUnits++;
 	}
 
@@ -1778,6 +1788,7 @@ void CSurvivalState::GenerateWave()
 	{
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, TANK, float(rand()%500+100), float(rand()%500+100), rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
+		msg = nullptr;
 		m_nNumUnits++;
 	}
 }
