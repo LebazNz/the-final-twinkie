@@ -102,6 +102,7 @@ void CEnemy::Update(float fDt)
 							{
 								SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
 								CMessageSystem::GetInstance()->SndMessage(msg);
+								msg = nullptr;
 								m_fTimer=0;
 							}
 							else
@@ -114,6 +115,7 @@ void CEnemy::Update(float fDt)
 						{
 							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
 							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
 							m_fTimer=0;
 						}
 						else
@@ -180,6 +182,7 @@ void CEnemy::Update(float fDt)
 						{
 							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_SHELL, this);
 							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
 							m_fTimer=0;
 						}
 						else
@@ -192,6 +195,7 @@ void CEnemy::Update(float fDt)
 						{
 							SoldierFireMessage* msg=new SoldierFireMessage(MSG_SOLDIERFIRE, BUL_ROCKET, this);
 							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
 							m_fTimer=0;
 						}
 						else

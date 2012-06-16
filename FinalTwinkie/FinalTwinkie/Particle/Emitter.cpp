@@ -27,6 +27,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
+					newPart = nullptr;
 					m_nNumberParticles++;
 					if(m_nNumberParticles>=m_nMaxParticles)
 					{
@@ -46,6 +47,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
+					newPart = nullptr;
 					m_nNumberParticles++;
 					m_fTimer=0;
 				}
@@ -75,6 +77,7 @@ void CEmitter::CreateParticle(float fDt=0)
 				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
 				newPart->SetRot(m_fRotation);
 				m_vParticles.push_back(newPart);
+				newPart = nullptr;
 				m_nNumberParticles++;
 				m_fTimer=0;
 			}
@@ -99,6 +102,7 @@ void CEmitter::CreateParticle(float fDt=0)
 				newPart->CreateParticle(life,0,0,m_fMaxScale,posX,posY, m_dwStartColor, m_nParticleImage);
 				newPart->SetRot(m_fRotation);
 				m_vParticles.push_back(newPart);
+				newPart = nullptr;
 				m_nNumberParticles++;
 				m_fTimer=0;
 			}
@@ -131,6 +135,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
+					newPart = nullptr;
 					m_nNumberParticles++;
 					if(m_nNumberParticles>=m_nMaxParticles)
 					{
@@ -158,6 +163,7 @@ void CEmitter::CreateParticle(float fDt=0)
 					newPart->CreateParticle(life,velocityX*m_fMaxSpeedX,velocityY*m_fMaxSpeedY,m_fMaxScale,m_fStartPosX,m_fStartPosY, m_dwStartColor, m_nParticleImage);
 					newPart->SetRot(m_fRotation);
 					m_vParticles.push_back(newPart);
+					newPart = nullptr;
 					m_nNumberParticles++;
 					m_fTimer=0;
 				}

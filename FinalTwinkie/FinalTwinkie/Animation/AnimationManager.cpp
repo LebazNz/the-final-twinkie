@@ -142,7 +142,7 @@ void CAnimationManager::Load( const char* szFile )
 		//width:	150
 		//AP:	360	330
 
-
+	pA = nullptr;
 
 }	
 	

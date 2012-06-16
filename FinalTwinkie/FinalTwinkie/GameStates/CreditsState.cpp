@@ -183,7 +183,7 @@ void CCreditsState::Render(void)
 
 	font->Print(m_sBack.c_str(),75,550,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 
-	char buffer[10];
+	/*char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
@@ -191,7 +191,7 @@ void CCreditsState::Render(void)
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
 
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);

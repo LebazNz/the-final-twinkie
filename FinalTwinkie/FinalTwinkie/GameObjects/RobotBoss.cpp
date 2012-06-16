@@ -119,6 +119,7 @@ void RobotBoss::Update(float fDt)
 		{
 			CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 0,GetPosX()+70, GetPosY()+135, rand()%3);
 			CMessageSystem::GetInstance()->SndMessage(msg);
+			msg = nullptr;
 			spawnsapper = true;
 		}
 	}
@@ -135,6 +136,7 @@ void RobotBoss::Update(float fDt)
 		{
 			CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3,GetPosX()+70, GetPosY()+135, rand()%3);
 			CMessageSystem::GetInstance()->SndMessage(msg);
+			msg = nullptr;
 			regenagain = true;
 		}
 	}

@@ -84,6 +84,7 @@ private:
 	int m_nDeadBullet;
 	int m_anBulletImageIDs[5];
 	int m_anEnemyIDs[16];
+	int m_anSupportIDs[3];
 	int m_nPlayerID;
 	int m_nPlayerTurretID;
 	int m_nBackGround;

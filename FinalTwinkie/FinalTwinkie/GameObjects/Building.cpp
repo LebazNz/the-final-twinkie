@@ -29,6 +29,7 @@ void CBuilding::Update(float fDt)
 			{
 				CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, m_nSpawnType, GetPosX(), GetPosY()+GetHeight());
 				CMessageSystem::GetInstance()->SndMessage(msg);
+				msg = nullptr;
 				m_fTimer=0.0f;
 			}
 			else 

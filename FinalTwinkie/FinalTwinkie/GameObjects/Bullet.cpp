@@ -289,6 +289,7 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						{
 							CDestroyNaziBoss* pDest=new CDestroyNaziBoss(pBoss);
 							CMessageSystem::GetInstance()->SndMessage(pDest);
+							pDest = nullptr;
 						}
 					}
 				}
@@ -303,10 +304,12 @@ bool CBullet::CheckCollision(IEntity* pBase)
 						{
 							CDestroyFactoryMessage* Msg=new CDestroyFactoryMessage (fac);
 							CMessageSystem::GetInstance()->SndMessage(Msg);
+							Msg = nullptr;
 						}
 					}
 					CDestroyBulletMessage* pmsg = new CDestroyBulletMessage(this);
 					CMessageSystem::GetInstance()->SndMessage(pmsg);
+					pmsg = nullptr;
 				}
 				break;
 			case OBJ_PIRATEBOSS:

@@ -516,7 +516,7 @@ void CMainMenuState::Render(void)
 	font->Print(m_sCredits.c_str(),110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print(m_sExit.c_str(),125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
 
-	char buffer[10];
+	/*char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
@@ -524,7 +524,7 @@ void CMainMenuState::Render(void)
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));*/
 	PlayHighlight(fScale1);
 	m_pD3D->GetSprite()->Flush();
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
