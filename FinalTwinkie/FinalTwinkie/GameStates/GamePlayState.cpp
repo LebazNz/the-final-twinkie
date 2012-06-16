@@ -398,13 +398,13 @@ void CGamePlayState::Enter(void)
 		player->SetGunSel(1);
 
 		//buffs
-		//player->SetDoubleDamage(true);
-		//player->SetDamageTimer(15);
-		//player->SetNoReloadTimer(150);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(100);
-		//player->SetInfAmmo(true);
-		//player->SetInfoAmmoTimer(150);
+		player->SetDoubleDamage(false);
+		player->SetDamageTimer(0.0f);
+		player->SetNoReloadTimer(0.0f);
+		player->SetInvul(false);
+		player->SetInvulTimer(0.0f);
+		player->SetInfAmmo(false);
+		player->SetInfoAmmoTimer(0.0f);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -1144,7 +1144,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired() == true)
 						{
-							if(player->GetWeaponAmmoShell()> 0)
+							if(player->GetWeaponAmmoShell()> 0 || player->GetInfAmmo())
 							{
 								
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
@@ -1200,7 +1200,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired() == true)
 						{
-							if(player->GetWeaponAmmoMissile()> 0)
+							if(player->GetWeaponAmmoMissile()> 0 || player->GetInfAmmo())
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
@@ -1263,7 +1263,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired() == true)
 						{
-							if(player->GetWeaponAmmoArtillery()> 0)
+							if(player->GetWeaponAmmoArtillery()> 0 || player->GetInfAmmo())
 							{
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
