@@ -122,7 +122,7 @@ void StatState::Render( void )
 	m_pFont->Print("Achievements",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+110,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pFont->Print("Press esc to exit",(int)(CGame::GetInstance()->GetWidth()/2-100),CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 
-	char buffer[10];
+	/*char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	m_pFont->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
@@ -130,7 +130,7 @@ void StatState::Render( void )
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	m_pFont->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(255,255,255));
 	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	m_pFont->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));
+	m_pFont->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(255,255,255));*/
 
 	m_dwNaziBoss = D3DCOLOR_XRGB(140,140,140);	
 	m_dwAlienBoss = D3DCOLOR_XRGB(140,140,140);	
