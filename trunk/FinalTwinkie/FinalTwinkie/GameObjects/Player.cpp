@@ -100,7 +100,7 @@ void CPlayer::Update(float fDt)
 
 		if((m_pDI->MouseButtonDown(0) || m_pDI->JoystickGetLTriggerAmount() > 0) && m_fFireTimer >= m_fTime)
 		{
-			if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
+			if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0)||m_bInfAmmo)
 			{
 				if(m_fNoReloadTimer == 0.0f)
 				{			

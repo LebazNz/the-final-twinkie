@@ -44,6 +44,7 @@ private:
 	int m_nCount;
 	int m_nPos;
 	bool m_bSurvival;
+	bool m_bHold;
 
 	int m_nButton;
 	int m_nClick;
