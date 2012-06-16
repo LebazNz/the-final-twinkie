@@ -158,6 +158,9 @@ CGamePlayState::CGamePlayState(void)
 
 	for(int i = 0; i < 9; i++)
 		m_anSoldierSounds[i] = -1;
+
+	for(int i = 0; i < 3; ++i)
+		m_anSupportIDs[i] = -1;
 }
 
 CGamePlayState::~CGamePlayState(void)
@@ -249,6 +252,9 @@ void CGamePlayState::Enter(void)
 		m_anEnemyIDs[10]=m_pTM->LoadTexture(_T("resource/graphics/factory_twinkie.png"));
 		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
 		m_nGetBox=m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
+		m_anSupportIDs[0] = m_pTM->LoadTexture(_T("resource/graphics/Support_Sapper.png"));
+		m_anSupportIDs[1] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rifle.png"));
+		m_anSupportIDs[2] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rocket.png"));
 		m_bAGet=false;
 		m_fGetTimer=0;
 		m_pPlayer=CPlayer::GetInstance();
@@ -654,6 +660,15 @@ void CGamePlayState::Exit(void)
 			{
 				m_pTM->UnloadTexture(m_anEnemyIDs[i]);
 				m_anEnemyIDs[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 3; ++i)
+		{
+			if(m_anSupportIDs[i] != -1)
+			{
+				m_pTM->UnloadTexture(m_anSupportIDs[i]);
+				m_anSupportIDs[i] = -1;
 			}
 		}
 
@@ -1652,17 +1667,17 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					{
 						enemy->SetVelX(55);
 						enemy->SetVelY(55);
-						enemy->SetHealth(100);
-						enemy->SetMaxHealth(100);
-						enemy->SetDamage(2);
+						enemy->SetHealth(75);
+						enemy->SetMaxHealth(75);
+						enemy->SetDamage(1);
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
 						enemy->SetVelX(65);
 						enemy->SetVelY(65);
-						enemy->SetHealth(115);
-						enemy->SetMaxHealth(115);
-						enemy->SetDamage(3);
+						enemy->SetHealth(100);
+						enemy->SetMaxHealth(100);
+						enemy->SetDamage(1);
 					}
 					else if(pSelf->GetLevel() == 4)  //Nazi
 					{
@@ -1711,7 +1726,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					else if(pSelf->GetLevel() == 3) // Alien
 					{
-						enemy->SetDamage(45);
+						enemy->SetDamage(35);
 					}
 					else if(pSelf->GetLevel() == 4) // Nazi
 					{
@@ -1729,13 +1744,13 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					case 0:
 						{
 							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
-							sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
+							sapper->SetImageID(pSelf->m_anSupportIDs[0]);
 							sapper->SetExplode(pSelf->m_nSappSound);
 							sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							sapper->SetType(OBJ_HELP);
 							sapper->SetPosX(pMessage->GetPosX());
 							sapper->SetPosY(pMessage->GetPosY());
-							sapper->SetHeight(32);
+							sapper->SetHeight(64);
 							sapper->SetWidth(32);
 							sapper->SetHelpTarget(pSelf->m_pOM->GetTarget(sapper));
 							sapper->SetSight(400);
@@ -1743,6 +1758,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							sapper->SetVelY(45);
 							sapper->SetHealth(35);
 							sapper->SetMaxHealth(35);
+							sapper->SetDamage(15);
 							sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
 							sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(sapper);
@@ -1756,10 +1772,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetEType(RIFLE);
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetType(OBJ_HELP);
-							enemy->SetImageID(pSelf->m_anEnemyIDs[14]);
+							enemy->SetImageID(pSelf->m_anSupportIDs[1]);
 							enemy->SetPosX(pMessage->GetPosX());
 							enemy->SetPosY(pMessage->GetPosY());
-							enemy->SetHeight(32);
+							enemy->SetHeight(64);
 							enemy->SetWidth(32);
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
@@ -1769,6 +1785,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(0.1f);
+							enemy->SetDamage(2);
 							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(enemy);
 							enemy->Release();
@@ -1780,11 +1797,11 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
 							enemy->SetEType(ROCKET);
-							enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
+							enemy->SetImageID(pSelf->m_anSupportIDs[2]);
 							enemy->SetType(OBJ_HELP);
 							enemy->SetPosX(pMessage->GetPosX());
 							enemy->SetPosY(pMessage->GetPosY());	
-							enemy->SetHeight(32);
+							enemy->SetHeight(64);
 							enemy->SetWidth(32);
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
@@ -1794,6 +1811,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(3.0f);
+							enemy->SetDamage(35);
 							enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 							pSelf->m_pOM->AddObject(enemy);
 							enemy->Release();
