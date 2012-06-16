@@ -5,7 +5,7 @@
 
 #include "../GameStates/IGameState.h"
 
-#define ARCADE 1
+#define ARCADE 0
 
 class CGame
 {
