@@ -241,8 +241,8 @@ bool COptionsState::Input(void)
 		{
 			m_pAudio->SFXPlaySound(m_nClick);
 
-			if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			if(m_nPosition == 0 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 245 && m_nMouseY <= 285))
 			{	
 				m_fSFXVolume -= 0.05f;
 				if(m_fSFXVolume <= 0.0f)
@@ -250,8 +250,8 @@ bool COptionsState::Input(void)
 						
 				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 			}
-			else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			else if(m_nPosition == 1 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 295 && m_nMouseY <= 335))
 			{
 				m_fMusicVolume -= 0.05f;
 				if(m_fMusicVolume <= 0.0f)
@@ -259,8 +259,8 @@ bool COptionsState::Input(void)
 							
 				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 			}
-			else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			else if(m_nPosition == 2 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 345 && m_nMouseY <= 385))
 			{
 				m_bWindowed = !m_bWindowed;
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
@@ -273,16 +273,16 @@ bool COptionsState::Input(void)
 					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
 				}
 			}
-			else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			else if(m_nPosition == 3 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 395 && m_nMouseY <= 435))
 			{
 				m_nLang -= 1;
 				if(m_nLang < 0)
 					m_nLang = 3;
 				LoadText();
 			}
-			else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			else if(m_nPosition == 0 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 245 && m_nMouseY <= 285))
 			{	
 				m_fSFXVolume += 0.05f;
 				if(m_fSFXVolume >= 1.0f)
@@ -290,8 +290,8 @@ bool COptionsState::Input(void)
 			
 				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 			}
-			else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			else if(m_nPosition == 1 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 295 && m_nMouseY <= 335))
 			{
 				m_fMusicVolume += 0.05f;
 				if(m_fMusicVolume >= 1.0f)
@@ -299,8 +299,8 @@ bool COptionsState::Input(void)
 		
 				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 			}
-			else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			else if(m_nPosition == 2 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 345 && m_nMouseY <= 385))
 			{
 				m_bWindowed = !m_bWindowed;
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
@@ -313,8 +313,8 @@ bool COptionsState::Input(void)
 					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
 				}
 			}
-			else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
-			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			else if(m_nPosition == 3 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 395 && m_nMouseY <= 435))
 			{
 				m_nLang += 1;
 				if(m_nLang > 3)
@@ -486,8 +486,8 @@ bool COptionsState::Input(void)
 		{
 			m_pAudio->SFXPlaySound(m_nClick);
 
-			if(m_nPosition == 0 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			if(m_nPosition == 0 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 245 && m_nMouseY <= 285))
 			{	
 				m_fSFXVolume -= 0.05f;
 				if(m_fSFXVolume <= 0.0f)
@@ -495,8 +495,8 @@ bool COptionsState::Input(void)
 						
 				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 			}
-			else if(m_nPosition == 1 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			else if(m_nPosition == 1 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 295 && m_nMouseY <= 335))
 			{
 				m_fMusicVolume -= 0.05f;
 				if(m_fMusicVolume <= 0.0f)
@@ -504,8 +504,8 @@ bool COptionsState::Input(void)
 							
 				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 			}
-			else if(m_nPosition == 2 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			else if(m_nPosition == 2 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 345 && m_nMouseY <= 385))
 			{
 				m_bWindowed = !m_bWindowed;
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
@@ -518,16 +518,16 @@ bool COptionsState::Input(void)
 					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
 				}
 			}
-			else if(m_nPosition == 3 && (m_nMouseX >= 490 && m_nMouseX <= 525
-			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			else if(m_nPosition == 3 && (m_nMouseX >= 475 && m_nMouseX <= 585
+			&& m_nMouseY >= 395 && m_nMouseY <= 435))
 			{
 				m_nLang -= 1;
 				if(m_nLang < 0)
 					m_nLang = 3;
 				LoadText();
 			}
-			else if(m_nPosition == 0 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 240 && m_nMouseY <= 280))
+			else if(m_nPosition == 0 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 245 && m_nMouseY <= 285))
 			{	
 				m_fSFXVolume += 0.05f;
 				if(m_fSFXVolume >= 1.0f)
@@ -535,8 +535,8 @@ bool COptionsState::Input(void)
 			
 				m_pAudio->SFXSetMasterVolume(m_fSFXVolume);
 			}
-			else if(m_nPosition == 1 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 290 && m_nMouseY <= 330))
+			else if(m_nPosition == 1 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 295 && m_nMouseY <= 335))
 			{
 				m_fMusicVolume += 0.05f;
 				if(m_fMusicVolume >= 1.0f)
@@ -544,8 +544,8 @@ bool COptionsState::Input(void)
 		
 				m_pAudio->MusicSetMasterVolume(m_fMusicVolume);
 			}
-			else if(m_nPosition == 2 && (m_nMouseX >= 615 && m_nMouseX <= 650
-			&& m_nMouseY >= 340 && m_nMouseY <= 375))
+			else if(m_nPosition == 2 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 345 && m_nMouseY <= 385))
 			{
 				m_bWindowed = !m_bWindowed;
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
@@ -558,8 +558,8 @@ bool COptionsState::Input(void)
 					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
 				}
 			}
-			else if(m_nPosition == 3 && (m_nMouseX >= 670 && m_nMouseX <= 700
-			&& m_nMouseY >= 390 && m_nMouseY <= 425))
+			else if(m_nPosition == 3 && (m_nMouseX >= 590 && m_nMouseX <= 700
+			&& m_nMouseY >= 395 && m_nMouseY <= 435))
 			{
 				m_nLang += 1;
 				if(m_nLang > 3)
@@ -635,10 +635,8 @@ void COptionsState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if((m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 240 && m_nMouseY <= 280)||
-		(m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 240 && m_nMouseY <= 280) ||
+	if((m_nMouseX >= 475 && m_nMouseX <= 700
+		&& m_nMouseY >= 245 && m_nMouseY <= 285)||
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 240 && m_nMouseY <= 280))
 	{
@@ -648,10 +646,8 @@ void COptionsState::Update(float fDt)
 			m_nPosition = 0;
 		}
 	}
-	if((m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 290 && m_nMouseY <= 330)||
-		(m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 290 && m_nMouseY <= 330)||
+	if((m_nMouseX >= 475 && m_nMouseX <= 700
+		&& m_nMouseY >= 295 && m_nMouseY <= 335)||
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 290 && m_nMouseY <= 330))
 	{
@@ -661,10 +657,8 @@ void COptionsState::Update(float fDt)
 			m_nPosition = 1;
 		}
 	}
-	if((m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 340 && m_nMouseY <= 375)||
-		(m_nMouseX >= 615 && m_nMouseX <= 650
-		&& m_nMouseY >= 340 && m_nMouseY <= 375)||
+	if((m_nMouseX >= 475 && m_nMouseX <= 700
+		&& m_nMouseY >= 345 && m_nMouseY <= 385)||
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 340 && m_nMouseY <= 375))
 	{
@@ -674,10 +668,8 @@ void COptionsState::Update(float fDt)
 			m_nPosition = 2;
 		}
 	}
-	if((m_nMouseX >= 490 && m_nMouseX <= 525
-		&& m_nMouseY >= 390 && m_nMouseY <= 425)||
-		(m_nMouseX >= 670 && m_nMouseX <= 700
-		&& m_nMouseY >= 390 && m_nMouseY <= 425)||
+	if((m_nMouseX >= 475 && m_nMouseX <= 700
+		&& m_nMouseY >= 395 && m_nMouseY <= 435)||
 		(m_nMouseX >= 60 && m_nMouseX <= 282
 		&& m_nMouseY >= 390 && m_nMouseY <= 425))
 	{
@@ -806,14 +798,14 @@ void COptionsState::Render(void)
 	font->Print(nSFXVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2-50,		1.0f,	D3DCOLOR_XRGB(177,132,0));
 	font->Print(nVolume,(CGame::GetInstance()->GetWidth()/2)+175,CGame::GetInstance()->GetHeight()/2,			1.0f,	D3DCOLOR_XRGB(177,132,0));
 
-	/*char buffer[10];
+	char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
-	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	/*_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
 	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
 	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
-	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	/*_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
 	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
 
 	m_pD3D->GetSprite()->Flush();

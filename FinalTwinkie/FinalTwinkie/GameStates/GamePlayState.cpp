@@ -1946,7 +1946,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				case 7:
 					{
 						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
-						pPickup->SetGiven(50);
+						pPickup->SetGiven(150);
 						pPickup->SetPickUpType(pMessage->GetPickUpType());
 					}
 					break;
@@ -1955,7 +1955,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
 				pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
 
-				pPickup->SetAliveTime(150.0f);
+				pPickup->SetAliveTime(25.0f);
 
 				pSelf->m_pOM->AddObject(pPickup);
 

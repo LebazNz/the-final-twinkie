@@ -53,7 +53,7 @@ void CStartState::Enter(void)
 	m_pAudio->MusicPlaySong(m_nMusic, false);
 
 	m_nBG1ID = m_pTM->LoadTexture(_T("resource/graphics/start_screen.png"));
-	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/TFTimage.jpg"));
+	m_nBG2ID = m_pTM->LoadTexture(_T("resource/graphics/TFTimage.png"));
 	
 	m_nEndTimer = 0;
 
@@ -121,9 +121,11 @@ void CStartState::Update(float fDt)
 void CStartState::Render(void)
 {
 	m_pD3D->Clear( 0, 255, 255 );
+	RECT rSelf;
+	SetRect(&rSelf,0,0,800,600);
 	if(m_bSwitch == false)
-		m_pTM->Draw(m_nBG1ID,-45,-20,0.85f,0.65f,nullptr,0,0,0);
+		m_pTM->Draw(m_nBG1ID,0,0,1.0f,1.0f,&rSelf,0,0,0);
 	else
-		m_pTM->Draw(m_nBG2ID,-25,0,0.85f,0.60f,nullptr,0,0,0);
+		m_pTM->Draw(m_nBG2ID,0,0,1.0f,1.0f,&rSelf,0,0,0);
 
 }
