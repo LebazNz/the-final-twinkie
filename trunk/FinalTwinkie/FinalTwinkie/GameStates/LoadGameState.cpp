@@ -96,6 +96,23 @@ void CLoadGameState::Enter(void)
 	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 
 	LoadText();
+
+	for(unsigned int i = 1; i < strlen(vSavedData[0].szName); ++i)
+	{
+		char ch = tolower(vSavedData[0].szName[i]);
+		vSavedData[0].szName[i] = ch;
+	}
+	for(unsigned int i = 1; i < strlen(vSavedData[1].szName); ++i)
+	{
+		char ch = tolower(vSavedData[1].szName[i]);
+		vSavedData[1].szName[i] = ch;
+	}
+	for(unsigned int i = 1; i < strlen(vSavedData[2].szName); ++i)
+	{
+		char ch = tolower(vSavedData[2].szName[i]);
+		vSavedData[2].szName[i] = ch;
+	}
+	
 }
 
 void CLoadGameState::Exit(void)
@@ -1343,7 +1360,7 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 						
 					}
 					break;
@@ -1950,7 +1967,7 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial2(pSpecial);
 						m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
-						
+						pSpecial = nullptr;
 					}
 					break;
 				case 5:
@@ -2045,29 +2062,29 @@ void CLoadGameState::Update(float fDt)
 	m_nMouseX = m_pDI->MouseGetPosX();
 	m_nMouseY = m_pDI->MouseGetPosY();
 
-	if(m_nMouseX >= 45 && m_nMouseX <= 215
-		&& m_nMouseY >= 455 && m_nMouseY <= 495)
+	if(m_nMouseX >= 63 && m_nMouseX <= 230
+		&& m_nMouseY >= 475 && m_nMouseY <= 515)
 	{
 		if(m_nPosition!=0)
 			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 0;
 	}
-	if(m_nMouseX >= 295 && m_nMouseX <= 465
-		&& m_nMouseY >= 455 && m_nMouseY <= 495)
+	if(m_nMouseX >= 315 && m_nMouseX <= 482
+		&& m_nMouseY >= 475 && m_nMouseY <= 515)
 	{
 		if(m_nPosition!=1)
 			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 1;
 	}
-	if(m_nMouseX >= 550 && m_nMouseX <= 720
-		&& m_nMouseY >= 455 && m_nMouseY <= 495)
+	if(m_nMouseX >= 568 && m_nMouseX <= 735
+		&& m_nMouseY >= 475 && m_nMouseY <= 515)
 	{
 		if(m_nPosition!=2)
 			m_pAudio->SFXPlaySound(m_nButton,false);
 		m_nPosition = 2;
 	}
-	if(m_nMouseX >= 45 && m_nMouseX <= 215
-		&& m_nMouseY >= 505 && m_nMouseY <= 545)
+	if(m_nMouseX >= 63 && m_nMouseX <= 230
+		&& m_nMouseY >= 520 && m_nMouseY <= 560)
 	{
 		if(vSavedData[0].nLevel != 0)
 		{
@@ -2076,8 +2093,8 @@ void CLoadGameState::Update(float fDt)
 			m_nPosition = 3;
 		}
 	}
-	if(m_nMouseX >= 295 && m_nMouseX <= 465
-		&& m_nMouseY >= 505 && m_nMouseY <= 545)
+	if(m_nMouseX >= 315 && m_nMouseX <= 482
+		&& m_nMouseY >= 520 && m_nMouseY <= 560)
 	{
 		if(vSavedData[1].nLevel != 0)
 		{
@@ -2086,8 +2103,8 @@ void CLoadGameState::Update(float fDt)
 			m_nPosition = 4;
 		}
 	}
-	if(m_nMouseX >= 550 && m_nMouseX <= 720
-		&& m_nMouseY >= 505 && m_nMouseY <= 545)
+	if(m_nMouseX >= 568 && m_nMouseX <= 735
+		&& m_nMouseY >= 520 && m_nMouseY <= 560)
 	{
 		if(vSavedData[2].nLevel != 0)
 		{
@@ -2185,7 +2202,10 @@ void CLoadGameState::Render(void)
 		font->Print(m_sName.c_str(),80,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sLevel.c_str(),80,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sMoney.c_str(),80,440,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[0].szName,150,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		if(strlen(vSavedData[0].szName) <= 7)
+			font->Print(vSavedData[0].szName,150,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		else
+			font->Print(vSavedData[0].szName,150,360,0.55f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[0].nLevel,buffer,10);
 		font->Print(buffer,150,400,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -2218,7 +2238,10 @@ void CLoadGameState::Render(void)
 		font->Print(m_sName.c_str(),332,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sLevel.c_str(),332,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sMoney.c_str(),332,440,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[1].szName,402,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		if(strlen(vSavedData[1].szName) <= 7)
+			font->Print(vSavedData[1].szName,402,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		else
+			font->Print(vSavedData[1].szName,402,360,0.55f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[1].nLevel,buffer,10);
 		font->Print(buffer,402,400,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -2250,7 +2273,10 @@ void CLoadGameState::Render(void)
 		font->Print(m_sName.c_str(),585,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sLevel.c_str(),585,400,0.75f,D3DCOLOR_XRGB(255,0,0));
 		font->Print(m_sMoney.c_str(),585,440,0.75f,D3DCOLOR_XRGB(255,0,0));
-		font->Print(vSavedData[2].szName,655,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		if(strlen(vSavedData[2].szName) <= 7)
+			font->Print(vSavedData[2].szName,655,360,0.75f,D3DCOLOR_XRGB(255,0,0));
+		else
+			font->Print(vSavedData[2].szName,655,360,0.55f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[2].nLevel,buffer,10);
 		font->Print(buffer,655,400,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -2258,15 +2284,15 @@ void CLoadGameState::Render(void)
 		font->Print(buffer,655,440,0.75f,D3DCOLOR_XRGB(255,0,0));
 	}
 
-	/*char buffer[10];
-	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
-	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
-	_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
-	font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
-	_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
-	font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
-	_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
-	font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));*/
+	//char buffer[10];
+	//_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
+	//font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));
+	////_itoa_s(m_pDI->MouseGetPosX()-16,buffer,10);
+	////font->Print(buffer,600,50,0.75f,D3DCOLOR_XRGB(177,132,0));
+	//_itoa_s(m_pDI->MouseGetPosY(),buffer,10);
+	//font->Print(buffer,700,25,0.75f,D3DCOLOR_XRGB(177,132,0));
+	////_itoa_s(m_pDI->MouseGetPosY()-16,buffer,10);
+	////font->Print(buffer,700,50,0.75f,D3DCOLOR_XRGB(177,132,0));
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }

@@ -845,21 +845,21 @@ void CTutorState::Update(float fDt)
 
 	if(m_bPaused)
 	{
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 295 && m_nMouseY <= 340)
 		{
 			if(m_nPosition!=0)
 				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 0;
 		}
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 340 && m_nMouseY <= 390)
 		{
 			if(m_nPosition!=1)
 				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 1;
 		}
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 390 && m_nMouseY <= 435)
 		{
 			if(m_nPosition!=2)
@@ -1600,35 +1600,10 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				break;
 			case HELP:
 				{
-					int randNum = rand()%3;
+					int randNum = rand()%2;
 					switch(randNum)
 					{
 					case 0:
-						{
-							CSapper* sapper =(CSapper*)pSelf->m_pOF->CreateObject("CSapper");
-							sapper->SetImageID(pSelf->m_anSupportIDs[0]);
-							sapper->SetExplode(pSelf->m_nSappSound);
-							sapper->SetSoldierSounds(pSelf->m_anSoldierSounds);
-							sapper->SetType(OBJ_HELP);
-							sapper->SetPosX(pMessage->GetPosX());
-							sapper->SetPosY(pMessage->GetPosY());
-							sapper->SetHeight(64);
-							sapper->SetWidth(32);
-							sapper->SetHelpTarget(pSelf->m_pOM->GetTarget(sapper));
-							sapper->SetSight(400);
-							sapper->SetVelX(45);
-							sapper->SetVelY(45);
-							sapper->SetHealth(35);
-							sapper->SetMaxHealth(35);
-							sapper->SetDamage(15);
-							sapper->SetExplosion(pSelf->m_PM->GetEmitter(pSelf->FXSapper_Explosion));
-							sapper->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
-							pSelf->m_pOM->AddObject(sapper);
-							sapper->Release();
-							sapper = nullptr;
-						}
-						break;
-					case 1:
 						{
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 							enemy->SetEType(RIFLE);
@@ -1654,7 +1629,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 							enemy = nullptr;
 						}
 						break;
-					case 2:
+					case 1:
 						{
 							CEnemy* enemy=(CEnemy*)pSelf->m_pOF->CreateObject("CEnemy");
 							enemy->SetSoldierSounds(pSelf->m_anSoldierSounds);
@@ -1780,7 +1755,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				case 7:
 					{
 						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
-						pPickup->SetGiven(50);
+						pPickup->SetGiven(150);
 						pPickup->SetPickUpType(pMessage->GetPickUpType());
 					}
 					break;
@@ -1838,7 +1813,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			CMine* pMine = (CMine*)pSelf->m_pOF->CreateObject("CMine");
 			pMine->SetPosX(pMessage->GetPosX());
 			pMine->SetPosY(pMessage->GetPosY());
-			pMine->SetWidth(64);
+			pMine->SetWidth(32);
 			pMine->SetHeight(32);
 			pMine->SetHealth(100);
 			pMine->SetMaxHealth(100);

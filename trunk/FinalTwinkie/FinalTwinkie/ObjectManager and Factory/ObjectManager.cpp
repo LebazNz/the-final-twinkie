@@ -359,16 +359,7 @@ CEntity* CObjectManager::GetTarget(CEntity* pEntity)
 				vOther.fY = m_pTarget->GetPosY();
 				pTarget = m_pTarget;
 			}
-			else
-				continue;
 		}
-		/*else if((*iter)->GetType() == OBJ_PLAYER)
-		{
-			CPlayer* m_pTarget = dynamic_cast<CPlayer*>(*iter);
-			vOther.fX = m_pTarget->GetPosX();
-			vOther.fY = m_pTarget->GetPosY();
-			pTarget = m_pTarget;
-		}*/
 		else
 			continue;
 
@@ -377,9 +368,9 @@ CEntity* CObjectManager::GetTarget(CEntity* pEntity)
 		length=Vector2DLength(toTarget);
 		if(abs(length) < shortest)
 		{
-			if(pTarget->GetType() == OBJ_TURRET)
-				continue;
-			else
+			/*if(pTarget->GetType() == OBJ_TURRET)
+				continue;*/
+			//else
 			{
 				pReturn = pTarget;
 				shortest = length;
