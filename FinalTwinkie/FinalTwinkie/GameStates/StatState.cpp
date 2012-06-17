@@ -116,10 +116,10 @@ void StatState::Render( void )
 		RenderAchievements();
 
 	m_pTM->Draw(m_nButtonImageID,0,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
-	m_pFont->Print("Stats",40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sStat.c_str(),40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+85,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwNext);
 	
-	m_pFont->Print("Achievements",CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+110,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sAchieve.c_str(),CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+110,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pFont->Print("Press esc to exit",(int)(CGame::GetInstance()->GetWidth()/2-100),CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 
 	/*char buffer[10];
@@ -143,21 +143,21 @@ void StatState::Render( void )
 
 
 	if(CPlayer::GetInstance()->GetNaziBoss())
-		m_dwNaziBoss = D3DCOLOR_XRGB(255,255,255);
+		m_dwNaziBoss = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetAlienBoss())
-		m_dwAlienBoss = D3DCOLOR_XRGB(255,255,255);
+		m_dwAlienBoss = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetRobotBoss())
-		m_dwRobotBoss = D3DCOLOR_XRGB(255,255,255);
+		m_dwRobotBoss = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetSparta())
-		m_dwSparta = D3DCOLOR_XRGB(255,255,255);
+		m_dwSparta = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetSapperAbsorb())
-		m_dwSapperAbsorb = D3DCOLOR_XRGB(255,255,255);
+		m_dwSapperAbsorb = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetNukem())
-		m_dwNukem = D3DCOLOR_XRGB(255,255,255);
+		m_dwNukem = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetIamBoss())
-		m_dwIamBoss = D3DCOLOR_XRGB(255,255,255);
+		m_dwIamBoss = D3DCOLOR_XRGB(177,132,0);
 	if(CPlayer::GetInstance()->GetAllUpgrades())	
-		m_dwAllUpgrades = D3DCOLOR_XRGB(255,255,255);
+		m_dwAllUpgrades = D3DCOLOR_XRGB(177,132,0);
 
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 }

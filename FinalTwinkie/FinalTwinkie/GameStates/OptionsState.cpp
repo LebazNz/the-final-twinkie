@@ -2,6 +2,8 @@
 #include "../Headers/Game.h"
 #include "MainMenuState.h"
 #include "GamePlayState.h"
+#include "TutorState.h"
+#include "SurvivalState.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
 #include <fstream>
@@ -323,14 +325,25 @@ bool COptionsState::Input(void)
 			}
 			else if(m_nPosition == 4)
 			{
-				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 			}

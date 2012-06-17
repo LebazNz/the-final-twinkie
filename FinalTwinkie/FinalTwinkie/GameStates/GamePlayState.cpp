@@ -386,8 +386,8 @@ void CGamePlayState::Enter(void)
 		player->SetRotation(0);
 		player->SetWidth(64);
 		player->SetHeight(128);
-		player->SetVelX(90);
-		player->SetVelY(90);
+		player->SetVelX(90*player->GetSpeedMod());
+		player->SetVelY(90*player->GetSpeedMod());
 		player->SetHealth(250);
 		player->SetMaxHealth(250);
 		player->SetArmor(50);
@@ -398,13 +398,13 @@ void CGamePlayState::Enter(void)
 		player->SetGunSel(1);
 
 		//buffs
-		player->SetDoubleDamage(false);
-		player->SetDamageTimer(0.0f);
-		player->SetNoReloadTimer(0.0f);
-		player->SetInvul(false);
-		player->SetInvulTimer(0.0f);
-		player->SetInfAmmo(false);
-		player->SetInfoAmmoTimer(0.0f);
+		//player->SetDoubleDamage(true);
+		//player->SetDamageTimer(15);
+		//player->SetNoReloadTimer(150);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(100);
+		//player->SetInfAmmo(true);
+		//player->SetInfoAmmoTimer(150);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -418,7 +418,7 @@ void CGamePlayState::Enter(void)
 		PlayerTurret->SetRotationPositon(32,98);
 		PlayerTurret->SetUpVec(0,-1);
 		PlayerTurret->SetDistance(800);
-		PlayerTurret->SetRotationRate(1.6f);
+		PlayerTurret->SetRotationRate(1.8f);
 		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
 		m_pMS->ProcessMessages();
 		m_pOM->AddObject(player);
@@ -444,11 +444,11 @@ void CGamePlayState::Enter(void)
 	gameEndTimer = 0.0f;
 
 	CPlayer* pPlayer = CPlayer::GetInstance();
-	pPlayer->SetHealth((float)(pPlayer->GetHealth()*pPlayer->GetHealthMod()));
 	pPlayer->SetMaxHealth((float)(pPlayer->GetHealth()*pPlayer->GetHealthMod()));
+	pPlayer->SetHealth((float)(pPlayer->GetHealth()*pPlayer->GetHealthMod()));
 	pPlayer->SetMaxWeaponAmmo((int)(pPlayer->GetMaxWeaponAmmoShell()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoArtillery()*pPlayer->GetAmmoMod()),(int)(pPlayer->GetMaxWeaponAmmoMissile()*pPlayer->GetAmmoMod()));
-	pPlayer->SetArmor((float)(pPlayer->GetArmor()*pPlayer->GetArmorMod()));
 	pPlayer->SetMaxArmor((float)(pPlayer->GetMaxArmor()*pPlayer->GetArmorMod()));
+	pPlayer->SetArmor((float)(pPlayer->GetArmor()*pPlayer->GetArmorMod()));
 	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
 	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
@@ -1017,7 +1017,7 @@ void CGamePlayState::Render(void)
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
 		m_pD3D->GetSprite()->Flush();
-		m_pFont->Print(m_sObj.c_str(), 539,547,.67f,UINT_MAX);
+		m_pFont->Print(m_sObj.c_str(), 539,547,.60f,UINT_MAX);
 		CPlayer::GetInstance()->Render();
 		CPlayer::GetInstance()->GetTurret()->Render();
 		
@@ -1150,9 +1150,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 								if(player->GetDoubleDamage())
-									Bullet->SetDamage(35.0f*2);
+									Bullet->SetDamage((35.0f*player->GetDamageMod()) *2);
 								else
-									Bullet->SetDamage(35.0f);
+									Bullet->SetDamage(35.0f*player->GetDamageMod());
 								if(player->GetInfAmmo() == false)
 								{
 									int ammoChange=player->GetWeaponAmmoShell();
@@ -1205,9 +1205,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 								if(player->GetDoubleDamage())
-									Bullet->SetDamage(45.0f*2);
+									Bullet->SetDamage((45.0f*player->GetDamageMod())*2);
 								else
-									Bullet->SetDamage(45.0f);
+									Bullet->SetDamage(45.0f*player->GetDamageMod());
 								if(player->GetInfAmmo() == false)
 								{
 									int ammoChange=player->GetWeaponAmmoMissile();
@@ -1268,9 +1268,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 								if(player->GetDoubleDamage())
-									Bullet->SetDamage(15.0f*2);
+									Bullet->SetDamage((15.0f*player->GetDamageMod())*2);
 								else
-									Bullet->SetDamage(15.0f);
+									Bullet->SetDamage(15.0f*player->GetDamageMod());
 								if(player->GetInfAmmo() == false)
 								{
 									int ammoChange=player->GetWeaponAmmoArtillery();
@@ -1324,9 +1324,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 							if(player->GetDoubleDamage())
-									Bullet->SetDamage(5.0f*2);
+									Bullet->SetDamage((5.0f*player->GetDamageMod())*2);
 								else
-									Bullet->SetDamage(5.0f);
+									Bullet->SetDamage(5.0f*player->GetDamageMod());
 						}
 						else
 						{
@@ -1375,9 +1375,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
 							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
 							if(player->GetDoubleDamage())
-									Bullet->SetDamage(2.0f*2);
+									Bullet->SetDamage((2.0f*player->GetDamageMod())*2);
 								else
-									Bullet->SetDamage(2.0f);
+									Bullet->SetDamage(2.0f*player->GetDamageMod());
 						}
 						else
 						{
@@ -1422,9 +1422,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetBulletType(BUL_FLAME);
 					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())
-						Bullet->SetDamage(1.0f*2);
+						Bullet->SetDamage((1.0f*player->GetDamageMod())*2);
 					else
-						Bullet->SetDamage(1.0f);
+						Bullet->SetDamage(1.0f*player->GetDamageMod());
 					Bullet->SetImageID(pSelf->m_anBulletImageIDs[BUL_SHELL]);
 					pSelf->m_pOM->AddObject(Bullet);
 					Bullet->Release();
@@ -1490,8 +1490,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					{
 						sapper->SetVelX(65);
 						sapper->SetVelY(65);
-						sapper->SetHealth(100);
-						sapper->SetMaxHealth(100);
+						sapper->SetHealth(75);
+						sapper->SetMaxHealth(75);
 						sapper->SetDamage(15);
 					}
 					sapper->SetEType(SAPPER);
@@ -1545,8 +1545,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					{
 						tank->SetVelX(50);
 						tank->SetVelY(50);
-						tank->SetHealth(400);
-						tank->SetMaxHealth(400);
+						tank->SetHealth(300);
+						tank->SetMaxHealth(300);
 					}
 					tank->SetEType(TANK);
 					tank->SetHasATurret(true);
@@ -1683,9 +1683,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					{
 						enemy->SetVelX(65);
 						enemy->SetVelY(65);
-						enemy->SetHealth(115);
-						enemy->SetMaxHealth(115);
-						enemy->SetDamage(1);
+						enemy->SetHealth(75);
+						enemy->SetMaxHealth(75);
+						enemy->SetDamage(2);
 					}
 					enemy->SetMinDistance(200);
 					enemy->SetMaxDistance(600);
@@ -1731,6 +1731,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					else if(pSelf->GetLevel() == 4) // Nazi
 					{
 						enemy->SetDamage(45);
+						enemy->SetHealth(75);
+						enemy->SetMaxHealth(75);
 					}
 					enemy->Release();
 					enemy = nullptr;
@@ -2246,8 +2248,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetImageID(pSelf->m_anEnemyIDs[9]);
 					boss->SetWidth(148);
 					boss->SetHeight(260);
-					boss->SetPosX(928);
-					boss->SetPosY(544);
+					boss->SetPosX(4192);
+					boss->SetPosY(608);
 					boss->SetPlayer(CPlayer::GetInstance());
 					boss->CreateTurrets();
 					boss->SetHealth(1000);
@@ -2394,6 +2396,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pSelf->m_fGetTimer=0;
 			pSelf->m_bWinner = true;
 			pSelf->m_nLevel++;
+			pSelf->m_bWinner=true;
 			CDestroyFactoryMessage* Msg=dynamic_cast<CDestroyFactoryMessage*>(pMsg);
 			pSelf->m_pOM->RemoveObject(Msg->GetFactory());
 		}
@@ -2550,7 +2553,7 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Get");
 				pText = pButton->FirstChild()->ToText();
 				m_sGet=pText->Value();
-				switch(m_nLevel)
+				switch(CPlayer::GetInstance()->GetLevel())
 				{
 				case 1:
 					{
@@ -2602,7 +2605,7 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Get");
 				pText = pButton->FirstChild()->ToText();
 				m_sGet=pText->Value();
-				switch(m_nLevel)
+				switch(CPlayer::GetInstance()->GetLevel())
 				{
 				case 1:
 					{
@@ -2654,7 +2657,7 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Get");
 				pText = pButton->FirstChild()->ToText();
 				m_sGet=pText->Value();
-				switch(m_nLevel)
+				switch(CPlayer::GetInstance()->GetLevel())
 				{
 				case 1:
 					{
@@ -2703,7 +2706,7 @@ void CGamePlayState::LoadText(void)
 				pButton=pState->FirstChild("Exit");
 				pText = pButton->FirstChild()->ToText();
 				m_sExit=pText->Value();
-				switch(m_nLevel)
+				switch(CPlayer::GetInstance()->GetLevel())
 				{
 				case 1:
 					{

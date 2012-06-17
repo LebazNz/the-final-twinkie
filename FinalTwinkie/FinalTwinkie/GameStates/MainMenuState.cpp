@@ -186,11 +186,13 @@ bool CMainMenuState::Input(void)
 			{
 				m_nPosition = 3;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			else 
 			{
 				m_nPosition -= 1;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			m_nPos2=3;
 		}
@@ -202,11 +204,13 @@ bool CMainMenuState::Input(void)
 			{
 				m_nPosition = 0;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			else
 			{
 				m_nPosition += 1;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			m_nPos2=3;
 		}
@@ -292,11 +296,13 @@ bool CMainMenuState::Input(void)
 			{
 				m_nPosition = 3;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			else 
 			{
 				m_nPosition -= 1;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			m_nPos2=3;
 		}
@@ -308,11 +314,13 @@ bool CMainMenuState::Input(void)
 			{
 				m_nPosition = 0;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			else
 			{
 				m_nPosition += 1;
 				m_bPlaySelect=false;
+				m_nPos2=3;
 			}
 			m_nPos2=3;
 		}
@@ -426,6 +434,7 @@ void CMainMenuState::Update(float fDt)
 			m_nPosition = 1;
 		}
 		m_bPlaySelect=false;
+		m_nPos2=3;
 	}
 	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 390 && m_nMouseY <= 435)
@@ -436,6 +445,7 @@ void CMainMenuState::Update(float fDt)
 			m_nPosition = 2;
 		}
 		m_bPlaySelect=false;
+		m_nPos2=3;
 	}
 	else if(m_nMouseX >= 75 && m_nMouseX <= 242
 		&& m_nMouseY >= 435 && m_nMouseY <= 480)
@@ -446,6 +456,7 @@ void CMainMenuState::Update(float fDt)
 			m_nPosition = 3;
 		}
 		m_bPlaySelect=false;
+		m_nPos2=3;
 	}
 	if(playTimer<1.0f)
 	{

@@ -932,7 +932,7 @@ void CTutorState::Render(void)
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
-		m_pFont->Print(m_sObj.c_str(), 539,547,.67f,UINT_MAX);
+		m_pFont->Print(m_sObj.c_str(), 539,547,.60f,UINT_MAX);
 		CPlayer::GetInstance()->Render();
 		CPlayer::GetInstance()->GetTurret()->Render();
 	}
@@ -996,7 +996,7 @@ void CTutorState::Render(void)
 
 				case 7:
 				{
-					m_pFont->Print(m_asInfo[7].c_str(),35,25,0.7f,D3DCOLOR_XRGB(0,0,0));
+					m_pFont->Print(m_asInfo[7].c_str(),35,25,0.6f,D3DCOLOR_XRGB(0,0,0));
 				}
 				break;
 

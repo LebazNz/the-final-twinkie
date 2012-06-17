@@ -115,7 +115,7 @@
 			<h>A puny rifleman appears!.\nWhile armored they can't truly\n harm you but lose that and\n these guys will start to hurt</h>
 			<i>A wild sapper appears! \nThey will rush your tank \nand explode to cause heavy damage.</i>
 			<j>A strong rocket soldier appears!\nThey shoot rpgs that\nwill hurt you with\n or without armor.</j>
-			<k>A pair of turrets appear\nIt is is completely stationary\nbut get to close and\n you will be too.\n Because you'll die.</k>
+			<k>A pair of turrets appear\nIt is is completely stationary\nbut get to close and you will be too. \nBecause you'll die.</k>
 			<l>A heavy enemy tank appears\nThese guys are just\nas B.A. as you\n maybe a little less.</l>
 			<Obj>Follow the Tutorial</Obj>
 			<Paused>Paused</Paused>
@@ -288,7 +288,7 @@
 			<h>A puny rifleman appears!.\nWhile armored they canna truly\n harm ye but lose that an'\n these guys will start t' hurt</h>
 			<i>A wild sapper appears! \nThey will rush yer tank \nand explode t' cause heavy damage.</i>
 			<j>A strong rocket soldier appears!\nThey shoot RPGs that\nwill hurt ye wi'\n or without armor.</j>
-			<k>A pair o' turrets appear\n'Tis be completely stationary\nbut get t' close an'\n ye be too.\n On accoun' o' ye`ll sink t'Davy Jones' locker.</k>
+			<k>A pair o' turrets appear\n'Tis be completely stationary\nbut get t' close an'\nye be too. On accoun' o' ye`ll \nsink t'Davy Jones' locker.</k>
 			<l>A heavy enemy tank appears\nThese guys be jus'\nas B.A. as ye\n maybe a wee less.</l>
 			<Obj>Learn the Rigging</Obj>
 			<Paused>Time Freeze</Paused>
@@ -434,25 +434,25 @@
 		</FlyText>
 		<TutorState>
 			<Pad>
-				<a>Willkommen bei Tank-Drivers Ed \n Jedes Mal, wenn eine Schlamm-Patch \n ein neuer Tipp erscheinen \n Zum Antrieb drucke OBEN auf LS wird</a>
-				<b>Ziehen Sie am LS zu \nLEFT umzukehren, um gegen den Uhrzeigersinn \nRechts drehen, um im Uhrzeigersinn drehen</b>
+				<a>Willkommen bei Tank-Drivers Ed \n Jedes Mal, wenn eine \nSchlamm-Patch ein neuer Tipp \nerscheinen Zum Antrieb drucke OBEN auf LS wird</a>
+				<b>Ziehen Sie am LS zu \nLEFT umzukehren, um gegen den Uhrzeigersinn \nRechts drehen, um im \nUhrzeigersinn drehen</b>
 				<c>Um den Tank gegen den Uhrzeigersinn drehen \n drucken Sie den linken Stick nach links \n Zum Drehen der Behalter im Uhrzeigersinn \n drucken Sie ihn nach rechts</c>
 				<d>Drucken Sie linke und rechte Bumper \n So wahlen Specials \n und X zu aktivieren</d>
 			</Pad>
 			<Keyboard>
-				<a>Willkommen bei Tank-Drivers Ed \n Jedes Mal, wenn eine Schlamm-Patch \n ein neuer Tipp erscheint \n drucken Sie w fahren</a>
-				<b>Zum Umkehren Presse S \n Drehen Zahler mit einem \n im Uhrzeigersinn, um den Uhrzeigersinn drehen Einsatz D</b>
-				<c>Linksklick mit der Maus \n Um Ihr Haupt-Kanone abzufeuern \n Rechter Mausklick \n Ihre sekundare Revolver feuern</c>
-				<d>Drucken Sie 1 oder 2, um \n Schalter Specials und \n Leertaste zu aktivieren</d>
+				<a>Willkommen bei Tank-Drivers Ed \nJedes Mal, wenn eine \nSchlamm-Patch ein neuer Tipp \nerscheint drucken Sie w fahren</a>
+				<b>Zum Umkehren Presse S \nDrehen Zahler mit einem \nim Uhrzeigersinn, um den \nUhrzeigersinn drehen Einsatz D</b>
+				<c>Linksklick mit der Maus \nUm Ihr Haupt-Kanone abzufeuern \nRechter Mausklick \nIhre sekundare Revolver feuern</c>
+				<d>Drucken Sie 1 oder 2, um \nSchalter Specials und \nLeertaste zu aktivieren</d>
 			</Keyboard>
-			<e>Gebaude \n und die meisten sind aber aufgegeben \n einige wurden \n durch den Feind wieder purposed</e>
-			<f>Baume und Barrikaden \n geschossen werden kann, oder angetrieben uber \n Hilft stoppen Infanteristen\n wird aber auch langsam nach unten.</f>
-			<g>Mines \n Diese kleine Bad Boys \n packen ganz ein Schlag \n Vermeiden Sie diese um jeden Preis</g>
-			<h>Ein Schutze mickrig erscheint! \n Wahrend gepanzerte konnen sie nicht wirklich \n schaden, wenn du aber verlieren und dass \n diese Jungs beginnen zu schmerzen</h>
-			<i>Eine wilde Sapper erscheint! \n Sie beeilen sich Ihren Tank \n explodieren und zu schweren Schaden fuhren.</i>
-			<j>Eine starke Rakete Soldat erscheint! \n Sie schiessen RPGs, dass \n Sie mit oder ohne Rustung wird verletzt.</j>
-			<k>Ein Paar Turme erscheinen \n Es ist vollig stationaren \n, sondern bekommen geschlossen und \n werden Sie auch. \n Weil du sterben wirst.</k>
-			<l>Ein schweres feindliches Heer dann erscheint \n Diese Jungs sind einfach \n als BA wie Sie \n vielleicht etwas weniger.</l>
+			<e>Gebaude \nund die meisten sind aber aufgegeben \neinige wurden \ndurch den Feind wieder purposed</e>
+			<f>Baume und Barrikaden \ngeschossen werden kann, oder angetrieben uber \nHilft stoppen Infanteristen\nwird aber auch langsam nach unten.</f>
+			<g>Mines \nDiese kleine Bad Boys \npacken ganz ein Schlag \nVermeiden Sie diese um jeden Preis</g>
+			<h>Ein Schutze mickrig erscheint! \nWahrend gepanzerte konnen sie nicht \nwirklich schaden, wenn du aber verlieren \nund dass diese Jungs beginnen zu schmerzen</h>
+			<i>Eine wilde Sapper erscheint! \nSie beeilen sich Ihren Tank \nexplodieren und zu schweren \nSchaden fuhren.</i>
+			<j>Eine starke Rakete Soldat erscheint! \nSie schiessen RPGs, dass \nSie mit oder ohne \nRustung wird verletzt.</j>
+			<k>Ein Paar Turme erscheinen \nEs ist vollig stationaren, sondern \nbekommen geschlossen und werden \nSie auch.  Weil du sterben wirst.</k>
+			<l>Ein schweres feindliches Heer dann \nerscheint Diese Jungs sind einfach \nals BA wie Sie \nvielleicht etwas weniger.</l>
 			<Obj>Folgen Sie dem Tutorial</Obj>
 			<Paused>Pushim</Paused>
 			<Resume>Wieder Aufnehmen</Resume>
