@@ -40,7 +40,8 @@ private:
 	int m_nType;
 	float m_fScale;
 	int m_nX;
-
+	float m_fScaleDown;
+	int m_nMove;
 	static CBitmapFont*	m_pSelf;
 };
 

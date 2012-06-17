@@ -703,21 +703,21 @@ void CSurvivalState::Update( float fDt )
 
 	if(m_bPaused)
 	{
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 295 && m_nMouseY <= 340)
 		{
 			if(m_nPosition!=0)
 				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 0;
 		}
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 340 && m_nMouseY <= 390)
 		{
 			if(m_nPosition!=1)
 				m_pAudio->SFXPlaySound(m_nButton,false);
 			m_nPosition = 1;
 		}
-		if(m_nMouseX >= 315 && m_nMouseX <= 435
+		if(m_nMouseX >= 315 && m_nMouseX <= 482
 			&& m_nMouseY >= 390 && m_nMouseY <= 435)
 		{
 			if(m_nPosition!=2)

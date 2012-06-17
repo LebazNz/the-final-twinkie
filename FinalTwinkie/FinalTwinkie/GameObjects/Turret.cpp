@@ -86,7 +86,7 @@ void CTurret::Update(float fDt)
 				tVector2D Up={0,-1};
 
 				m_vLookVec=Vector2DRotate(Up, m_fRotation);
-				tVector2D Rotate90 = Vector2DRotate(m_vLookVec, 1.57);
+				tVector2D Rotate90 = Vector2DRotate(m_vLookVec, 1.57f);
 				if(Steering(Vec, Rotate90)<0)
 				{
 					if(Steering(m_vLookVec,Vec) < 0)

@@ -249,6 +249,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 				pSpecial = nullptr;
 			}
 			break;
@@ -298,6 +299,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial1(pSpecial);
+				m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
 				pSpecial = nullptr;
 			}
 			break;
@@ -308,6 +310,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 				pSpecial = nullptr;
 			}
 			break;
@@ -357,6 +360,7 @@ bool CLoadOutState::Input( void )
 			{
 				CSpecial* pSpecial = new CSpecial;
 				m_pPlayer->SetSpecial2(pSpecial);
+				m_pPlayer->SetSpecial2Ammo(pSpecial->GetAmmoCount());
 				pSpecial = nullptr;
 			}
 			break;
