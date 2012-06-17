@@ -120,5 +120,8 @@ private:
 	string m_sExit;
 
 
+	bool SoundOff;
+	void TurnSoundOff(void);
+
 };
 

@@ -716,8 +716,8 @@ void CPlayer::Update(float fDt)
 		{
 			m_fSlowTimer = 0.0f;
 			m_bSlowDown = false;
-			SetVelX(90);
-			SetVelY(90);
+			SetVelX(m_fStartVelX);
+			SetVelY(m_fStartVelY);
 		}
 	}
 }
@@ -779,6 +779,10 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 			{
 				this->SetPosX(this->GetOldPos().fX);
 				this->SetPosY(this->GetOldPos().fY);
+				Camera *cam = Camera::GetInstance();
+
+				cam->SetPosX(cam->GetOldPos().fX);
+				cam->SetPosY(cam->GetOldPos().fY);
 			}
 			break;
 		case OBJ_MINE:

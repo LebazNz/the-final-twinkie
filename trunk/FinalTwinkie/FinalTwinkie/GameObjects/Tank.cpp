@@ -110,8 +110,8 @@ void CTank::Update(float fDt)
 		{
 			m_fSlowTimer = 0.0f;
 			m_bSlowDown = false;
-			SetVelX(35);
-			SetVelY(35);
+			SetVelX(m_fStartVelX);
+			SetVelY(m_fStartVelY);
 		}
 	}
 }
@@ -228,6 +228,11 @@ bool CTank::CheckCollision(IEntity* pBase)
 					CDestroyEnemyMessage* pMse = new CDestroyEnemyMessage(pEnemy);
 					CMessageSystem::GetInstance()->SndMessage(pMse);
 					pMse = nullptr;
+				}
+				break;
+			case OBJ_TREE:
+				{
+					
 				}
 				break;
 			};

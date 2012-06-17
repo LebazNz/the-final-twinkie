@@ -169,6 +169,8 @@ CGamePlayState::~CGamePlayState(void)
 
 void CGamePlayState::Enter(void)
 {
+	SoundOff = false;
+
 	LoadText();
 	if(m_bPaused == false)
 	{
@@ -388,6 +390,8 @@ void CGamePlayState::Enter(void)
 		player->SetHeight(128);
 		player->SetVelX(90*player->GetSpeedMod());
 		player->SetVelY(90*player->GetSpeedMod());
+		player->SetStartVelX(player->GetVelX());
+		player->SetStartVelY(player->GetVelY());
 		player->SetHealth(250);
 		player->SetMaxHealth(250);
 		player->SetArmor(50);
@@ -468,67 +472,7 @@ void CGamePlayState::Exit(void)
 
 	if(m_bPaused == false)
 	{
-		if(m_nGameMusic != -1)
-		{
-			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
-				m_pAudio->MusicStopSong(m_nGameMusic);
-
-			m_pAudio->MusicUnloadSong(m_nGameMusic);
-			m_nGameMusic = -1;
-		}
-
-		if(m_nNukeSound != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
-				m_pAudio->SFXStopSound(m_nNukeSound);
-
-			m_pAudio->SFXUnloadSound(m_nNukeSound);
-			m_nNukeSound = -1;
-		}
-
-		if(m_nSappSound != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
-				m_pAudio->SFXStopSound(m_nSappSound);
-
-			m_pAudio->SFXUnloadSound(m_nSappSound);
-			m_nSappSound = -1;
-		}
-
-		if(m_nMineSound != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_nMineSound) == true)
-				m_pAudio->SFXStopSound(m_nMineSound);
-
-			m_pAudio->SFXUnloadSound(m_nMineSound);
-			m_nMineSound = -1;
-		}
-
-		for(int i = 0; i < 6; i++)
-		{
-			if(m_anBulletSounds[i] != -1)
-			{
-				if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
-					m_pAudio->SFXStopSound(m_anBulletSounds[i]);
-
-				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
-				m_anBulletSounds[i] = -1;
-			}
-
-		}
-
-		for(int i = 0; i < 9; i++)
-		{
-			if(m_anSoldierSounds[i] != -1)
-			{
-				if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
-					m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
-
-				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
-				m_anSoldierSounds[i] = -1;
-			}
-
-		}
+		
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
@@ -908,16 +852,17 @@ bool CGamePlayState::Input(void)
 void CGamePlayState::Update(float fDt)
 {
 	
-	if(!m_bPaused)
+	if(!m_bPaused && m_bGameOver == false && m_bWinner == false)
 	{
 		Camera::GetInstance()->Update(CPlayer::GetInstance(),0,0,fDt);
 		m_PM->UpdateEverything(fDt);
 		m_pAudio->Update();
 		m_pOM->UpdateAllObjects(fDt);
 		m_pOM->CheckCollisions();
-
-		m_pES->ProcessEvents();
+		
 		m_pMS->ProcessMessages();
+		m_pES->ProcessEvents();
+		
 	}
 
 	if(ARCADE == 0)
@@ -964,7 +909,11 @@ void CGamePlayState::Update(float fDt)
 		m_bGameOver = true;
 
 	if(m_bGameOver == true || m_bWinner == true)
+	{
 			gameEndTimer += fDt;
+			if(SoundOff == false)
+				TurnSoundOff();
+	}
 
 	if(m_bAGet)
 	{
@@ -993,8 +942,8 @@ void CGamePlayState::Render(void)
 	m_pD3D->GetDirect3DDevice()->SetRenderTarget(0, output);
 	m_pD3D->Clear( 0, 0, 0 );
 
+	
 	{
-
 		m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
 			int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 		// Render game entities
@@ -1011,7 +960,7 @@ void CGamePlayState::Render(void)
 		// Render game entities
 		m_pTile->Render();
 		m_pOM->RenderAllObjects();
-		m_AM->Render();
+//		m_AM->Render();
 		// Flush the sprites
 		m_PM->RenderEverything();
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
@@ -1548,6 +1497,10 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						tank->SetHealth(300);
 						tank->SetMaxHealth(300);
 					}
+
+					tank->SetStartVelX(tank->GetVelX());
+					tank->SetStartVelY(tank->GetVelY());
+
 					tank->SetEType(TANK);
 					tank->SetHasATurret(true);
 					pSelf->m_pOM->AddObject(tank);
@@ -3043,4 +2996,80 @@ void CGamePlayState::ResumeGame()
 		blag = false;
 	if(blag)
 		goto here;
+}
+
+
+void CGamePlayState::TurnSoundOff(void)
+{
+
+	if(SoundOff == true)
+		return;
+
+	SoundOff = true;
+	CPlayer *player = CPlayer::GetInstance();
+
+	player->SetFireSound(-1);
+	player->SetNukeSound(-1);
+
+	if(m_nGameMusic != -1)
+		{
+			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
+				m_pAudio->MusicStopSong(m_nGameMusic);
+
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
+				m_pAudio->SFXStopSound(m_nNukeSound);
+
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+
+		if(m_nSappSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
+				m_pAudio->SFXStopSound(m_nSappSound);
+
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		if(m_nMineSound != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_nMineSound) == true)
+				m_pAudio->SFXStopSound(m_nMineSound);
+
+			m_pAudio->SFXUnloadSound(m_nMineSound);
+			m_nMineSound = -1;
+		}
+
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
+					m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+
+		}
 }

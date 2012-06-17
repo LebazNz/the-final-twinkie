@@ -23,8 +23,13 @@ public:
 	CTurret* GetTurret(void)const{return m_pTurret;}
 	RECT GetSpawnRect();
 	void SlowVel(float time, float vel);
+	void SetStartVelX(float x) { m_fStartVelX = x;}
+	void SetStartVelY(float y) { m_fStartVelY = y;}
+	float GetStartVelX(void) { return m_fStartVelX;}
+    float GetStartVelY(void) { return m_fStartVelY;}
 
 private:
+	float m_fStartVelX, m_fStartVelY;
 	CTurret* m_pTurret;
 	float m_fRotationRate;
 	float m_fRotation;

@@ -253,7 +253,7 @@ void CPirateBoss::Rebound(float time)
 	}
 	
 		
-		if((GetPosX()/*+cam->GetPosX()*/) >= 2500 && m_nMoving == 0)
+		if((GetPosX()/*+cam->GetPosX()*/) >= 1500 && m_nMoving == 0)
 		{
 			
 			KillTurrets();

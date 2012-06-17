@@ -294,8 +294,15 @@ bool CEnemy::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_TREE:
 			{
-				return false;
+				
 			}
+			break;
+		case OBJ_BUILDING:
+			{
+				SetPosX(GetOldPos().fX);
+				SetPosY(GetOldPos().fY);
+			}
+			break;
 		};
 		return true;
 	}
