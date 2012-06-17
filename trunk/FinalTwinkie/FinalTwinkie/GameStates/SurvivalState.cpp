@@ -775,7 +775,7 @@ void CSurvivalState::Render( void )
 		m_pD3D->GetSprite()->Draw(MiniMap, NULL, &D3DXVECTOR3(0,0,0),&D3DXVECTOR3(661,409,0), D3DCOLOR_ARGB(255,255,255,255));
 		m_pGUI->Render();
 		m_pD3D->GetSprite()->Flush();
-		m_pFont->Print(m_sWave.c_str(), 539,547,.67f,UINT_MAX);
+		m_pFont->Print(m_sWave.c_str(), 539,547,.60f,UINT_MAX);
 	}
 
 	m_pD3D->GetSprite()->Flush();	

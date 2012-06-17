@@ -2454,6 +2454,7 @@ bool CLoadGameState::LoadSavedGame(const char* szFileName, int nGameData)
 
 	return true;
 }
+
 void CLoadGameState::LoadText(void)
 {
 	TiXmlDocument doc("resource/files/Text.xml");

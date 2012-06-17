@@ -99,6 +99,7 @@ void CGetNameState::Exit(void)
 	m_pFont = nullptr;
 
 	m_bLowCase = false;
+	m_bSurvival=false;
 
 	for(int i = 0; i < 32; ++i)
 		szName[i] = 0;
