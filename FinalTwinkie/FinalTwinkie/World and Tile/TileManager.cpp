@@ -316,8 +316,8 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						Camera *cam = Camera::GetInstance();
 						CPlayer* pPlayer = dynamic_cast<CPlayer*>(pBase);
 
-						//pPlayer->SetPosX(pPlayer->GetOldPos().fX);
-						//pPlayer->SetPosY(pPlayer->GetOldPos().fY);
+						pPlayer->SetPosX(pPlayer->GetOldPos().fX);
+						pPlayer->SetPosY(pPlayer->GetOldPos().fY);
 						cam->SetPosX(cam->GetOldPos().fX);
 						cam->SetPosY(cam->GetOldPos().fY);
 					
@@ -347,6 +347,24 @@ void CTileManager::CheckCollision(IEntity* pBase)
 						// USE THIS TO TEST DISTANCE FORMULA int blah = distance;
 						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
 						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+					}
+					break;
+
+				case OBJ_HELP:
+					{
+						if(m_vTiles[i][j].GetTrigger() == 1)
+						{
+							break;
+						}
+						else if(m_vTiles[i][j].GetTrigger() > 2)
+							break;
+
+						CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+						
+						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+
+
 					}
 					break;
 				}

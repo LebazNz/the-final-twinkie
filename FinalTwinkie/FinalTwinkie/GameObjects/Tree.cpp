@@ -34,10 +34,10 @@ bool CTree::CheckCollision(IEntity* pObject)
 				CPlayer* pPlayer = CPlayer::GetInstance();
 				// MAKE PLAYER SLOW DOWN
 				if(m_bHit == true)
-					pPlayer->SlowVel(0.5f,70);
+					pPlayer->SlowVel(0.5f,(pPlayer->GetStartVelX()-20));
 				else
 				{
-					pPlayer->SlowVel(0.5f,45);
+					pPlayer->SlowVel(0.5f,(pPlayer->GetStartVelX()/2));
 					m_bHit = true;
 					SetHit(true);
 					SetWidth(32);
@@ -48,30 +48,29 @@ bool CTree::CheckCollision(IEntity* pObject)
 			break;
 		case OBJ_ENEMY:
 			{
-				if(pObject->GetType() == OBJ_TANK)
+				if(m_bHit == false)
 				{
-					// MAKE ENEMY SLOW DOWN
+					CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
+					pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+					pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+				}
+			}
+			break;
+
+		case OBJ_TANK:
+			{
+				// MAKE ENEMY SLOW DOWN
 					CTank* pTank = dynamic_cast<CTank*>(pObject);
 					if(m_bHit == true)
-						pTank->SlowVel(0.5f,70);
+						pTank->SlowVel(0.5f,pTank->GetStartVelX()-15);
 					else
 					{
-						pTank->SlowVel(0.5f,45);
+						pTank->SlowVel(0.5f,pTank->GetStartVelX()/2);
 						m_bHit = true;
 						SetHit(true);
 						SetWidth(32);
 						SetHeight(32);
 					}
-				}
-				else
-				{
-					if(m_bHit == false)
-					{
-						CEnemy* pEnemy = dynamic_cast<CEnemy*>(pObject);
-						pEnemy->SetPosX(pEnemy->GetOldPos().fX);
-						pEnemy->SetPosY(pEnemy->GetOldPos().fY);
-					}
-				}
 			}
 			break;
 

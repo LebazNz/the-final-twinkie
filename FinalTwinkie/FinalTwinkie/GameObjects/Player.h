@@ -170,6 +170,11 @@ public:
 	void SetLevel(int nLevel){m_nLevel = nLevel;}
 	int GetLevel(void){return m_nLevel;}
 
+	void SetStartVelX(float x) { m_fStartVelX = x;}
+	void SetStartVelY(float y) { m_fStartVelY = y;}
+	float GetStartVelX(void) { return m_fStartVelX;}
+    float GetStartVelY(void) { return m_fStartVelY;}
+
 private:
 	CPlayer(void);
 	~CPlayer(void);
@@ -291,6 +296,8 @@ private:
 	bool m_bAllUpgrades;	// God mode
 	
 	int m_nLevel;
+
+	float m_fStartVelX, m_fStartVelY;
 
 };
 #endif

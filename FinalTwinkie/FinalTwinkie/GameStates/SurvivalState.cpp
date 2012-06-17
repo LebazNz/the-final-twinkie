@@ -103,6 +103,7 @@ CSurvivalState::CSurvivalState(void)
 	m_nPickupInvuID = -1;
 	m_nPickupInfAmmoID = -1;
 	m_nPickupMoneyID = -1;
+	SoundOff = false;
 
 	m_nGameMusic = -1;
 	m_nSappSound = -1;
@@ -139,10 +140,12 @@ void CSurvivalState::DeleteInstance( void )
 
 void CSurvivalState::Enter( void )
 {
+	SoundOff = false;
+
 	if(m_bPaused == false)
 	{
 		
-
+		
 		m_pD3D	= CSGD_Direct3D::GetInstance();
 		m_pDI	= CSGD_DirectInput::GetInstance();
 		m_pTM	= CSGD_TextureManager::GetInstance();
@@ -354,58 +357,6 @@ void CSurvivalState::Exit( void )
 	m_nWavesRemaining = 0;
 
 
-		if(m_nGameMusic != -1)
-		{
-			if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
-				m_pAudio->MusicStopSong(m_nGameMusic);
-
-			m_pAudio->MusicUnloadSong(m_nGameMusic);
-			m_nGameMusic = -1;
-		}
-
-		if(m_nNukeSound != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
-				m_pAudio->SFXStopSound(m_nNukeSound);
-
-			m_pAudio->SFXUnloadSound(m_nNukeSound);
-			m_nNukeSound = -1;
-		}
-
-		if(m_nSappSound != -1)
-		{
-			if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
-				m_pAudio->SFXStopSound(m_nSappSound);
-
-			m_pAudio->SFXUnloadSound(m_nSappSound);
-			m_nSappSound = -1;
-		}
-
-		for(int i = 0; i < 6; i++)
-		{
-			if(m_anBulletSounds[i] != -1)
-			{
-				if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
-					m_pAudio->SFXStopSound(m_anBulletSounds[i]);
-
-				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
-				m_anBulletSounds[i] = -1;
-			}
-
-		}
-
-		for(int i = 0; i < 9; i++)
-		{
-			if(m_anSoldierSounds[i] != -1)
-			{
-				if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
-					m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
-
-				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
-				m_anSoldierSounds[i] = -1;
-			}
-
-		}
 		
 		if(m_nButtonImageID != -1)
 		{
@@ -730,6 +681,7 @@ void CSurvivalState::Update( float fDt )
 	{
 		
 		m_nWavesRemaining--;
+		TurnSoundOff();
 		if(m_nWavesRemaining <= 0)
 			CGame::GetInstance()->ChangeState(CSurvivalHS::GetInstance());
 		else
@@ -1887,5 +1839,72 @@ void CSurvivalState::LoadText(void)
 			}
 			break;
 		}
+	}
+}
+
+
+
+void CSurvivalState::TurnSoundOff(void)
+{
+	if(SoundOff == true)
+		return;
+	SoundOff = true;
+
+	CPlayer *player = CPlayer::GetInstance();
+
+	player->SetNukeSound(-1);
+	player->SetFireSound(-1);
+
+	if(m_nGameMusic != -1)
+	{
+		if(m_pAudio->MusicIsSongPlaying(m_nGameMusic) == true)
+			m_pAudio->MusicStopSong(m_nGameMusic);
+
+		m_pAudio->MusicUnloadSong(m_nGameMusic);
+		m_nGameMusic = -1;
+	}
+
+	if(m_nNukeSound != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nNukeSound) == true)
+			m_pAudio->SFXStopSound(m_nNukeSound);
+
+		m_pAudio->SFXUnloadSound(m_nNukeSound);
+		m_nNukeSound = -1;
+	}
+
+	if(m_nSappSound != -1)
+	{
+		if(m_pAudio->SFXIsSoundPlaying(m_nSappSound) == true)
+			m_pAudio->SFXStopSound(m_nSappSound);
+
+		m_pAudio->SFXUnloadSound(m_nSappSound);
+		m_nSappSound = -1;
+	}
+
+	for(int i = 0; i < 6; i++)
+	{
+		if(m_anBulletSounds[i] != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_anBulletSounds[i]) == true)
+				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+
+			m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+			m_anBulletSounds[i] = -1;
+		}
+
+	}
+
+	for(int i = 0; i < 9; i++)
+	{
+		if(m_anSoldierSounds[i] != -1)
+		{
+			if(m_pAudio->SFXIsSoundPlaying(m_anSoldierSounds[i]) == true)
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+
+			m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+			m_anSoldierSounds[i] = -1;
+		}
+
 	}
 }

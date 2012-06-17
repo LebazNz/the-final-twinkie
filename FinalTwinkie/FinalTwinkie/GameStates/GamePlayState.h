@@ -77,6 +77,8 @@ private:
 	CPlayer*				m_pEnemy;
 	CEntity*				m_pTurret;
 
+	void TurnSoundOff(void);
+	bool SoundOff;
 
 	//IMAGE IDS
 	int m_anBulletSounds[6];
