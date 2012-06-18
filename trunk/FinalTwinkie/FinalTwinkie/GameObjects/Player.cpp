@@ -14,8 +14,9 @@
 #include "../Boss/NaziBoss.h"
 #include "../GameObjects/Factory.h"
 #include "../SGD Wrappers/CSGD_XAudio2.h"
-
-
+#include "../GameStates/GamePlayState.h"
+#include "../GameStates/SurvivalState.h"
+#include "../GameStates/TutorState.h"
 
 CPlayer* CPlayer::m_pInstance=nullptr;
 CPlayer* CPlayer::GetInstance(void)
@@ -130,473 +131,481 @@ void CPlayer::Update(float fDt)
 		}
 		else
 			m_fTime = 1.0;
-
-		if(m_pDI->MouseButtonDown(1) || m_pDI->JoystickGetRTriggerAmount() > 0)
+		CGamePlayState* g = CGamePlayState::GetInstance();
+		CSurvivalState* s = CSurvivalState::GetInstance();
+		if(g->GetPaused() || s->GetPaused())
 		{
-			switch(m_nSecondType)
+			return;
+		}
+		if(!g->GetPaused() && !s->GetPaused())
+		{
+			if(m_pDI->MouseButtonDown(1) || m_pDI->JoystickGetRTriggerAmount() > 0)
 			{
-			case MACHINEGUN:
-				 {
-					if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
-					{
-						m_fFireRate = 0.0f;
-						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
-						CMessageSystem::GetInstance()->SndMessage(msg);
-						msg = nullptr;
-						if(m_bInfAmmo == false)
-						m_fHeat+=3*m_fHeatModifier;
-					}
-					else
-						m_fFireRate += fDt;
-				 }
-				 break;
-			case LAZER:
+				switch(m_nSecondType)
 				{
-					if(m_fFireRate >= 0.02f&&m_fHeat<100&&!m_bOverheat)
+				case MACHINEGUN:
 					{
-						m_fFireRate = 0.0f;
-						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
-						CMessageSystem::GetInstance()->SndMessage(msg);
-						msg = nullptr;
-						if(m_bInfAmmo == false)
-						m_fHeat+=1.0f*m_fHeatModifier;
-					}
-					else
-					{
-						m_fFireRate += fDt;
-
-					}
-				}
-				break;
-			case FLAME:
-				{
-					if(!m_bOverheat)
-					{
-						GetTurret()->GetFlamer()->ActivateEmitter();
-					
-
-						m_fHeat+=.4f*m_fHeatModifier;
-						if(!SlowFlame)
+						if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
 						{
-							CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
-							CMessageSystem::GetInstance()->SndMessage(pMsg);
-							pMsg = nullptr;
-							SlowFlame=true;
-							if(m_bSoundPlaying == false && m_nFireSound != -1)
-							{
-								CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nFireSound,true);
-								m_bSoundPlaying = true;
-							}
+							m_fFireRate = 0.0f;
+							CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
+							if(m_bInfAmmo == false)
+								m_fHeat+=3*m_fHeatModifier;
+						}
+						else
+							m_fFireRate += fDt;
+					}
+					break;
+				case LAZER:
+					{
+						if(m_fFireRate >= 0.02f&&m_fHeat<100&&!m_bOverheat)
+						{
+							m_fFireRate = 0.0f;
+							CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
+							if(m_bInfAmmo == false)
+								m_fHeat+=1.0f*m_fHeatModifier;
 						}
 						else
 						{
+							m_fFireRate += fDt;
 
-							SlowFlame=false;
 						}
 					}
-				}
-				break;
-			}
-			if(m_fHeat>100)
-			{
-				m_bOverheat=true;
-				GetTurret()->GetFlamer()->DeactivateEmitter();
-			
-				if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
-					CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+					break;
+				case FLAME:
+					{
+						if(!m_bOverheat)
+						{
+							GetTurret()->GetFlamer()->ActivateEmitter();
 
-				m_bSoundPlaying = false;
-			}
-			if(m_bOverheat&&m_fOverheatTimer>=1.5f)
-			{
-				m_bOverheat=false;
-				m_fOverheatTimer=0.0f;
-			}
-			else if(m_bOverheat&&m_fOverheatTimer<1.5f)
-			{
-				m_fOverheatTimer+=fDt;
-			}
-		}
-		else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
-		{
-			if(m_nSecondType==FLAME)
-			{
-				GetTurret()->GetFlamer()->DeactivateEmitter();
-			
-				if(m_bSoundPlaying == true)
+
+							m_fHeat+=.4f*m_fHeatModifier;
+							if(!SlowFlame)
+							{
+								CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
+								CMessageSystem::GetInstance()->SndMessage(pMsg);
+								pMsg = nullptr;
+								SlowFlame=true;
+								if(m_bSoundPlaying == false && m_nFireSound != -1)
+								{
+									CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nFireSound,true);
+									m_bSoundPlaying = true;
+								}
+							}
+							else
+							{
+
+								SlowFlame=false;
+							}
+						}
+					}
+					break;
+				}
+				if(m_fHeat>100)
 				{
+					m_bOverheat=true;
+					GetTurret()->GetFlamer()->DeactivateEmitter();
+
 					if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
 						CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+
+					m_bSoundPlaying = false;
 				}
-				m_bSoundPlaying = false;
+				if(m_bOverheat&&m_fOverheatTimer>=1.5f)
+				{
+					m_bOverheat=false;
+					m_fOverheatTimer=0.0f;
+				}
+				else if(m_bOverheat&&m_fOverheatTimer<1.5f)
+				{
+					m_fOverheatTimer+=fDt;
+				}
 			}
-		}
-		this;
-		if(m_pDI->KeyPressed(DIK_1))
-		{
-			if(m_pSpec1!=nullptr)
+			else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
 			{
-				m_pSelectedSpec=m_pSpec1;
-				m_pSelectedSpecAmmo=0;
-			}
-		}
-		if(m_pDI->KeyPressed(DIK_2))
-		{
-			if(m_pSpec2!=nullptr)
-			{
-				m_pSelectedSpec=m_pSpec2;
-				m_pSelectedSpecAmmo=1;
-			}
-		}
-		if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
-		{
-			if(m_pSelectedSpec!=nullptr)
-			{
-				if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
-					CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
-				
-				m_pSelectedSpec->ActivateSpecial();
-				m_anSpecialammo[m_pSelectedSpecAmmo]--;
-			}
-		}
-		if(m_pDI->MouseWheelMovement()>0)
-		{
-			if(m_nGunSel==1&&m_bRocketAccess)
-			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
-			}
-			else if(m_nGunSel==1&&!m_bRocketAccess&&m_bArtilleryAccess)
-			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
-			}
-			else if(m_nGunSel==2&&m_bArtilleryAccess)
-			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
-			}
-			else if(m_nGunSel==2&&!m_bArtilleryAccess)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			else if(m_nGunSel==3)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			CGUI::GetInstance()->SetGunSelected(m_nGunSel);
-		}
-		else if(m_pDI->MouseWheelMovement()<0)
-		{
-			if(m_nGunSel==1&&m_bArtilleryAccess)
-			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
-			}
-			else if(m_nGunSel==1&&m_bRocketAccess&&!m_bArtilleryAccess)
-			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
-			}
-			else if(m_nGunSel==3&&m_bRocketAccess)
-			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
-			}
-			else if(m_nGunSel==3&&!m_bRocketAccess)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			else if(m_nGunSel==2)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			CGUI::GetInstance()->SetGunSelected(m_nGunSel);
-		}
-	}
-	else
-	{
-		if(m_pDI->JoystickGetLStickYAmount() > 0)
-		{
-			m_bIsMoving = true;
-		}
-		else m_bIsMoving = false;
+				if(m_nSecondType==FLAME)
+				{
+					GetTurret()->GetFlamer()->DeactivateEmitter();
 
-		if(m_pDI->JoystickGetLStickYAmount() == 0)
-		{
-			SetMoveUp(false);
-			SetMoveDown(false);
+					if(m_bSoundPlaying == true)
+					{
+						if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
+							CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+					}
+					m_bSoundPlaying = false;
+				}
+			}
+			this;
+			if(m_pDI->KeyPressed(DIK_1))
+			{
+				if(m_pSpec1!=nullptr)
+				{
+					m_pSelectedSpec=m_pSpec1;
+					m_pSelectedSpecAmmo=0;
+				}
+			}
+			if(m_pDI->KeyPressed(DIK_2))
+			{
+				if(m_pSpec2!=nullptr)
+				{
+					m_pSelectedSpec=m_pSpec2;
+					m_pSelectedSpecAmmo=1;
+				}
+			}
+			if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
+			{
+				if(m_pSelectedSpec!=nullptr)
+				{
+					if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
+						CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
+
+					m_pSelectedSpec->ActivateSpecial();
+					m_anSpecialammo[m_pSelectedSpecAmmo]--;
+				}
+			}
+			if(m_pDI->MouseWheelMovement()>0)
+			{
+				if(m_nGunSel==1&&m_bRocketAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==1&&!m_bRocketAccess&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==2&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==2&&!m_bArtilleryAccess)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				else if(m_nGunSel==3)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
+			}
+			else if(m_pDI->MouseWheelMovement()<0)
+			{
+				if(m_nGunSel==1&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==1&&m_bRocketAccess&&!m_bArtilleryAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==3&&m_bRocketAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==3&&!m_bRocketAccess)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				else if(m_nGunSel==2)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
+			}
 		}
-
-		if(Camera::GetInstance()->GetPlayerCannotMove() == false)
+		else
 		{
-			if(m_pDI->JoystickGetLStickYAmount() < 0)
+			if(m_pDI->JoystickGetLStickYAmount() > 0)
 			{
-				Up=Vector2DRotate(Up, m_fRotation);
-				float DX=(Up.fX*GetVelX()*fDt);
-				m_v2OldPos.fX = GetPosX();
-				m_v2OldPos.fY = GetPosY();
-				SetPosX(GetPosX()+DX);
-				SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
-
-				SetMoveUp(true);
-				SetMoveDown(false);
+				m_bIsMoving = true;
 			}
-			else if(m_pDI->JoystickGetLStickYAmount() > 0)
-			{
-				Up=Vector2DRotate(Up, m_fRotation);
-				float DX=(Up.fX*GetVelX()*fDt);
-				m_v2OldPos.fX = GetPosX();
-				m_v2OldPos.fY = GetPosY();
-				SetPosX(GetPosX()-DX);
-				SetPosY(GetPosY()-(Up.fY*GetVelY()*fDt));
+			else m_bIsMoving = false;
 
-				SetMoveUp(false);
-				SetMoveDown(true);
-			}
-			else
+			if(m_pDI->JoystickGetLStickYAmount() == 0)
 			{
 				SetMoveUp(false);
 				SetMoveDown(false);
 			}
-		}
-		if(m_pDI->JoystickGetLStickXAmount() > 0)
-		{
-			m_fRotation+=m_fRotationRate*fDt;
 
-			SetMoveRight(true);
-			SetMoveLeft(false);
-		}
-		else if(m_pDI->JoystickGetLStickXAmount() < 0)
-		{
-			m_fRotation-=m_fRotationRate*fDt;
-
-			SetMoveRight(false);
-			SetMoveLeft(true);
-		}
-
-		if(m_pDI->JoystickButtonDown(0) && m_fFireTimer >= m_fTime)
-		{
-			if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
+			if(Camera::GetInstance()->GetPlayerCannotMove() == false)
 			{
-				if(m_fNoReloadTimer == 0.0f)
-				{			
+				if(m_pDI->JoystickGetLStickYAmount() < 0)
+				{
+					Up=Vector2DRotate(Up, m_fRotation);
+					float DX=(Up.fX*GetVelX()*fDt);
+					m_v2OldPos.fX = GetPosX();
+					m_v2OldPos.fY = GetPosY();
+					SetPosX(GetPosX()+DX);
+					SetPosY(GetPosY()+(Up.fY*GetVelY()*fDt));
+
+					SetMoveUp(true);
+					SetMoveDown(false);
+				}
+				else if(m_pDI->JoystickGetLStickYAmount() > 0)
+				{
+					Up=Vector2DRotate(Up, m_fRotation);
+					float DX=(Up.fX*GetVelX()*fDt);
+					m_v2OldPos.fX = GetPosX();
+					m_v2OldPos.fY = GetPosY();
+					SetPosX(GetPosX()-DX);
+					SetPosY(GetPosY()-(Up.fY*GetVelY()*fDt));
+
+					SetMoveUp(false);
+					SetMoveDown(true);
+				}
+				else
+				{
+					SetMoveUp(false);
+					SetMoveDown(false);
+				}
+			}
+			if(m_pDI->JoystickGetLStickXAmount() > 0)
+			{
+				m_fRotation+=m_fRotationRate*fDt;
+
+				SetMoveRight(true);
+				SetMoveLeft(false);
+			}
+			else if(m_pDI->JoystickGetLStickXAmount() < 0)
+			{
+				m_fRotation-=m_fRotationRate*fDt;
+
+				SetMoveRight(false);
+				SetMoveLeft(true);
+			}
+
+			if(m_pDI->JoystickButtonDown(0) && m_fFireTimer >= m_fTime)
+			{
+				if((m_pTurret->GetBullet() == BUL_SHELL && GetWeaponAmmoShell()> 0)||(m_pTurret->GetBullet() == BUL_ARTILLERY && GetWeaponAmmoArtillery()> 0)||(m_pTurret->GetBullet() == BUL_ROCKET && GetWeaponAmmoMissile()> 0))
+				{
+					if(m_fNoReloadTimer == 0.0f)
+					{			
 						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
 						CMessageSystem::GetInstance()->SndMessage(msg);
 						msg = nullptr;
 						m_fFireTimer = 0.0f;
 						CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
-				}
-				else
-				{
-					CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
-					CMessageSystem::GetInstance()->SndMessage(msg);
-					msg = nullptr;
-					m_fFireTimer = 0.0f;
-					CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
+					}
+					else
+					{
+						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, m_pTurret->GetBullet(), m_pTurret);
+						CMessageSystem::GetInstance()->SndMessage(msg);
+						msg = nullptr;
+						m_fFireTimer = 0.0f;
+						CPlayer::GetInstance()->SetShotsFired(CPlayer::GetInstance()->GetShotsFired()+1);
+					}
 				}
 			}
-		}
-		else
-			m_fFireTimer += fDt;
+			else
+				m_fFireTimer += fDt;
 
-		if(m_fNoReloadTimer > 0.0)
-		{
-			m_fNoReloadTimer -= fDt;
-			m_fTime = 0.25f;
-		}
-		else
-			m_fTime = 1.0;
-
-		if(m_pDI->JoystickButtonDown(3))
-		{
-			switch(m_nSecondType)
+			if(m_fNoReloadTimer > 0.0)
 			{
-			case MACHINEGUN:
-				 {
-					if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
-					{
-						m_fFireRate = 0.0f;
-						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
-						CMessageSystem::GetInstance()->SndMessage(msg);
-						msg = nullptr;
-						if(m_bInfAmmo == false)
-						m_fHeat+=3*m_fHeatModifier;
-					}
-					else
-						m_fFireRate += fDt;
-				 }
-				 break;
-			case LAZER:
-				{
-					if(m_fFireRate >= 0.02f&&m_fHeat<100&&!m_bOverheat)
-					{
-						m_fFireRate = 0.0f;
-						CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
-						CMessageSystem::GetInstance()->SndMessage(msg);
-						msg = nullptr;
-						if(m_bInfAmmo == false)
-						m_fHeat+=1.0f*m_fHeatModifier;
-					}
-					else
-					{
-						m_fFireRate += fDt;
+				m_fNoReloadTimer -= fDt;
+				m_fTime = 0.25f;
+			}
+			else
+				m_fTime = 1.0;
 
-					}
-				}
-				break;
-			case FLAME:
+			if(m_pDI->JoystickButtonDown(3))
+			{
+				switch(m_nSecondType)
 				{
-					if(!m_bOverheat)
+				case MACHINEGUN:
 					{
-						GetTurret()->GetFlamer()->ActivateEmitter();
-					
-
-						m_fHeat+=.4f*m_fHeatModifier;
-						if(!SlowFlame)
+						if(m_fFireRate >= 0.15f&&m_fHeat<100&&!m_bOverheat)
 						{
-							CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
-							CMessageSystem::GetInstance()->SndMessage(pMsg);
-							pMsg = nullptr;
-							SlowFlame=true;
-							if(m_bSoundPlaying == false && m_nFireSound != -1)
-							{
-								CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nFireSound,true);
-								m_bSoundPlaying = true;
-							}
+							m_fFireRate = 0.0f;
+							CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_MACHINEGUN, m_pTurret);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
+							if(m_bInfAmmo == false)
+								m_fHeat+=3*m_fHeatModifier;
+						}
+						else
+							m_fFireRate += fDt;
+					}
+					break;
+				case LAZER:
+					{
+						if(m_fFireRate >= 0.02f&&m_fHeat<100&&!m_bOverheat)
+						{
+							m_fFireRate = 0.0f;
+							CCreateBulletMessage* msg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_LASER, m_pTurret);
+							CMessageSystem::GetInstance()->SndMessage(msg);
+							msg = nullptr;
+							if(m_bInfAmmo == false)
+								m_fHeat+=1.0f*m_fHeatModifier;
 						}
 						else
 						{
+							m_fFireRate += fDt;
 
-							SlowFlame=false;
 						}
 					}
-				}
-				break;
-			}
-			if(m_fHeat>100)
-			{
-				m_bOverheat=true;
-				GetTurret()->GetFlamer()->DeactivateEmitter();
-			
-				if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
-					CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+					break;
+				case FLAME:
+					{
+						if(!m_bOverheat)
+						{
+							GetTurret()->GetFlamer()->ActivateEmitter();
 
-				m_bSoundPlaying = false;
-			}
-			if(m_bOverheat&&m_fOverheatTimer>=1.5f)
-			{
-				m_bOverheat=false;
-				m_fOverheatTimer=0.0f;
-			}
-			else if(m_bOverheat&&m_fOverheatTimer<1.5f)
-			{
-				m_fOverheatTimer+=fDt;
-			}
-		}
-		else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
-		{
-			if(m_nSecondType==FLAME)
-			{
-				GetTurret()->GetFlamer()->DeactivateEmitter();
-			
-				if(m_bSoundPlaying == true)
+
+							m_fHeat+=.4f*m_fHeatModifier;
+							if(!SlowFlame)
+							{
+								CCreateBulletMessage* pMsg=new CCreateBulletMessage(MSG_CREATEBULLET, BUL_FLAME, m_pTurret);
+								CMessageSystem::GetInstance()->SndMessage(pMsg);
+								pMsg = nullptr;
+								SlowFlame=true;
+								if(m_bSoundPlaying == false && m_nFireSound != -1)
+								{
+									CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nFireSound,true);
+									m_bSoundPlaying = true;
+								}
+							}
+							else
+							{
+
+								SlowFlame=false;
+							}
+						}
+					}
+					break;
+				}
+				if(m_fHeat>100)
 				{
+					m_bOverheat=true;
+					GetTurret()->GetFlamer()->DeactivateEmitter();
+
 					if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
 						CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+
+					m_bSoundPlaying = false;
 				}
-				m_bSoundPlaying = false;
+				if(m_bOverheat&&m_fOverheatTimer>=1.5f)
+				{
+					m_bOverheat=false;
+					m_fOverheatTimer=0.0f;
+				}
+				else if(m_bOverheat&&m_fOverheatTimer<1.5f)
+				{
+					m_fOverheatTimer+=fDt;
+				}
 			}
-		}
-		this;
-		if(m_pDI->MouseButtonPressed(0))
-		{
-			if(m_pSpec1!=nullptr)
+			else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
 			{
-				m_pSelectedSpec=m_pSpec1;
-				m_pSelectedSpecAmmo=0;
+				if(m_nSecondType==FLAME)
+				{
+					GetTurret()->GetFlamer()->DeactivateEmitter();
+
+					if(m_bSoundPlaying == true)
+					{
+						if(CSGD_XAudio2::GetInstance()->SFXIsSoundPlaying(m_nFireSound) == true)
+							CSGD_XAudio2::GetInstance()->SFXStopSound(m_nFireSound);
+					}
+					m_bSoundPlaying = false;
+				}
 			}
-		}
-		if(m_pDI->MouseButtonPressed(1))
-		{
-			if(m_pSpec2!=nullptr)
+			this;
+			if(m_pDI->MouseButtonPressed(0))
 			{
-				m_pSelectedSpec=m_pSpec2;
-				m_pSelectedSpecAmmo=1;
+				if(m_pSpec1!=nullptr)
+				{
+					m_pSelectedSpec=m_pSpec1;
+					m_pSelectedSpecAmmo=0;
+				}
 			}
-		}
-		if(m_pDI->JoystickButtonPressed(1) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
-		{
-			if(m_pSelectedSpec!=nullptr)
+			if(m_pDI->MouseButtonPressed(1))
 			{
-				if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
-					CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
-				
-				m_pSelectedSpec->ActivateSpecial();
-				m_anSpecialammo[m_pSelectedSpecAmmo]--;
+				if(m_pSpec2!=nullptr)
+				{
+					m_pSelectedSpec=m_pSpec2;
+					m_pSelectedSpecAmmo=1;
+				}
 			}
-		}
-		if(m_pDI->JoystickButtonPressed(2))
-		{
-			if(m_nGunSel==1&&m_bRocketAccess)
+			if(m_pDI->JoystickButtonPressed(1) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
 			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
+				if(m_pSelectedSpec!=nullptr)
+				{
+					if(m_pSelectedSpec->GetType() == NUKE && m_nNukeSound != -1)
+						CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nNukeSound, false);
+
+					m_pSelectedSpec->ActivateSpecial();
+					m_anSpecialammo[m_pSelectedSpecAmmo]--;
+				}
 			}
-			else if(m_nGunSel==1&&!m_bRocketAccess&&m_bArtilleryAccess)
+			if(m_pDI->JoystickButtonPressed(2))
 			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
+				if(m_nGunSel==1&&m_bRocketAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==1&&!m_bRocketAccess&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==2&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==2&&!m_bArtilleryAccess)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				else if(m_nGunSel==3)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 			}
-			else if(m_nGunSel==2&&m_bArtilleryAccess)
+			else if(m_pDI->JoystickButtonPressed(5))
 			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
+				if(m_nGunSel==1&&m_bArtilleryAccess)
+				{
+					m_nGunSel=3;
+					GetTurret()->SetBullet(BUL_ARTILLERY);
+				}
+				else if(m_nGunSel==1&&m_bRocketAccess&&!m_bArtilleryAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==3&&m_bRocketAccess)
+				{
+					m_nGunSel=2;
+					GetTurret()->SetBullet(BUL_ROCKET);
+				}
+				else if(m_nGunSel==3&&!m_bRocketAccess)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				else if(m_nGunSel==2)
+				{
+					m_nGunSel=1;
+					GetTurret()->SetBullet(BUL_SHELL);
+				}
+				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 			}
-			else if(m_nGunSel==2&&!m_bArtilleryAccess)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			else if(m_nGunSel==3)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			CGUI::GetInstance()->SetGunSelected(m_nGunSel);
-		}
-		else if(m_pDI->JoystickButtonPressed(5))
-		{
-			if(m_nGunSel==1&&m_bArtilleryAccess)
-			{
-				m_nGunSel=3;
-				GetTurret()->SetBullet(BUL_ARTILLERY);
-			}
-			else if(m_nGunSel==1&&m_bRocketAccess&&!m_bArtilleryAccess)
-			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
-			}
-			else if(m_nGunSel==3&&m_bRocketAccess)
-			{
-				m_nGunSel=2;
-				GetTurret()->SetBullet(BUL_ROCKET);
-			}
-			else if(m_nGunSel==3&&!m_bRocketAccess)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			else if(m_nGunSel==2)
-			{
-				m_nGunSel=1;
-				GetTurret()->SetBullet(BUL_SHELL);
-			}
-			CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 		}
 	}
 
@@ -791,13 +800,16 @@ bool CPlayer::CheckCollision(IEntity* pBase)
 			break;
 		case OBJ_TANK:
 			{
-				CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
+				if(CGame::GetInstance()->GetCurState()!= CTutorState::GetInstance())
+				{
+					CEnemy* pEnemy =dynamic_cast<CEnemy*>(pBase);
 
-				pEnemy->SetPosX(pEnemy->GetOldPos().fX);
-				pEnemy->SetPosY(pEnemy->GetOldPos().fY);
+					pEnemy->SetPosX(pEnemy->GetOldPos().fX);
+					pEnemy->SetPosY(pEnemy->GetOldPos().fY);
 
-				this->SetPosX(this->GetOldPos().fX);
-				this->SetPosY(this->GetOldPos().fY);
+					this->SetPosX(this->GetOldPos().fX);
+					this->SetPosY(this->GetOldPos().fY);
+				}
 			}
 			break;
 		case OBJ_TREE:
