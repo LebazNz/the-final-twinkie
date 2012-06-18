@@ -224,11 +224,15 @@ bool COptionsState::Input(void)
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
 				if(m_bWindowed == false)
 				{
-					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					m_pD3D->ShutdownDirect3D();
+					//m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
 				}
 				else
 				{
-					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					m_pD3D->ShutdownDirect3D();
+					//m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
 				}
 			}
 			else if(m_nPosition == 3)

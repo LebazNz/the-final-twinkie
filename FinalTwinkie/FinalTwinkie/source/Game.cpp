@@ -107,6 +107,7 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_nScreenWidth	= nScreenWidth;
 	m_nScreenHeight	= nScreenHeight;
 	m_bWindowed		= bWindowed;
+	m_hWnd = hWnd;
 
 	// Set up sound
 	m_pAudio->MusicSetMasterVolume(mainVol);

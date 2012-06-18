@@ -22,6 +22,9 @@ public:
 	bool IsWindowed(void) const { return m_bWindowed; }
 	void SetIsWindowded(bool isWindowed) { m_bWindowed = isWindowed; }
 	IGameState* GetCurState(void){return m_pCurState;}
+
+	HWND GethWnd() const { return m_hWnd; }
+	void SethWnd(HWND val) { m_hWnd = val; }
 private:
 	CGame(void);
 	CGame(const CGame&);
@@ -54,7 +57,9 @@ private:
 
 	// Sound
 	
-
+	// Other
+	HWND m_hWnd;
+	
 public:
 
 	bool mute, isPlaying,isTutor;

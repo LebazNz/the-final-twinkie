@@ -275,6 +275,7 @@ void CGamePlayState::Enter(void)
 				m_anEnemyIDs[9]=m_pTM->LoadTexture(_T("resource/graphics/pStationTurret.png"));
 				m_nPirateTurret = m_pTM->LoadTexture(_T("resource/graphics/pirateshipturret.png"));
 				m_pTile->Load("resource/files/PirateLevel.xml");	
+				m_pPlayer->SetMoney(m_pPlayer->GetMoney()+300);
 			}
 			break;
 		case 2:
@@ -285,6 +286,7 @@ void CGamePlayState::Enter(void)
 				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/RobotTankTurret.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/RobotSoldier.png"));
 				m_pTile->Load("resource/files/test3.xml");
+				m_pPlayer->SetMoney(m_pPlayer->GetMoney()+500);
 			}
 			break;
 		case 3:
@@ -295,6 +297,7 @@ void CGamePlayState::Enter(void)
 				m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/AlienTankTurret.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/AlienSoldier.png"));
 				m_pTile->Load("resource/files/AlienLevel.xml");
+				m_pPlayer->SetMoney(m_pPlayer->GetMoney()+700);
 			}
 			break;
 		case 4:
@@ -307,6 +310,7 @@ void CGamePlayState::Enter(void)
 				m_anEnemyIDs[9]=m_pTM->LoadTexture(_T("resource/graphics/sprites_naziBoss.png"));
 				m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Nazi Rifle.png"));
 				m_pTile->Load("resource/files/NaziLevel.xml");
+				m_pPlayer->SetMoney(m_pPlayer->GetMoney()+800);
 			}
 			break;
 		default:

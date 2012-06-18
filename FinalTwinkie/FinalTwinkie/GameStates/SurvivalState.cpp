@@ -166,7 +166,7 @@ void CSurvivalState::Enter( void )
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 		}
 
-		m_AM->Load("AnimationInfo.xml");
+		//m_AM->Load("AnimationInfo.xml");
 		//m_AM->Save("AnimationInfo.xml");
 
 		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
@@ -338,11 +338,11 @@ void CSurvivalState::Enter( void )
 
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
 	
-//	LoadWave();
+	
 	
 	m_nNumUnits = 0;
-	//LoadWave("48wavesofhell.xml",0);
-	LoadWave("Nate.xml",0);
+	LoadWave("48wavesofhell.xml",0);
+	
 }
 
 void CSurvivalState::Exit( void )
@@ -1712,9 +1712,9 @@ void CSurvivalState::GenerateWave()
 	m_vRECTS.push_back(m_pPlayer->GetRect());
 	m_nWavesRemaining = 100;
 	
-	for(unsigned int i = 0; i < /*m_vWave[m_nCurrWave]->m_nSap*/100; i++)
+	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
 	{
-		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 1, 100.0f, 100.0f, rand()%3);
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, SAPPER, 100.0f, 100.0f, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		msg = nullptr;
 		m_nNumUnits++;
