@@ -293,11 +293,11 @@ void CSurvivalState::Enter( void )
 		pSmoke = nullptr;
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
-		player->SetInvul(true);
-		player->SetInvulTimer(50000);
+		//player->SetInvul(true);
+		//player->SetInvulTimer(50000);
 		//player->SetName(m_dGameData.szName);
-		player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
-		player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
+		//player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
+		//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
 		
 		player->SetGunSel(1);
 
@@ -337,12 +337,9 @@ void CSurvivalState::Enter( void )
 	m_nMouseY = m_pDI->MouseGetPosY();
 
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
-	
-	
-	
+
 	m_nNumUnits = 0;
-	LoadWave("48wavesofhell.xml",0);
-	
+	LoadWave("resource/files/48wavesofhell.xml",0);
 }
 
 void CSurvivalState::Exit( void )
@@ -509,6 +506,7 @@ bool CSurvivalState::Input( void )
 				if(m_nPosition == 0)
 				{
 					m_bPaused = !m_bPaused;
+					m_pDI->ClearInput();
 				}
 				else if(m_nPosition == 1)
 				{
@@ -772,14 +770,9 @@ void CSurvivalState::Render( void )
 		font->Print(m_sExit.c_str(),(CGame::GetInstance()->GetWidth()/2)-30,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
 	}
 
-	CBitmapFont::GetInstance()->Print("Wave ",(CGame::GetInstance()->GetWidth()/2)-125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
 	char buffer[10];
 	_itoa_s(m_nCurrWave,buffer,10);
-	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2-100,3.0f,D3DCOLOR_XRGB(50,132,0));
-	
-	
-	_itoa_s(m_nNumUnits,buffer,10);
-	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+125,CGame::GetInstance()->GetHeight()/2+200,3.0f,D3DCOLOR_XRGB(50,132,0));
+	CBitmapFont::GetInstance()->Print(buffer,(CGame::GetInstance()->GetWidth()/2+50)+140,CGame::GetInstance()->GetHeight()-52,.60f,D3DCOLOR_ARGB(255,255,255,255));
 	
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
@@ -830,8 +823,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 							if(player->GetWeaponAmmoShell()> 0)
 							{
 
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
@@ -886,8 +879,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(45.0f*2);
 								else
@@ -900,7 +893,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 								RECT rSelf;
 								SetRect(&rSelf,int(pSelf->m_nMouseX-C->GetPosX()-32),int(pSelf->m_nMouseY-C->GetPosY()-32),int(pSelf->m_nMouseX-C->GetPosX()+32),int(pSelf->m_nMouseY-C->GetPosY()+32));
 								Bullet->SetTargetRect(rSelf);
-								tVector2D vPos = { (pSelf->m_nMouseX-C->GetPosX()),(pSelf->m_nMouseY-C->GetPosY())};
+								tVector2D vPos = { pSelf->m_nMouseX-C->GetPosX()+16,pSelf->m_nMouseY-C->GetPosY()+16};
 								Bullet->SetTargetPos(vPos);
 								Bullet->SetMissileTimer(0.25f);
 							}
@@ -949,8 +942,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(15.0f*2);
 								else
@@ -1005,8 +998,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
 							if(player->GetDoubleDamage())
 								Bullet->SetDamage(5.0f*2);
 							else
@@ -1052,8 +1045,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX());
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY());
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
 							if(player->GetDoubleDamage())
 								Bullet->SetDamage(2.0f*2);
 							else
@@ -1097,8 +1090,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					Bullet->SetVelX(vel.fX*200);
 					Bullet->SetVelY(vel.fY*200);
 					Bullet->SetWhoFired(true);
-					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX());
-					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY());
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2*abs(dir.fY));
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2*abs(dir.fX));
 					Bullet->SetBulletType(BUL_FLAME);
 					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())
@@ -1698,7 +1691,7 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 
 		m_vWave.push_back(wave);
 		pUnit = pUnit->NextSiblingElement();
-		wave = nullptr;
+		//wave = nullptr;
 	}
 		
 	GenerateWave();
@@ -1722,7 +1715,7 @@ void CSurvivalState::GenerateWave()
 
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 3, float(rand()%500+100), float(rand()%500+100), rand()%3);
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, RIFLE, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
 	msg = nullptr;
 	m_nNumUnits++;
@@ -1730,7 +1723,7 @@ void CSurvivalState::GenerateWave()
 
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nRocket; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, 4, float(rand()%500+100), float(rand()%500+100), rand()%3);
+	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, ROCKET, float(rand()%500+100), float(rand()%500+100), rand()%3);
 	CMessageSystem::GetInstance()->SndMessage(msg);
 	msg = nullptr;
 	m_nNumUnits++;

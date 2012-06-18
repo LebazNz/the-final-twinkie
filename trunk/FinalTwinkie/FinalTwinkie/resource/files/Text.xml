@@ -156,7 +156,7 @@
 			<Smoke>Smoke</Smoke>
 			<EMP>EMP</EMP>
 			<Nuke>Nuke</Nuke>
-			<Reinforce>Reinforcements</Reinforce>
+			<Reinforce>Support</Reinforce>
 			<AirStrike>Air Strike</AirStrike>
 			<Back>Back</Back>
 			<Continue>Continue</Continue>
@@ -482,7 +482,7 @@
 			<Smoke>Rauchen</Smoke>
 			<EMP>Emp</EMP>
 			<Nuke>Atombombe</Nuke>
-			<Reinforce>Verstarkung</Reinforce>
+			<Reinforce>Stutzen</Reinforce>
 			<AirStrike>Luft Schlagen</AirStrike>
 			<Back>Zuruck</Back>
 			<Continue>Fortsetzen</Continue>

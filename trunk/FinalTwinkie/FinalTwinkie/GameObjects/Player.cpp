@@ -697,7 +697,7 @@ void CPlayer::Update(float fDt)
 	tVector2D Look={0,-1};
 	Look=Vector2DRotate(Look, m_fRotation);
 
-	if(Look.fY>=-1&&Look.fY<=0&&Look.fX>=0&&Look.fX<=1)
+	/*if(Look.fY>=-1&&Look.fY<=0&&Look.fX>=0&&Look.fX<=1)
 	{
 		m_pTracksLeft->UpdateEmitterPos((GetPosX()+((-45)*Look.fX)+(15*(Look.fY)))-C->GetPosX(), (GetPosY()+((-64)*Look.fY)+(10*(-Look.fX)))-C->GetPosY());
 		m_pTracksLeft->UpdateRotation(m_fRotation);
@@ -716,7 +716,7 @@ void CPlayer::Update(float fDt)
 		m_pTracksRight->UpdateEmitterPos((GetPosX()+((-70)*Look.fX)+(5*(-Look.fY)))-C->GetPosX(), (GetPosY()+((-45)*Look.fY)+(5*(Look.fX)))-C->GetPosY());
 		m_pTracksRight->UpdateRotation(m_fRotation);
 		m_pTracksRight->ActivateEmitter();
-	}
+	}*/
 	if(m_bSlowDown == true)
 	{
 		if(m_fSlowTimer > 0.0f)
