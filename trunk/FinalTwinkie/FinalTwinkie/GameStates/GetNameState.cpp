@@ -552,7 +552,7 @@ bool CGetNameState::Input(void)
 			{
 				m_bHold = true;
 				m_pAudio->SFXPlaySound(m_nClick);
-				m_bLowCase = !m_bLowCase;
+				m_bLowCase = false;
 			}
 		}
 		if(m_pDI->KeyReleased(DIK_LSHIFT) || m_pDI->KeyReleased(DIK_RSHIFT))
@@ -561,7 +561,7 @@ bool CGetNameState::Input(void)
 			{
 				m_bHold = false;
 				m_pAudio->SFXPlaySound(m_nClick);
-				m_bLowCase = !m_bLowCase;
+				m_bLowCase = true;
 			}
 		}
 		if(m_pDI->KeyPressed(DIK_BACK) || (m_nMouseX >= 365 && m_nMouseX <= 528 && m_nMouseY >= 525 && m_nMouseY <= 565 && m_pDI->MouseButtonPressed(0)))

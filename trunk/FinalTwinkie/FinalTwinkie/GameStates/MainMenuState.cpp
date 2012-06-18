@@ -521,11 +521,28 @@ void CMainMenuState::Render(void)
 	
 	
 	m_pD3D->GetSprite()->Flush();
-
-	font->Print(m_sPlay.c_str(),125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sOptions.c_str(),110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sCredits.c_str(),110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
-	font->Print(m_sExit.c_str(),125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	
+	if(COptionsState::GetInstance()->GetLang() == 1 || COptionsState::GetInstance()->GetLang() == 0)
+	{
+		font->Print(m_sPlay.c_str(),125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sCredits.c_str(),110,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),125,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	}
+	else if(COptionsState::GetInstance()->GetLang() == 3)
+	{
+		font->Print(m_sPlay.c_str(),125,CGame::GetInstance()->GetHeight()/2,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),110,CGame::GetInstance()->GetHeight()/2+50,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sCredits.c_str(),85,CGame::GetInstance()->GetHeight()/2+100,1.0f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),110,CGame::GetInstance()->GetHeight()/2+150,1.0f,	D3DCOLOR_XRGB(177,132,0));
+	}
+	else
+	{
+		font->Print(m_sPlay.c_str(),90,CGame::GetInstance()->GetHeight()/2,0.75,		D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sOptions.c_str(),85,CGame::GetInstance()->GetHeight()/2+50,0.75f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sCredits.c_str(),85,CGame::GetInstance()->GetHeight()/2+100,0.75f,	D3DCOLOR_XRGB(177,132,0));
+		font->Print(m_sExit.c_str(),90,CGame::GetInstance()->GetHeight()/2+150,0.75f,	D3DCOLOR_XRGB(177,132,0));
+	}
 
 	/*char buffer[10];
 	_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
@@ -642,13 +659,33 @@ void CMainMenuState::PlayHighlight( DWORD dwPlayColor )
 			fScale3 = D3DCOLOR_XRGB(255,255,255);
 		}
 
-
-		m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
-		CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
-		m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
-		CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
-		m_pTM->Draw(m_nButtonImageID,600,295,0.75f,0.75f,nullptr,0,0,0,fScale3);
-		CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		if(COptionsState::GetInstance()->GetLang() == 1 || COptionsState::GetInstance()->GetLang() == 0)
+		{
+			m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
+			CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
+			CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,600,295,0.75f,0.75f,nullptr,0,0,0,fScale3);
+			CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,1.0f,		D3DCOLOR_XRGB(177,132,0));
+		}
+		else if(COptionsState::GetInstance()->GetLang() == 2)
+		{
+			m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
+			CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
+			CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,600,295,0.75f,0.75f,nullptr,0,0,0,fScale3);
+			CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+		}
+		else
+		{
+			m_pTM->Draw(m_nButtonImageID,250,295,0.75f,0.75f,nullptr,0,0,0,fScale1);
+			CBitmapFont::GetInstance()->Print(m_sCampaign.c_str(),265,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,425,295,0.75f,0.75f,nullptr,0,0,0,fScale2);
+			CBitmapFont::GetInstance()->Print(m_sSurvival.c_str(),440,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+			m_pTM->Draw(m_nButtonImageID,600,295,0.75f,0.75f,nullptr,0,0,0,fScale3);
+			CBitmapFont::GetInstance()->Print(m_sTutor.c_str(),615,300,0.85f,		D3DCOLOR_XRGB(177,132,0));
+		}
 		
 	}
 }

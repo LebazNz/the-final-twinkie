@@ -1,24 +1,5 @@
 #include "../Headers/Game.h"
 
-#include "../GameStates/MainMenuState.h"
-#include "../GameStates/GamePlayState.h"
-#include "../GameStates/CreditsState.h"
-#include "../GameStates/OptionsState.h"
-#include "../GameStates/LoadGameState.h"
-#include "../ObjectManager and Factory/ObjectFactory.h"
-#include "../Event and Messages/MessageSystem.h"
-#include "../Event and Messages/EventSystem.h"
-#include "../Headers/BitmapFont.h"
-#include "../GameStates/StartState.h"
-#include "../GameStates/GetNameState.h"
-#include "../GameStates/LoadOutState.h"
-#include "../GameStates/ShopState.h"
-#include "../GameStates/StatState.h"
-#include "../GameStates/SurvivalHS.h"
-#include "../GameStates/SurvivalState.h"
-#include "../GameStates/TutorState.h"
-#include "../GameObjects/Player.h"
-
 CGame* CGame::m_pSelf = nullptr;
 
 CGame* CGame::GetInstance(void)
@@ -82,6 +63,24 @@ void CGame::Initialize(HWND hWnd, HINSTANCE hInstance, int nScreenWidth, int nSc
 	m_pTM = CSGD_TextureManager::GetInstance();
 	m_pAudio = CSGD_XAudio2::GetInstance();
 
+	m_pMenu				=	CMainMenuState::GetInstance();
+	m_pGame				=	CGamePlayState::GetInstance();
+	m_Credit			=	CCreditsState::GetInstance();
+	m_Options			=	COptionsState::GetInstance();	
+	m_LoadGame			=	CLoadGameState::GetInstance();
+	m_Message			=	CMessageSystem::GetInstance();	
+	m_Event				=	CEventSystem::GetInstance();	
+	m_pFont				=	CBitmapFont::GetInstance();		
+	m_pStart			=	CStartState::GetInstance();		
+	m_pGetName			=	CGetNameState::GetInstance();		
+	m_pLoadOut			=	CLoadOutState::GetInstance();			
+	m_pShop				=	CShopState::GetInstance();
+	m_pStat				=	StatState::GetInstance();		
+	m_pSurvivalHS		=	CSurvivalHS::GetInstance();	
+	m_pSurvival			=	CSurvivalState::GetInstance();	
+	m_pTutor			=	CTutorState::GetInstance();	
+	m_pPlayer			=	CPlayer::GetInstance();		
+
 	float mainVol, sfxVol;
 	if(CMainMenuState::GetInstance()->LoadOptions("resource/files/options.txt"))
 	{
@@ -133,23 +132,23 @@ void CGame::Shutdown(void)
 		m_pAudio = nullptr;
 	}
 
-	CMainMenuState::GetInstance()->DeleteInstance();
-	CGamePlayState::GetInstance()->DeleteInstance();
-	CCreditsState::GetInstance()->DeleteInstance();
-	COptionsState::GetInstance()->DeleteInstance();
-	CLoadGameState::GetInstance()->DeleteInstance();
-	CMessageSystem::GetInstance()->DeleteInstance();
-	CEventSystem::GetInstance()->DeleteInstance();
-	CBitmapFont::GetInstance()->DeleteInstance();
-	CStartState::GetInstance()->DeleteInstance();
-	CGetNameState::GetInstance()->DeleteInstance();
-	CLoadOutState::GetInstance()->DeleteInstance();
-	CShopState::GetInstance()->DeleteInstance();
-	StatState::GetInstance()->DeleteInstance();
-	CSurvivalHS::GetInstance()->DeleteInstance();
-	CSurvivalState::GetInstance()->DeleteInstance();
-	CTutorState::GetInstance()->DeleteInstance();
-	CPlayer::GetInstance()->DeleteInstance();
+	m_pMenu			->DeleteInstance();
+	m_pGame			->DeleteInstance();
+	m_Credit		->DeleteInstance();
+	m_Options		->DeleteInstance();
+	m_LoadGame		->DeleteInstance();
+	m_Message		->DeleteInstance();
+	m_Event			->DeleteInstance();
+	m_pFont			->DeleteInstance();
+	m_pStart		->DeleteInstance();
+	m_pGetName		->DeleteInstance();
+	m_pLoadOut		->DeleteInstance();
+	m_pShop			->DeleteInstance();
+	m_pStat			->DeleteInstance();
+	m_pSurvivalHS	->DeleteInstance();
+	m_pSurvival		->DeleteInstance();
+	m_pTutor		->DeleteInstance();
+	m_pPlayer		->DeleteInstance();
 }
 
 bool CGame::Main(void)

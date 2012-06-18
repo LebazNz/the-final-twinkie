@@ -26,19 +26,19 @@ void CReinforcements::ActivateSpecial(void)
 		Camera* c = Camera::GetInstance();
 		CPlayer* pPlayer = CPlayer::GetInstance();
 		
-		CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()+100-c->GetPosX(),pPlayer->GetPosX()+100-c->GetPosY());
+		CCreateEnemyMessage* pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()+100-c->GetPosX(),pPlayer->GetPosY()+100-c->GetPosY());
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
-		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-100-c->GetPosX(),pPlayer->GetPosX()+100-c->GetPosY());
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-100-c->GetPosX(),pPlayer->GetPosY()+100-c->GetPosY());
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
-		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()+50-c->GetPosX(),pPlayer->GetPosX()+100-c->GetPosY());
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()+50-c->GetPosX(),pPlayer->GetPosY()+100-c->GetPosY());
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
-		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-50-c->GetPosX(),pPlayer->GetPosX()+100-c->GetPosY());
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-50-c->GetPosX(),pPlayer->GetPosY()+100-c->GetPosY());
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
-		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-c->GetPosX(),pPlayer->GetPosX()+100-c->GetPosY());
+		pMsg = new CCreateEnemyMessage(MSG_CREATEENEMY,HELP,pPlayer->GetPosX()-c->GetPosX(),pPlayer->GetPosY()+100-c->GetPosY());
 		CMessageSystem::GetInstance()->SndMessage(pMsg);
 		pMsg = nullptr;
 

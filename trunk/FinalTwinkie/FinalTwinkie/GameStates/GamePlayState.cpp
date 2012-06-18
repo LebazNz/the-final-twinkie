@@ -401,14 +401,14 @@ void CGamePlayState::Enter(void)
 		//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
 		player->SetGunSel(1);
 
-		//buffs
-		//player->SetDoubleDamage(true);
-		//player->SetDamageTimer(15);
-		//player->SetNoReloadTimer(150);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(100);
-		//player->SetInfAmmo(true);
-		//player->SetInfoAmmoTimer(150);
+		//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
+		player->SetDoubleDamage(false);
+		player->SetDamageTimer(0.0f);
+		player->SetNoReloadTimer(0.0f);
+		player->SetInvul(false);
+		player->SetInvulTimer(0.0f);
+		player->SetInfAmmo(false);
+		player->SetInfoAmmoTimer(0.0f);
 
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
@@ -1711,8 +1711,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
 							enemy->SetMaxHealth(50);
-							enemy->SetVelX(30);
-							enemy->SetVelY(30);
+							enemy->SetVelX(50);
+							enemy->SetVelY(50);
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(0.1f);
@@ -1737,8 +1737,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							enemy->SetHelpTarget(pSelf->m_pOM->GetTarget(enemy));
 							enemy->SetHealth(50);
 							enemy->SetMaxHealth(50);
-							enemy->SetVelX(30);
-							enemy->SetVelY(30);
+							enemy->SetVelX(50);
+							enemy->SetVelY(50);
 							enemy->SetMinDistance(200);
 							enemy->SetMaxDistance(600);
 							enemy->SetShotTimer(3.0f);
@@ -1766,7 +1766,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
 			int nRandNum = rand()%12;
-			if(nRandNum <= 7)
+			if(nRandNum <= 9)
 			{
 				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
 				CMessageSystem::GetInstance()->SndMessage(pMsg);
@@ -1875,6 +1875,20 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					}
 					break;
 				case 7:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
+						pPickup->SetGiven(150);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 8:
+					{
+						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
+						pPickup->SetGiven(150);
+						pPickup->SetPickUpType(pMessage->GetPickUpType());
+					}
+					break;
+				case 9:
 					{
 						pPickup->SetImageID(pSelf->m_nPickupMoneyID);
 						pPickup->SetGiven(150);

@@ -335,6 +335,15 @@ void CTutorState::Enter(void)
 		player->SetArtilleryAccess(true);
 		player->SetGunSel(1);
 
+		//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
+		player->SetDoubleDamage(false);
+		player->SetDamageTimer(0.0f);
+		player->SetNoReloadTimer(0.0f);
+		player->SetInvul(false);
+		player->SetInvulTimer(0.0f);
+		player->SetInfAmmo(false);
+		player->SetInfoAmmoTimer(0.0f);
+
 		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
 		PlayerTurret->SetImageID(m_nPlayerTurretID);
 		player->SetTurret(PlayerTurret);
@@ -616,7 +625,9 @@ bool CTutorState::Input(void)
 					}
 					else if(m_nPosition == 1)
 					{
+						m_bPaused = true;
 						CGame::GetInstance()->ChangeState(COptionsState::GetInstance());
+						return true;
 					}
 					else if(m_nPosition == 2)
 					{
