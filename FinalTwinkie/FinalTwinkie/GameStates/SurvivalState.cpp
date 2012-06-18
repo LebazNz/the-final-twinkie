@@ -293,11 +293,15 @@ void CSurvivalState::Enter( void )
 		pSmoke = nullptr;
 		player->SetOldPos(v2Pos);
 		player->SetSecondType(MACHINEGUN);
-		//player->SetInvul(true);
-		//player->SetInvulTimer(50000);
-		//player->SetName(m_dGameData.szName);
-		//player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
-		//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
+		
+		//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
+		player->SetDoubleDamage(false);
+		player->SetDamageTimer(0.0f);
+		player->SetNoReloadTimer(0.0f);
+		player->SetInvul(false);
+		player->SetInvulTimer(0.0f);
+		player->SetInfAmmo(false);
+		player->SetInfoAmmoTimer(0.0f);
 		
 		player->SetGunSel(1);
 

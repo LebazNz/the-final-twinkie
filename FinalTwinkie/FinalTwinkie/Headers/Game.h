@@ -4,6 +4,24 @@
 #include <Windows.h>
 
 #include "../GameStates/IGameState.h"
+#include "../GameStates/MainMenuState.h"
+#include "../GameStates/GamePlayState.h"
+#include "../GameStates/CreditsState.h"
+#include "../GameStates/OptionsState.h"
+#include "../GameStates/LoadGameState.h"
+#include "../ObjectManager and Factory/ObjectFactory.h"
+#include "../Event and Messages/MessageSystem.h"
+#include "../Event and Messages/EventSystem.h"
+#include "../Headers/BitmapFont.h"
+#include "../GameStates/StartState.h"
+#include "../GameStates/GetNameState.h"
+#include "../GameStates/LoadOutState.h"
+#include "../GameStates/ShopState.h"
+#include "../GameStates/StatState.h"
+#include "../GameStates/SurvivalHS.h"
+#include "../GameStates/SurvivalState.h"
+#include "../GameStates/TutorState.h"
+#include "../GameObjects/Player.h"
 
 #define ARCADE 0
 
@@ -51,6 +69,24 @@ private:
 	CSGD_DirectInput*		 m_pDI;
 	CSGD_TextureManager*	 m_pTM;
 	CSGD_XAudio2*			 m_pAudio;
+
+	CMainMenuState*		m_pMenu;
+	CGamePlayState*		m_pGame;
+	CCreditsState*		m_Credit;
+	COptionsState*		m_Options;
+	CLoadGameState*		m_LoadGame;
+	CMessageSystem*		m_Message;
+	CEventSystem*		m_Event;
+	CBitmapFont*		m_pFont;
+	CStartState*		m_pStart;
+	CGetNameState*		m_pGetName;
+	CLoadOutState*		m_pLoadOut;
+	CShopState*			m_pShop;
+	StatState*			m_pStat;
+	CSurvivalHS*		m_pSurvivalHS;
+	CSurvivalState*		m_pSurvival;
+	CTutorState*		m_pTutor;
+	CPlayer*			m_pPlayer;
 
 	// self
 	static CGame*			 m_pSelf;

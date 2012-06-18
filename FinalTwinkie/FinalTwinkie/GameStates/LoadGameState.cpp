@@ -2205,7 +2205,7 @@ void CLoadGameState::Render(void)
 		if(strlen(vSavedData[0].szName) <= 7)
 			font->Print(vSavedData[0].szName,150,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		else
-			font->Print(vSavedData[0].szName,150,360,0.55f,D3DCOLOR_XRGB(255,0,0));
+			font->Print(vSavedData[0].szName,140,360,0.5f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[0].nLevel,buffer,10);
 		font->Print(buffer,150,400,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -2241,7 +2241,7 @@ void CLoadGameState::Render(void)
 		if(strlen(vSavedData[1].szName) <= 7)
 			font->Print(vSavedData[1].szName,402,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		else
-			font->Print(vSavedData[1].szName,402,360,0.55f,D3DCOLOR_XRGB(255,0,0));
+			font->Print(vSavedData[1].szName,392,360,0.5f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[1].nLevel,buffer,10);
 		font->Print(buffer,402,400,0.75f,D3DCOLOR_XRGB(255,0,0));
@@ -2276,7 +2276,7 @@ void CLoadGameState::Render(void)
 		if(strlen(vSavedData[2].szName) <= 7)
 			font->Print(vSavedData[2].szName,655,360,0.75f,D3DCOLOR_XRGB(255,0,0));
 		else
-			font->Print(vSavedData[2].szName,655,360,0.55f,D3DCOLOR_XRGB(255,0,0));
+			font->Print(vSavedData[2].szName,645,360,0.5f,D3DCOLOR_XRGB(255,0,0));
 		char buffer[10];
 		_itoa_s(vSavedData[2].nLevel,buffer,10);
 		font->Print(buffer,655,400,0.75f,D3DCOLOR_XRGB(255,0,0));

@@ -200,14 +200,23 @@ bool CBullet::CheckCollision(IEntity* pBase)
 		
 			case OBJ_BUILDING:
 			{
+				CBuilding* pBuilding = dynamic_cast<CBuilding*>(pBase);
 				if(GetWhoFired()==true)
 				{
-					CBuilding* pBuilding = dynamic_cast<CBuilding*>(pBase);
 					pBuilding->TakeDamage((int)this->m_fDamage);
+					if(pBuilding->GetHealth() > 0)
+					{
+						CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+						CMessageSystem::GetInstance()->SndMessage(pMsg);
+						pMsg = nullptr;
+					}
 				}
-				CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+				if(pBuilding->GetHealth() > 0)
+				{
+					CDestroyBulletMessage* pMsg = new CDestroyBulletMessage(this);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
 			}
 			break;
 			case OBJ_ENEMY:

@@ -329,7 +329,7 @@ CEntity* CObjectManager::GetTarget(CEntity* pEntity)
 	tVector2D vPos = { pEntity->GetPosX()-C->GetPosX(), pEntity->GetPosY()-C->GetPosY() };
 	tVector2D vOther = {};
 	tVector2D toTarget = {};
-	float shortest = 100000.0f;
+	float shortest = 500.0f;
 	float length = 0.0f;
 
 	vector< IEntity* >::iterator iter;
@@ -380,5 +380,5 @@ CEntity* CObjectManager::GetTarget(CEntity* pEntity)
 	if(pReturn != nullptr)
 		return pReturn;
 	else
-		return nullptr;
+		return CPlayer::GetInstance();
 }

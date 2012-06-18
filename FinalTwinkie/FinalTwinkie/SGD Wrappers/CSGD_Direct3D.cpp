@@ -356,7 +356,7 @@ void CSGD_Direct3D::ChangeDisplayParam(int nWidth, int nHeight, bool bWindowed)
 	HWND top;
 	if (bWindowed)
 	{
-		dwWindowStyleFlags |= WS_OVERLAPPEDWINDOW;
+		dwWindowStyleFlags |= WS_POPUP;
 		ShowCursor(TRUE); // show the mouse cursor
 		top = HWND_NOTOPMOST;
 	}
