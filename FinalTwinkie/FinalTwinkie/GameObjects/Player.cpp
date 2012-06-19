@@ -240,7 +240,7 @@ void CPlayer::Update(float fDt)
 				}
 			}
 			this;
-			if(m_pDI->KeyPressed(DIK_1))
+			if(m_pDI->KeyPressed(DIK_1) || m_pDI->JoystickButtonPressed(2))
 			{
 				if(m_pSpec1!=nullptr)
 				{
@@ -248,7 +248,7 @@ void CPlayer::Update(float fDt)
 					m_pSelectedSpecAmmo=0;
 				}
 			}
-			if(m_pDI->KeyPressed(DIK_2))
+			if(m_pDI->KeyPressed(DIK_2) || m_pDI->JoystickButtonPressed(1))
 			{
 				if(m_pSpec2!=nullptr)
 				{
@@ -256,7 +256,7 @@ void CPlayer::Update(float fDt)
 					m_pSelectedSpecAmmo=1;
 				}
 			}
-			if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(4)) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
+			if((m_pDI->KeyPressed(DIK_SPACE) || m_pDI->JoystickButtonPressed(0)) && m_anSpecialammo[m_pSelectedSpecAmmo]>0)
 			{
 				if(m_pSelectedSpec!=nullptr)
 				{
@@ -267,7 +267,7 @@ void CPlayer::Update(float fDt)
 					m_anSpecialammo[m_pSelectedSpecAmmo]--;
 				}
 			}
-			if(m_pDI->MouseWheelMovement()>0)
+			if(m_pDI->MouseWheelMovement()>0 || m_pDI->JoystickButtonPressed(4))
 			{
 				if(m_nGunSel==1&&m_bRocketAccess)
 				{
@@ -296,7 +296,7 @@ void CPlayer::Update(float fDt)
 				}
 				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 			}
-			else if(m_pDI->MouseWheelMovement()<0)
+			else if(m_pDI->MouseWheelMovement()<0 || m_pDI->JoystickButtonPressed(5))
 			{
 				if(m_nGunSel==1&&m_bArtilleryAccess)
 				{
@@ -506,7 +506,7 @@ void CPlayer::Update(float fDt)
 					m_fOverheatTimer+=fDt;
 				}
 			}
-			else if(m_pDI->MouseButtonReleased(1)|| m_pDI->JoystickGetRTriggerAmount() == 0)
+			else if(m_pDI->MouseButtonReleased(1))
 			{
 				if(m_nSecondType==FLAME)
 				{
