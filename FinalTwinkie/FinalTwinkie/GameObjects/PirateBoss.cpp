@@ -268,15 +268,15 @@ void CPirateBoss::Rebound(float time)
 			SetPosX((float)m_nStartX);
 			tFour->SetPosX((GetPosX())+440);
 			tFour->SetPosY((GetPosY())+101);
-			tFour->SetDistance(400);
+			tFour->SetDistance(250);
 
 			tFive->SetPosX((GetPosX())+259);
 			tFive->SetPosY((GetPosY())+108);
-			tFive->SetDistance(350);
+			tFive->SetDistance(275);
 
 			tSix->SetPosX((GetPosX())+359);
 			tSix->SetPosY((GetPosY())+108);
-			tSix->SetDistance(400);
+			tSix->SetDistance(250);
 			
 			m_bChanged = true;
 
@@ -328,9 +328,9 @@ void CPirateBoss::MakeTurrets(void)
 		tOne->SetDamage(10);
 		tOne->SetRotationPositon(32,98);
 		tOne->SetUpVec(0,-1);
-		tOne->SetDistance(400);
+		tOne->SetDistance(290);
 		tOne->SetHealth(200);
-		tOne->SetMaxHealth(200);
+		tOne->SetMaxHealth(250);
 		tOne->SetFireRate(2.0f);
 		tOne->SetTarget(CPlayer::GetInstance());
 		tOne->SetRotationRate(1.0f);
@@ -348,7 +348,7 @@ void CPirateBoss::MakeTurrets(void)
 		tTwo->SetDamage(20);
 		tTwo->SetRotationPositon(32,98);
 		tTwo->SetUpVec(0,-1);
-		tTwo->SetDistance(350);
+		tTwo->SetDistance(275);
 		tTwo->SetHealth(200);
 		tTwo->SetMaxHealth(200);
 		tTwo->SetFireRate(3.0f);
@@ -368,7 +368,7 @@ void CPirateBoss::MakeTurrets(void)
 		tThree->SetDamage(10);
 		tThree->SetRotationPositon(32,98);
 		tThree->SetUpVec(0,-1);
-		tThree->SetDistance(400);
+		tThree->SetDistance(250);
 		tThree->SetHealth(200);
 		tThree->SetMaxHealth(200);
 		tThree->SetFireRate(1.5f);
@@ -388,7 +388,7 @@ void CPirateBoss::MakeTurrets(void)
 		tFour->SetDamage(10);
 		tFour->SetRotationPositon(32,98);
 		tFour->SetUpVec(0,-1);
-		tFour->SetDistance(300);
+		tFour->SetDistance(150);
 		tFour->SetHealth(200);
 		tFour->SetMaxHealth(200);
 		tFour->SetFireRate(1.5f);
