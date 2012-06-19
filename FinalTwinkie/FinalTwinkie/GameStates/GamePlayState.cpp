@@ -1765,12 +1765,15 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
 
-			int nRandNum = rand()%12;
-			if(nRandNum <= 9)
+			if(pEnemy->GetHealth() <= 0)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+				int nRandNum = rand()%12;
+				if(nRandNum <= 9)
+				{
+					CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
 			}
 			if(pEnemy->GetType()!=OBJ_HELP)
 			{
