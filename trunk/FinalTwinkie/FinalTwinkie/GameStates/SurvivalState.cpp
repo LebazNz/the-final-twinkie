@@ -1167,6 +1167,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						sapper->SetVelY(45);
 						sapper->SetHealth(35);
 						sapper->SetMaxHealth(35);
+						sapper->SetDamage(10.0f);
 						sapper->SetImageID(pSelf->m_anEnemyIDs[1]);
 					}
 					else if(pMessage->GetKind() == 1)
@@ -1175,6 +1176,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						sapper->SetVelY(55);
 						sapper->SetHealth(60);
 						sapper->SetMaxHealth(60);
+						sapper->SetDamage(20.0f);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSapper.png"));
 						sapper->SetImageID(nID);
 
@@ -1185,6 +1187,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						sapper->SetVelY(65);
 						sapper->SetHealth(100);
 						sapper->SetMaxHealth(100);
+						sapper->SetDamage(30.0f);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSapper.png"),D3DCOLOR_ARGB(255,255,255,255));
 						sapper->SetImageID(nID);
 					}
@@ -1341,6 +1344,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetHeight(32);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
+					enemy->SetDamage(1.0f);
 					enemy->SetMaxDistance(10000);
 					if(pMessage->GetKind() == 0)
 					{
@@ -1399,6 +1403,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(45);
 						enemy->SetHealth(50);
 						enemy->SetMaxHealth(50);
+						enemy->SetDamage(35.0f);
 						enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					}
 					else if(pMessage->GetKind() == 1)
@@ -1407,6 +1412,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(55);
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
+						enemy->SetDamage(35.0f);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
 						enemy->SetImageID(nID);
 
@@ -1417,6 +1423,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(65);
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
+						enemy->SetDamage(35.0f);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
 						enemy->SetImageID(nID);
 					}
@@ -1534,7 +1541,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 			pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
 			pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
 
-			pPickup->SetAliveTime(150.0f);
+			pPickup->SetAliveTime(25.0f);
 
 			pSelf->m_pOM->AddObject(pPickup);
 
