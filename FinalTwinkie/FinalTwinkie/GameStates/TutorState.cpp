@@ -1074,8 +1074,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoShell()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+90*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+90*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
@@ -1089,8 +1089,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2f*abs(Up.fX));
 							Bullet->SetDamage(35.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
@@ -1129,8 +1129,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(45.0f*2);
 								else
@@ -1150,8 +1150,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2f*abs(Up.fX));
 							Bullet->SetDamage(45.0f);
 						}
 						Bullet->SetVelX(300);
@@ -1192,8 +1192,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(15.0f*2);
 								else
@@ -1212,8 +1212,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2f*abs(Up.fX));
 							Bullet->SetDamage(15.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
@@ -1248,8 +1248,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 									Bullet->SetDamage(5.0f*2);
 								else
@@ -1257,8 +1257,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2f*abs(Up.fX));
 							Bullet->SetDamage(5.0f);
 						}
 						Bullet->SetVelX(norVec.fX*400);
@@ -1300,8 +1300,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 									Bullet->SetDamage(2.0f*2);
 								else
@@ -1309,8 +1309,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 						}
 						else
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY+11.2f*abs(Up.fX));
 							Bullet->SetDamage(2.0f);
 						}
 						Bullet->SetVelX(norVec.fX*500);
@@ -1345,8 +1345,8 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					Bullet->SetVelX(vel.fX*200);
 					Bullet->SetVelY(vel.fY*200);
 					Bullet->SetWhoFired(true);
-					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2*abs(dir.fY));
-					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2*abs(dir.fX));
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2f*abs(dir.fY));
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2f*abs(dir.fX));
 					Bullet->SetBulletType(BUL_FLAME);
 					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())

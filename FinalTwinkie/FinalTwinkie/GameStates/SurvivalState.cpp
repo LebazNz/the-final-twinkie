@@ -446,24 +446,24 @@ void CSurvivalState::Exit( void )
 			m_anBulletImageIDs[i] = -1;
 		}
 
-		if(m_pMS != nullptr)
-		{
-			m_pMS->ShutDownMessageSystem();
-			m_pMS	= nullptr;
-		}
-
-		if(m_pOM != nullptr)
-		{
-			m_pOM->RemoveAllObjects();
-			CObjectManager::DeleteInstance();
-			m_pOM	= nullptr;
-		}
-
 		if(m_pOF != nullptr)
 		{
 			m_pOF->ShutdownObjectFactory();
 			m_pOF	= nullptr;
 		}
+
+		if(m_pOM != nullptr)
+		{
+			m_pOM->RemoveAllObjects();
+			m_pOM	= nullptr;
+		}	
+
+		if(m_pMS != nullptr)
+		{
+			m_pMS->ClearMessages();
+			m_pMS->ShutDownMessageSystem();
+			m_pMS	= nullptr;
+		}			
 
 		if(m_pES != nullptr)
 		{
@@ -827,8 +827,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 							if(player->GetWeaponAmmoShell()> 0)
 							{
 
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(35.0f*2);
 								else
@@ -883,8 +883,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(45.0f*2);
 								else
@@ -946,8 +946,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						{
 							if(player->GetWeaponAmmoMissile()> 0)
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage(15.0f*2);
 								else
@@ -1002,8 +1002,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 								Bullet->SetDamage(5.0f*2);
 							else
@@ -1049,8 +1049,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 								Bullet->SetDamage(2.0f*2);
 							else
@@ -1094,8 +1094,8 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					Bullet->SetVelX(vel.fX*200);
 					Bullet->SetVelY(vel.fY*200);
 					Bullet->SetWhoFired(true);
-					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2*abs(dir.fY));
-					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2*abs(dir.fX));
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2f*abs(dir.fY));
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2f*abs(dir.fX));
 					Bullet->SetBulletType(BUL_FLAME);
 					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())
@@ -1344,7 +1344,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetHeight(32);
 					enemy->SetWidth(32);
 					enemy->SetPlayer(player);
-					enemy->SetDamage(1.0f);
+					enemy->SetDamage(1);
 					enemy->SetMaxDistance(10000);
 					if(pMessage->GetKind() == 0)
 					{
@@ -1403,7 +1403,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(45);
 						enemy->SetHealth(50);
 						enemy->SetMaxHealth(50);
-						enemy->SetDamage(35.0f);
+						enemy->SetDamage(35);
 						enemy->SetImageID(pSelf->m_anEnemyIDs[4]);
 					}
 					else if(pMessage->GetKind() == 1)
@@ -1412,7 +1412,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(55);
 						enemy->SetHealth(75);
 						enemy->SetMaxHealth(75);
-						enemy->SetDamage(35.0f);
+						enemy->SetDamage(35);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/AlienSoldier.png"),0);
 						enemy->SetImageID(nID);
 
@@ -1423,7 +1423,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 						enemy->SetVelY(65);
 						enemy->SetHealth(115);
 						enemy->SetMaxHealth(115);
-						enemy->SetDamage(35.0f);
+						enemy->SetDamage(35);
 						int nID = pSelf->m_pTM->LoadTexture( _T( "resource/graphics/RobotSoldier.png"),0);
 						enemy->SetImageID(nID);
 					}
@@ -1702,7 +1702,8 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 
 		m_vWave.push_back(wave);
 		pUnit = pUnit->NextSiblingElement();
-		//wave = nullptr;
+		//delete wave;
+		wave = nullptr;
 	}
 		
 	GenerateWave();
@@ -1716,7 +1717,7 @@ void CSurvivalState::GenerateWave()
 	m_vRECTS.push_back(m_pPlayer->GetRect());
 	m_nWavesRemaining = 100;
 	
-	for(unsigned int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
+	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
 	{
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, SAPPER, 100.0f, 100.0f, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);

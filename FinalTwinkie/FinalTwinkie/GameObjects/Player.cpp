@@ -326,6 +326,7 @@ void CPlayer::Update(float fDt)
 				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 			}
 		}
+		}
 		else
 		{
 			if(m_pDI->JoystickGetLStickYAmount() > 0)
@@ -607,7 +608,7 @@ void CPlayer::Update(float fDt)
 				CGUI::GetInstance()->SetGunSelected(m_nGunSel);
 			}
 		}
-	}
+	
 
 	Camera* C=Camera::GetInstance();
 	m_pTurret->SetPosX(GetPosX());

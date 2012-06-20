@@ -115,6 +115,10 @@ void CLoadOutState::Enter( void )
 	m_nMissileMaxCount		= m_nMissileCount;
 	m_nArtilleryMaxCount	= m_nArtilleryCount;
 
+	m_nShellCount		= 0;
+	m_nMissileCount		= 0;
+	m_nArtilleryCount	= 0;
+
 	m_pSpecialOne = m_pPlayer->GetSpecial1();
 	m_pSpecialTwo = m_pPlayer->GetSpecial2();
 
@@ -373,8 +377,11 @@ bool CLoadOutState::Input( void )
 		&& m_nMouseY >= 225 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nShellCount > 0)
-			m_nShellCount--;
+		if(m_nShellCount > 0 && m_nTotalAmmo < int(40*m_pPlayer->GetAmmoMod()))
+		{
+			m_nShellCount-=1;
+			m_nTotalAmmo+=1;
+		}
 		else
 			m_nShellCount = 0;
 	}
@@ -383,18 +390,24 @@ bool CLoadOutState::Input( void )
 		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nShellCount < m_nShellMaxCount)
-			m_nShellCount++;
+		if(m_nTotalAmmo > 0)
+		{
+			m_nShellCount+=1;
+			m_nTotalAmmo-=1;
+		}
 		else
-			m_nShellCount = m_nShellMaxCount;
+			m_nTotalAmmo = 0;
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 267 && m_nMouseX <= 301
 		&& m_nMouseY >= 225 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nMissileCount > 0)
-			m_nMissileCount--;
+		if(m_nMissileCount > 0&& m_nTotalAmmo < int(40*m_pPlayer->GetAmmoMod()))
+		{
+			m_nMissileCount-=1;
+			m_nTotalAmmo+=1;
+		}
 		else
 			m_nMissileCount = 0;
 	}
@@ -403,18 +416,24 @@ bool CLoadOutState::Input( void )
 		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nMissileCount < m_nMissileMaxCount)
-			m_nMissileCount++;
+		if(m_nTotalAmmo > 0)
+		{
+			m_nMissileCount+=1;
+			m_nTotalAmmo-=1;
+		}
 		else
-			m_nMissileCount = m_nMissileMaxCount;
+			m_nTotalAmmo = 0;
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 432 && m_nMouseX <= 467
 		&& m_nMouseY >= 225 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nArtilleryCount > 0)
-			m_nArtilleryCount--;
+		if(m_nArtilleryCount > 0 && m_nTotalAmmo < int(40*m_pPlayer->GetAmmoMod()))
+		{
+			m_nArtilleryCount-=1;
+			m_nTotalAmmo+=1;
+		}
 		else
 			m_nArtilleryCount = 0;
 	}
@@ -424,10 +443,13 @@ bool CLoadOutState::Input( void )
 		&& m_nMouseY >= 228 && m_nMouseY <= 253))
 	{
 		m_pAudio->SFXPlaySound(m_nClick, false);
-		if(m_nArtilleryCount < m_nArtilleryMaxCount)
-			m_nArtilleryCount++;
+		if(m_nTotalAmmo > 0)
+		{
+			m_nArtilleryCount+=1;
+			m_nTotalAmmo-=1;
+		}
 		else
-			m_nArtilleryCount = m_nArtilleryMaxCount;
+			m_nTotalAmmo = 0;
 	}
 
 	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && (m_nMouseX >= 143 && m_nMouseX <= 253
@@ -1044,8 +1066,7 @@ void CLoadOutState::Update( float fDt )
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 
 		m_nPosition=0;
-	}
-	
+	}	
 }
 
 void CLoadOutState::Render( void )
@@ -1094,6 +1115,8 @@ void CLoadOutState::Render( void )
 	m_pTM->Draw(m_nBGID,305,225,0.4f,0.25f,&rSelf,0,0,0);
 	// artillery
 	m_pTM->Draw(m_nBGID,470,225,0.4f,0.25f,&rSelf,0,0,0);
+	// total ammo
+	m_pTM->Draw(m_nBGID,625,225,0.4f,0.25f,&rSelf,0,0,0);
 	// Specials
 	m_pTM->Draw(m_nBGID,125,440,0.75f,0.35f,&rSelf,0,0,0);
 	m_pTM->Draw(m_nBGID,425,440,0.75f,0.35f,&rSelf,0,0,0);
@@ -1147,6 +1170,10 @@ void CLoadOutState::Render( void )
 		font->Print(buffer,485,230,0.75f,D3DCOLOR_XRGB(255,255,255));
 	}
 
+	font->Print("Total",625,190,0.9f,D3DCOLOR_XRGB(177,132,0));
+	_itoa_s(m_nTotalAmmo,buffer,10);
+	font->Print(buffer,640,230,0.75f,D3DCOLOR_XRGB(255,255,255));
+
 	font->Print(m_sSecond.c_str(),50,275,1.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print(m_sMachine.c_str(),125,315,0.9f,D3DCOLOR_XRGB(177,132,0));
 	font->Print(m_sLaser.c_str(),300,315,0.9f,D3DCOLOR_XRGB(177,132,0));
@@ -1183,7 +1210,7 @@ void CLoadOutState::Render( void )
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos1] != -1)
-				font->Print(m_sReinforce.c_str(),135,450,0.75f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),135,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
@@ -1228,7 +1255,7 @@ void CLoadOutState::Render( void )
 	case 4:
 		{
 			if(m_vSpCount[m_nSpecialPos2] != -1)
-				font->Print(m_sReinforce.c_str(),435,450,0.75f,D3DCOLOR_XRGB(177,132,0));
+				font->Print(m_sReinforce.c_str(),435,450,1.0f,D3DCOLOR_XRGB(177,132,0));
 		}
 		break;
 	case 5:
