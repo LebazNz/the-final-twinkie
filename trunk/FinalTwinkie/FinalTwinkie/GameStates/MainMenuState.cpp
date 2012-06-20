@@ -110,7 +110,7 @@ void CMainMenuState::Enter(void)
 	else
 	{
 		playing=false;
-	}
+	}	
 }
 
 void CMainMenuState::Exit(void)

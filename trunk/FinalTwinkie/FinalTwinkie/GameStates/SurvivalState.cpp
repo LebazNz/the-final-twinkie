@@ -234,8 +234,7 @@ void CSurvivalState::Enter( void )
 		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
 		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
 		m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
-		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+		
 
 		m_anSoldierSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt1.wav"));
 		m_anSoldierSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt2.wav"));
@@ -346,6 +345,10 @@ void CSurvivalState::Enter( void )
 
 		player->SetMoney(0);
 		cout<<"Hud Set\n";
+		for(unsigned int i=0; i<m_vWave.size(); i++)
+		{
+			m_vWave[i]=nullptr;
+		}
 	}
 	//LoadText();
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -361,6 +364,8 @@ void CSurvivalState::Enter( void )
 	{
 		m_pAudio->MusicPlaySong(m_nGameMusic, true);
 	}
+	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
 }
 
 void CSurvivalState::Exit( void )
@@ -562,6 +567,11 @@ void CSurvivalState::Exit( void )
 			m_pGUI=nullptr;
 		}
 		TurnSoundOff();
+		for(unsigned int i=0; i<m_vWave.size(); i++)
+		{
+			delete m_vWave[i];
+			m_vWave[i]=nullptr;
+		}
 	}
 }
 
@@ -1856,7 +1866,7 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 
 		m_vWave.push_back(wave);
 		pUnit = pUnit->NextSiblingElement();
-		wave = nullptr;
+		//wave = nullptr;
 		//wave = nullptr;
 	}
 		
