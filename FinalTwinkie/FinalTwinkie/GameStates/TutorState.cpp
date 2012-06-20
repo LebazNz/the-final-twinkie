@@ -169,7 +169,7 @@ void CTutorState::Enter(void)
 			m_PM	= CParticleManager::GetInstance();
 			m_pMS	= CMessageSystem::GetInstance();
 			m_pTile = CTileManager::GetInstance();
-			m_AM	= CAnimationManager::GetInstance();
+			//m_AM	= CAnimationManager::GetInstance();
 			m_pES = CEventSystem::GetInstance();
 			m_pGUI = CGUI::GetInstance();
 			m_pFont = CBitmapFont::GetInstance();
@@ -182,6 +182,8 @@ void CTutorState::Enter(void)
 				m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 			}
 
+			//m_AM->Load("AnimationInfo.xml");
+			//m_AM->Save("AnimationInfo.xml");
 
 			m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
 
@@ -1591,6 +1593,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
 					enemy->Release();
+					enemy = nullptr;
 				}
 				break;
 			case ROCKET:
@@ -1824,6 +1827,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			pSelf->m_pOM->AddObject(m_pBuilding);
 
 			m_pBuilding->Release();
+			m_pBuilding = nullptr;
 		}
 		break;
 	case MSG_CREATEMINE:
@@ -1840,7 +1844,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			pMine->SetDamage(75);
 			pSelf->m_pOM->AddObject(pMine);
 			pMine->Release();
-			
+			pMine = nullptr;
 		}
 		break;
 	case MSG_DESTROYMINE:
@@ -1949,6 +1953,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			pTree->SetHit(false);
 			pSelf->m_pOM->AddObject(pTree);
 			pTree->Release();
+			pTree = nullptr;
 		}
 		break;
 
@@ -1965,6 +1970,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			pFlyText->SetFlyText(pMessage->GetPickUp()->GetPickUpType(),1.5f,D3DCOLOR_XRGB(0,0,0),pMessage->GetPickUp()->GetPosX(),pMessage->GetPickUp()->GetPosY());
 			pSelf->m_pOM->AddObject(pFlyText);
 			pFlyText->Release();
+			pFlyText = nullptr;
 		}
 		break;
 	case MSG_DESTROYFLYTEXT:
