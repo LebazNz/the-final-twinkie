@@ -9,7 +9,7 @@
 #include "../ObjectManager and Factory/ObjectManager.h"
 #include "../GameObjects/Tank.h"
 #include "../SGD Wrappers/CSGD_XAudio2.h"
-
+#include "../GameStates/SurvivalState.h"
 
 CSapper::CSapper(void)
 {
@@ -27,8 +27,10 @@ void CSapper::Update(float fDt)
 	
 	CGame *pGame = CGame::GetInstance();
 	Camera* pCam =Camera::GetInstance();
-
-	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	bool statecheck = false;
+	if(CGame::GetInstance()->GetCurState() == CSurvivalState::GetInstance())
+		statecheck = true;
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100 || statecheck)
 	{
 		if(GetType() == OBJ_HELP)
 		{
