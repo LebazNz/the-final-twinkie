@@ -937,6 +937,8 @@ CPlayer::CPlayer(void)
 	m_bAllUpgrades		= false;
 
 	m_nGunSel=1;
+	m_pSpec1=nullptr;
+	m_pSpec2=nullptr;
 }
 
 CPlayer::~CPlayer(void)

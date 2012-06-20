@@ -22,6 +22,8 @@
 #include "../GameStates/SurvivalState.h"
 #include "../GameStates/TutorState.h"
 #include "../GameObjects/Player.h"
+#include <iostream>
+using namespace std;
 
 #define ARCADE 0
 

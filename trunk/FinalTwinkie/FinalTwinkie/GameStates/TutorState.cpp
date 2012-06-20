@@ -182,8 +182,6 @@ void CTutorState::Enter(void)
 				m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
 			}
 
-			m_AM->Load("AnimationInfo.xml");
-			//m_AM->Save("AnimationInfo.xml");
 
 			m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
 
@@ -1488,7 +1486,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			case TANK:
 				{
 					pSelf->m_pEnemy = pSelf->m_pOF->CreateObject("CTank");
-					pSelf->m_pEnemy->SetImageID(pSelf->m_anEnemyIDs[6]);
+					pSelf->m_pEnemy->SetImageID(pSelf->m_nPlayerID);
 					pSelf->m_pEnemy->SetPosX(pMessage->GetPosX());
 					pSelf->m_pEnemy->SetPosY(pMessage->GetPosY());	
 					pSelf->m_pEnemy->SetWidth(64);
@@ -1517,7 +1515,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(tank);
 
 					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
-					turret->SetImageID(pSelf->m_anEnemyIDs[7]);					
+					turret->SetImageID(pSelf->m_nPlayerTurretID);					
 					turret->SetPosX(pSelf->m_pEnemy->GetPosX());
 					turret->SetPosY(pSelf->m_pEnemy->GetPosY());
 					turret->SetWidth(64);
@@ -1546,7 +1544,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			case TURRET:
 				{
 					CTurret* turret = (CTurret*)pSelf->m_pOF->CreateObject("CTurret");
-					turret->SetImageID(pSelf->m_nPlayerTurretID);
+					turret->SetImageID(pSelf->m_anEnemyIDs[7]);
 					turret->SetPosX(pMessage->GetPosX());
 					turret->SetPosY(pMessage->GetPosY());
 					turret->SetWidth(64);
@@ -1592,6 +1590,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 					enemy->SetShotTimer(0.1f);
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
+					enemy->Release();
 				}
 				break;
 			case ROCKET:

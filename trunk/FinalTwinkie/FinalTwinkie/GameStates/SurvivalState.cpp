@@ -160,7 +160,7 @@ void CSurvivalState::Enter( void )
 		m_pFont=CBitmapFont::GetInstance();
 		m_pAudio = CSGD_XAudio2::GetInstance();
 		m_pDI->ClearInput();
-
+		cout<<"All Managers Loaded\n";
 		for(int i = 0; i < 16; ++i)
 		{
 			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
@@ -184,10 +184,9 @@ void CSurvivalState::Enter( void )
 		m_pD3D->DeviceEnd();	
 
 		m_pD3D->Present();
-		
-	
-		
 
+		cout<<"Waiting\n";
+	
 		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
 		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
 		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
@@ -196,6 +195,8 @@ void CSurvivalState::Enter( void )
 		FXTreads=m_PM->AddEmitter("resource/files/Tracks.xml");
 		FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
 		FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
+
+		cout<<"All FX Loaded\n";
 
 		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
 		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
@@ -224,6 +225,8 @@ void CSurvivalState::Enter( void )
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
 		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
 
+		cout<<"All Images Loaded\n";
+
 		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
 		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
 		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
@@ -246,6 +249,8 @@ void CSurvivalState::Enter( void )
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
 
+		cout<<"All Sounds Loaded\n";
+
 		m_pMS->InitMessageSystem(&MessageProc);
 
 		m_pOF->RegisterClassType<CEntity>("CEntity");
@@ -258,6 +263,8 @@ void CSurvivalState::Enter( void )
 		m_pOF->RegisterClassType<CPickup>("CPickup");
 //		m_pOF->RegisterClassType<CMine>("CMine");
 //		m_pOF->RegisterClassType<CFlyText>("CFlyText");
+
+		cout<<"All Classes Loaded\n";
 
 		m_pPlayer=CPlayer::GetInstance();
 		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
@@ -325,6 +332,8 @@ void CSurvivalState::Enter( void )
 		m_pOM->AddObject(PlayerTurret);
 		PlayerTurret->Release();
 
+		cout<<"Player Complete\n";
+
 
 		m_pGUI->SetHudID(m_anEnemyIDs[3]);
 		m_pGUI->SetPlayer(player);
@@ -335,6 +344,7 @@ void CSurvivalState::Enter( void )
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 
 		player->SetMoney(0);
+		cout<<"Hud Set\n";
 	}
 	LoadText();
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -343,6 +353,7 @@ void CSurvivalState::Enter( void )
 	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
 
 	m_nNumUnits = 0;
+	cout<<"Loading Files\n";
 	LoadWave("resource/files/48wavesofhell.xml",0);
 	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
 	if(m_nGameMusic != -1)
@@ -358,9 +369,9 @@ void CSurvivalState::Exit( void )
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
-	m_nNumUnits = 0;
-	m_nCurrWave = 0;
-	m_nWavesRemaining = 0;
+		m_nNumUnits = 0;
+		m_nCurrWave = 0;
+		m_nWavesRemaining = 0;
 
 	for(int i = 0; i < 6; i++)
 		{
@@ -532,7 +543,6 @@ void CSurvivalState::Exit( void )
 			m_pES = nullptr;
 		}
 	
-	
 		m_pD3D	= nullptr;
 		m_pDI	= nullptr;
 		m_pTM	= nullptr;
@@ -550,6 +560,7 @@ void CSurvivalState::Exit( void )
 			m_pGUI->DeleteInstance();
 			m_pGUI=nullptr;
 		}
+		TurnSoundOff();
 	}
 }
 
@@ -690,12 +701,18 @@ void CSurvivalState::Update( float fDt )
 	
 	if(!m_bPaused)
 	{
+		cout<<"Camera "<<Camera::GetInstance()<<endl;
 		Camera::GetInstance()->Update(dynamic_cast<CPlayer*>(m_pPlayer),0,0,fDt);
+		cout<<"Particle "<<m_PM->GetInstance()<<endl;
 		m_PM->UpdateEverything(fDt);
+		cout<<"Object "<<m_pOM->GetInstance()<<endl;
 		m_pOM->UpdateAllObjects(fDt);
 		m_pOM->CheckCollisions();
+		cout<<"Audio "<<m_pAudio->GetInstance()<<endl;
 		m_pAudio->Update();
+		cout<<"Events "<<m_pES->GetInstance()<<endl;
 		m_pES->ProcessEvents();
+		cout<<"Messages "<<m_pMS->GetInstance()<<endl;
 		m_pMS->ProcessMessages();
 	}
 	
@@ -741,9 +758,7 @@ void CSurvivalState::Update( float fDt )
 
 	if(m_nNumUnits <= 0)
 	{
-		
 		m_nWavesRemaining--;
-		TurnSoundOff();
 		if(m_nWavesRemaining <= 0)
 			CGame::GetInstance()->ChangeState(CSurvivalHS::GetInstance());
 		else
@@ -770,7 +785,7 @@ void CSurvivalState::Render( void )
 		m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
 			int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 		// Render game entities
-		m_pTile->Render();
+		//m_pTile->Render();
 		m_pOM->RenderAllObjects();
 		CSGD_Direct3D::GetInstance()->GetSprite()->Flush();
 	}
@@ -781,7 +796,7 @@ void CSurvivalState::Render( void )
 		m_pTM->Draw(m_nBackGround,int(Camera::GetInstance()->GetPosX()),
 			int(Camera::GetInstance()->GetPosY()),5,5,nullptr,0,0,0,D3DCOLOR_ARGB(255,255,255,255));
 		// Render game entities
-		m_pTile->Render();
+		//m_pTile->Render();
 		m_pOM->RenderAllObjects();
 		//m_AM->Render();
 		// Flush the sprites
@@ -1438,6 +1453,7 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 					enemy->SetShotTimer(0.1f);
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
+					enemy->Release();
 				}
 				break;
 			case ROCKET:
@@ -1742,6 +1758,7 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 	
 	for (int i = 0; i < howMany; i++)
 	{
+		cout<<"Wave "<<i<<endl;
 		CWave* wave = new CWave;
 		TiXmlElement* pSapper = pUnit->FirstChildElement("Sappers");
 		int nNumSappers = atoi(pSapper->FirstChild()->Value());
@@ -1766,6 +1783,7 @@ bool CSurvivalState::LoadWave(const char* szFileName, int nGamedata)
 		wave = nullptr;
 	}
 		
+	cout<<"All Waves Loaded\n";
 	GenerateWave();
 	return true;
 
@@ -1776,9 +1794,12 @@ void CSurvivalState::GenerateWave()
 	m_vRECTS.clear();
 	m_vRECTS.push_back(m_pPlayer->GetRect());
 	m_nWavesRemaining = 100;
+
+	cout<<"CurrWave "<<m_nCurrWave<<endl;
 	
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nSap; i++)
 	{
+		cout<<"Sapper "<<i<<endl;
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, SAPPER, 100.0f, 100.0f, rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		msg = nullptr;
@@ -1787,22 +1808,25 @@ void CSurvivalState::GenerateWave()
 
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nFoot; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, RIFLE, float(rand()%500+100), float(rand()%500+100), rand()%3);
-	CMessageSystem::GetInstance()->SndMessage(msg);
-	msg = nullptr;
-	m_nNumUnits++;
+		cout<<"Foot "<<i<<endl;
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, RIFLE, float(rand()%500+100), float(rand()%500+100), rand()%3);
+		CMessageSystem::GetInstance()->SndMessage(msg);
+		msg = nullptr;
+		m_nNumUnits++;
 	}
 
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nRocket; i++)
 	{
-	CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, ROCKET, float(rand()%500+100), float(rand()%500+100), rand()%3);
-	CMessageSystem::GetInstance()->SndMessage(msg);
-	msg = nullptr;
-	m_nNumUnits++;
+		cout<<"Rocket "<<i<<endl;
+		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, ROCKET, float(rand()%500+100), float(rand()%500+100), rand()%3);
+		CMessageSystem::GetInstance()->SndMessage(msg);
+		msg = nullptr;
+		m_nNumUnits++;
 	}
 
 	for(int i = 0; i < m_vWave[m_nCurrWave]->m_nTanks; i++)
 	{
+		cout<<"Tank "<<i<<endl;
 		CCreateEnemyMessage* msg=new CCreateEnemyMessage(MSG_CREATEENEMY, TANK, float(rand()%500+100), float(rand()%500+100), rand()%3);
 		CMessageSystem::GetInstance()->SndMessage(msg);
 		msg = nullptr;
@@ -1906,8 +1930,6 @@ void CSurvivalState::LoadText(void)
 		}
 	}
 }
-
-
 
 void CSurvivalState::TurnSoundOff(void)
 {
