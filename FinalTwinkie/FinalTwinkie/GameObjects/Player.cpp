@@ -941,6 +941,16 @@ CPlayer::CPlayer(void)
 
 CPlayer::~CPlayer(void)
 {
+	if(m_pSpec1 != nullptr)
+	{
+		delete m_pSpec1;
+		m_pSpec1 = nullptr;
+	}
+	if(m_pSpec2 != nullptr)
+	{
+		delete m_pSpec2;
+		m_pSpec2 = nullptr;
+	}
 }
 
 void CPlayer::SlowVel(float time, float vel)
