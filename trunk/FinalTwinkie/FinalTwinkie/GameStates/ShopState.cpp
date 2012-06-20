@@ -216,21 +216,21 @@ void CShopState::Render(void)
 	if(m_pPlayer->GetSmokeBombAccess())
 		m_dwSmokeBomb =  D3DCOLOR_ARGB(150,255,200,200);
 	m_pTM->Draw(m_nButtonImageID,35,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwRocket);
-	m_pFont->Print(m_sRocket.c_str(),75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sRocket.c_str(),75,20 + y,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,220,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwLaser);
-	m_pFont->Print(m_sLaser.c_str(),265,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sLaser.c_str(),265,20 + y,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,405,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwNuke);
-	m_pFont->Print(m_sNuke.c_str(),455,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sNuke.c_str(),455,20 + y,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,590,15 + y,0.75f,0.75f,nullptr,0,0,0,m_dwEMP);
-	m_pFont->Print(m_sEmp.c_str(),655,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sEmp.c_str(),655,20 + y,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,35, 100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwArillery);
-	m_pFont->Print(m_sArtillery.c_str(),55,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sArtillery.c_str(),55,105 + y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,220,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwFlamer);
-	m_pFont->Print(m_sFlamer.c_str(),255,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sFlamer.c_str(),255,105 + y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,405,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwAirStrike);
-	m_pFont->Print(m_sAirStrike.c_str(),425,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sAirStrike.c_str(),420,105 + y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nButtonImageID,590,100 + y2,0.75f,0.75f,nullptr,0,0,0,m_dwSmokeBomb);
-	m_pFont->Print(m_sSmokeBomb.c_str(),605,110 + y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sSmokeBomb.c_str(),600,105 + y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	// GreyBox
 	SetRect(&rSelf, 467, 638, 631, 760);
 	y = y/2;
@@ -278,13 +278,13 @@ void CShopState::Render(void)
 
 	m_pTM->Draw(m_nBGImageID,-5 ,400+ y2,5,0.75f,&rSelf,0,0,0);
 
-	m_pFont->Print(m_sMonies.c_str(),CGame::GetInstance()->GetWidth()/6,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pFont->Print(m_sCost.c_str(),CGame::GetInstance()->GetWidth()/4*3,440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sMonies.c_str(),CGame::GetInstance()->GetWidth()/6,440+ y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(m_sCost.c_str(),CGame::GetInstance()->GetWidth()/4*3,440+ y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	RenderPrices(y2);
-	m_pTM->Draw(m_nButtonImageID,0,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBuy);
-	m_pFont->Print(m_sBuy.c_str(),40,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
-	m_pTM->Draw(m_nButtonImageID,CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+80,CGame::GetInstance()->GetHeight()-40,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
-	m_pFont->Print(m_sContinue.c_str(),CGame::GetInstance()->GetWidth()-m_pTM->GetTextureWidth(m_nButtonImageID)+90,CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pTM->Draw(m_nButtonImageID,25,550,0.75f,0.75f,nullptr,0,0,0,m_dwBuy);
+	m_pFont->Print(m_sBuy.c_str(),75,555,1.0f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pTM->Draw(m_nButtonImageID,600,550,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
+	m_pFont->Print(m_sContinue.c_str(),625,555,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	//m_pFont->Print("Rocket",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
@@ -324,10 +324,10 @@ void CShopState::RenderPrices(int y2)
 {
 	char buffer[10];
 	_itoa_s(m_pPlayer->GetMoney(),buffer,10);
-	m_pFont->Print(buffer,(int)(CGame::GetInstance()->GetWidth()/6+m_pFont->GetCharWidthW()*3),440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(buffer,(int)(CGame::GetInstance()->GetWidth()/6+m_pFont->GetCharWidthW()*3),440+ y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	char buffer2[10];
 	_itoa_s(m_nItemCost,buffer2,10);
-	m_pFont->Print(buffer2,(int)(CGame::GetInstance()->GetWidth()/4*3+m_pFont->GetCharWidthW()*2*.75),440+ y2,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print(buffer2,(int)(CGame::GetInstance()->GetWidth()/4*3+m_pFont->GetCharWidthW()*2*.75),440+ y2,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 }
 
 void CShopState::DetermineSelection()

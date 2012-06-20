@@ -126,5 +126,19 @@ void CFlyText::SetFlyText(int nType, float fTimer, DWORD dColor, float fX, float
 			m_szType=pText->Value();
 		}
 		break;
+	case 8:
+		{
+			TiXmlNode* pButton = pState->FirstChild("Money");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
+		break;
+	case 9:
+		{
+			TiXmlNode* pButton = pState->FirstChild("Money");
+			TiXmlText* pText = pButton->FirstChild()->ToText();
+			m_szType=pText->Value();
+		}
+		break;
 	}
 }

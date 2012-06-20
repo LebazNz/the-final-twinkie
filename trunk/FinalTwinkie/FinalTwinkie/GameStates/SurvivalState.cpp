@@ -223,7 +223,7 @@ void CSurvivalState::Enter( void )
 		m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
 		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
 		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
-		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/NukePickUp.png"));
+		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/MoneyPickUp.png"));
 
 		cout<<"All Images Loaded\n";
 
@@ -1528,14 +1528,16 @@ void CSurvivalState::MessageProc( CMessage* pMsg )
 				pSelf->m_nNumUnits--;
 			int score = CPlayer::GetInstance()->GetScore()+int(pEnemy->GetMaxHealth()/2)+20;
 			CPlayer::GetInstance()->SetScore(score);
-			int nRandNum = rand()%12;
-			if(nRandNum <= 7)
+			if(pEnemy->GetHealth() <= 0)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+				int nRandNum = rand()%12;
+				if(nRandNum <= 7)
+				{
+					CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
 			}
-
 			pSelf->m_pOM->RemoveObject(pEnemy);
 		}
 		break;

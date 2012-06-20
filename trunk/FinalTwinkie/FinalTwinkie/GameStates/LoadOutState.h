@@ -86,6 +86,7 @@ private:
 	DWORD m_dSPTwoMax;
 	DWORD m_dBack;
 	DWORD m_dContinue;
+	DWORD m_dAchive;
 
 	CSpecial* m_pSpecialOne;
 	CSpecial* m_pSpecialTwo;

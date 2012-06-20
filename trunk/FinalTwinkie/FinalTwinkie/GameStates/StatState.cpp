@@ -7,6 +7,7 @@
 #include "../SGD Wrappers/CSGD_XAudio2.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
+#include "LoadOutState.h"
 
 StatState* StatState::m_pSelf = nullptr;
 
@@ -72,7 +73,7 @@ bool StatState::Input( void )
 	{
 		if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 		{
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
 			return true;
 		}
 
@@ -85,7 +86,7 @@ bool StatState::Input( void )
 	{
 		if(m_pDI->JoystickButtonPressed(1) || m_pDI->JoystickButtonPressed(6))
 		{
-			CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+			CGame::GetInstance()->ChangeState(CLoadOutState::GetInstance());
 			return true;
 		}
 
