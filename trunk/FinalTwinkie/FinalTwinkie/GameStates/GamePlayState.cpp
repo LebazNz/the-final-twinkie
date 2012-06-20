@@ -2291,9 +2291,9 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					 
 					boss->SetImageID(pSelf->m_anEnemyIDs[11]);
 					boss->SetOppImage(pSelf->m_anEnemyIDs[12]);
-					boss->SetPosX(576);
-					boss->SetPosY(64);
-					boss->SetStartX(576);
+					boss->SetPosX(750);
+					boss->SetPosY(225);
+					boss->SetStartX(750);
 					boss->SetWidth(512);
 					boss->SetHeight(128);
 					boss->SetTurrID(pSelf->m_nPirateTurret);
@@ -2314,7 +2314,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetHeight(128);
 					boss->SetRotation(0);
 					boss->SetRotationRate(0.2f);
-					boss->SetSight(1000);
+					boss->SetSight(10000);
 					boss->SetPosX(368);
 					boss->SetPosY(624);
 					//boss->SetPosX(10);
