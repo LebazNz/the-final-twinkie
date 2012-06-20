@@ -5,6 +5,7 @@
 #include "../Event and Messages/Message.h"
 #include "../source/Wave.h"
 #include <string>
+#include "../GameObjects/Turret.h"
 
 class CParticleManager;
 class CObjectManager;
@@ -122,6 +123,6 @@ private:
 
 	bool SoundOff;
 	void TurnSoundOff(void);
-
+	vector<CEntity>	m_nPointers;
 };
 

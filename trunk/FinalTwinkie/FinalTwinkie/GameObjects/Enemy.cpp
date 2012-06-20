@@ -14,6 +14,7 @@
 #include "../GameObjects/Tank.h"
 #include "../GameObjects/Turret.h"
 #include "../GameObjects/Sapper.h"
+#include "../GameStates/SurvivalState.h"
 
 CEnemy::CEnemy(void)
 {
@@ -46,8 +47,10 @@ void CEnemy::Update(float fDt)
 {
 	CGame *pGame = CGame::GetInstance();
 	Camera* pCam =Camera::GetInstance();
-
-	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100)
+	bool statecheck = false;
+	if(CGame::GetInstance()->GetCurState() == CSurvivalState::GetInstance())
+		statecheck = true;
+	if(GetPosX()+pCam->GetPosX() >= -100 && GetPosX()+pCam->GetPosX() <= CGame::GetInstance()->GetWidth()+100 && GetPosY()+pCam->GetPosY() >= -100 && GetPosY()+pCam->GetPosY() <= CGame::GetInstance()->GetHeight()+100 || statecheck)
 	{
 		if(GetType() == OBJ_HELP)
 		{

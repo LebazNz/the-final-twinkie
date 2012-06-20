@@ -9,6 +9,7 @@
 #include "../SGD Wrappers/CSGD_Direct3D.h"
 #include "../Headers/Camera.h"
 #include "../Headers/Game.h"
+#include "../GameStates/SurvivalState.h"
 using std::sqrt;
 
 
@@ -102,9 +103,11 @@ void CTurret::Update(float fDt)
 						m_fRotation += m_fRotationRate*fDt;
 				}
 			}
-
-			m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
-			m_pFlamer->UpdateEmitterPos(GetPosX()-GetWidth()/2+32+98*m_vLookVec.fX-C->GetPosX(), GetPosY()-GetHeight()/2+64+98*m_vLookVec.fY-C->GetPosY());
+			if(CGame::GetInstance()->GetCurState() != CSurvivalState::GetInstance())
+			{
+				m_pFlamer->UpdateEmitterDirecton(m_vLookVec);
+				m_pFlamer->UpdateEmitterPos(GetPosX()-GetWidth()/2+32+98*m_vLookVec.fX-C->GetPosX(), GetPosY()-GetHeight()/2+64+98*m_vLookVec.fY-C->GetPosY());
+			}
 	}
 	else if(m_pOwner == nullptr && m_pTarget != nullptr)  //TURRET ON ITS OWN
 	{
@@ -149,6 +152,7 @@ void CTurret::Update(float fDt)
 			}
 		}
 	}
+	
 	
 	
 	if(abs(m_fRotation)>=2.335)
