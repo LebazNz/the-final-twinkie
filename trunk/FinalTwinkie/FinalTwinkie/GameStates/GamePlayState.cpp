@@ -466,12 +466,12 @@ void CGamePlayState::Enter(void)
 
 void CGamePlayState::Exit(void)
 {
-	m_nEnemyCount = 0;
+	
 	SaveGame(m_dGameData.szFileName);
 
 	if(m_bPaused == false)
 	{
-		
+		m_nEnemyCount = 0;
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
@@ -621,8 +621,15 @@ void CGamePlayState::Exit(void)
 			m_anBulletImageIDs[i] = -1;
 		}
 
+		if(m_pOF != nullptr)
+		{
+			m_pOF->ShutdownObjectFactory();
+			m_pOF	= nullptr;
+		}
+
 		if(m_pMS != nullptr)
 		{
+			m_pMS->ClearMessages();
 			m_pMS->ShutDownMessageSystem();
 			m_pMS	= nullptr;
 		}
@@ -630,14 +637,8 @@ void CGamePlayState::Exit(void)
 		if(m_pOM != nullptr)
 		{
 			m_pOM->RemoveAllObjects();
-			CObjectManager::DeleteInstance();
+			//CObjectManager::DeleteInstance();
 			m_pOM	= nullptr;
-		}
-
-		if(m_pOF != nullptr)
-		{
-			m_pOF->ShutdownObjectFactory();
-			m_pOF	= nullptr;
 		}
 
 		if(m_pES != nullptr)
@@ -1096,8 +1097,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 							if(player->GetWeaponAmmoShell()> 0 || player->GetInfAmmo())
 							{
 								
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage((35.0f*player->GetDamageMod()) *2);
 								else
@@ -1151,8 +1152,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoMissile()> 0 || player->GetInfAmmo())
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage((45.0f*player->GetDamageMod())*2);
 								else
@@ -1214,8 +1215,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						{
 							if(player->GetWeaponAmmoArtillery()> 0 || player->GetInfAmmo())
 							{
-								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
 									Bullet->SetDamage((15.0f*player->GetDamageMod())*2);
 								else
@@ -1270,8 +1271,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 									Bullet->SetDamage((5.0f*player->GetDamageMod())*2);
 								else
@@ -1321,8 +1322,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 						Bullet->SetRotation(pMessage->GetFiringEntity()->GetRotation());
 						if(Bullet->GetWhoFired())
 						{
-							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2*abs(Up.fY));
-							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2*abs(Up.fX));
+							Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
+							Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 							if(player->GetDoubleDamage())
 									Bullet->SetDamage((2.0f*player->GetDamageMod())*2);
 								else
@@ -1366,8 +1367,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					Bullet->SetVelX(vel.fX*200);
 					Bullet->SetVelY(vel.fY*200);
 					Bullet->SetWhoFired(true);
-					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2*abs(dir.fY));
-					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2*abs(dir.fX));
+					Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*dir.fX-C->GetPosX()+11.2f*abs(dir.fY));
+					Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*dir.fY-C->GetPosY()+11.2f*abs(dir.fX));
 					Bullet->SetBulletType(BUL_FLAME);
 					Bullet->SetFlameTimer(1.0f);
 					if(player->GetDoubleDamage())

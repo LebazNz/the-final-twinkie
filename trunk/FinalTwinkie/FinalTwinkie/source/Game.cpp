@@ -1,4 +1,6 @@
 #include "../Headers/Game.h"
+#include "../Particle/ParticleManager.h"
+#include "../World and Tile/TileManager.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -131,7 +133,10 @@ void CGame::Shutdown(void)
 		m_pAudio->ShutdownXAudio2();
 		m_pAudio = nullptr;
 	}
-
+	CParticleManager::GetInstance()->RemoveAllBaseEmitters();
+	CParticleManager::GetInstance()->DeleteInstance();
+	CTileManager::GetInstance()->Unload();
+	CTileManager::GetInstance()->DeleteInstance();
 	m_pMenu			->DeleteInstance();
 	m_pGame			->DeleteInstance();
 	m_Credit		->DeleteInstance();
