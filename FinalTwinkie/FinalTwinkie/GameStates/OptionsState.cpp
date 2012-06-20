@@ -224,15 +224,15 @@ bool COptionsState::Input(void)
 				CGame::GetInstance()->SetIsWindowded(m_bWindowed);
 				if(m_bWindowed == false)
 				{
-					m_pD3D->ShutdownDirect3D();
-					//m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-					m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
+					//m_pD3D->ShutdownDirect3D();
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					//m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
 				}
 				else
 				{
-					m_pD3D->ShutdownDirect3D();
-					//m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
-					m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
+					//m_pD3D->ShutdownDirect3D();
+					m_pD3D->ChangeDisplayParam(CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed());
+					//m_pD3D->InitDirect3D(CGame::GetInstance()->GethWnd(),CGame::GetInstance()->GetWidth(),CGame::GetInstance()->GetHeight(),CGame::GetInstance()->IsWindowed(),true);
 				}
 			}
 			else if(m_nPosition == 3)
@@ -359,14 +359,25 @@ bool COptionsState::Input(void)
 
 			if(m_nPosition == 4)
 			{
-				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 			}
@@ -374,14 +385,25 @@ bool COptionsState::Input(void)
 		// Exit the game when the user presses esc
 		else if(m_pDI->KeyPressed(DIK_ESCAPE) || m_pDI->JoystickButtonPressed(1))
 		{
-			if(CGamePlayState::GetInstance()->GetPaused() == false)
+			if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 		}
@@ -585,14 +607,25 @@ bool COptionsState::Input(void)
 			}
 			else if(m_nPosition == 4)
 			{
-				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 			}
@@ -604,14 +637,25 @@ bool COptionsState::Input(void)
 
 			if(m_nPosition == 4)
 			{
-				if(CGamePlayState::GetInstance()->GetPaused() == false)
+				if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 			}
@@ -619,14 +663,25 @@ bool COptionsState::Input(void)
 		// Exit the game when the user presses esc
 		else if(m_pDI->JoystickButtonPressed(0))
 		{
-			if(CGamePlayState::GetInstance()->GetPaused() == false)
+			if(CGamePlayState::GetInstance()->GetPaused())
 				{
-					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					return true;
+				}
+				else if(CTutorState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CTutorState::GetInstance());
+					return true;
+				}
+				else if(CSurvivalState::GetInstance()->GetPaused())
+				{
+					CGame::GetInstance()->ChangeState(CSurvivalState::GetInstance());
 					return true;
 				}
 				else
 				{
-					CGame::GetInstance()->ChangeState(CGamePlayState::GetInstance());
+					CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
 					return true;
 				}
 		}
