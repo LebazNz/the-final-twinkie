@@ -1646,6 +1646,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					enemy->SetShotTimer(0.1f);
 					enemy->SetFire(pSelf->m_PM->GetEmitter(pSelf->FXEnemyOnFire));
 					pSelf->m_pOM->AddObject(enemy);
+					enemy->Release();
+					enemy = nullptr;
 				}
 				break;
 			case ROCKET:
@@ -1944,6 +1946,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pSelf->m_pOM->AddObject(m_pBuilding);
 
 			m_pBuilding->Release();
+			m_pBuilding = nullptr;
 		}
 		break;
 	case MSG_CREATEMINE:
@@ -1960,7 +1963,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pMine->SetDamage(75);
 			pSelf->m_pOM->AddObject(pMine);
 			pMine->Release();
-			
+			pMine = nullptr;
 		}
 		break;
 	case MSG_DESTROYMINE:
@@ -2068,6 +2071,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pTree->SetHit(false);
 			pSelf->m_pOM->AddObject(pTree);
 			pTree->Release();
+			pTree = nullptr;
 		}
 		break;
 
@@ -2084,6 +2088,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pFlyText->SetFlyText(pMessage->GetPickUp()->GetPickUpType(),1.5f,D3DCOLOR_XRGB(0,0,0),pMessage->GetPickUp()->GetPosX(),pMessage->GetPickUp()->GetPosY());
 			pSelf->m_pOM->AddObject(pFlyText);
 			pFlyText->Release();
+			pFlyText = nullptr;
 		}
 		break;
 	case MSG_DESTROYFLYTEXT:
@@ -2202,6 +2207,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetMaxHealth(1000);
 					pSelf->m_pOM->AddObject(boss);
 					boss->Release();
+					boss = nullptr;
 				}
 				break;
 
@@ -2222,6 +2228,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->MakeTurrets();
 					pSelf->m_pOM->AddObject(boss);
 					boss->Release();
+					boss = nullptr;
 				}
 				break;
 			case ROBOT:
@@ -2271,7 +2278,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(ETurret);
 					boss->Release();
 					ETurret->Release();
-
+					boss = nullptr;
+					ETurret = nullptr;
 
 				}
 				break;
