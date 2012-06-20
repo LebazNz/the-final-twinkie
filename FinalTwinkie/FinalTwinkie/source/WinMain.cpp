@@ -252,9 +252,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HWND	hWnd;	//	Main Window Handle.
 
 	//	if in release mode set the exception filter to write out a dump file
-#ifndef _DEBUG
-	SetUnhandledExceptionFilter(Handler);
-#endif
+//#ifndef _DEBUG
+//	SetUnhandledExceptionFilter(Handler);
+//#endif
 
 	// Don't let more than one instance of the application exist
 	//
@@ -267,7 +267,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			return FALSE;
 	}
 	////////////////////////////////////////////////////////////////////////
-
 	//	Register the window class
 	if (!RegisterWindowClass(hInstance))
 		return 0;

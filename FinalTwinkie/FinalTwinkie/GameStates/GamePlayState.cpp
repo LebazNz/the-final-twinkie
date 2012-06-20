@@ -1114,8 +1114,16 @@ void CGamePlayState::Render(void)
 		}
 		else
 		{
-			m_pPlayer->SetLevel(m_nLevel);
-			CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+			if(m_nLevel==5)
+			{
+				m_pPlayer->SetLevel(4);
+				CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
+			}
+			else
+			{
+				m_pPlayer->SetLevel(m_nLevel);
+				CGame::GetInstance()->ChangeState(CShopState::GetInstance());
+			}
 		}
 	}
 	
