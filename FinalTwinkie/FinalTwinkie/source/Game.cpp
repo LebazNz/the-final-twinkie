@@ -1,6 +1,7 @@
 #include "../Headers/Game.h"
 #include "../Particle/ParticleManager.h"
 #include "../World and Tile/TileManager.h"
+#include "../ObjectManager and Factory/ObjectManager.h"
 
 CGame* CGame::m_pSelf = nullptr;
 
@@ -154,6 +155,7 @@ void CGame::Shutdown(void)
 	m_pSurvival		->DeleteInstance();
 	m_pTutor		->DeleteInstance();
 	m_pPlayer		->DeleteInstance();
+	CObjectManager::DeleteInstance();
 }
 
 bool CGame::Main(void)

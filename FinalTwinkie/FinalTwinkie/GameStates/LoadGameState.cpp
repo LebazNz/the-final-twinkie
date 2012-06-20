@@ -416,7 +416,6 @@ bool CLoadGameState::Input(void)
 						CSpecial* pSpecial = new CSpecial;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						
 						pSpecial = nullptr;
 					}
 					break;
@@ -434,7 +433,6 @@ bool CLoadGameState::Input(void)
 						CEMP* pSpecial = new CEMP;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						delete pSpecial;
 						pSpecial = nullptr;
 					}
 					break;
@@ -452,7 +450,6 @@ bool CLoadGameState::Input(void)
 						CReinforcements* pSpecial = new CReinforcements;
 						m_pPlayer->SetSpecial1(pSpecial);
 						m_pPlayer->SetSpecial1Ammo(pSpecial->GetAmmoCount());
-						delete pSpecial;
 						pSpecial = nullptr;
 					}
 					break;

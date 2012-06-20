@@ -737,7 +737,7 @@ void CLoadOutState::Update( float fDt )
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
 		m_dAchive = D3DCOLOR_XRGB(177,132,0);
 		
-		if(m_nPosition!=1)
+		if(m_nPosition!=16)
 		{
 			m_pAudio->SFXPlaySound(m_nButton,false);
 		}

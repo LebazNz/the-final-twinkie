@@ -114,6 +114,30 @@ void CShopState::Enter(void)
 	m_nGetBox=m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
 	m_bAGet=false;
 	m_fGetTimer=0;
+
+	m_nRocketPrice = 4000;
+	m_nLaserPrice = 7000;
+	m_nNukePrice = 8000;
+	m_nEMPPrice = 2000;
+	m_nArtilleryPrice = 2000;
+	m_nFlamerPrice = 5000;
+	m_nAirStrikePrice = 5000;
+	m_SmokeBombPrice = 1000;
+
+	m_nHeatPrice = 100;
+	m_nAmmoPrice = 100;
+	m_nDamagePrice = 150;
+	m_nHealthPrice = 200;
+	m_nArmorPrice = 200;
+	m_nSpeedPrice = 200;
+	m_fPriceIncrease = 1;
+
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetHeatLevel()*0.1f;
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetAmmoLevel()*0.1f;
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetDamageLevel()*0.1f;
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetHealthLevel()*0.1f;
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetArmorLevel()*0.1f;
+	m_fPriceIncrease+=CPlayer::GetInstance()->GetSpeedLevel()*0.1f;
 }
 
 void CShopState::Exit(void)
@@ -180,6 +204,7 @@ void CShopState::Update(float fDt)
 			m_bAGet=false;
 		}
 	}
+
 }
 
 void CShopState::Render(void)
@@ -286,6 +311,7 @@ void CShopState::Render(void)
 	m_pTM->Draw(m_nButtonImageID,600,550,0.75f,0.75f,nullptr,0,0,0,m_dwBack);
 	m_pFont->Print(m_sContinue.c_str(),625,555,1.0f,D3DCOLOR_ARGB(255,255,255,255));
 	//m_pFont->Print("Rocket",75,25 + y,0.75f,D3DCOLOR_ARGB(255,255,255,255));
+	m_pFont->Print("Press esc to exit",(int)(CGame::GetInstance()->GetWidth()/2-100),CGame::GetInstance()->GetHeight()-30,0.75f,D3DCOLOR_ARGB(255,255,255,255));
 	m_pTM->Draw(m_nCursor, m_pDI->MouseGetPosX()-16, m_pDI->MouseGetPosY()-16, 1.0f, 1.0f);
 
 	if(m_bAGet)
@@ -835,7 +861,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetHeatModifier(m_pPlayer->GetHeatModifier()+m_fHeatUp);
-					
+					m_nSelectedCost=(int)(m_nArmorPrice*m_fPriceIncrease);
 				}
 			}
 		}
@@ -850,7 +876,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetDamageMod(m_pPlayer->GetDamageMod()+m_fDamUp);
-					m_nSelectedCost *= (int)m_fPriceIncrease;
+					m_nSelectedCost = (int)(m_nDamagePrice*m_fPriceIncrease);
 				}
 			}
 		}
@@ -865,7 +891,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetAmmoMod(m_pPlayer->GetAmmoMod()+m_fAmmoUp);
-					m_nSelectedCost *= (int)m_fPriceIncrease;
+					m_nSelectedCost = (int)(m_nAmmoPrice * m_fPriceIncrease);
 				}
 			}
 		}
@@ -880,7 +906,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetHealthMod(m_pPlayer->GetHealthMod()+m_fHealthUp);
-					m_nSelectedCost *= (int)m_fPriceIncrease;
+					m_nSelectedCost = (int)(m_nHealthPrice*m_fPriceIncrease);
 				}
 			}
 		}
@@ -895,7 +921,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetArmorMod(m_pPlayer->GetArmorMod()+m_fArmorUp);
-					m_nSelectedCost *= (int)m_fPriceIncrease;
+					m_nSelectedCost =(int)(m_nArmorPrice*m_fPriceIncrease);
 				}
 			}
 		}
@@ -910,7 +936,7 @@ void CShopState::Purchase()
 					m_fPriceIncrease+=0.1f;
 					m_pPlayer->SetPurchaseLevel(m_fPriceIncrease);
 					m_pPlayer->SetSpeedMod(m_pPlayer->GetSpeedMod()+m_fSpeedUp);
-					m_nSelectedCost *= (int)m_fPriceIncrease;
+					m_nSelectedCost =(int)( m_nSpeedPrice* m_fPriceIncrease);
 				}
 			}
 		}

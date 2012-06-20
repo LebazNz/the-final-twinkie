@@ -315,8 +315,8 @@ void CTutorState::Enter(void)
 			player->SetStartVelY(player->GetVelY());
 			player->SetHealth(250);
 			player->SetMaxHealth(250);
-			player->SetArmor(50);
-			player->SetMaxArmor(50);
+			player->SetArmor(75);
+			player->SetMaxArmor(75);
 			player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
 			player->SetMaxWeaponAmmo(40,40,40);
 			player->SetMoney(0);

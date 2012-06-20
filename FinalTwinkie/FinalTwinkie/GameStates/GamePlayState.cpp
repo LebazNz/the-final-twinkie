@@ -395,11 +395,9 @@ void CGamePlayState::Enter(void)
 		player->SetStartVelY(player->GetVelY());
 		player->SetHealth(250);
 		player->SetMaxHealth(250);
-		player->SetArmor(50);
-		player->SetMaxArmor(50);
+		player->SetArmor(75);
+		player->SetMaxArmor(75);
 		player->SetWeaponAmmo(player->GetMaxWeaponAmmoShell(),player->GetMaxWeaponAmmoArtillery(),player->GetMaxWeaponAmmoMissile());
-		//player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
-		//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
 		player->SetGunSel(1);
 
 		//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
@@ -1117,6 +1115,7 @@ void CGamePlayState::Render(void)
 			if(m_nLevel==5)
 			{
 				m_pPlayer->SetLevel(4);
+				m_nLevel=4;
 				CGame::GetInstance()->ChangeState(CCreditsState::GetInstance());
 			}
 			else
@@ -1176,7 +1175,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 								Bullet->SetPosX(pMessage->GetFiringEntity()->GetPosX()+98*Up.fX-C->GetPosX()+11.2f*abs(Up.fY));
 								Bullet->SetPosY(pMessage->GetFiringEntity()->GetPosY()+98*Up.fY-C->GetPosY()+11.2f*abs(Up.fX));
 								if(player->GetDoubleDamage())
-									Bullet->SetDamage((35.0f*player->GetDamageMod()) *2);
+									Bullet->SetDamage((35.0f*player->GetDamageMod())*2);
 								else
 									Bullet->SetDamage(35.0f*player->GetDamageMod());
 								if(player->GetInfAmmo() == false)
@@ -1856,7 +1855,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			if(pEnemy->GetType()!=OBJ_HELP)
 			{
 				CPlayer::GetInstance()->SetUnitsKilled(CPlayer::GetInstance()->GetUnitsKilled()+1);
-				if(CPlayer::GetInstance()->GetUnitsKilled()>=300)
+				if(CPlayer::GetInstance()->GetUnitsKilled()>=300&&!CPlayer::GetInstance()->GetSparta())
 				{
 					CPlayer::GetInstance()->SetSparta(true);
 					pSelf->m_bAGet=true;
@@ -1865,7 +1864,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 				if(dynamic_cast<CSapper*>(pEnemy))
 				{
 					CPlayer::GetInstance()->SetSappersExploded(CPlayer::GetInstance()->GetSappersExploded()+1);
-					if(CPlayer::GetInstance()->GetSappersExploded()>=50)
+					if(CPlayer::GetInstance()->GetSappersExploded()>=50&&!CPlayer::GetInstance()->GetSapperAbsorb())
 					{
 						CPlayer::GetInstance()->SetSapperAbsorb(true);
 						pSelf->m_bAGet=true;

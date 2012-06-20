@@ -127,6 +127,20 @@ bool CPickup::CheckCollision(IEntity* pBase)
 						CPlayer::GetInstance()->SetMoney(nMoney);
 						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
 					}
+				case 8:
+					{
+						int nMoney = CPlayer::GetInstance()->GetMoney();
+						nMoney+=m_nGiven;
+						CPlayer::GetInstance()->SetMoney(nMoney);
+						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
+					}
+				case 9:
+					{
+						int nMoney = CPlayer::GetInstance()->GetMoney();
+						nMoney+=m_nGiven;
+						CPlayer::GetInstance()->SetMoney(nMoney);
+						CPlayer::GetInstance()->SetTotalMoneyEarned(CPlayer::GetInstance()->GetTotalMoneyEarned()+nMoney);
+					}
 					break;
 				}
 				CCreateFlyTextMessage* pMsge = new CCreateFlyTextMessage(MSG_CREATEFLYTEXT,m_nPickUpType,this);
