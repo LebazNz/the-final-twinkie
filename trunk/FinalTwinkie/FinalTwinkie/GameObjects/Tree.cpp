@@ -6,10 +6,12 @@
 #include "../Headers/Camera.h"
 #include "../SGD Wrappers/CSGD_TextureManager.h"
 #include "../GameObjects/Tank.h"
+#include "../SGD Wrappers/CSGD_XAudio2.h"
 CTree::CTree(void)
 {
 	m_nType = OBJ_TREE;
 	m_bHit = false;
+	m_nSound = -1;
 	m_nHPID=CSGD_TextureManager::GetInstance()->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
 }
 
@@ -25,6 +27,8 @@ bool CTree::CheckCollision(IEntity* pObject)
 	
 	if(CEntity::CheckCollision(pObject) == true)
 	{
+		
+
 		switch(pObject->GetType())
 		{
 		case OBJ_BASE:
@@ -37,12 +41,13 @@ bool CTree::CheckCollision(IEntity* pObject)
 					pPlayer->SlowVel(0.5f,(pPlayer->GetStartVelX()-20));
 				else
 				{
+					if(m_nSound != -1)
+						CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nSound);
 					pPlayer->SlowVel(0.5f,(pPlayer->GetStartVelX()/2));
 					m_bHit = true;
 					SetHit(true);
 					SetWidth(32);
 					SetHeight(32);
-
 				}
 			}
 			break;
@@ -65,6 +70,8 @@ bool CTree::CheckCollision(IEntity* pObject)
 						pTank->SlowVel(0.5f,pTank->GetStartVelX()-15);
 					else
 					{
+						if(m_nSound != -1)
+							CSGD_XAudio2::GetInstance()->SFXPlaySound(m_nSound);
 						pTank->SlowVel(0.5f,pTank->GetStartVelX()/2);
 						m_bHit = true;
 						SetHit(true);

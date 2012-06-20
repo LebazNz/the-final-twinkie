@@ -142,6 +142,7 @@ CGamePlayState::CGamePlayState(void)
 	m_nDeadTree = -1;
 	m_nBarricade = -1;
 	m_nDeadBarr = -1;
+	m_nTreeSound = -1;
 	m_nPirateTurret = -1;
 	m_nEnemyCount = 0;
 	gameEndTimer = 0.0f;
@@ -355,7 +356,7 @@ void CGamePlayState::Enter(void)
 		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
 		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
 		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
-		
+		m_nTreeSound = m_pAudio->SFXLoadSound(_T("resource/sound/treebreak.wav"));
 		
 		/////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////
@@ -472,6 +473,73 @@ void CGamePlayState::Exit(void)
 	if(m_bPaused == false)
 	{
 		m_nEnemyCount = 0;
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		if(m_nMineSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nMineSound);
+			m_pAudio->SFXUnloadSound(m_nMineSound);
+			m_nMineSound = -1;
+		}
+
+		if(m_nSappSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nSappSound);
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nNukeSound);
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+		
+		if(m_nTreeSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nTreeSound);
+			m_pAudio->SFXUnloadSound(m_nTreeSound);
+			m_nTreeSound = -1;
+		}
+	
+		if(m_nGameMusic != -1)
+		{
+			m_pAudio->MusicStopSong(m_nGameMusic);
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+
+		}
+
+
 		m_PM->RemoveAllBaseEmitters();
 		m_PM->DeleteInstance();
 
@@ -2052,6 +2120,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
 			pTree->SetPosX(pMessage->GetPosX());
 			pTree->SetPosY(pMessage->GetPosY());
+			pTree->SetSound(pSelf->m_nTreeSound);
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
 			if(pMessage->GetBarr() == true)

@@ -344,6 +344,11 @@ void CSurvivalState::Enter( void )
 
 	m_nNumUnits = 0;
 	LoadWave("resource/files/48wavesofhell.xml",0);
+	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+	if(m_nGameMusic != -1)
+	{
+		m_pAudio->MusicPlaySong(m_nGameMusic, true);
+	}
 }
 
 void CSurvivalState::Exit( void )
@@ -357,6 +362,61 @@ void CSurvivalState::Exit( void )
 	m_nCurrWave = 0;
 	m_nWavesRemaining = 0;
 
+	for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		
+
+		if(m_nSappSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nSappSound);
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nNukeSound);
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+		
+		
+	
+		if(m_nGameMusic != -1)
+		{
+			m_pAudio->MusicStopSong(m_nGameMusic);
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+
+		}
 
 		
 		if(m_nButtonImageID != -1)
