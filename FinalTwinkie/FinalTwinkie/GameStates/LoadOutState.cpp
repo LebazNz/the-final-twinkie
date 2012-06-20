@@ -10,6 +10,7 @@
 #include "../PickUps and Specials/Smoke.h"
 #include "../tinyxml/tinystr.h"
 #include "../tinyxml/tinyxml.h"
+#include "../GameStates/StatState.h"
 
 CLoadOutState* CLoadOutState::m_pSelf = nullptr;
 
@@ -504,8 +505,8 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos1 -= 1;
 
-		if(m_nSpecialPos1 <= 0)
-			for(int i = m_vSpCount.size()-1; i > 0; i--)
+		if(m_nSpecialPos1 < 0)
+			for(int i = m_vSpCount.size()-1; i >= 0; i--)
 			{
 				if(m_vSpCount[i] != -1)
 					m_nSpecialPos1 = m_vSpCount[i];
@@ -523,7 +524,7 @@ bool CLoadOutState::Input( void )
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
 		{
 			m_nSpecialPos1 -= 1;
-			if(m_nSpecialPos1 <= 0)
+			if(m_nSpecialPos1 < 0)
 				for(int i = m_vSpCount.size()-1; i > 0; i--)
 				{
 					if(m_vSpCount[i] != -1)
@@ -548,7 +549,7 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos1 += 1;
 
-		if(m_nSpecialPos1 >= m_nSpecialCount)
+		if(m_nSpecialPos1 > m_nSpecialCount)
 			for(unsigned int i = 0; i < m_vSpCount.size(); i++)
 			{
 				if(m_vSpCount[i] != -1)
@@ -566,7 +567,7 @@ bool CLoadOutState::Input( void )
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos1 != 0)
 		{
 			m_nSpecialPos1 += 1;
-			if(m_nSpecialPos1 >= m_nSpecialCount)
+			if(m_nSpecialPos1 > m_nSpecialCount)
 				for(unsigned int i = 0; i < m_vSpCount.size(); i++)
 			{
 				if(m_vSpCount[i] != -1)
@@ -591,7 +592,7 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos2 -= 1;
 
-		if(m_nSpecialPos2 <= 0)
+		if(m_nSpecialPos2 < 0)
 			for(int i = m_vSpCount.size()-1; i > 0; i--)
 			{
 				if(m_vSpCount[i] != -1)
@@ -609,7 +610,7 @@ bool CLoadOutState::Input( void )
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
 		{
 			m_nSpecialPos2 -= 1;
-			if(m_nSpecialPos2 <= 0)
+			if(m_nSpecialPos2 < 0)
 				for(int i = m_vSpCount.size()-1; i > 0; i--)
 				{
 					if(m_vSpCount[i] != -1)
@@ -634,7 +635,7 @@ bool CLoadOutState::Input( void )
 		m_pAudio->SFXPlaySound(m_nClick, false);
 		m_nSpecialPos2 += 1;
 
-		if(m_nSpecialPos2 >= m_nSpecialCount)
+		if(m_nSpecialPos2 > m_nSpecialCount)
 			for(unsigned int i = 0; i < m_vSpCount.size()-1; i++)
 			{
 				if(m_vSpCount[i] != -1)
@@ -652,7 +653,7 @@ bool CLoadOutState::Input( void )
 		if(m_nSpecialPos1 == m_nSpecialPos2 && m_nSpecialPos2 != 0)
 		{
 			m_nSpecialPos2 += 1;
-			if(m_nSpecialPos2 >= m_nSpecialCount)
+			if(m_nSpecialPos2 > m_nSpecialCount)
 				for(unsigned int i = 0; i < m_vSpCount.size()-1; i++)
 				{
 					if(m_vSpCount[i] != -1)
@@ -668,6 +669,12 @@ bool CLoadOutState::Input( void )
 							continue;
 				}
 		}			
+	}
+	if((m_pDI->MouseButtonPressed(0) || m_pDI->JoystickButtonPressed(0)) && m_nMouseX >= 300 && m_nMouseX <= 455
+		&& m_nMouseY >= 550 && m_nMouseY <= 575)
+	{
+		CGame::GetInstance()->ChangeState(StatState::GetInstance());
+		return true;
 	}
 	return true;
 }
@@ -704,6 +711,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(177,132,0);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 		
 		if(m_nPosition!=1)
 		{
@@ -711,6 +719,30 @@ void CLoadOutState::Update( float fDt )
 		}
 
 		m_nPosition=1;
+	}
+	else if(m_nMouseX >= 300 && m_nMouseX <= 455
+		&& m_nMouseY >= 550 && m_nMouseY <= 575)
+	{		
+		m_dShellMin = D3DCOLOR_XRGB(255,255,255);
+		m_dShellMax = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMin = D3DCOLOR_XRGB(255,255,255);
+		m_dRocketMax = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMin = D3DCOLOR_XRGB(255,255,255);
+		m_dArtilleryMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPOneMax = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMin = D3DCOLOR_XRGB(255,255,255);
+		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
+		m_dBack = D3DCOLOR_XRGB(255,255,255);
+		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(177,132,0);
+		
+		if(m_nPosition!=1)
+		{
+			m_pAudio->SFXPlaySound(m_nButton,false);
+		}
+
+		m_nPosition=16;
 	}
 	else if(m_nMouseX >= 600 && m_nMouseX <= 755
 		&& m_nMouseY >= 550 && m_nMouseY <= 575)
@@ -727,6 +759,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(177,132,0);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=2)
 		{
@@ -750,6 +783,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=3)
 		{
@@ -773,6 +807,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=4)
 		{
@@ -796,6 +831,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetRocketAccess())
 		{
@@ -822,6 +858,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetRocketAccess())
 		{
@@ -848,6 +885,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetArtilleryAccess())
 		{
@@ -874,6 +912,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetArtilleryAccess())
 		{
@@ -900,6 +939,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=9)
 		{
@@ -923,6 +963,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetLaserAccess())
 		{
@@ -948,6 +989,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(CPlayer::GetInstance()->GetFlamerAccess())
 		{
@@ -973,6 +1015,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(255,255,255);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=12)
 		{
@@ -996,6 +1039,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=13)
 		{
@@ -1019,6 +1063,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=14)
 		{
@@ -1042,6 +1087,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax =		D3DCOLOR_XRGB(177,132,0);
 		m_dBack =			D3DCOLOR_XRGB(255,255,255);
 		m_dContinue =		D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		if(m_nPosition!=15)
 		{
@@ -1064,6 +1110,7 @@ void CLoadOutState::Update( float fDt )
 		m_dSPTwoMax = D3DCOLOR_XRGB(255,255,255);
 		m_dBack = D3DCOLOR_XRGB(255,255,255);
 		m_dContinue = D3DCOLOR_XRGB(255,255,255);
+		m_dAchive = D3DCOLOR_XRGB(255,255,255);
 
 		m_nPosition=0;
 	}	
@@ -1145,6 +1192,7 @@ void CLoadOutState::Render( void )
 	// Back/Continue
 	m_pTM->Draw(m_nButtonImageID,25,550,0.75f,0.75f,nullptr,0,0,0,m_dBack);
 	m_pTM->Draw(m_nButtonImageID,600,550,0.75f,0.75f,nullptr,0,0,0,m_dContinue);
+	m_pTM->Draw(m_nButtonImageID,300,550,0.75f,0.75f,nullptr,0,0,0,m_dAchive);
 
 
 	m_pD3D->GetSprite()->Flush();
@@ -1270,7 +1318,7 @@ void CLoadOutState::Render( void )
 
 	font->Print(m_sBack.c_str(),75,555,1.0f,D3DCOLOR_XRGB(177,132,0));
 	font->Print(m_sContinue.c_str(),625,555,1.0f,D3DCOLOR_XRGB(177,132,0));
-	
+	font->Print("Achievements",310,555,0.85f,D3DCOLOR_XRGB(177,132,0));
 
 	/*_itoa_s(m_pDI->MouseGetPosX(),buffer,10);
 	font->Print(buffer,600,25,0.75f,D3DCOLOR_XRGB(177,132,0));

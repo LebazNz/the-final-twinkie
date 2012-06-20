@@ -379,7 +379,7 @@ void CGamePlayState::Enter(void)
 		m_pOF->RegisterClassType<RobotBoss>("RobotBoss");
 		m_pMS->InitMessageSystem(&MessageProc);
 
-		m_pPlayer = CPlayer::GetInstance();
+		//m_pPlayer = CPlayer::GetInstance();
 		CPlayer* player=CPlayer::GetInstance();
 		player->SetImageID(m_nPlayerID);
 		player->SetFireSound(m_anBulletSounds[5]);
@@ -1985,8 +1985,8 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 
 				pSelf->m_pOM->AddObject(pPickup);
 
-				pPickup->Release();
-				pPickup = nullptr;
+				//pPickup->Release();
+				//pPickup = nullptr;
 			}
 		}
 		break;
@@ -2148,7 +2148,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pTree->SetHit(false);
 			pSelf->m_pOM->AddObject(pTree);
 			pTree->Release();
-			pTree = nullptr;
 		}
 		break;
 
@@ -2165,7 +2164,6 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			pFlyText->SetFlyText(pMessage->GetPickUp()->GetPickUpType(),1.5f,D3DCOLOR_XRGB(0,0,0),pMessage->GetPickUp()->GetPosX(),pMessage->GetPickUp()->GetPosY());
 			pSelf->m_pOM->AddObject(pFlyText);
 			pFlyText->Release();
-			pFlyText = nullptr;
 		}
 		break;
 	case MSG_DESTROYFLYTEXT:
@@ -2284,7 +2282,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->SetMaxHealth(1000);
 					pSelf->m_pOM->AddObject(boss);
 					boss->Release();
-					boss = nullptr;
+					
 				}
 				break;
 
@@ -2305,7 +2303,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					boss->MakeTurrets();
 					pSelf->m_pOM->AddObject(boss);
 					boss->Release();
-					boss = nullptr;
+					
 				}
 				break;
 			case ROBOT:
@@ -2355,8 +2353,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 					pSelf->m_pOM->AddObject(ETurret);
 					boss->Release();
 					ETurret->Release();
-					boss = nullptr;
-					ETurret = nullptr;
+					
 
 				}
 				break;
@@ -2396,6 +2393,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			tur1->SetHeight(128);
 			tur1->SetRotationPositon(32,98);
 			tur1->SetUpVec(0,-1);
+			tur1->SetFireRate(0.5f);
 			tur1->SetDistance(800);
 			tur1->SetRotationRate(1.0f);
 			tur1->SetTarget(CPlayer::GetInstance());
@@ -2411,6 +2409,7 @@ void CGamePlayState::MessageProc(CMessage* pMsg)
 			tur2->SetWidth(64);
 			tur2->SetHeight(128);
 			tur2->SetRotationPositon(32,98);
+			tur2->SetFireRate(0.5f);
 			tur2->SetUpVec(0,-1);
 			tur2->SetDistance(800);
 			tur2->SetRotationRate(1.0f);

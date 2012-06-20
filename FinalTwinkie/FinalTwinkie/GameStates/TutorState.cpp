@@ -1693,15 +1693,16 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			CEnemy* pEnemy = dynamic_cast<CDestroyEnemyMessage*>(pMsg)->GetEnemy();
 	
 			pSelf->m_PM->RemoveAttachedEmitter(pEnemy->GetTail());
-
-			int nRandNum = rand()%12;
-			if(nRandNum <= 7)
+			if(pEnemy->GetHealth() <= 0)
 			{
-				CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
-				CMessageSystem::GetInstance()->SndMessage(pMsg);
-				pMsg = nullptr;
+				int nRandNum = rand()%12;
+				if(nRandNum <= 7)
+				{
+					CCreatePickupMessage* pMsg = new CCreatePickupMessage(MSG_CREATEPICKUP,pEnemy,nRandNum);
+					CMessageSystem::GetInstance()->SndMessage(pMsg);
+					pMsg = nullptr;
+				}
 			}
-
 			pSelf->m_pOM->RemoveObject(pEnemy);
 		}
 		break;
@@ -1786,7 +1787,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 				pPickup->SetPosX(pMessage->GetEntity()->GetPosX());
 				pPickup->SetPosY(pMessage->GetEntity()->GetPosY());
 
-				pPickup->SetAliveTime(150.0f);
+				pPickup->SetAliveTime(25.0f);
 
 				pSelf->m_pOM->AddObject(pPickup);
 
