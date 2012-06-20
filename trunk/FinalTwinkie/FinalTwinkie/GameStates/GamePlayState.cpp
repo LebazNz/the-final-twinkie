@@ -437,6 +437,8 @@ void CGamePlayState::Enter(void)
 
 		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
 		m_pPlayer = CPlayer::GetInstance();
+
+		ResumeGame();
 		
 	}
 	m_nMouseX = m_pDI->MouseGetPosX();
@@ -460,9 +462,6 @@ void CGamePlayState::Enter(void)
 	{
 		m_pAudio->MusicPlaySong(m_nGameMusic, true);
 	}
-
-
-	ResumeGame();
 }
 
 void CGamePlayState::Exit(void)

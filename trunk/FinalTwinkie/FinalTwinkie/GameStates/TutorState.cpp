@@ -404,201 +404,204 @@ void CTutorState::Enter(void)
 
 void CTutorState::Exit(void)
 {
-	m_nEnemyCount = 0;
-	m_nBoxIndex = 0;
-	m_fWordTimer = 0.0f;
+	if(m_bPaused == false)
+	{
+		m_nEnemyCount = 0;
+		m_nBoxIndex = 0;
+		m_fWordTimer = 0.0f;
 
-	CGame::GetInstance()->isTutor = false;
+		CGame::GetInstance()->isTutor = false;
 
-		m_PM->RemoveAllBaseEmitters();
-		m_PM->DeleteInstance();
+			m_PM->RemoveAllBaseEmitters();
+			m_PM->DeleteInstance();
 
-		if(WinnerID != -1)
-		{
-			m_pTM->UnloadTexture(WinnerID);
-			WinnerID = -1;
-		}
-
-		if(m_nBox != -1)
-		{
-			m_pTM->UnloadTexture(m_nBox);
-			m_nBox = -1;
-		}
-
-		if(m_nDeadTree != -1)
-		{
-			m_pTM->UnloadTexture(m_nDeadTree);
-			m_nDeadTree = -1;
-		}
-
-		if(GameOverID != -1)
-		{
-			m_pTM->UnloadTexture(GameOverID);
-			GameOverID = -1;
-		}
-
-		if(m_nMine != -1)
-		{
-			m_pTM->UnloadTexture(m_nMine);
-			m_nMine = -1;
-		}
-
-		if(m_nBarricade != -1)
-		{
-			m_pTM->UnloadTexture(m_nBarricade);
-			m_nBarricade = -1;
-		}
-
-		if(m_nDeadBarr != -1)
-		{
-			m_pTM->UnloadTexture(m_nDeadBarr);
-			m_nDeadBarr = -1;
-		}
-		
-		
-
-		if(m_nTree != -1)
-		{
-			m_pTM->UnloadTexture(m_nTree);
-			m_nTree = -1;
-		}
-		
-		if(m_nButtonImageID != -1)
-		{
-			m_pTM->UnloadTexture(m_nButtonImageID);
-			m_nButtonImageID = -1;
-		}
-
-		if(m_pEnemy != nullptr)
-		{
-			m_pEnemy->Release();
-			m_pEnemy = nullptr;
-		}
-
-		if(m_nCursor != -1)
-		{
-			m_pTM->UnloadTexture(m_nCursor);
-			m_nCursor = -1;
-		}
-
-		if(m_nPlayerID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPlayerID);
-			m_nPlayerID = -1;
-		}
-
-		if(m_nPickupHealthID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupHealthID);
-			m_nPickupHealthID = -1;
-		}
-
-		if(m_nPickupAmmoID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupAmmoID);
-			m_nPickupAmmoID = -1;
-		}
-
-		if(m_nPickupArmorID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupArmorID);
-			m_nPickupArmorID = -1;
-		}
-
-		if(m_nPickupDoubleDID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupDoubleDID);
-			m_nPickupDoubleDID = -1;
-		}
-
-		if(m_nPickupNoReloadID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupNoReloadID);
-			m_nPickupNoReloadID = -1;
-		}
-
-		if(m_nPickupInvuID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupInvuID);
-			m_nPickupInvuID = -1;
-		}
-
-		if(m_nPickupInfAmmoID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupInfAmmoID);
-			m_nPickupInfAmmoID = -1;
-		}
-
-		if(m_nPickupMoneyID != -1)
-		{
-			m_pTM->UnloadTexture(m_nPickupMoneyID);
-			m_nPickupMoneyID = -1;
-		}
-
-		for(int i = 0; i < 16; ++i)
-		{
-			if(m_anEnemyIDs[i] != -1)
+			if(WinnerID != -1)
 			{
-				m_pTM->UnloadTexture(m_anEnemyIDs[i]);
-				m_anEnemyIDs[i] = -1;
+				m_pTM->UnloadTexture(WinnerID);
+				WinnerID = -1;
 			}
-		}
 
-		for(int i = 0; i < 3; ++i)
-		{
-			m_pTM->UnloadTexture(m_anBulletImageIDs[i]);
-			m_anBulletImageIDs[i] = -1;
-		}
+			if(m_nBox != -1)
+			{
+				m_pTM->UnloadTexture(m_nBox);
+				m_nBox = -1;
+			}
 
-		if(m_pMS != nullptr)
-		{
-			m_pMS->ShutDownMessageSystem();
-			m_pMS	= nullptr;
-		}
+			if(m_nDeadTree != -1)
+			{
+				m_pTM->UnloadTexture(m_nDeadTree);
+				m_nDeadTree = -1;
+			}
 
-		if(m_pOM != nullptr)
-		{
-			m_pOM->RemoveAllObjects();
-			CObjectManager::DeleteInstance();
-			m_pOM	= nullptr;
-		}
+			if(GameOverID != -1)
+			{
+				m_pTM->UnloadTexture(GameOverID);
+				GameOverID = -1;
+			}
 
-		if(m_pOF != nullptr)
-		{
-			m_pOF->ShutdownObjectFactory();
-			m_pOF	= nullptr;
-		}
+			if(m_nMine != -1)
+			{
+				m_pTM->UnloadTexture(m_nMine);
+				m_nMine = -1;
+			}
 
-		if(m_pES != nullptr)
-		{
-			m_pES->ClearEvents();
-			m_pES->ShutdownEventSystem();
-			m_pES = nullptr;
-		}
-	
-	m_bWinner = false;
-	m_bGameOver = false;
-		m_pD3D	= nullptr;
-		m_pDI	= nullptr;
-		m_pTM	= nullptr;
-		m_pFont = nullptr;	
-		m_PM	= nullptr;	
-		if(m_pTile != nullptr)
-		{
-			m_pTile->DeleteInstance();
-			m_pTile = nullptr;
-		}
-		m_AM	= nullptr;
-	/*	if(m_pPlayer!=nullptr)
-		{
-			dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
-		}*/
+			if(m_nBarricade != -1)
+			{
+				m_pTM->UnloadTexture(m_nBarricade);
+				m_nBarricade = -1;
+			}
+
+			if(m_nDeadBarr != -1)
+			{
+				m_pTM->UnloadTexture(m_nDeadBarr);
+				m_nDeadBarr = -1;
+			}
 		
-		if(m_pGUI!=nullptr)
-		{
-			m_pGUI->DeleteInstance();
-			m_pGUI=nullptr;
-		}
+		
+
+			if(m_nTree != -1)
+			{
+				m_pTM->UnloadTexture(m_nTree);
+				m_nTree = -1;
+			}
+		
+			if(m_nButtonImageID != -1)
+			{
+				m_pTM->UnloadTexture(m_nButtonImageID);
+				m_nButtonImageID = -1;
+			}
+
+			if(m_pEnemy != nullptr)
+			{
+				m_pEnemy->Release();
+				m_pEnemy = nullptr;
+			}
+
+			if(m_nCursor != -1)
+			{
+				m_pTM->UnloadTexture(m_nCursor);
+				m_nCursor = -1;
+			}
+
+			if(m_nPlayerID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPlayerID);
+				m_nPlayerID = -1;
+			}
+
+			if(m_nPickupHealthID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupHealthID);
+				m_nPickupHealthID = -1;
+			}
+
+			if(m_nPickupAmmoID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupAmmoID);
+				m_nPickupAmmoID = -1;
+			}
+
+			if(m_nPickupArmorID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupArmorID);
+				m_nPickupArmorID = -1;
+			}
+
+			if(m_nPickupDoubleDID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupDoubleDID);
+				m_nPickupDoubleDID = -1;
+			}
+
+			if(m_nPickupNoReloadID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupNoReloadID);
+				m_nPickupNoReloadID = -1;
+			}
+
+			if(m_nPickupInvuID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupInvuID);
+				m_nPickupInvuID = -1;
+			}
+
+			if(m_nPickupInfAmmoID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupInfAmmoID);
+				m_nPickupInfAmmoID = -1;
+			}
+
+			if(m_nPickupMoneyID != -1)
+			{
+				m_pTM->UnloadTexture(m_nPickupMoneyID);
+				m_nPickupMoneyID = -1;
+			}
+
+			for(int i = 0; i < 16; ++i)
+			{
+				if(m_anEnemyIDs[i] != -1)
+				{
+					m_pTM->UnloadTexture(m_anEnemyIDs[i]);
+					m_anEnemyIDs[i] = -1;
+				}
+			}
+
+			for(int i = 0; i < 3; ++i)
+			{
+				m_pTM->UnloadTexture(m_anBulletImageIDs[i]);
+				m_anBulletImageIDs[i] = -1;
+			}
+
+			if(m_pMS != nullptr)
+			{
+				m_pMS->ShutDownMessageSystem();
+				m_pMS	= nullptr;
+			}
+
+			if(m_pOM != nullptr)
+			{
+				m_pOM->RemoveAllObjects();
+				CObjectManager::DeleteInstance();
+				m_pOM	= nullptr;
+			}
+
+			if(m_pOF != nullptr)
+			{
+				m_pOF->ShutdownObjectFactory();
+				m_pOF	= nullptr;
+			}
+
+			if(m_pES != nullptr)
+			{
+				m_pES->ClearEvents();
+				m_pES->ShutdownEventSystem();
+				m_pES = nullptr;
+			}
+	
+		m_bWinner = false;
+		m_bGameOver = false;
+			m_pD3D	= nullptr;
+			m_pDI	= nullptr;
+			m_pTM	= nullptr;
+			m_pFont = nullptr;	
+			m_PM	= nullptr;	
+			if(m_pTile != nullptr)
+			{
+				m_pTile->DeleteInstance();
+				m_pTile = nullptr;
+			}
+			m_AM	= nullptr;
+		/*	if(m_pPlayer!=nullptr)
+			{
+				dynamic_cast<CPlayer*>(m_pPlayer)->DeleteInstance();
+			}*/
+		
+			if(m_pGUI!=nullptr)
+			{
+				m_pGUI->DeleteInstance();
+				m_pGUI=nullptr;
+			}
+			}
 	}
 	
 
