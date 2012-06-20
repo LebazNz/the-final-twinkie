@@ -114,6 +114,7 @@ CTutorState::CTutorState(void)
 	m_nPickupInvuID = -1;
 	m_nPickupInfAmmoID = -1;
 	m_nPickupMoneyID = -1;
+	m_nTreeSound = -1;
 	m_nLevel = 1;
 	WinnerID = -1;
 	GameOverID = -1;
@@ -151,253 +152,269 @@ CTutorState::~CTutorState(void)
 void CTutorState::Enter(void)
 {
 	CGame::GetInstance()->isTutor = true;
+	if(ARCADE == 0)
+	{
 	m_bActivePad = false;
 	SoundOff = false;
 	LoadWords();
 	if(m_bPaused == false)
 	{
-		m_nEnemyCount = 0;
+			m_nEnemyCount = 0;
 
+			m_pD3D	= CSGD_Direct3D::GetInstance();
+			m_pDI	= CSGD_DirectInput::GetInstance();
+			m_pTM	= CSGD_TextureManager::GetInstance();
+			m_pOM	= CObjectManager::GetInstance();
+			m_pOF	= CFactory::GetInstance();
+			m_PM	= CParticleManager::GetInstance();
+			m_pMS	= CMessageSystem::GetInstance();
+			m_pTile = CTileManager::GetInstance();
+			m_AM	= CAnimationManager::GetInstance();
+			m_pES = CEventSystem::GetInstance();
+			m_pGUI = CGUI::GetInstance();
+			m_pFont = CBitmapFont::GetInstance();
+			m_pFont->Init(COptionsState::GetInstance()->GetLang());
+			m_pAudio = CSGD_XAudio2::GetInstance();
+
+			m_pDI->ClearInput();
+			for(int i = 0; i < 16; ++i)
+			{
+				m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
+			}
+
+			m_AM->Load("AnimationInfo.xml");
+			//m_AM->Save("AnimationInfo.xml");
+
+			m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
+
+			m_pD3D->Clear( 0, 255, 255 );// Clear the background
+
+			// Start D3D rendering
+			m_pD3D->DeviceBegin();
+			m_pD3D->SpriteBegin();	
+
+			m_pTM->Draw(m_nBackGround,0,0,0.8f,0.6f);
+	
+			m_pD3D->GetSprite()->Flush();	
+			m_pD3D->SpriteEnd();
+			m_pD3D->DeviceEnd();	
+
+			m_pD3D->Present();
+		
+			GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
+			WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
+		
+
+			FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
+			FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
+			FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
+			FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
+			FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
+			FXTreads=m_PM->AddEmitter("resource/files/Tracks.xml");
+			FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
+			FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
+			FXAirStrike = m_PM->AddEmitter("resource/files/AirStrike.xml");
+
+			m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
+			m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
+			m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
+			m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
+			m_anBulletImageIDs[4] = m_pTM->LoadTexture( _T( "resource/graphics/Laser.png"), 	0 );
+			m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
+			m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
+			m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
+			m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
+			m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
+			m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
+			m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
+			m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
+			m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
+			m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
+			m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
+
+			m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
+			m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
+			m_anEnemyIDs[15]=m_pTM->LoadTexture(_T("resource/graphics/Rocketeer.png"));
+
+			m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
+			m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
+			m_nPickupArmorID = m_pTM->LoadTexture(_T("resource/graphics/ArmorPickUp.png"));
+			m_nPickupDoubleDID = m_pTM->LoadTexture(_T("resource/graphics/DoubleDamagePickUp.png"));
+			m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
+			m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
+			m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
+			m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/MoneyPickUp.png"));
+
+			m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
+			m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
+			m_nDeadTree = m_pTM->LoadTexture(_T("resource/graphics/stump.png"));
+			m_nBarricade =m_pTM->LoadTexture(_T("resource/graphics/barr2.png"));
+			m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
+			m_nBox = m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
+
+			m_anSupportIDs[0] = m_pTM->LoadTexture(_T("resource/graphics/Support_Sapper.png"));
+			m_anSupportIDs[1] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rifle.png"));
+			m_anSupportIDs[2] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rocket.png"));
+
+			// SOUNDS
+			////////////////////////////////////////////////////////
+		
+			m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
+			m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
+			m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
+			m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
+			m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
+			m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
+
+			m_anSoldierSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt1.wav"));
+			m_anSoldierSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt2.wav"));
+			m_anSoldierSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt3.wav"));
+			m_anSoldierSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt4.wav"));
+			m_anSoldierSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt5.wav"));
+			m_anSoldierSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt6.wav"));
+			m_anSoldierSounds[6] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt7.wav"));
+			m_anSoldierSounds[7] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt8.wav"));
+			m_anSoldierSounds[8] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt9.wav"));
+
+			m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
+			m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
+			m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
+			m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
+
+			m_nTreeSound = m_pAudio->SFXLoadSound(_T("resource/sound/treebreak.wav"));
+		
+			///////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////
+			m_pMS->InitMessageSystem(&MessageProc);
+
+			m_pOF->RegisterClassType<CEntity>("CEntity");
+			m_pOF->RegisterClassType<CEnemy>("CEnemy");
+			m_pOF->RegisterClassType<CBullet>("CBullet");
+			m_pOF->RegisterClassType<CTurret>("CTurret");
+			m_pOF->RegisterClassType<CTank>("CTank");
+			m_pOF->RegisterClassType<CSapper>("CSapper");
+			m_pOF->RegisterClassType<CBuilding>("CBuilding");
+			m_pOF->RegisterClassType<CPickup>("CPickup");
+			m_pOF->RegisterClassType<CMine>("CMine");
+			m_pOF->RegisterClassType<CTree>("CTree");
+			m_pOF->RegisterClassType<CFlyText>("CFlyText");
+
+			m_pPlayer=CPlayer::GetInstance();
+			CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
+			player->SetImageID(m_nPlayerID);
+			player->SetFireSound(m_anBulletSounds[5]);
+			player->SetNukeSound(m_nNukeSound);
+			player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
+			player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
+			player->SetRotation(0);
+			player->SetWidth(64);
+			player->SetHeight(128);
+			player->SetVelX(90);
+			player->SetVelY(90);
+			player->SetStartVelX(player->GetVelX());
+			player->SetStartVelY(player->GetVelY());
+			player->SetHealth(250);
+			player->SetMaxHealth(250);
+			player->SetArmor(50);
+			player->SetMaxArmor(50);
+			player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
+			player->SetMaxWeaponAmmo(40,40,40);
+			player->SetMoney(0);
+			tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
+			CNuke* pNuke = new CNuke();
+			pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
+			CSmoke* pSmoke=new CSmoke();
+			pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
+			player->SetSpecial1(pNuke);
+			player->SetSpecial2(pSmoke);
+			player->SetSpecial1Ammo(1);
+			player->SetSpecial2Ammo(2);
+			pNuke = nullptr;
+			pSmoke = nullptr;
+			player->SetOldPos(v2Pos);
+			player->SetSecondType(MACHINEGUN);
+			//player->SetName(m_dGameData.szName);
+			//player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
+			//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
+			player->SetRocketAccess(true);
+			player->SetArtilleryAccess(true);
+			player->SetGunSel(1);
+
+			//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
+			player->SetDoubleDamage(false);
+			player->SetDamageTimer(0.0f);
+			player->SetNoReloadTimer(0.0f);
+			player->SetInvul(false);
+			player->SetInvulTimer(0.0f);
+			player->SetInfAmmo(false);
+			player->SetInfoAmmoTimer(0.0f);
+
+			CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
+			PlayerTurret->SetImageID(m_nPlayerTurretID);
+			player->SetTurret(PlayerTurret);
+			PlayerTurret->SetPosX(player->GetPosX());
+			PlayerTurret->SetPosY(player->GetPosY());
+			PlayerTurret->SetOwner(player);
+			PlayerTurret->SetBullet(BUL_SHELL);
+			PlayerTurret->SetWidth(64);
+			PlayerTurret->SetHeight(128);
+			PlayerTurret->SetRotationPositon(32,98);
+			PlayerTurret->SetUpVec(0,-1);
+			PlayerTurret->SetDistance(800);
+			PlayerTurret->SetRotationRate(1.0f);
+			PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
+
+			// Create and add everything to the objectmanager first so player is always above
+			m_pTile->Load("resource/files/tutorial.xml");
+			m_pMS->ProcessMessages();
+			m_pOM->AddObject(player);
+			m_pOM->AddObject(PlayerTurret);
+			PlayerTurret->Release();
+
+		
+			m_nPosition = 0;
+			m_bPaused = false;
+
+			m_pGUI->SetHudID(m_anEnemyIDs[3]);
+			m_pGUI->SetPlayer(player);
+			m_pGUI->SetSelect(m_anEnemyIDs[8]);
+			m_pGUI->SetGunSel(m_anEnemyIDs[13]);
+			m_pGUI->SetGunSelected(1);
+
+			m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
+
+		
+			m_nBoxIndex = 0;
+			player->SetMoney(0);
+		}
+	//	m_nMouseX = m_pDI->MouseGetPosX();
+		//m_nMouseY = m_pDI->MouseGetPosY();
+
+		D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
+		m_bWinner = false;
+		m_bGameOver = false;
+		m_bWordBox = true;
+		m_nBoxIndex = -1;
+		gameEndTimer = 0.0f;
+		m_fWordTimer = 0.0f;
+		m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
+		m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
+		m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
+		if(m_nGameMusic != -1)
+		{
+			m_pAudio->MusicPlaySong(m_nGameMusic, true);
+		}
+	}
+	else
+	{
 		m_pD3D	= CSGD_Direct3D::GetInstance();
 		m_pDI	= CSGD_DirectInput::GetInstance();
 		m_pTM	= CSGD_TextureManager::GetInstance();
-		m_pOM	= CObjectManager::GetInstance();
-		m_pOF	= CFactory::GetInstance();
-		m_PM	= CParticleManager::GetInstance();
-		m_pMS	= CMessageSystem::GetInstance();
-		m_pTile = CTileManager::GetInstance();
-		m_AM	= CAnimationManager::GetInstance();
-		m_pES = CEventSystem::GetInstance();
-		m_pGUI = CGUI::GetInstance();
 		m_pFont = CBitmapFont::GetInstance();
 		m_pFont->Init(COptionsState::GetInstance()->GetLang());
-		m_pAudio = CSGD_XAudio2::GetInstance();
 
-		m_pDI->ClearInput();
-		for(int i = 0; i < 16; ++i)
-		{
-			m_anEnemyIDs[i] = m_pTM->LoadTexture( _T( "resource/graphics/JF_enemy1.png"), 	0 );
-		}
+		ResumeGame();
 
-		m_AM->Load("AnimationInfo.xml");
-		//m_AM->Save("AnimationInfo.xml");
-
-		m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/loading.jpg"));
-
-		m_pD3D->Clear( 0, 255, 255 );// Clear the background
-
-		// Start D3D rendering
-		m_pD3D->DeviceBegin();
-		m_pD3D->SpriteBegin();	
-
-		m_pTM->Draw(m_nBackGround,0,0,0.8f,0.6f);
-	
-		m_pD3D->GetSprite()->Flush();	
-		m_pD3D->SpriteEnd();
-		m_pD3D->DeviceEnd();	
-
-		m_pD3D->Present();
-		
-		GameOverID = m_pTM->LoadTexture(_T("resource/graphics/gameover.png"));
-		WinnerID = m_pTM->LoadTexture(_T("resource/graphics/winner.png"));
-		
-
-		FXEnemy_Tails=m_PM->AddEmitter("resource/files/Enemy_Trail.xml");
-		FXSapper_Explosion=m_PM->AddEmitter("resource/files/Explosion.xml");
-		FXFlame=m_PM->AddEmitter("resource/files/Flame.xml");
-		FXBuildingFlame=m_PM->AddEmitter("resource/files/Building Flame.xml");
-		FXNuke=m_PM->AddEmitter("resource/files/Nuke.xml");
-		FXTreads=m_PM->AddEmitter("resource/files/Tracks.xml");
-		FXSmoke=m_PM->AddEmitter("resource/files/Smoke.xml");
-		FXEnemyOnFire=m_PM->AddEmitter("resource/files/OnFire.xml");
-		FXAirStrike = m_PM->AddEmitter("resource/files/AirStrike.xml");
-
-		m_anBulletImageIDs[0] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
-		m_anBulletImageIDs[1] = m_pTM->LoadTexture( _T( "resource/graphics/missile.png"), 	0 );
-		m_anBulletImageIDs[2] = m_pTM->LoadTexture( _T( "resource/graphics/artillery.png"), 0 );
-		m_anBulletImageIDs[3] = m_pTM->LoadTexture( _T( "resource/graphics/shell.png"), 	0 );
-		m_anBulletImageIDs[4] = m_pTM->LoadTexture( _T( "resource/graphics/Laser.png"), 	0 );
-		m_nPlayerID=m_pTM->LoadTexture(_T("resource/graphics/Green Base.png"));
-		m_nPlayerTurretID=m_pTM->LoadTexture(_T("resource/graphics/Green Turret.png"));
-		m_anEnemyIDs[1]=m_pTM->LoadTexture(_T("resource/graphics/sapper_pirate.png"));
-		m_anEnemyIDs[2]=m_pTM->LoadTexture(_T("resource/graphics/Building.png"));
-		m_nButtonImageID = m_pTM->LoadTexture(_T("resource/graphics/Button.png"));
-		m_anEnemyIDs[3]=m_pTM->LoadTexture(_T("resource/graphics/123sprites_HUD.png"));
-		m_anEnemyIDs[4]=m_pTM->LoadTexture(_T("resource/graphics/missile.png"));
-		m_anEnemyIDs[5]=m_pTM->LoadTexture(_T("resource/graphics/rubble.png"));
-		m_anEnemyIDs[6]=m_pTM->LoadTexture(_T("resource/graphics/enemyTank.png"));
-		m_anEnemyIDs[7]=m_pTM->LoadTexture(_T("resource/graphics/enemyTurret.png"));
-		m_anEnemyIDs[8]=m_pTM->LoadTexture(_T("resource/graphics/SpecialSelect.png"));
-
-		m_anEnemyIDs[13]=m_pTM->LoadTexture(_T("resource/graphics/GunSel.png"));
-		m_anEnemyIDs[14]=m_pTM->LoadTexture(_T("resource/graphics/Rifle_Pirate.png"));
-		m_anEnemyIDs[15]=m_pTM->LoadTexture(_T("resource/graphics/Rocketeer.png"));
-
-		m_nPickupHealthID = m_pTM->LoadTexture(_T("resource/graphics/HealthPickUp.png"));
-		m_nPickupAmmoID = m_pTM->LoadTexture(_T("resource/graphics/AmmoPickUp.png"));
-		m_nPickupArmorID = m_pTM->LoadTexture(_T("resource/graphics/ArmorPickUp.png"));
-		m_nPickupDoubleDID = m_pTM->LoadTexture(_T("resource/graphics/DoubleDamagePickUp.png"));
-		m_nPickupNoReloadID = m_pTM->LoadTexture(_T("resource/graphics/NoReloadPickUp.png"));
-		m_nPickupInvuID = m_pTM->LoadTexture(_T("resource/graphics/InvulnerabilityPickUp.png"));
-		m_nPickupInfAmmoID = m_pTM->LoadTexture(_T("resource/graphics/InfAmmoPickUp.png"));
-		m_nPickupMoneyID = m_pTM->LoadTexture(_T("resource/graphics/MoneyPickUp.png"));
-
-		m_nTree = m_pTM->LoadTexture(_T("resource/graphics/tree.png"));
-		m_nMine = m_pTM->LoadTexture(_T("resource/graphics/Mine.png"));
-		m_nDeadTree = m_pTM->LoadTexture(_T("resource/graphics/stump.png"));
-		m_nBarricade =m_pTM->LoadTexture(_T("resource/graphics/barr2.png"));
-		m_nDeadBarr = m_pTM->LoadTexture(_T("resource/graphics/barr1.png"));
-		m_nBox = m_pTM->LoadTexture(_T("resource/graphics/textBox.jpg"));
-
-		m_anSupportIDs[0] = m_pTM->LoadTexture(_T("resource/graphics/Support_Sapper.png"));
-		m_anSupportIDs[1] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rifle.png"));
-		m_anSupportIDs[2] = m_pTM->LoadTexture(_T("resource/graphics/Support_Rocket.png"));
-
-		// SOUNDS
-		////////////////////////////////////////////////////////
-		
-		m_anBulletSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/shell.wav"));
-		m_anBulletSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/rocket.wav"));
-		m_anBulletSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/artillery.wav"));
-		m_anBulletSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/machinegun.wav"));
-		m_anBulletSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/laser.wav"));
-		m_anBulletSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/fire.wav"));
-
-		m_anSoldierSounds[0] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt1.wav"));
-		m_anSoldierSounds[1] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt2.wav"));
-		m_anSoldierSounds[2] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt3.wav"));
-		m_anSoldierSounds[3] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt4.wav"));
-		m_anSoldierSounds[4] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt5.wav"));
-		m_anSoldierSounds[5] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt6.wav"));
-		m_anSoldierSounds[6] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt7.wav"));
-		m_anSoldierSounds[7] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt8.wav"));
-		m_anSoldierSounds[8] = m_pAudio->SFXLoadSound(_T("resource/sound/hurt9.wav"));
-
-		m_nMineSound = m_pAudio->SFXLoadSound(_T("resource/sound/mine.wav"));
-		m_nSappSound = m_pAudio->SFXLoadSound(_T("resource/sound/sapper.wav"));
-		m_nNukeSound = m_pAudio->SFXLoadSound(_T("resource/sound/nuke.wav"));
-		m_nDeadBullet = m_pAudio->SFXLoadSound(_T("resource/sound/explode.wav"));
-		
-		///////////////////////////////////////////////////////
-		//////////////////////////////////////////////////////
-		m_pMS->InitMessageSystem(&MessageProc);
-
-		m_pOF->RegisterClassType<CEntity>("CEntity");
-		m_pOF->RegisterClassType<CEnemy>("CEnemy");
-		m_pOF->RegisterClassType<CBullet>("CBullet");
-		m_pOF->RegisterClassType<CTurret>("CTurret");
-		m_pOF->RegisterClassType<CTank>("CTank");
-		m_pOF->RegisterClassType<CSapper>("CSapper");
-		m_pOF->RegisterClassType<CBuilding>("CBuilding");
-		m_pOF->RegisterClassType<CPickup>("CPickup");
-		m_pOF->RegisterClassType<CMine>("CMine");
-		m_pOF->RegisterClassType<CTree>("CTree");
-		m_pOF->RegisterClassType<CFlyText>("CFlyText");
-
-		m_pPlayer=CPlayer::GetInstance();
-		CPlayer* player=dynamic_cast<CPlayer*>(m_pPlayer);
-		player->SetImageID(m_nPlayerID);
-		player->SetFireSound(m_anBulletSounds[5]);
-		player->SetNukeSound(m_nNukeSound);
-		player->SetPosX(float(CGame::GetInstance()->GetWidth()/2));
-		player->SetPosY(float(CGame::GetInstance()->GetHeight()/2));
-		player->SetRotation(0);
-		player->SetWidth(64);
-		player->SetHeight(128);
-		player->SetVelX(90);
-		player->SetVelY(90);
-		player->SetStartVelX(player->GetVelX());
-		player->SetStartVelY(player->GetVelY());
-		player->SetHealth(250);
-		player->SetMaxHealth(250);
-		player->SetArmor(50);
-		player->SetMaxArmor(50);
-		player->SetWeaponAmmo(40/*m_dGameData.nShellAmmo*/,40/*m_dGameData.nArtilleryAmmo*/,/*m_dGameData.nMissileAmmo*/40);
-		player->SetMaxWeaponAmmo(40,40,40);
-		player->SetMoney(0);
-		tVector2D v2Pos = { player->GetPosX(), player->GetPosY() };
-		CNuke* pNuke = new CNuke();
-		pNuke->SetEmitter(m_PM->GetEmitter(FXNuke));
-		CSmoke* pSmoke=new CSmoke();
-		pSmoke->SetEmitter(m_PM->GetEmitter(FXSmoke));
-		player->SetSpecial1(pNuke);
-		player->SetSpecial2(pSmoke);
-		player->SetSpecial1Ammo(1);
-		player->SetSpecial2Ammo(2);
-		pNuke = nullptr;
-		pSmoke = nullptr;
-		player->SetOldPos(v2Pos);
-		player->SetSecondType(MACHINEGUN);
-		//player->SetName(m_dGameData.szName);
-		//player->SetEmitterLeft(m_PM->GetEmitter(FXTreads));
-		//player->SetEmitterRight(m_PM->GetEmitter(FXTreads));
-		player->SetRocketAccess(true);
-		player->SetArtilleryAccess(true);
-		player->SetGunSel(1);
-
-		//buffs LEAVE ON ALL SET TO FALSE AND 0 TIME
-		player->SetDoubleDamage(false);
-		player->SetDamageTimer(0.0f);
-		player->SetNoReloadTimer(0.0f);
-		player->SetInvul(false);
-		player->SetInvulTimer(0.0f);
-		player->SetInfAmmo(false);
-		player->SetInfoAmmoTimer(0.0f);
-
-		CTurret* PlayerTurret=(CTurret*)m_pOF->CreateObject("CTurret");
-		PlayerTurret->SetImageID(m_nPlayerTurretID);
-		player->SetTurret(PlayerTurret);
-		PlayerTurret->SetPosX(player->GetPosX());
-		PlayerTurret->SetPosY(player->GetPosY());
-		PlayerTurret->SetOwner(player);
-		PlayerTurret->SetBullet(BUL_SHELL);
-		PlayerTurret->SetWidth(64);
-		PlayerTurret->SetHeight(128);
-		PlayerTurret->SetRotationPositon(32,98);
-		PlayerTurret->SetUpVec(0,-1);
-		PlayerTurret->SetDistance(800);
-		PlayerTurret->SetRotationRate(1.0f);
-		PlayerTurret->SetFlamer(m_PM->GetEmitter(FXFlame));
-
-		// Create and add everything to the objectmanager first so player is always above
-		m_pTile->Load("resource/files/tutorial.xml");
-		m_pMS->ProcessMessages();
-		m_pOM->AddObject(player);
-		m_pOM->AddObject(PlayerTurret);
-		PlayerTurret->Release();
-
-		
-		m_nPosition = 0;
-		m_bPaused = false;
-
-		m_pGUI->SetHudID(m_anEnemyIDs[3]);
-		m_pGUI->SetPlayer(player);
-		m_pGUI->SetSelect(m_anEnemyIDs[8]);
-		m_pGUI->SetGunSel(m_anEnemyIDs[13]);
-		m_pGUI->SetGunSelected(1);
-
-		m_nCursor = m_pTM->LoadTexture(_T("resource/graphics/cursor.png"),0);
-
-		
-		m_nBoxIndex = 0;
-		player->SetMoney(0);
-	}
-	m_nMouseX = m_pDI->MouseGetPosX();
-	m_nMouseY = m_pDI->MouseGetPosY();
-
-	D3DXCreateTexture(m_pD3D->GetDirect3DDevice(), 125, 120, 0, D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DFMT_R8G8B8, D3DPOOL_DEFAULT, &MiniMap); 
-	m_bWinner = false;
-	m_bGameOver = false;
-	m_bWordBox = true;
-	m_nBoxIndex = -1;
-	gameEndTimer = 0.0f;
-	m_fWordTimer = 0.0f;
-	m_nButton = m_pAudio->SFXLoadSound(_T("resource/sound/button.wav"));
-	m_nClick = m_pAudio->SFXLoadSound(_T("resource/sound/click.wav"));
-	m_nGameMusic = m_pAudio->MusicLoadSong(_T("resource/sound/GameMusic.xwm"));
-	if(m_nGameMusic != -1)
-	{
-		m_pAudio->MusicPlaySong(m_nGameMusic, true);
 	}
 
 }
@@ -414,6 +431,72 @@ void CTutorState::Exit(void)
 
 			m_PM->RemoveAllBaseEmitters();
 			m_PM->DeleteInstance();
+
+			for(int i = 0; i < 6; i++)
+		{
+			if(m_anBulletSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anBulletSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anBulletSounds[i]);
+				m_anBulletSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		for(int i = 0; i < 9; i++)
+		{
+			if(m_anSoldierSounds[i] != -1)
+			{
+				m_pAudio->SFXStopSound(m_anSoldierSounds[i]);
+				m_pAudio->SFXUnloadSound(m_anSoldierSounds[i]);
+				m_anSoldierSounds[i] = -1;
+			}
+		}
+
+		if(m_nMineSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nMineSound);
+			m_pAudio->SFXUnloadSound(m_nMineSound);
+			m_nMineSound = -1;
+		}
+
+		if(m_nSappSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nSappSound);
+			m_pAudio->SFXUnloadSound(m_nSappSound);
+			m_nSappSound = -1;
+		}
+
+		if(m_nNukeSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nNukeSound);
+			m_pAudio->SFXUnloadSound(m_nNukeSound);
+			m_nNukeSound = -1;
+		}
+		
+		if(m_nTreeSound != -1)
+		{
+			m_pAudio->SFXStopSound(m_nTreeSound);
+			m_pAudio->SFXUnloadSound(m_nTreeSound);
+			m_nTreeSound = -1;
+		}
+	
+		if(m_nGameMusic != -1)
+		{
+			m_pAudio->MusicStopSong(m_nGameMusic);
+			m_pAudio->MusicUnloadSong(m_nGameMusic);
+			m_nGameMusic = -1;
+
+		}
 
 			if(WinnerID != -1)
 			{
@@ -602,7 +685,8 @@ void CTutorState::Exit(void)
 				m_pGUI=nullptr;
 			}
 			}
-	}
+}
+		
 	
 
 
@@ -1846,7 +1930,7 @@ void CTutorState::MessageProc(CMessage* pMsg)
 			CTree* pTree = (CTree*)pSelf->m_pOF->CreateObject("CTree");
 			pTree->SetPosX(pMessage->GetPosX());
 			pTree->SetPosY(pMessage->GetPosY());
-			
+			pTree->SetSound(pSelf->m_nTreeSound);
 			pTree->SetHealth(100);
 			pTree->SetMaxHealth(100);
 			if(pMessage->GetBarr() == true)
@@ -2342,4 +2426,40 @@ void CTutorState::TurnSoundOff(void)
 		}
 
 }
+
+
+
+void CTutorState::ResumeGame(void)
+{
 	
+	m_nBackGround = m_pTM->LoadTexture(_T("resource/graphics/controlBG.jpg"));
+
+	m_pD3D->Clear( 0, 255, 255 );// Clear the background
+
+	// Start D3D rendering
+	m_pD3D->DeviceBegin();
+	m_pD3D->SpriteBegin();	
+
+	RECT rect = {};
+	SetRect(&rect,0,0,800,600);
+	m_pTM->Draw(m_nBackGround,0,0,1.0f,1.0f,&rect);
+	m_pD3D->GetSprite()->Flush();
+	m_pFont->Print("PRESS ENTER TO CONTINUE",CGame::GetInstance()->GetWidth()/2-200,CGame::GetInstance()->GetHeight()-30,1.0f,D3DCOLOR_XRGB(255,255,255));
+	
+	m_pD3D->GetSprite()->Flush();	
+	m_pD3D->SpriteEnd();
+	m_pD3D->DeviceEnd();	
+
+	m_pD3D->Present();
+	
+	bool blag = true;
+	here:
+	m_pDI->ReadDevices();
+	if(m_pDI->JoystickButtonDown(0) || m_pDI->JoystickButtonDown(1) || m_pDI->JoystickButtonDown(2) || m_pDI->JoystickButtonDown(3) || m_pDI->JoystickButtonDown(4) || m_pDI->JoystickButtonDown(5) || m_pDI->JoystickButtonDown(6))
+		blag = false;
+	if(blag)
+		goto here;
+	else
+		CGame::GetInstance()->ChangeState(CMainMenuState::GetInstance());
+
+}

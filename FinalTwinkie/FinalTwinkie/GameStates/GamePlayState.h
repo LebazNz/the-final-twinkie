@@ -81,6 +81,7 @@ private:
 	bool SoundOff;
 
 	//IMAGE IDS
+	int m_nTreeSound;
 	int m_anBulletSounds[6];
 	int m_anSoldierSounds[9];
 	int m_nMineSound;

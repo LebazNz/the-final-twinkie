@@ -49,6 +49,7 @@ private:
 	CTutorState& operator=(const CTutorState&);
 	virtual ~CTutorState(void);
 
+	void ResumeGame(void);
 	void LoadWords(void);
 
 	CSGD_Direct3D*			m_pD3D;
@@ -77,6 +78,7 @@ private:
 	bool SoundOff;
 
 	//IMAGE IDS
+	int m_nTreeSound;
 	int m_anBulletSounds[6];
 	int m_anSoldierSounds[9];
 	int m_nMineSound;
